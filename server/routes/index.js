@@ -3,4 +3,13 @@ const apiRouter = require('./api');
 
 router.use('/api',apiRouter);
 
-module.exports = router;
+const consultationResolvers = require("./consultation/resolver");
+const feedbackResolvers = require("./feedback/resolver");
+const patientFileResolvers = require("./patientFile/resolver");
+
+module.exports= [
+    consultationResolvers,
+    feedbackResolvers,
+    patientFileResolvers,
+    router
+]
