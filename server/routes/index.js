@@ -1,6 +1,9 @@
-const router =require('express').Router();
-const apiRouter = require('./api');
+const postResolvers = require("./post/resolver");
+const commentResolvers = require("./comment/resolver");
 
-router.use('/api',apiRouter);
+ 
 
-module.exports = router;
+module.exports= [
+    postResolvers,
+    commentResolvers
+]
