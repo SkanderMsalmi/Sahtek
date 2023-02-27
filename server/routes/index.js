@@ -10,6 +10,6 @@ module.exports= [
     patientFileResolvers,
     postResolvers,
     commentResolvers,
-    router
+    // router
 
 ]

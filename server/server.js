@@ -44,8 +44,7 @@ require('./database');
 
 
 
-const URL = 'mongodb://localhost:27017/Sahtek';
-mongoose.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true },()=>console.log("Connected to MongoDB"));
+
 
 const startServer = async () => { 
     const apolloServer= new ApolloServer({
