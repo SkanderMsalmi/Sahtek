@@ -2,6 +2,10 @@ const { gql } = require("apollo-server-express");
 const ConsultationType = require("./consultation")
 const FeedbackType = require("./feedback");
 const patientFile = require("./patientFile");
+const postT = require("./post")
+const commentT = require("./comment")
+
+ 
 
 const rootType = gql`
   type Query {
@@ -16,5 +20,8 @@ module.exports= [
     rootType,
     ConsultationType,
     FeedbackType,
-    patientFile
+    patientFile,
+    postT,
+    commentT
+     
 ]
