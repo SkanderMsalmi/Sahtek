@@ -5,6 +5,8 @@ const patientFile = require("./patientFile");
 const postT = require("./post")
 const commentT = require("./comment")
 const userT = require('./user')
+const ProductT = require("./product")
+
  
 
 const rootType = gql`
@@ -23,6 +25,7 @@ module.exports= [
     patientFile,
     postT,
     commentT,
-    userT
-     
+    userT,
+    ProductT
+        
 ]
