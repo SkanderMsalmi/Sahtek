@@ -6,14 +6,14 @@ type Product {
     description: String,
     category:String
     stock: Int,
-    price:Number
+    price:Float
 }
 input ProductInput {
     name: String,
     description: String,
     category:String
     stock: Int,
-    price:Number
+    price:Float
 }  
 type Query {
     getProduct(ID: ID!): Product

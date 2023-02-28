@@ -1,4 +1,4 @@
-const Product = require('../../database/models/product');
+const Product = require('../../../database/models/product');
 
 const resolvers = {
     Query: {   
@@ -14,7 +14,7 @@ const resolvers = {
     Mutation: {
       
         async addProduct(_,{productInput:{name,category,description,price,stock}}){
-            const addProduct = new Product({
+            const createdProduct = new Product({
                 name:name,
                 category:category,
                 description:description,
