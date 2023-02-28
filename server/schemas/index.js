@@ -4,7 +4,7 @@ const FeedbackType = require("./feedback");
 const patientFile = require("./patientFile");
 const postT = require("./post")
 const commentT = require("./comment")
-
+const userT = require('./user')
  
 
 const rootType = gql`
@@ -22,6 +22,7 @@ module.exports= [
     FeedbackType,
     patientFile,
     postT,
-    commentT
+    commentT,
+    userT
      
 ]

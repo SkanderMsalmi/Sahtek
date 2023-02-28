@@ -9,7 +9,8 @@ const userSchema = mongoose.Schema({
         type:String,
         unique:true
     },
-    password:String
+    password:String,
+    token : {type : String}
 });
 
 const UserModel = mongoose.model('user',userSchema);
