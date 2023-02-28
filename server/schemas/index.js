@@ -16,6 +16,7 @@ const rootType = gql`
   type Mutation {
     root: String
   }
+  
 `;
 
 module.exports= [
