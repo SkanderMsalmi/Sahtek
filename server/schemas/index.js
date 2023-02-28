@@ -12,7 +12,6 @@ const ProductT = require("./product")
 const rootType = gql`
   type Query {
     root: String
-    sdfsdjkf
   }
   type Mutation {
     root: String
