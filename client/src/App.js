@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className={`d-flex flex-column ${styles.appContainer}`}>
-      <AuthProvider>
+      {/* <AuthProvider> */}
     <Header />
     <div className="flex-fill">
       <Suspense>
@@ -17,7 +17,7 @@ function App() {
       </Suspense>
     </div>
     <Footer />
-    </AuthProvider>
+    {/* </AuthProvider> */}
   </div>
   );
 }

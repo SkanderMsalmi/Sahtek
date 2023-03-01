@@ -1,5 +1,5 @@
-import { getCurrentUser } from "../apis/auth";
+// import { getCurrentUser } from "../apis/auth";
 
-export async function rootLoader(){
-    return getCurrentUser();
-}
+// export async function rootLoader(){
+//     return getCurrentUser();
+// }
