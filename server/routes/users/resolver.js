@@ -17,7 +17,6 @@ const resolvers = {
 
     Mutation:{
         registerPatient: async (parent, args) => {
-           
             const password = await bcrypt.hash(args.patientInput.password, 10);
             const patient = new Patient({...args.patientInput,password});
             return await patient.save();
@@ -29,7 +28,6 @@ const resolvers = {
           },
           async login(parent,{email,password,userType}){
             console.log(email,password,userType);
-            // if user exists
             let userLogged = null;
             if(userType == 'Patient'){
                 userLogged  = await Patient.findOne({email})
@@ -40,11 +38,9 @@ const resolvers = {
             if(!userLogged){
                 throw new Error('Invalid email or password');
             }
-            //check password
             const matchPassword = bcrypt.compare(password,userLogged.password);
             if(!matchPassword){}
 
-                // Create new token
                 const token = jwt.sign(
                     {user_id:userLogged._id},
                     key,{
@@ -52,10 +48,6 @@ const resolvers = {
                         algorithm:'RS256'
                     }
                 );
-    
-                // attach token to user
-                
-    
                 return {
                     value:token
                 }
