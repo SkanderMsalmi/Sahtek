@@ -1,10 +1,11 @@
-const User = require('../../database/models/User');
+const {Patient,Therapist} = require('../../database/models/User');
 const {ApolloError} = require('apollo-server-errors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {key} = require('../../keys');
 
 const resolvers = {
+
     // Query: {
     //     getPatientFiles:async ()=>{
     //         return await PatientFile.find();
@@ -13,81 +14,57 @@ const resolvers = {
     //         return await PatientFile.findById(args.id);
     //     }
     // },
+
     Mutation:{
-        async registerUser(_,{registerInput:{name,email,password}}){
-            //Check user Exists
-            const oldUser = await User.findOne({email});
-
-            if(oldUser){
-                throw new ApolloError('A user is already registered with the email' + email,"USER_ALREADY_EXISTS");
-            }
-
-            //Encrypt password
-
-            var encryptedPassword = await bcrypt.hash(password,10);
-
-            //Create User
-
-            const newUser = new User({
-                name:name,
-                email:email.toLowerCase(),
-                password:encryptedPassword
-            });
-            
-            //create token JWT
-            const token = jwt.sign(
-                {user_id:newUser._id,email},
-                key,{
-                    expiresIn: 3600*24*30*6,
-                    algorithm:'RS256'
-                }
-                
-            );
-
-            newUser.token = token;
-
-            //save
-
-            const res = await newUser.save();
-
-            return {
-                id : res.id,
-                ...res._doc
-            }
-
-        },
-        async loginUser(_,{loginInput: {email,password}}){
+        registerPatient: async (parent, args) => {
+           
+            const password = await bcrypt.hash(args.patientInput.password, 10);
+            const patient = new Patient({...args.patientInput,password});
+            return await patient.save();
+          },
+          registerTherapist: async (parent, args) => {
+            const password = await bcrypt.hash(args.therapistInput.password, 10);
+            const therapist = new Therapist({ ...args.therapistInput, password });
+            return await therapist.save();
+          },
+          async login(parent,{email,password,userType}){
+            console.log(email,password,userType);
             // if user exists
-            const user = await User.findOne({email});
+            let userLogged = null;
+            if(userType == 'Patient'){
+                userLogged  = await Patient.findOne({email})
+            }else if(userType == 'Therapist'){
+                userLogged = await Therapist.findOne({email});
+            }
+
+            if(!userLogged){
+                throw new Error('Invalid email or password');
+            }
             //check password
-            if(user && (await bcrypt.compare(password,user.password))){
+            const matchPassword = bcrypt.compare(password,userLogged.password);
+            if(!matchPassword){}
+
                 // Create new token
                 const token = jwt.sign(
-                    {user_id:user._id,email},
+                    {user_id:userLogged._id},
                     key,{
                         expiresIn: 3600*24*30*6,
                         algorithm:'RS256'
                     }
-                    
                 );
     
                 // attach token to user
-                user.token = token;
+                
     
                 return {
-                    id:user.id,
-                    ...user._doc
+                    value:token
                 }
-            }else{
-                //if user doesn't exists
-                throw new ApolloError('Incorrect password','INCORRECT_PASSWORD');
             }
-    
-    
-        },
+      
     },
     Query:{
-        user: (_,{ID})=> User.findById(ID)
+        // patient: (_,{ID})=> Patient.findById(ID),
+        // therapist: (_,{ID})=> Therapist.findById(ID)
     }
 }
 
