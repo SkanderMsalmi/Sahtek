@@ -17,19 +17,8 @@ export const router = createBrowserRouter([
             {
                 index:true,
                 element: <Homepage />
-            },
-            {
-                path:'signup',
-                element:<Signup/>
-            },
-            {
-                path:'signin',
-                element:<Signin />
-            },
-            {
-                path:'profile',
-                element:<ProtectedRoute><Profile /></ProtectedRoute> 
             }
+      
         ]
     }
 ]);

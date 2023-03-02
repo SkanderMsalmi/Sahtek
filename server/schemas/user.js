@@ -99,6 +99,7 @@ module.exports = gql`
                 name: String!
                 email: String!
                 password: String!
+                confirmPassword: String!
                 license: String!
                 specialty: String!
                 description: String

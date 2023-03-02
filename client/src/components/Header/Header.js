@@ -12,17 +12,11 @@ function Header(){
                 <strong>Sahtek</strong>
                 </NavLink>
             </div>
-            {true ? (
-                 <ul className={styles.hearList}>
-                 <NavLink to="profile" className="mr-15">Profil</NavLink>
-                 <NavLink >Deconnexion</NavLink>
-             </ul>
-            ):(
+     
                 <ul className={styles.hearList}>
-                <NavLink to="signup" className="mr-15">Inscription</NavLink>
-                <NavLink to="signin">Connexion</NavLink>
+                <NavLink to="register" className="mr-15">Inscription</NavLink>
+                <NavLink to="login">Connexion</NavLink>
             </ul>
-            )}
            
         </header>
     )
