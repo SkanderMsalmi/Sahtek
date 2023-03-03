@@ -1,24 +1,19 @@
-// import { useContext } from "react";
-import { NavLink } from "react-router-dom";
-// import { AuthContext } from "../../context";
-import styles from "./Header.module.scss";
-function Header(){
-    // const {user,signout} = useContext(AuthContext);
+import {Nav,Navbar,NavLink} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
-    return (
-        <header className={`${styles.header} d-flex flex-row align-items-center`}>
-            <div className="flex-fill">
-                <NavLink to="/">
-                <strong>Sahtek</strong>
-                </NavLink>
-            </div>
-     
-                <ul className={styles.hearList}>
-                <NavLink to="register" className="mr-15">Inscription</NavLink>
-                <NavLink to="login">Connexion</NavLink>
-            </ul>
-           
-        </header>
+const Header = ()=>{
+    return(
+        <Navbar collapseOnSelect expand="sm" bg="dark" variant='dark' >
+            <Navbar.Toggle aria-controls='navbarScroll' data-bs-target="#navbarScroll"/>
+            <Navbar.Collapse id="navbarScroll">
+                <Nav>
+                    <NavLink  >Home</NavLink>
+                    <NavLink  >About</NavLink>
+                    <NavLink  >Contact</NavLink>
+                </Nav>
+            </Navbar.Collapse>
+
+        </Navbar>
     )
 }
 
