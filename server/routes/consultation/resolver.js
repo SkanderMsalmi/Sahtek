@@ -19,6 +19,11 @@ const resolvers = {
         deleteConsultation:async(_, args)=>{
             return await Consultation.deleteOne(args);
         }
+    },
+    Consultation: {
+        feedback:async (parent, args)=>{
+            return await Feedback.findById(parent.feedback);
+        }
     }
 }
 

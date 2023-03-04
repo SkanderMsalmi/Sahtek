@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const ConsultationSchema= new mongoose.Schema({
     date: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         required: true
     },
     time: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         required: true
     },
     patientFile: {

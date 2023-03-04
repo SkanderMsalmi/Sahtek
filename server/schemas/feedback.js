@@ -3,7 +3,7 @@ const {gql} = require('apollo-server-express');
 
 module.exports= gql`
 type Feedback {
-    id: ID!
+    _id: ID!
     remarks: String!
     consultation: Consultation!
 }

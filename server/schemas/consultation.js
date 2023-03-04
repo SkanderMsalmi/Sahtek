@@ -2,7 +2,7 @@ const {gql} = require('apollo-server-express');
 
 module.exports = gql`
     type Consultation {
-        id: ID!
+        _id: ID!
         date: String!
         time: String!
         patientFile: PatientFile
