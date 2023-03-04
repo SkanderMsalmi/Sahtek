@@ -6,7 +6,7 @@ const ConsultationSchema= new mongoose.Schema({
         required: true
     },
     time: {
-        type: mongoose.Schema.Types.String,
+        type: String,
         required: true
     },
     patientFile: {

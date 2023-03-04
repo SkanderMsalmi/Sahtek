@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const FeedbackSchema = mongoose.Schema({
     remarks: {
-        type: String,
+        type: mongoose.Schema.Types.String,
         required: true
     },
     consultation: {

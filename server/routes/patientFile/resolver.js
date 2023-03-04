@@ -1,3 +1,4 @@
+const Consultation = require("../../database/models/consultation");
 const PatientFile = require("../../database/models/patientFile");
 
 const resolvers = {
@@ -19,6 +20,11 @@ const resolvers = {
         deletePatientFile:async(_, args)=>{
             return await PatientFile.deleteOne(args);
         }
+    },
+    PatientFile: {
+        consultation:async (parent)=>{
+            return await Consultation.findById(parent.consultation);
+        }   
     }
 }
 
