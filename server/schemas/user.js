@@ -113,7 +113,8 @@ module.exports = gql`
 union User = Patient | Therapist
 
 extend type Query{
-  user(ID:ID!): User
+  user(id:ID!): User
+  getCurrectUser: User
     patient(ID: ID!): Patient
     therapist(ID: ID!):Therapist
     appoitmentsPatient(id: ID!):Patient
@@ -123,7 +124,7 @@ extend type Query{
 extend type Mutation {
     registerPatient(patientInput : PatientInput): Patient
     registerTherapist(therapistInput : TherapistInput): Therapist
-    login(email: String!, password: String!, userType: String!): Token!
+    login(email: String!, password: String!, userType: String!): String
     
 } 
 

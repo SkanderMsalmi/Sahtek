@@ -2,8 +2,8 @@ const {Patient,Therapist} = require('../../database/models/User');
 const {ApolloError} = require('apollo-server-errors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {key} = require('../../keys');
-
+const {key,keyPub} = require('../../keys');
+const { setCookie } = require('./utils/cookies');
 const resolvers = {
 
     // Query: {
@@ -26,7 +26,7 @@ const resolvers = {
             const therapist = new Therapist({ ...args.therapistInput, password });
             return await therapist.save();
           },
-          async login(parent,{email,password,userType},res){
+          async login(parent,{email,password,userType},{res}){
             console.log(email,password,userType);
             let userLogged = null;
             if(userType == 'Patient'){
@@ -38,7 +38,7 @@ const resolvers = {
             if(!userLogged){
                 throw new Error('Invalid email or password');
             }
-            const matchPassword = bcrypt.compare(password,userLogged.password);
+            const matchPassword = bcrypt.compareSync(password,userLogged.password);
             if(matchPassword){
                 const token = jwt.sign(
                     {user_id:userLogged._id},
@@ -47,19 +47,13 @@ const resolvers = {
                         algorithm:'RS256'
                     }
                 );
-
-                res.set('Set-Cookie', `token=${token}; HttpOnly`);
-                return {
-                    success:true
-                }
+                res.cookie('token',token,{httpOnly:true});
+               return "sucess";
             }
-
+            return "failed";
               
 
-               
-                return {
-                    success:false,message:"Invalid credentials"
-                }
+              
             }
 
            
@@ -73,6 +67,33 @@ const resolvers = {
             return await Therapist.findById(ID);
             
         },
+        async getCurrectUser(_,{},{req,res}){
+            const token = req.cookies.token;
+    if(token){
+        try {
+            const decodedToken = jwt.verify(token,keyPub,{algorithms:['RS256']});
+            const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
+            return user;
+            if(decodedToken){
+                const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
+                console.log(user);
+                if(user){
+                   return user
+                }else{
+                   return null;
+                }
+            }else{
+                return null;
+            }
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    } else{
+        
+        return null;
+    }
+        }
       
       
     },

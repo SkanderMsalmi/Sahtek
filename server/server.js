@@ -58,7 +58,11 @@ app.use(cors(corsOptionsDelegate));
 const startServer = async () => { 
     const apolloServer= new ApolloServer({
         typeDefs: require('./schemas'),
-        resolvers: require('./routes')
+        resolvers: require('./routes'),
+        context: ({ req, res }) => {
+          // Pass the `res` object to the resolver context
+          return { req, res };
+        }
     });
 await apolloServer.start();
 apolloServer.applyMiddleware({app});
