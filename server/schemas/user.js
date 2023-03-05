@@ -1,7 +1,6 @@
 const {gql} = require('apollo-server-express');
 
 module.exports = gql`
-
     type Patient {
         name: String!
         email: String!
@@ -114,7 +113,9 @@ module.exports = gql`
 union User = Patient | Therapist
 
 extend type Query{
-    user(id: ID!): User
+  user(ID:ID!): User
+    patient(ID: ID!): Patient
+    therapist(ID: ID!):Therapist
     appoitmentsPatient(id: ID!):Patient
     appoitmentsTherapist(id: ID!):Therapist
 }

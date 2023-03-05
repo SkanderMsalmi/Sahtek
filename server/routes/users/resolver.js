@@ -54,10 +54,17 @@ const resolvers = {
             }
       
     },
-    Query:{
-        // patient: (_,{ID})=> Patient.findById(ID),
-        // therapist: (_,{ID})=> Therapist.findById(ID)
-    }
+    Query: {   
+        async patient(_, {ID}) {
+                return await Patient.findById(ID);
+        },
+        async therapist(_,{ID}){
+            return await Therapist.findById(ID);
+            
+        },
+      
+      
+    },
 }
 
 module.exports = resolvers;
