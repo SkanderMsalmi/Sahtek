@@ -2,13 +2,18 @@ import React from 'react';
 import styles from "./App.module.scss";
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Login from './pages/Signin/Login';
+import Register from './pages/Register/Register';
 function App() {
 
   return (
-    <div className={`d-flex flex-column ${styles.appContainer}`}>
+    <>
       <Header/>
-      <Footer/>
+    <div className={`d-flex flex-column ${styles.appContainer}`}>
+      <Login/>
   </div>
+      <Footer/>
+  </>
   );
 }
 

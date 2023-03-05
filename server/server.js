@@ -33,7 +33,7 @@ const app = express();
 const {ApolloServer} = require('apollo-server-express');
 
 const mongoose = require('mongoose');
-const whitelist = ["http://localhost:3000"]
+const whitelist = ["http://localhost:3000","http://localhost:5000"]
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
