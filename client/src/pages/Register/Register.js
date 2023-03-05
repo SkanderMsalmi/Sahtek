@@ -5,7 +5,7 @@ function Register (){
         <section>
         <div className={styles.formBox}>
             <form action="">
-                <h2>Register</h2>
+                <h2 style={{color:"#fff"}}>Register</h2>
                 <div className="row">
                 <div className="col-md-6 mb-2">
 
@@ -51,7 +51,7 @@ function Register (){
                 </div>
                 <div className="col-md-6 mt-4" style={{color:"white"}}>
 
-                  <h6 className="mb-2 pb-1">Gender: </h6>
+                  <h6 className="mb-2 pb-1" style={{color:"#fff"}}>Gender: </h6>
 
                   <div className=" form-check-inline">
                     <input className="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"

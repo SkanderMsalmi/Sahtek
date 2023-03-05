@@ -17,7 +17,7 @@ function App() {
 
     <div className={`d-flex flex-column ${styles.appContainer}`}>
       <Header/>
-      <Profile/>
+      <Register/>
       <Footer/>
   </div>
   </ApolloProvider>
