@@ -26,7 +26,7 @@ const resolvers = {
             const therapist = new Therapist({ ...args.therapistInput, password });
             return await therapist.save();
           },
-          async login(parent,{email,password,userType}){
+          async login(parent,{email,password,userType},res){
             console.log(email,password,userType);
             let userLogged = null;
             if(userType == 'Patient'){
@@ -39,8 +39,7 @@ const resolvers = {
                 throw new Error('Invalid email or password');
             }
             const matchPassword = bcrypt.compare(password,userLogged.password);
-            if(!matchPassword){}
-
+            if(matchPassword){
                 const token = jwt.sign(
                     {user_id:userLogged._id},
                     key,{
@@ -48,10 +47,22 @@ const resolvers = {
                         algorithm:'RS256'
                     }
                 );
+
+                res.set('Set-Cookie', `token=${token}; HttpOnly`);
                 return {
-                    value:token
+                    success:true
                 }
             }
+
+              
+
+               
+                return {
+                    success:false,message:"Invalid credentials"
+                }
+            }
+
+           
       
     },
     Query: {   
