@@ -1,14 +1,33 @@
+import styles from  "./Login.module.scss";
+
 function Login (){
     return (
-        <div className="container">
-            <div className="item">
-                <h2 className="logo">Sahtek</h2>
-                <div className="text-item">
-                    <h2>Welcome ! <br/><span>To Our Website</span></h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam assumenda minus, laborum nisi doloribus eius dicta voluptates numquam nulla cum?</p>
-                </div>
+        <section>
+            <div className={styles.formBox}>
+                <form action="">
+                    <h2>Login</h2>
+                    <div className={styles.inputbox}>
+                    <i className="fa-sharp fa-regular fa-envelope"></i>
+                        <input type="text" className={styles.userInput} required />
+                        <label htmlFor="email" className={styles.userLabel} >Email</label>
+                    </div>
+                    <div className={styles.inputbox}>
+                    <i class="fa-solid fa-lock"></i>
+                        <input type="password"  className={styles.userInput}  required/>
+                        <label className={styles.userLabel} htmlFor="password" >Password</label>
+                    </div>
+                    <div className={styles.forget}>
+                        <label className="lab" htmlFor=""><input type="checkbox"  />Remeber Me <a href="#" style={{marginLeft:"15px"}}> Forget Password </a></label>
+                        
+                    </div>
+                    <button>Login</button>
+                    <div className={styles.register}>
+                        <p>Don't have an account ? <a href="#">Register</a></p>
+                    </div>
+                </form>
+
             </div>
-        </div>
+        </section>
     )
 }
 

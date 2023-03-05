@@ -2,6 +2,8 @@ import React from 'react';
 import styles from "./App.module.scss";
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Login from './pages/Signin/Login';
+import Register from './pages/Register/Register';
 import Profile from './pages/Profile/Profile';
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 const client = new ApolloClient({
