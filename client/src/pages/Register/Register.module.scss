@@ -1,4 +1,4 @@
-.form{
+.form {
     max-width: 300px;
     flex: 1 1 auto;
 }
@@ -15,12 +15,12 @@ section {
     background-size: cover;
 }
 
-.formBox{
+.formBox {
     position: relative;
     min-width: 700px;
     height: 800px;
     background: transparent;
-    border: 2px solid rgba(255,255,255,0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(8px);
     display: flex;
@@ -29,15 +29,16 @@ section {
 }
 
 
-.inputbox{
+.inputbox {
     position: relative;
     margin: 30px 0;
     width: 210px;
     border-bottom: 2px solid #fff;
-    label{
+
+    label {
         position: absolute;
         top: 50%;
-        left:5px;
+        left: 5px;
         transform: translateY(-50%);
         color: #fff;
         font-size: 1em;
@@ -49,30 +50,36 @@ section {
 .userInput:active+.userLabel,
 .userInput:focus+.userLabel,
 .userInput:valid+.userLabel {
-  top: -5px;
-}
-.inputbox{ 
-input{
-    width: 100%;
-    height: 50px;
-    background:transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    padding: 0 35px 0 5px;
-    color: #fff;
-}
-i {
-    position: absolute;
-    right: 8px;
-    color: #fff;
-    font-size: 1.2em;
-    top: 20px;
-
-}
+    top: -5px;
 }
 
-button{
+.inputbox {
+    input {
+        width: 100%;
+        height: 50px;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        padding: 0 35px 0 5px;
+        color: #fff;
+    }
+
+    i {
+        position: absolute;
+        right: 8px;
+        color: #fff;
+        font-size: 1.2em;
+        top: 20px;
+
+    }
+}
+
+.userInput::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+button {
     width: 100%;
     height: 40px;
     border-radius: 40px;
@@ -82,8 +89,36 @@ button{
     font-size: 1em;
     cursor: pointer;
     font-weight: 600;
-    &:hover{
+    transition: all 0.5 ease;
+
+    &:hover {
         background-color: var(--primary);
         color: white;
+    }
+}
+
+.forget {
+    margin: 15px 0 15px;
+    font-size: .9em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+
+    label {
+        input {
+            margin-right: 3px;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+            transition: all .25s ease;
+
+            &:hover {
+                text-decoration: underline;
+                color: var(--primary);
+
+            }
+        }
     }
 }

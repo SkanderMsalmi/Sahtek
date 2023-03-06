@@ -84,6 +84,10 @@ function Register (){
               <div >
                 <button>Resgister</button>
               </div>
+              <div className={styles.forget+" form-check"}>
+                        <label className="lab form-check-label" htmlFor="">Already have an account? <a href="#" > <strong>Login instead</strong></a></label>
+                        
+                    </div>
             </form>
 
         </div>
