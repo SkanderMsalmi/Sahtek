@@ -39,8 +39,8 @@ function Login (){
                         <input type="password"  className={styles.userInput}  required value={password} onChange={(e)=> setPassword(e.target.value)} />
                         <label className={styles.userLabel} htmlFor="password" >Password</label>
                     </div>
-                    <div className={styles.forget}>
-                        <label className="lab" htmlFor=""><input type="checkbox"  />Remeber Me <a href="#" style={{marginLeft:"15px"}}> Forget Password </a></label>
+                    <div className={styles.forget+" form-check"}>
+                        <label className="lab form-check-label" htmlFor="rm"><input type="checkbox"  id="rm" className="form-check-input"/>Remeber Me <a href="#" style={{marginLeft:"15px"}}> Forget Password </a></label>
                         
                     </div>
                     <button>Login</button>
