@@ -51,6 +51,10 @@ section {
 .userInput:valid+.userLabel {
   top: -5px;
 }
+.userInput::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
 .inputbox{ 
 input{
     width: 100%;

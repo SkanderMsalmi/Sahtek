@@ -3,7 +3,7 @@ const {ApolloError} = require('apollo-server-errors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {key,keyPub} = require('../../keys');
-const { setCookie } = require('./utils/cookies');
+const { setCookie } = require('./cookies');
 const resolvers = {
 
     // Query: {
@@ -17,8 +17,8 @@ const resolvers = {
 
     Mutation:{
         registerPatient: async (parent, args) => {
-            const password = await bcrypt.hash(args.patientInput.password, 10);
-            const patient = new Patient({...args.patientInput,password});
+            const password = await bcrypt.hash(args.password, 10);
+            const patient = new Patient({...args,password});
             return await patient.save();
           },
           registerTherapist: async (parent, args) => {
@@ -38,18 +38,19 @@ const resolvers = {
             if(!userLogged){
                 throw new Error('Invalid email or password');
             }
-            const matchPassword = bcrypt.compareSync(password,userLogged.password);
-            if(matchPassword){
+           
+            if(userLogged && bcrypt.compareSync(password,userLogged.password)){
                 const token = jwt.sign(
-                    {user_id:userLogged._id},
+                    {},
                     key,{
-                        expiresIn: 3600*24*30*6,
-                        algorithm:'RS256'
+                        subject:userLogged._id.toString(),
+                        algorithm:'RS256',
+                        expiresIn:60*60*60*30 *6
                     }
-                );
-                res.cookie('token',token,{httpOnly:true});
-               return "sucess";
-            }
+                    );
+                    res.cookie('token',token,{httpOnly:true});
+           return  "success"
+                }
             return "failed";
               
 
@@ -67,13 +68,11 @@ const resolvers = {
             return await Therapist.findById(ID);
             
         },
-        async getCurrectUser(_,{},{req,res}){
+        async getCurrectUser(_,{},{req}){
             const token = req.cookies.token;
     if(token){
         try {
             const decodedToken = jwt.verify(token,keyPub,{algorithms:['RS256']});
-            const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
-            return user;
             if(decodedToken){
                 const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
                 console.log(user);

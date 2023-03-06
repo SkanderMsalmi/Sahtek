@@ -122,7 +122,7 @@ extend type Query{
 }
 
 extend type Mutation {
-    registerPatient(patientInput : PatientInput): Patient
+    registerPatient( name: String!,email: String!,password: String!,dateOfBirth: String!): Patient
     registerTherapist(therapistInput : TherapistInput): Therapist
     login(email: String!, password: String!, userType: String!): String
     

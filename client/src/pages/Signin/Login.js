@@ -1,18 +1,17 @@
 import styles from  "./Login.module.scss";
 import { useMutation,gql } from '@apollo/client';
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password,userType:"Patient") {
-      success
-    }
+mutation Login($email: String!, $password: String!, $userType: String!) {
+    login(email: $email, password: $password, userType: $userType)
   }
 `;
 
 
 function Login (){
-
+    const navigate = useNavigate();
     const [email,setEmail]=useState('');
     const [password,setPassword]= useState('');
     const [userType,setUserType]= useState('Patient');
@@ -20,8 +19,9 @@ function Login (){
 
     const handleSubmit = (event) => {
         event.preventDefault();
-    
+        console.log(email,password,userType);
         login({ variables: { email, password,userType } });
+        navigate("/");
       };
 
     return (
