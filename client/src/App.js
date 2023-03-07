@@ -6,6 +6,7 @@ import Login from './pages/Signin/Login';
 import Register from './pages/Register/Register';
 import Profile from './pages/Profile/Profile';
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import TherapistProfile from './pages/Profile/Therapist';
 const client = new ApolloClient({
   uri: "http://127.0.0.1:5000/graphql",
   cache: new InMemoryCache()

@@ -1,0 +1,25 @@
+.contactInfo {
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+
+    h5 {
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: #455a64;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+
+        svg {
+            fill: #1A76D1;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        span {
+            color: #29ada2;
+        }
+    }
+}
