@@ -42,27 +42,26 @@ const resolvers = {
             const {email,password,name,dateOfBirth,gender,role,
                 license,specialty,description,availability,education,
                 experience,languages,fees
-                } = args;
+                } = args.therapistInput;
     
                 const existingUser = await User.findOne({ email });
         if (existingUser) {
           throw new Error('User with that email already exists');
         }
-        const passwordHashed = await bcrypt.hash(password, 10);
+        const passwordHashed = await bcrypt.hashSync(password, 10);
+
     
-        const user = new User({email,passwordHashed,role});
+        const user = new User({email,password:passwordHashed,role,therapist:{
+            name,dateOfBirth,gender,license,specialty,description,availability,education,
+            experience,languages,fees,
+        }});
         
         await user.save();
     
-        const therapist = new Therapist({
-          name,dateOfBirth,gender,license,specialty,description,availability,education,
-          experience,languages,fees,
-          user: user._id
-        });
+     
     
-        await therapist.save();
     
-        return therapist;
+        return user;
           },
           async login(parent,{email,password},{res}){
             let userLogged = await User.findOne({email});
@@ -102,31 +101,31 @@ const resolvers = {
     //         return await Therapist.findById(ID);
             
         },
-        async getCurrectUser(_,{},{req}){
-            const token = req.cookies.token;
-    if(token){
-        try {
-            const decodedToken = jwt.verify(token,keyPub,{algorithms:['RS256']});
-            if(decodedToken){
-                const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
-                console.log(user);
-                if(user){
-                   return user
-                }else{
-                   return null;
-                }
-            }else{
-                return null;
-            }
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    } else{
+    //     async getCurrectUser(_,{},{req}){
+    //         const token = req.cookies.token;
+    // if(token){
+    //     try {
+    //         const decodedToken = jwt.verify(token,keyPub,{algorithms:['RS256']});
+    //         if(decodedToken){
+    //             const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
+    //             console.log(user);
+    //             if(user){
+    //                return user
+    //             }else{
+    //                return null;
+    //             }
+    //         }else{
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //         return null;
+    //     }
+    // } else{
         
-        return null;
-    }
-        }
+    //     return null;
+    // }
+    //     }
       
       
     }
