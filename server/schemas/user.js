@@ -3,6 +3,7 @@ const {gql} = require('apollo-server-express');
 module.exports = gql`
 
     type Patient {
+        verified: String
         name: String!
         email: String!
         password: String!
@@ -120,6 +121,7 @@ extend type Query{
 }
 
 extend type Mutation {
+    verifyEmail(id: ID, otp: String): String
     registerPatient(patientInput : PatientInput): Patient
     registerTherapist(therapistInput : TherapistInput): Therapist
     login(email: String!, password: String!, userType: String!): Token!
