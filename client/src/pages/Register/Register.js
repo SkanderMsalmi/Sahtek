@@ -1,7 +1,7 @@
 import styles from  "./Register.module.scss";
 import { useMutation,gql } from '@apollo/client';
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const Register_MUTATION = gql`
 mutation RegisterPatient($name: String!, $email: String!, $password: String!, $dateOfBirth: String!) {
   registerPatient(name: $name, email: $email, password: $password, dateOfBirth: $dateOfBirth) {
@@ -11,6 +11,8 @@ mutation RegisterPatient($name: String!, $email: String!, $password: String!, $d
 `;
 
 function Register (){
+  const userType = useParams('role');
+  console.log(userType);
   const navigate = useNavigate();
   const [email,setEmail]=useState('');
   const [firstname,setFirstName]=useState('');
@@ -18,7 +20,7 @@ function Register (){
   const [password,setPassword]= useState('');
   const [confirmPassword,setConfirmPassword]= useState('');
   const [dateOfBirth,setdateOfBirth]= useState('');
-  const [userType,setUserType]= useState('Patient');
+  // const [userType,setUserType]= useState('Patient');
   const [registerPatient,{data,loading,error}] = useMutation(Register_MUTATION);
 
   const handleSubmit = (event) => {
@@ -115,7 +117,7 @@ function Register (){
 
              
               <div >
-                <button>Resgister</button>
+                <button className="register">Resgister</button>
               </div>
               <div className={styles.forget+" form-check"}>
                         <label className="lab form-check-label" htmlFor="">Already have an account? <a href="#" > <strong>Login instead</strong></a></label>
