@@ -7,6 +7,8 @@ function App() {
   return (
     <div className={`d-flex flex-column ${styles.appContainer}`}>
       <Header/>
+
+      
       <Footer/>
   </div>
   );

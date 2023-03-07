@@ -124,6 +124,7 @@ extend type Mutation {
     registerTherapist(therapistInput : TherapistInput): Therapist
     login(email: String!, password: String!, userType: String!): Token!
     
+    
 } 
 
 `
