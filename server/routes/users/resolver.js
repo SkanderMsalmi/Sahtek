@@ -1,4 +1,4 @@
-const {Patient,Therapist} = require('../../database/models/User');
+const {Patient,Therapist,User} = require('../../database/models/User');
 const {ApolloError} = require('apollo-server-errors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -17,23 +17,56 @@ const resolvers = {
 
     Mutation:{
         registerPatient: async (parent, args) => {
-            const password = await bcrypt.hash(args.password, 10);
-            const patient = new Patient({...args,password});
-            return await patient.save();
+            const {email,password,name,dateOfBirth,gender,role,
+            address,phoneNumber,emergencyContact,medicalConditions,medications
+            } = args.patientInput;
+
+            const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw new Error('User with that email already exists');
+    }
+    const passwordHashed = await bcrypt.hashSync(password, 10);
+    
+    const user = new User({email,password:passwordHashed,role,patient:{
+        name,dateOfBirth,gender,address,phoneNumber,emergencyContact,medicalConditions,medications,
+      }});
+    
+    await user.save();
+
+
+
+    return user;
+         
           },
           registerTherapist: async (parent, args) => {
-            const password = await bcrypt.hash(args.therapistInput.password, 10);
-            const therapist = new Therapist({ ...args.therapistInput, password });
-            return await therapist.save();
+            const {email,password,name,dateOfBirth,gender,role,
+                license,specialty,description,availability,education,
+                experience,languages,fees
+                } = args;
+    
+                const existingUser = await User.findOne({ email });
+        if (existingUser) {
+          throw new Error('User with that email already exists');
+        }
+        const passwordHashed = await bcrypt.hash(password, 10);
+    
+        const user = new User({email,passwordHashed,role});
+        
+        await user.save();
+    
+        const therapist = new Therapist({
+          name,dateOfBirth,gender,license,specialty,description,availability,education,
+          experience,languages,fees,
+          user: user._id
+        });
+    
+        await therapist.save();
+    
+        return therapist;
           },
-          async login(parent,{email,password,userType},{res}){
-            console.log(email,password,userType);
-            let userLogged = null;
-            if(userType == 'Patient'){
-                userLogged  = await Patient.findOne({email})
-            }else if(userType == 'Therapist'){
-                userLogged = await Therapist.findOne({email});
-            }
+          async login(parent,{email,password},{res}){
+            let userLogged = await User.findOne({email});
+            
 
             if(!userLogged){
                 throw new Error('Invalid email or password');
@@ -48,8 +81,9 @@ const resolvers = {
                         expiresIn:60*60*60*30 *6
                     }
                     );
-                    res.cookie('token',token,{httpOnly:true});
-           return  "success"
+           return  {
+            token,email:userLogged.email,role:userLogged.role
+           }
                 }
             return "failed";
               
@@ -61,11 +95,11 @@ const resolvers = {
       
     },
     Query: {   
-        async patient(_, {ID}) {
-                return await Patient.findById(ID);
+        async user(_, {ID}) {
+            return await User.findById(ID)
         },
-        async therapist(_,{ID}){
-            return await Therapist.findById(ID);
+    //     async therapist(_,{ID}){
+    //         return await Therapist.findById(ID);
             
         },
         async getCurrectUser(_,{},{req}){
@@ -95,8 +129,7 @@ const resolvers = {
         }
       
       
-    },
-}
+    }
 
 module.exports = resolvers;
    

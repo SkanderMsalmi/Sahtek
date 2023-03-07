@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 
 const PatientSchema = mongoose.Schema({
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
     gender: { type: String, enum: ['Male', 'Female', 'Other'] },
     address: {
@@ -23,8 +21,9 @@ const PatientSchema = mongoose.Schema({
 
 const TherapistSchema = mongoose.Schema({
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+
+    role: {type:String,default:"Therapist"},
+    gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'] },
     license: { type: String, required: true },
     specialty: { type: String, required: true },
     description: { type: String },
@@ -35,8 +34,7 @@ const TherapistSchema = mongoose.Schema({
     fees: { type: Number },
     ratings: [{ type: Number }],
     reviews: [{ type: String }],
-    appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' }]
-  
+    appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' }],
 });
 
 const AppointmentSchema = new mongoose.Schema({
@@ -48,9 +46,27 @@ const AppointmentSchema = new mongoose.Schema({
     notes: { type: String },
     status: { type: String, enum: ['Scheduled', 'Confirmed', 'Cancelled', 'Completed'], default: 'Scheduled' }
   });
-
+  const userSchema = new mongoose.Schema({
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: ['Patient', 'Therapist']
+    },
+    patient: { type: PatientSchema },
+    therapist: { type: TherapistSchema },
+  });
   const Patient = mongoose.model('Patient', PatientSchema);
   const Therapist = mongoose.model('Therapist', TherapistSchema);
   const Appointment = mongoose.model('Appointment', AppointmentSchema);
+  const User = mongoose.model('User', userSchema);
 
-module.exports = {Patient,Therapist,Appointment};
+module.exports = {Patient,Therapist,Appointment,User};

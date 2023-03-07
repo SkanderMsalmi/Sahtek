@@ -1,19 +1,35 @@
 const {gql} = require('apollo-server-express');
 
 module.exports = gql`
-    type Patient {
-        name: String!
-        email: String!
-        password: String!
-        dateOfBirth: String!
-        gender: Gender
-        address: Address
-        phoneNumber: String
-        emergencyContact: EmergencyContact
-        medicalConditions: [String]
-        medications: [Medication]
-        appointments:[Appointment]
-    }
+enum Role {
+  Patient
+  Therapist
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  role: Role!
+}
+
+type Patient {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  role: Role!
+  dateOfBirth: String!
+  gender: Gender
+  address: Address
+  phoneNumber: String
+  emergencyContact: EmergencyContact
+  medicalConditions: [String]
+  medications: [Medication]
+  appointments:[Appointment]
+}
+   
         enum Gender {
             MALE
             FEMALE
@@ -56,7 +72,8 @@ module.exports = gql`
     email: String!
     password: String!
     license: String!
-    specialty: String!
+    role: Role!
+    specialties: [String!]!
     description: String
     availability: String
     education: [String]
@@ -88,6 +105,7 @@ module.exports = gql`
                 password: String!
                 dateOfBirth: String!
                 gender: Gender
+                role:Role!
                 address: AddressInput
                 phoneNumber: String
                 emergencyContact: EmergencyContactInput
@@ -98,8 +116,9 @@ module.exports = gql`
                 name: String!
                 email: String!
                 password: String!
-                confirmPassword: String!
+                role:Role!
                 license: String!
+                gender: Gender
                 specialty: String!
                 description: String
                 availability: String
@@ -109,24 +128,24 @@ module.exports = gql`
                 fees: Float
             }
 
-            
-union User = Patient | Therapist
-
-extend type Query{
-  user(id:ID!): User
-  getCurrectUser: User
-    patient(ID: ID!): Patient
-    therapist(ID: ID!):Therapist
-    appoitmentsPatient(id: ID!):Patient
-    appoitmentsTherapist(id: ID!):Therapist
+            type AuthPayload {
+  token: String!
+  email:String!
+  role:Role!
+}
+            extend type Query{
+       user(id:ID!): User
 }
 
-extend type Mutation {
-    registerPatient( name: String!,email: String!,password: String!,dateOfBirth: String!): Patient
-    registerTherapist(therapistInput : TherapistInput): Therapist
-    login(email: String!, password: String!, userType: String!): String
-    
-} 
+ 
+ extend type Mutation {
+  registerPatient(patientInput: PatientInput):Patient
+  registerTherapist(therapistInput: TherapistInput):Therapist
+  login(email: String!, password: String!): AuthPayload!
+     }  
+
+
+
 
 `
 
