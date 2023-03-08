@@ -12,6 +12,8 @@ type User {
   email: String!
   password: String!
   role: Role!
+  patient:Patient
+  therapist:Therapist
 }
 
 type Patient {
@@ -136,7 +138,7 @@ type Patient {
   role:Role!
 }
             extend type Query{
-       user(id:ID!): User
+       user(ID:ID!): User
 }
 
  
