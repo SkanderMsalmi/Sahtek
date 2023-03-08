@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {key,keyPub} = require('../../keys');
 const { setCookie } = require('./cookies');
+const Token = require('../../database/models/verificationToken');
+const sendEmail = require('../../utils/sendEmail');
+const crypto = require('crypto');
+
 const resolvers = {
 
     // Query: {
@@ -38,6 +42,10 @@ const resolvers = {
     return user;
          
           },
+
+        
+
+
           registerTherapist: async (parent, args) => {
             const {email,password,name,dateOfBirth,gender,role,
                 license,specialty,description,availability,education,

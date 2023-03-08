@@ -6,7 +6,7 @@ const postT = require("./post")
 const commentT = require("./comment")
 const userT = require('./user')
 const ProductT = require("./product")
-
+const verificationTokenT = require('./verificationToken')
  
 
 const rootType = gql`
@@ -27,6 +27,7 @@ module.exports= [
     postT,
     commentT,
     userT,
-    ProductT
+    ProductT,
+    verificationTokenT,
         
 ]

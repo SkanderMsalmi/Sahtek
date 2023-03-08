@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const PatientSchema = mongoose.Schema({
+    verified: {
+        type: Boolean,
+        default: false
+    },
     name: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'] },
