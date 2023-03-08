@@ -67,9 +67,9 @@ const resolvers = {
             let userLogged = await User.findOne({email});
             
 
-            if(!userLogged){
-                throw new Error('Invalid email or password');
-            }
+        //     if(!userLogged){
+        //         throw new Error('Invalid email or password');
+        //     }
            
             if(userLogged && bcrypt.compareSync(password,userLogged.password)){
                 const token = jwt.sign(
@@ -88,10 +88,10 @@ const resolvers = {
               
 
               
-            }
+        //     }
 
            
-      
+            }  
     },
     Query: {   
         async user(_, {ID}) {

@@ -2,6 +2,7 @@ import React from 'react';
 import {createBrowserRouter} from 'react-router-dom';
 import App from './App';
 import Profile from './pages/Profile/Profile';
+import ChooseRole from './pages/Register/ChooseRole';
 import Register from './pages/Register/Register';
 import Login from './pages/Signin/Login';
 const Homepage = React.lazy(()=>import("./pages/Homepage/Homepage"));
@@ -21,7 +22,11 @@ export const router = createBrowserRouter([
               element: <Login />,
             },
             {
-              path: 'register',
+              path: 'chooseRole',
+              element: <ChooseRole />,
+            },
+            {
+              path: 'register/:role',
               element: <Register />,
             },
             {
