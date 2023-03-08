@@ -1,6 +1,4 @@
-
 const {gql} = require('apollo-server-express');
-
 module.exports= gql`
 type Feedback {
     _id: ID
@@ -16,4 +14,4 @@ extend type Mutation {
     updateFeedback(id: ID!, remarks: String!): Feedback
     deleteFeedback(id: ID!): Int
 }
-        `
+`

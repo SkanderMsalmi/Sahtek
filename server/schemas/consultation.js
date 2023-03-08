@@ -1,5 +1,4 @@
 const {gql} = require('apollo-server-express');
-
 module.exports = gql`
     type Consultation {
         _id: ID!
@@ -16,7 +15,7 @@ module.exports = gql`
         createConsultation(date: String!, time: String!, patientFile: ID, feedback: ID): Consultation
         updateConsultation(id: ID!, date: String!, time: String!): Consultation
         deleteConsultation(id: ID!): Int
-    }    
+    }
     `
 
        

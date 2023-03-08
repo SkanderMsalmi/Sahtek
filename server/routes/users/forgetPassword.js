@@ -1,17 +1,14 @@
 import * as yup from "yup";
 import * as bcrypt from "bcryptjs";
 
-import { ResolverMap } from "../../types/graphql-utils";
-import { forgotPasswordLockAccount } from "../../utils/forgotPasswordLockAccount";
-import { createForgotPasswordLink } from "../../utils/createForgotPasswordLink";
+// import { ResolverMap } from "../../types/graphql-utils";
+// import { forgotPasswordLockAccount } from "../../utils/forgotPasswordLockAccount";
+// import { createForgotPasswordLink } from "../../utils/createForgotPasswordLink";
 import { User } from "../../entity/User";
 import { userNotFoundError, expiredKeyError } from "./errorMessages";
 import { forgotPasswordPrefix } from "../../constants";
 import { registerPasswordValidation } from "../../yupSchemas";
 import { formatYupError } from "../../utils/formatYupError";
-
-
-
 const schema = yup.object().shape({
   newPassword: registerPasswordValidation
 });
