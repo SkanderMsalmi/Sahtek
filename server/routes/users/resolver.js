@@ -109,38 +109,69 @@ const resolvers = {
             const user = await models.User.findOne({ where: { email } });
             return Boolean(user);
           },
-    //     async therapist(_,{ID}){
-    //         return await Therapist.findById(ID);
-            
-        },
-    //     async getCurrectUser(_,{},{req}){
-    //         const token = req.cookies.token;
-    // if(token){
-    //     try {
-    //         const decodedToken = jwt.verify(token,keyPub,{algorithms:['RS256']});
-    //         if(decodedToken){
-    //             const user = await Patient.findById(decodedToken.sub).select('-password -__v').exec();
-    //             console.log(user);
-    //             if(user){
-    //                return user
-    //             }else{
-    //                return null;
-    //             }
-    //         }else{
-    //             return null;
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //         return null;
-    //     }
-    // } else{
-        
-    //     return null;
-    // }
-    //     }
+    
       
     
-    }
+           
+            // sendForgotPasswordEmail: async (
+            //     _,
+            //     { email },
+            //     { redis }
+            //   ) => {
+            //     const user = await User.findOne({ where: { email } });
+            //     if (!user) {
+            //       return [
+            //         {
+            //           path: "email",
+            //           message: userNotFoundError
+            //         }
+            //       ];
+            //     }
+          
+            //     return true;
+            //   },
+            //   forgotPasswordChange: async (
+            //     _,
+            //     { newPassword, key },
+            //     { redis }
+            //   ) => {
+            //     const redisKey = `${forgotPasswordPrefix}${key}`;
+          
+            //     const userId = await redis.get(redisKey);
+            //     if (!userId) {
+            //       return [
+            //         {
+            //           path: "key",
+            //           message: expiredKeyError
+            //         }
+            //       ];
+            //     }
+          
+            //     try {
+            //       await schema.validate({ newPassword }, { abortEarly: false });
+            //     } catch (err) {
+            //       return formatYupError(err);
+            //     }
+          
+            //     const hashedPassword = await bcrypt.hash(newPassword, 10);
+          
+            //     const updatePromise = User.update(
+            //       { id: userId },
+            //       {
+            //         forgotPasswordLocked: false,
+            //         password: hashedPassword
+            //       }
+            //     );
+          
+            //     const deleteKeyPromise = redis.del(redisKey);
+          
+            //     await Promise.all([updatePromise, deleteKeyPromise]);
+          
+            //     return null;
+            //   }
+      
+    },
+  }
 
 module.exports = resolvers;
    

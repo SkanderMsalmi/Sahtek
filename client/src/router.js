@@ -1,10 +1,13 @@
 import React from 'react';
 import {createBrowserRouter} from 'react-router-dom';
 import App from './App';
+
 import Profile from './pages/Profile/Profile';
-import ChooseRole from './pages/Register/ChooseRole';
 import Register from './pages/Register/Register';
 import Login from './pages/Signin/Login';
+import Forgotpassword from './pages/forgotPassword/forgotPassword';
+import Resetpassword from './pages/ResetPassword/resetPassword';
+import ChooseRole from './pages/Register/ChooseRole';
 const Homepage = React.lazy(()=>import("./pages/Homepage/Homepage"));
 // const Signup = React.lazy(()=>import("./pages/Signup/Signup"));
 export const router = createBrowserRouter([
@@ -16,6 +19,8 @@ export const router = createBrowserRouter([
             {
                 index:true,
                 element: <Homepage />
+
+            
             },
             {
               path: 'login',
@@ -35,6 +40,20 @@ export const router = createBrowserRouter([
                   <Profile />
               ),
             },
+            {
+              path: 'forgetpassword',
+              element: (
+                      <Forgotpassword />
+                ),
+            },
+            {
+              path: 'resetpassword',
+              element: (
+                      <Resetpassword/>
+                ),
+            },
+      
+
       
         ]
     }

@@ -25,6 +25,7 @@ function Login (){
       };
 
     return (
+
         <section>
             <div className={styles.formBox}>
                 <form onSubmit={handleSubmit}>
@@ -40,18 +41,19 @@ function Login (){
                         <label className={styles.userLabel} htmlFor="password" >Password</label>
                     </div>
                     <div className={styles.forget+" form-check"}>
-                        <label className="lab form-check-label" htmlFor="rm"><input type="checkbox"  id="rm" className="form-check-input"/>Remeber Me <a href="#" style={{marginLeft:"15px"}}> Forget Password </a></label>
+                        <label className="lab form-check-label" htmlFor="rm"><input type="checkbox"  id="rm" className="form-check-input"/>Remeber Me <a href="/forgetpassword" style={{marginLeft:"15px"}}> Forget Password </a></label>
                         
                     </div>
                     <button>Login</button>
                     <div className={styles.register}>
                         <p>Don't have an account ? <a href="#">Register</a></p>
-                    </div>
+                        </div>
                     {loading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
       {data && data.login.success && <p>Login successful!</p>}
       {data && !data.login.success && <p>{data.login.message}</p>}
                 </form>
+
 
             </div>
         </section>
