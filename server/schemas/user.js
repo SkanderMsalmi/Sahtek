@@ -71,9 +71,10 @@ type Patient {
     name: String!
     email: String!
     password: String!
-    license: String!
+    license: String
     role: Role!
-    specialties: [String!]!
+  dateOfBirth: String!
+    specialties: [String!]
     description: String
     availability: String
     education: [String]
@@ -117,9 +118,10 @@ type Patient {
                 email: String!
                 password: String!
                 role:Role!
-                license: String!
+                dateOfBirth: String!
+                license: String
                 gender: Gender
-                specialty: String!
+                specialty: String
                 description: String
                 availability: String
                 education: [String]
