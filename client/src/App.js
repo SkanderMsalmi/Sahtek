@@ -2,8 +2,9 @@ import React from 'react';
 import styles from "./App.module.scss";
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Profile from './pages/Profile/Profile';
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import Profile from './pages/Profile/Profile'
+import Register from './pages/Register/RegisterPatient';
+ import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 const client = new ApolloClient({
   uri: "http://127.0.0.1:5000/graphql",
   cache: new InMemoryCache()
@@ -15,7 +16,7 @@ function App() {
 
     <div className={`d-flex flex-column ${styles.appContainer}`}>
       <Header/>
-      <Profile/>
+      <Register/>
       <Footer/>
   </div>
   </ApolloProvider>

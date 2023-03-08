@@ -22,7 +22,7 @@ const resolvers = {
         registerPatient: async (parent, args) => {
 
             const{email}= args.patientInput;
-            //const BASE_URL= "http://localhost/5000/";            
+            const BASE_URL= "http://localhost:5000/";            
 
 
             const password = await bcrypt.hash(args.patientInput.password, 10);
@@ -35,21 +35,21 @@ const resolvers = {
                 token: crypto.randomBytes(32).toString("hex"),
             }).save();
 
-            ///////////////otp
-            let otp = ''
-            const generateOTP = ()=>{
-                for(let i =0;i<=3;i++){
-                    const randVal = Math.round(Math.random() * 9)
-                    otp = otp + randVal
-                }
-                return otp
-            }
-            const OTP = generateOTP()
+            // //otp
+            // let otp = ''
+            // const generateOTP = ()=>{
+            //     for(let i =0;i<=3;i++){
+            //         const randVal = Math.round(Math.random() * 9)
+            //         otp = otp + randVal
+            //     }
+            //     return otp
+            // }
+            // const OTP = generateOTP()
 
 
 
-            //const url = `${BASE_URL}users/${patient.id}/verify/${token2.token}`;
-            await sendEmail(patient.email, "Verify your email", String(OTP));
+            const url = `${BASE_URL}users/${patient.id}/verify/${token2.token}`;
+            await sendEmail(patient.email, "Verify your email", String(url));
             
             
             

@@ -1,4 +1,4 @@
-import styles from "./Profile.module.scss";
+import styles from './Profile.module.scss'
 import { useQuery, gql } from "@apollo/client";
 
 const USER_PROFILE = gql`{
