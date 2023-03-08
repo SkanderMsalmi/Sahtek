@@ -98,9 +98,9 @@ function Register (){
   //     throw error
   //   }
   //   };
-  if (loadingT || loadingP) return <div>Loading...</div>;
-  if (errorT ) return <div>Error: {errorT.message}</div> 
-  if (errorP) return <div>Error: {errorT.message}</div> 
+  // if (loadingT || loadingP) return <div>Loading...</div>;
+  // if (errorT ) return <div>Error: {errorT.message}</div> 
+  // if (errorP) return <div>Error: {errorT.message}</div> 
     return (
         <section>
         <div className={styles.formBox}>

@@ -97,6 +97,10 @@ const resolvers = {
         async user(_, {ID}) {
             return await User.findById(ID)
         },
+        checkEmailExists: async (_, { email }, { models }) => {
+            const user = await models.User.findOne({ where: { email } });
+            return Boolean(user);
+          },
     //     async therapist(_,{ID}){
     //         return await Therapist.findById(ID);
             

@@ -139,6 +139,7 @@ type Patient {
 }
             extend type Query{
        user(ID:ID!): User
+       checkEmailExists(email: String!): Boolean!
 }
 
  
