@@ -141,32 +141,10 @@ type Patient {
        user(ID:ID!): User
        checkEmailExists(email: String!): Boolean!
 }
-
- 
  extend type Mutation {
   registerPatient(patientInput: PatientInput):Patient
   registerTherapist(therapistInput: TherapistInput):Therapist
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
      }  
-
-
-
-
 `
-
-
-// query {
-//     patient(id: "123") {
-//       id
-//       name
-//       appointments {
-//         id
-//         date
-//         time
-//         therapist {
-//           name
-//         }
-//       }
-//     }
-//   }

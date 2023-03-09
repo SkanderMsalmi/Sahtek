@@ -9,16 +9,6 @@ const sendEmail = require('../../utils/sendEmail');
 const crypto = require('crypto');
 
 const resolvers = {
-
-    // Query: {
-    //     getPatientFiles:async ()=>{
-    //         return await PatientFile.find();
-    //     },
-    //     getPatientFile:async(_, args)=>{
-    //         return await PatientFile.findById(args.id);
-    //     }
-    // },
-
     Mutation:{
         registerPatient: async (parent, args) => {
             const {email,password,name,dateOfBirth,gender,role,
@@ -34,19 +24,10 @@ const resolvers = {
     const user = new User({email,password:passwordHashed,role,patient:{
         name,dateOfBirth,gender,address,phoneNumber,emergencyContact,medicalConditions,medications,
       }});
-    
     await user.save();
-
-
-
-    return user;
-         
+    return user;   
           },
-
-        
-
-
-          registerTherapist: async (parent, args) => {
+     registerTherapist: async (parent, args) => {
             const {email,password,name,dateOfBirth,gender,role,
                 license,specialty,description,availability,education,
                 experience,languages,fees
@@ -57,28 +38,15 @@ const resolvers = {
           throw new Error('User with that email already exists');
         }
         const passwordHashed = await bcrypt.hashSync(password, 10);
-
-    
         const user = new User({email,password:passwordHashed,role,therapist:{
             name,dateOfBirth,gender,license,specialty,description,availability,education,
             experience,languages,fees,
         }});
-        
         await user.save();
-    
-     
-    
-    
         return user;
           },
           async login(parent,{email,password},{res}){
             let userLogged = await User.findOne({email});
-            
-
-        //     if(!userLogged){
-        //         throw new Error('Invalid email or password');
-        //     }
-           
             if(userLogged && bcrypt.compareSync(password,userLogged.password)){
                 const token = jwt.sign(
                     {},
@@ -93,12 +61,6 @@ const resolvers = {
            }
                 }
             return "failed";
-              
-
-              
-        //     }
-
-           
             }  
     },
     Query: {   
@@ -109,10 +71,6 @@ const resolvers = {
             const user = await models.User.findOne({ where: { email } });
             return Boolean(user);
           },
-    
-      
-    
-           
             // sendForgotPasswordEmail: async (
             //     _,
             //     { email },
@@ -172,6 +130,5 @@ const resolvers = {
       
     },
   }
-
 module.exports = resolvers;
    

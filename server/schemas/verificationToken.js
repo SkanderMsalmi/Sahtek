@@ -14,5 +14,4 @@ input VerificationTokenInput {
 }  
 extend type Query {
     getverificationToken(verificationTokenInput: VerificationTokenInput): verificationToken
-        
 }`

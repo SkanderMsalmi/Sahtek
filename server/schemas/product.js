@@ -1,5 +1,4 @@
 const {gql} = require('apollo-server-express');
-
 module.exports = gql`
 type Product {
     name: String,
@@ -18,7 +17,6 @@ input ProductInput {
 type Query {
     getProduct(ID: ID!): Product
     getAllProducts: [Product]
-       
 }
 type Mutation {
     addProduct(productInput: ProductInput): Product

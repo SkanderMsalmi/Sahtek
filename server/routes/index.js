@@ -12,6 +12,5 @@ module.exports= [
     postResolvers,
     commentResolvers,
     userResolvers,
-    // router
     ProductResolvers
 ]

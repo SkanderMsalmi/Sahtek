@@ -1,5 +1,4 @@
 const {gql} = require('apollo-server-express');
-
 module.exports = gql`
 type PatientFile {
     id: ID!
@@ -14,6 +13,5 @@ extend type Mutation {
     createPatientFile(remarks: String!, consultation: ID!): PatientFile
     updatePatientFile(id: ID!, remarks: String!): PatientFile
     deletePatientFile(id: ID!): Int
-}
-        `
+}`
 

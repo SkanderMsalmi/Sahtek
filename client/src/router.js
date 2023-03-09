@@ -2,25 +2,21 @@ import React from 'react';
 import {createBrowserRouter} from 'react-router-dom';
 import App from './App';
 
-import Profile from './pages/Profile/Profile';
-import Register from './pages/Register/Register';
-import Login from './pages/Signin/Login';
-import Forgotpassword from './pages/forgotPassword/forgotPassword';
-import Resetpassword from './pages/ResetPassword/resetPassword';
-import ChooseRole from './pages/Register/ChooseRole';
+const Profile = React.lazy(()=>import('./pages/Profile/Profile'));
+const Register = React.lazy(()=>import( './pages/Register/Register'));
+const Login = React.lazy(()=>import( './pages/Signin/Login'));
+const Forgotpassword = React.lazy(()=>import( './pages/forgotPassword/forgotPassword'));
+const Resetpassword = React.lazy(()=>import( './pages/ResetPassword/resetPassword'));
+const ChooseRole = React.lazy(()=>import( './pages/Register/ChooseRole'));
 const Homepage = React.lazy(()=>import("./pages/Homepage/Homepage"));
-// const Signup = React.lazy(()=>import("./pages/Signup/Signup"));
 export const router = createBrowserRouter([
     {
         path:'/',
         element:<App/>,
-        // loader: rootLoader,
         children:[
             {
                 index:true,
                 element: <Homepage />
-
-            
             },
             {
               path: 'login',
@@ -52,9 +48,6 @@ export const router = createBrowserRouter([
                       <Resetpassword/>
                 ),
             },
-      
-
-      
         ]
     }
 ]);

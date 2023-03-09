@@ -1,5 +1,5 @@
 import styles from  "./forgetpassword.module.scss";
-import { useMutation,gql } from '@apollo/client';
+// import { useMutation,gql } from '@apollo/client';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,17 +9,17 @@ import { useNavigate } from "react-router-dom";
 function Forgetpassword (){
     const navigate = useNavigate();
     const [email,setEmail]=useState('');
-    const [password,setPassword]= useState('');
-    const [userType,setUserType]= useState('Patient');
+    // const [password,setPassword]= useState('');
+    // const [userType,setUserType]= useState('Patient');
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(email,userType);
-        const data={
-            email: this.email
-        };
+        // console.log(email,userType);
+        // const data={
+        //     email: this.email
+        // };
         
-        Forgetpassword({ variables: { email,userType } });
+        // Forgetpassword({ variables: { email,userType } });
         navigate("/");
       };
 

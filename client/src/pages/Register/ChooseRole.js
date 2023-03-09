@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import './ChooseRole.scss';
-import therapist from '../../assets/images/therapist.png';
-import patient from '../../assets/images/patient.png';
 import { useNavigate } from 'react-router-dom';
 const ChooseRole = () => {
   const [role, setRole] = useState('');
@@ -25,14 +23,14 @@ const ChooseRole = () => {
         <label className={`radio-card ${role === 'Therapist' ? 'selected' : ''}`}>
           <input type="radio" name="role" value="Therapist" checked={role === 'Therapist'} onChange={handleRoleChange} />
           <div className='text-center'>
-            <img src={therapist} alt="" height="350px" className='mb-5'/>
+            {/* <img src={therapist} alt="" height="350px" className='mb-5'/> */}
             <h3>Therapist</h3>
           </div>
         </label>
         <label className={`radio-card ${role === 'Patient' ? 'selected' : ''}`}>
           <input type="radio" name="role" value="Patient" checked={role === 'Patient'} onChange={handleRoleChange} />
           <div className='text-center'>
-            <img src={patient} alt="" height="350px"  className='mb-5'/>
+            {/* <img src={patient} alt="" height="350px"  className='mb-5'/> */}
             <h3>Patient</h3>
 
           </div>
