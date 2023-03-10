@@ -11,11 +11,11 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 function App() {
-
+const location = useLocation();
   return (
     <ApolloProvider client={client}>
 <Navigation/>
-{ useLocation().pathname==""?(<Header />):("")}
+{ location.pathname=="/"?(<Header />):("")}
         <div className="flex-fill d-flex flex-column">
           <Suspense>
             <Outlet />

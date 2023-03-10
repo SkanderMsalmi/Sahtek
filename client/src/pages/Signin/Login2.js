@@ -15,8 +15,13 @@ import {
     Col
   } from "reactstrap";
 const LOGIN_MUTATION = gql`
-mutation Login($email: String!, $password: String!, $userType: String!) {
-    login(email: $email, password: $password, userType: $userType)
+mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+        email
+        role
+        name
+        gender
+    }
   }
 `;
 
@@ -29,10 +34,17 @@ function Login2 (){
     const [login,{data,loading,error}] = useMutation(LOGIN_MUTATION);
 
     const handleSubmit = (event) => {
+        console.log("i have been clicked")
         event.preventDefault();
+        console.log(email)
         console.log(email,password,userType);
-        login({ variables: { email, password,userType } });
-        navigate("/");
+        login({ variables: { email, password } }).then((res)=>{
+            console.log(res.data?.login?.email)
+            if(res.data?.login?.email!=""){
+                navigate("/");
+            }
+        });
+       
       };
 
     return (
@@ -74,7 +86,7 @@ function Login2 (){
                       <i className="fa fa-twitter" />
                     </Button>
                   </div>
-                  <Form className="register-form">
+                  <Form className="register-form" onSubmit={handleSubmit}>
                     <label>Email</label>
                     <InputGroup className="form-group-no-border">
                       <InputGroupAddon addonType="prepend">
@@ -82,7 +94,7 @@ function Login2 (){
                           <i className="nc-icon nc-email-85" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Email" type="email" />
+                      <Input placeholder="Email" type="email"  value={email} onChange={(e)=> setEmail(e.target.value)}/>
                     </InputGroup>
                     <label>Password</label>
                     <InputGroup className="form-group-no-border">
@@ -91,22 +103,22 @@ function Login2 (){
                           <i className="nc-icon nc-key-25" />
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Password" type="password" />
+                      <Input placeholder="Password" type="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
                     </InputGroup>
-                    <Button
+                    <button
                       block
                       className="btn-round"
                       color="danger"
-                      type="button"
+                      type="submit"
                     >
-                      Register
-                    </Button>
+                      Login
+                    </button>
                   </Form>
                   <div className="forgot">
                     <Button
                       className="btn-link"
                       color="danger"
-                      href="#pablo"
+                      href="/forgetpassword"
                       onClick={(e) => e.preventDefault()}
                     >
                       Forgot password?

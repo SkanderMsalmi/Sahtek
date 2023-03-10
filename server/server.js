@@ -1,5 +1,5 @@
 const express = require('express');
-const cookie = require('cookie-parser');
+// const cookie = require('cookie-parser');
 const {router} = require('./routes');
 const app = express();
 const {ApolloServer} = require('apollo-server-express');
@@ -7,7 +7,7 @@ var cors = require('cors')
 
 const mongoose = require('mongoose');
 
-app.use(cookie());
+// app.use(cookie());
 app.use(express.json());
 
 var allowlist = ['http://localhost:3000']
