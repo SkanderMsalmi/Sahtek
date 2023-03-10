@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-// import "bootstrap/scss/bootstrap.scss";
+import "bootstrap/scss/bootstrap.scss";
 import "./assets/scss/paper-kit.scss?v=1.3.0";
 import "./assets/demo/demo.css?v=1.3.0";
 
