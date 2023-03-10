@@ -2,8 +2,10 @@ const {Patient,Therapist,User} = require('../../database/models/User');
 const {ApolloError} = require('apollo-server-errors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
 const {key,keyPub} = require('../../keys');
-const { setCookie } = require('./cookies');
+//const { setCookie } = require('./cookies');
 const Token = require('../../database/models/verificationToken');
 const sendEmail = require('../../utils/sendEmail');
 const crypto = require('crypto');
@@ -45,6 +47,36 @@ const resolvers = {
         await user.save();
         return user;
           },
+       
+          
+     resetPassword :async (parent, args) => {
+            const { email } = args;
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                        auth: {
+                  user: 'sahtek2023@gmail.com', 
+                  pass: 'qrowlwkuavbwonwo' 
+                },
+              });
+           // const user = await User.findOne({ email });
+            
+            // const token = crypto.randomBytes(20).toString('hex');
+            // user.resetPasswordToken = token;
+            // user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+            // await user.save();
+            const mailOptions = {
+              from: 'sahtek2023@gmail.com',
+              to: email,
+              subject: 'Reset Password Link',
+              text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword`
+            ,
+            };
+            await transporter.sendMail(mailOptions);
+            return true;
+          },
           async login(parent,{email,password},{res}){
             let userLogged = await User.findOne({email});
             if(userLogged && bcrypt.compareSync(password,userLogged.password)){
@@ -71,63 +103,7 @@ const resolvers = {
             const user = await models.User.findOne({ where: { email } });
             return Boolean(user);
           },
-            // sendForgotPasswordEmail: async (
-            //     _,
-            //     { email },
-            //     { redis }
-            //   ) => {
-            //     const user = await User.findOne({ where: { email } });
-            //     if (!user) {
-            //       return [
-            //         {
-            //           path: "email",
-            //           message: userNotFoundError
-            //         }
-            //       ];
-            //     }
           
-            //     return true;
-            //   },
-            //   forgotPasswordChange: async (
-            //     _,
-            //     { newPassword, key },
-            //     { redis }
-            //   ) => {
-            //     const redisKey = `${forgotPasswordPrefix}${key}`;
-          
-            //     const userId = await redis.get(redisKey);
-            //     if (!userId) {
-            //       return [
-            //         {
-            //           path: "key",
-            //           message: expiredKeyError
-            //         }
-            //       ];
-            //     }
-          
-            //     try {
-            //       await schema.validate({ newPassword }, { abortEarly: false });
-            //     } catch (err) {
-            //       return formatYupError(err);
-            //     }
-          
-            //     const hashedPassword = await bcrypt.hash(newPassword, 10);
-          
-            //     const updatePromise = User.update(
-            //       { id: userId },
-            //       {
-            //         forgotPasswordLocked: false,
-            //         password: hashedPassword
-            //       }
-            //     );
-          
-            //     const deleteKeyPromise = redis.del(redisKey);
-          
-            //     await Promise.all([updatePromise, deleteKeyPromise]);
-          
-            //     return null;
-            //   }
-      
     },
   }
 module.exports = resolvers;

@@ -146,5 +146,6 @@ type Patient {
   registerTherapist(therapistInput: TherapistInput):Therapist
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
+  resetPassword(email: String!): Boolean
      }  
 `
