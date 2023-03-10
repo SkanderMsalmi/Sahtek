@@ -1,6 +1,7 @@
 import React from 'react';
 import {createBrowserRouter} from 'react-router-dom';
 import App from './App';
+import Profile2 from './pages/Profile/Profile2';
 
 const Profile = React.lazy(()=>import('./pages/Profile/Profile'));
 const Register = React.lazy(()=>import( './pages/Register/Register'));
@@ -56,7 +57,11 @@ export const router = createBrowserRouter([
               element: (
                       <Login2/>
               ),
-            }
+            },
+            {path: 'profile2',
+          element:(
+            <Profile2/>
+          )}
         ]
     }
 ]);
