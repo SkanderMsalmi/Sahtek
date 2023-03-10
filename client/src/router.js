@@ -9,6 +9,9 @@ const Forgotpassword = React.lazy(()=>import( './pages/forgotPassword/forgotPass
 const Resetpassword = React.lazy(()=>import( './pages/ResetPassword/resetPassword'));
 const ChooseRole = React.lazy(()=>import( './pages/Register/ChooseRole'));
 const Homepage = React.lazy(()=>import("./pages/Homepage/Homepage"));
+const Login2 = React.lazy(()=>import( './pages/Signin/Login2'));
+
+
 export const router = createBrowserRouter([
     {
         path:'/',
@@ -48,6 +51,12 @@ export const router = createBrowserRouter([
                       <Resetpassword/>
                 ),
             },
+            {
+              path: 'login2',
+              element: (
+                      <Login2/>
+              ),
+            }
         ]
     }
 ]);

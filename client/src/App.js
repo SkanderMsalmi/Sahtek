@@ -5,6 +5,7 @@ import Footer from './components/Footer/Footer';
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { Outlet } from 'react-router-dom';
 import Navigation from './components/NavBar/Navbar';
+import { useLocation } from 'react-router-dom'
 const client = new ApolloClient({
   uri: "http://127.0.0.1:5000/graphql",
   cache: new InMemoryCache()
@@ -14,7 +15,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
 <Navigation/>
-<Header />
+{ useLocation().pathname==""?(<Header />):("")}
         <div className="flex-fill d-flex flex-column">
           <Suspense>
             <Outlet />
