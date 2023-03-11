@@ -4160,6 +4160,8 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .alert .close {
   font-size: 20px;
   color: #fff;
+  width: fit-content;
+  height: fit-content;
 }
 .container .alert {
   border-radius: 4px;
@@ -5482,7 +5484,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   border-radius: 8px;
   color: #fff;
   max-width: 350px;
-  margin: 20px 0 70px;
+  margin: 5rem auto 5rem auto;
   min-height: 400px;
   padding: 30px;
 }

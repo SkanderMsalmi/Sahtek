@@ -1,20 +1,25 @@
-.alert{
+.alert {
     border: 0;
     border-radius: 0;
     color: $white-color;
     padding: 10px 15px;
     font-size: 14px;
 
-    & .close{
+    & .close {
         font-size: $font-size-large;
         color: $white-color;
+        width: max-content;
+        height: max-content;
+        text-align: center;
+        text-justify: center;
     }
 
-    .container &{
+    .container & {
         border-radius: 4px;
 
     }
-    .navbar &{
+
+    .navbar & {
         border-radius: 0;
         left: 0;
         position: absolute;
@@ -23,10 +28,12 @@
         width: 100%;
         z-index: 3;
     }
-    .navbar:not(.navbar-transparent) &{
+
+    .navbar:not(.navbar-transparent) & {
         top: 70px;
     }
-    .alert-icon{
+
+    .alert-icon {
         display: block;
         font-size: 30px;
         left: 15px;
@@ -34,11 +41,13 @@
         top: 50%;
         margin-top: -22px;
     }
+
     .alert-wrapper {
-        &.message{
+        &.message {
             padding-right: 60px;
         }
-        i{
+
+        i {
             position: relative;
             font-size: 20px;
             top: 5px;
@@ -47,15 +56,19 @@
         }
     }
 }
-.alert-info{
+
+.alert-info {
     background-color: $bg-info;
 }
+
 .alert-success {
     background-color: $bg-success;
 }
+
 .alert-warning {
     background-color: $bg-warning;
 }
+
 .alert-danger {
     background-color: $bg-danger;
 }

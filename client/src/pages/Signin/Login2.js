@@ -12,16 +12,15 @@ import {
     InputGroup,
     Container,
     Row,
-    Col
+    Col,
+    Alert
   } from "reactstrap";
 const LOGIN_MUTATION = gql`
 mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
         email
         role
-        name
-        gender
-    }
+            }
   }
 `;
 
@@ -31,6 +30,8 @@ function Login2 (){
     const [email,setEmail]=useState('');
     const [password,setPassword]= useState('');
     const [userType,setUserType]= useState('Patient');
+    const [alertDanger, setAlertDanger] = useState(false);
+
     const [login,{data,loading,error}] = useMutation(LOGIN_MUTATION);
 
     const handleSubmit = (event) => {
@@ -43,7 +44,12 @@ function Login2 (){
             if(res.data?.login?.email!=""){
                 navigate("/");
             }
-        });
+            
+            
+        }).catch((err)=>{
+            setAlertDanger(true);
+            console.log(err)
+        })
        
       };
 
@@ -105,14 +111,34 @@ function Login2 (){
                       </InputGroupAddon>
                       <Input placeholder="Password" type="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
                     </InputGroup>
-                    <button
+                    <br/>
+                    <Alert className="alert-with-icon" color="danger" isOpen={alertDanger}>
+          <Container>
+            <div className="alert-wrapper">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                onClick={() => setAlertDanger(false)}
+              >
+                <i className="nc-icon nc-simple-remove" />
+              </button>
+              <div className="message">
+                <i className="nc-icon nc-bell-55" /> Wrong email or password.
+              </div>
+            </div>
+          </Container>
+        </Alert>
+                    <Button
                       block
                       className="btn-round"
                       color="danger"
                       type="submit"
+                      onClick={(e) => handleSubmit(e)}
                     >
                       Login
-                    </button>
+                    </Button>
                   </Form>
                   <div className="forgot">
                     <Button
@@ -139,6 +165,7 @@ function Login2 (){
                 </div>
               </Col>
             </Row>
+         
           </Container>
         </div>
   

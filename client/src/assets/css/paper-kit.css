@@ -4691,10 +4691,13 @@ License - nucleoapp.com/license/
   color: #ffffff;
   padding: 10px 15px;
   font-size: 14px;
+
 }
 .alert .close {
   font-size: 20px;
   color: #ffffff;
+  width: fit-content;
+  height: fit-content;
 }
 .container .alert {
   border-radius: 4px;
@@ -6121,7 +6124,7 @@ License - nucleoapp.com/license/
   border-radius: 8px;
   color: #fff;
   max-width: 350px;
-  margin: 20px 0 70px;
+  margin: 5rem auto 5rem auto;
   min-height: 400px;
   padding: 30px;
 }
