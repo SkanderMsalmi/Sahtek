@@ -34,7 +34,7 @@ function Footer() {
                   href="https://www.creative-tim.com?ref=pkr-footer"
                   target="_blank"
                 >
-                  Creative Tim
+                  Dev Team
                 </a>
               </li>
               <li>
@@ -58,7 +58,7 @@ function Footer() {
           <div className="credits ml-auto">
             <span className="copyright">
               © {new Date().getFullYear()}, made with{" "}
-              <i className="fa fa-heart heart" /> by Creative Tim
+              <i className="fa fa-heart heart" /> by Dev Team
             </span>
           </div>
         </Row>
