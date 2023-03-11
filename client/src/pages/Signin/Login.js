@@ -1,6 +1,6 @@
 import styles from  "./Login.module.scss";
 import { useMutation,gql } from '@apollo/client';
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Button,
@@ -15,14 +15,11 @@ import {
     Col,
     Alert
   } from "reactstrap";
-const LOGIN_MUTATION = gql`
-mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-        email
-        role
-            }
-  }
-`;
+
+import { AuthContext } from "../../context/AuthContext";
+import { LOGIN_MUTATION } from "../../apis/users";
+
+
 
 
 function Login2 (){
@@ -31,26 +28,24 @@ function Login2 (){
     const [password,setPassword]= useState('');
     const [userType,setUserType]= useState('Patient');
     const [alertDanger, setAlertDanger] = useState(false);
-
+    
     const [login,{data,loading,error}] = useMutation(LOGIN_MUTATION);
+    const {setAuthInfo} = useContext(AuthContext);
 
-    const handleSubmit = (event) => {
-        console.log("i have been clicked")
+    const handleSubmit =async (event) => {
         event.preventDefault();
-        console.log(email)
-        console.log(email,password,userType);
-        login({ variables: { email, password } }).then((res)=>{
-            console.log(res.data?.login?.email)
-            if(res.data?.login?.email!=""){
-                navigate("/");
-            }
-            
-            
-        }).catch((err)=>{
-            setAlertDanger(true);
-            console.log(err)
-        })
-       
+        try {
+          const {data} = await login({variables:{
+            email,
+            password
+          }});
+          console.log(data.login);
+          setAuthInfo({token:data.login.token,user:{...data.login.user}});
+        } catch (error) {
+          console.error(error);
+          
+        }
+      //  navigate('/');
       };
 
     return (
@@ -65,7 +60,7 @@ function Login2 (){
             <Row>
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
-                  <h3 className="title mx-auto">Welcome</h3>
+                  <h3 className="title mx-auto">Welcome Back</h3>
                   <div className="social-line text-center">
                     <Button
                       className="btn-neutral btn-just-icon mt-0"
@@ -151,18 +146,7 @@ function Login2 (){
                     </Button>
                   </div>
                 </Card>
-                <div className="col text-center">
-                  <Button
-                    className="btn-round"
-                    outline
-                    color="neutral"
-                    href="/register-page"
-                    size="lg"
-                    target="_blank"
-                  >
-                    View Register Page
-                  </Button>
-                </div>
+            
               </Col>
             </Row>
          

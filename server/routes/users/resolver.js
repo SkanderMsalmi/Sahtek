@@ -10,54 +10,44 @@ const crypto = require('crypto');
 
 const resolvers = {
     Mutation:{
-        registerPatient: async (parent, args) => {
-            const {email,password,name,dateOfBirth,gender,role,
-            address,phoneNumber,emergencyContact,medicalConditions,medications
-            } = args.patientInput;
+        register: async (parent, args) => {
+            const {email,password,name,dateOfBirth,role
+            
+            } = args.userInput;
 
             const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('User with that email already exists');
     }
     const passwordHashed = await bcrypt.hashSync(password, 10);
-    
-    const user = new User({email,password:passwordHashed,role,patient:{
-        name,dateOfBirth,gender,address,phoneNumber,emergencyContact,medicalConditions,medications,
+    let user;
+    if(role == "Patient"){
+      user = new User({email,password:passwordHashed,role,patient:{
+        name,dateOfBirth
       }});
+    }else if(role == "Therapist"){
+      user = new User({email,password:passwordHashed,role,therapist:{
+        name,dateOfBirth
+      }});
+    }
+   
     await user.save();
     return user;   
           },
-     registerTherapist: async (parent, args) => {
-            const {email,password,name,dateOfBirth,gender,role,
-                license,specialty,description,availability,education,
-                experience,languages,fees
-                } = args.therapistInput;
     
-                const existingUser = await User.findOne({ email });
-        if (existingUser) {
-          throw new Error('User with that email already exists');
-        }
-        const passwordHashed = await bcrypt.hashSync(password, 10);
-        const user = new User({email,password:passwordHashed,role,therapist:{
-            name,dateOfBirth,gender,license,specialty,description,availability,education,
-            experience,languages,fees,
-        }});
-        await user.save();
-        return user;
-          },
           async login(parent,{email,password},{res}){
-            let userLogged = await User.findOne({email});
-            if(userLogged && bcrypt.compareSync(password,userLogged.password)){
+            let user = await User.findOne({email});
+            if(user && bcrypt.compareSync(password,user.password)){
                 const token = jwt.sign(
                     {},
                     key,{
-                        subject:userLogged._id.toString(),
+                        subject:user._id.toString(),
                         algorithm:'RS256',
                         expiresIn:60*60*60*30 *6
                     }
                     );
            return  {
-            token,email:userLogged.email,role:userLogged.role
+            token,user
            }
                 }
             return "failed";

@@ -102,48 +102,25 @@ type Patient {
   type Token {
     value: String!
   }
-            input PatientInput {
+            input UserInput {
                 name: String!
                 email: String!
                 password: String!
                 dateOfBirth: String!
-                gender: Gender
                 role:Role!
-                address: AddressInput
-                phoneNumber: String
-                emergencyContact: EmergencyContactInput
-                medicalConditions: [String]
-                medications: [MedicationInput]
             }
-            input TherapistInput {
-                name: String!
-                email: String!
-                password: String!
-                role:Role!
-                dateOfBirth: String!
-                license: String
-                gender: Gender
-                specialty: String
-                description: String
-                availability: String
-                education: [String]
-                experience: String
-                languages: [String]
-                fees: Float
-            }
+            
 
             type AuthPayload {
   token: String!
-  email:String!
-  role:Role!
+  user:User!
 }
             extend type Query{
        user(ID:ID!): User
        checkEmailExists(email: String!): Boolean!
 }
  extend type Mutation {
-  registerPatient(patientInput: PatientInput):Patient
-  registerTherapist(therapistInput: TherapistInput):Therapist
+  register(userInput: UserInput):User
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
      }  
