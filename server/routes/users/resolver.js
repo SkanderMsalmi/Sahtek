@@ -36,18 +36,18 @@ const resolvers = {
           },
     
           async login(parent,{email,password},{res}){
-            let userLogged = await User.findOne({email});
-            if(userLogged && bcrypt.compareSync(password,userLogged.password)){
+            let user = await User.findOne({email});
+            if(user && bcrypt.compareSync(password,user.password)){
                 const token = jwt.sign(
                     {},
                     key,{
-                        subject:userLogged._id.toString(),
+                        subject:user._id.toString(),
                         algorithm:'RS256',
                         expiresIn:60*60*60*30 *6
                     }
                     );
            return  {
-            token,email:userLogged.email,role:userLogged.role
+            token,user
            }
                 }
             return "failed";

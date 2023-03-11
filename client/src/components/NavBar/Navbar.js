@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useContext } from "react";
 // nodejs library that concatenates strings
 import classnames from "classnames";
 // reactstrap components
@@ -31,8 +31,10 @@ import {
   Container
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 function Navigation() {
+  const {user} = useContext(AuthContext);
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
@@ -94,7 +96,7 @@ function Navigation() {
           <Nav navbar>
               <NavItem>
                 <NavLink tag={Link}  to="/" >
-                  
+                  {user ? (<p>"hello"</p>):(<p>"hwinek"</p>)}
                   Home
                 </NavLink>
               </NavItem>
@@ -113,7 +115,33 @@ function Navigation() {
                   About us
                 </NavLink>
               </NavItem>
-              <NavItem>
+
+                {user ? (
+ <>
+ <NavItem>
+ <Button
+   className="btn-round"
+   color="primary"
+   tag={Link}
+   to="/profile"
+ >
+    Profile
+ </Button>
+</NavItem>
+<NavItem>
+ <Button
+   className="btn-round"
+   color="danger"
+   tag={Link}
+   to="/register"
+ >
+    Logout
+ </Button>
+</NavItem>
+</>
+                ):(
+                  <>
+<NavItem>
               <Button
                 className="btn-round"
                 color="primary"
@@ -133,6 +161,10 @@ function Navigation() {
                  Register
               </Button>
             </NavItem>
+</>
+                 
+                )}
+             
           </Nav>
         </Collapse>
       </Container>

@@ -113,8 +113,7 @@ type Patient {
 
             type AuthPayload {
   token: String!
-  email:String!
-  role:Role!
+  user:User!
 }
             extend type Query{
        user(ID:ID!): User
