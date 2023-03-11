@@ -1,82 +1,59 @@
 import styles from  "./Register.module.scss";
 import { useMutation,gql } from '@apollo/client';
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {useForm} from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
-import { REGISTER_PATIENT_MUTATION,REGISTER_THERAPIST_MUTATION } from "../../apis/users";
-
+import { REGISTER_MUTATION } from "../../apis/users";
+import { Alert, Button, Card, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from "reactstrap";
+import Datetime from 'react-datetime';
+import { Label } from "reactstrap/lib";
 
 
 function Register (){
+  const [email,setEmail]= useState('');
+  const [password,setPassword]= useState('');
+  const [confirmPassword,setconfirmPassword]= useState('');
+  const [name,setName]= useState('');
+  const [role,setRole]= useState('Patient');
+  const [dayOfBirth,setDayOfBirth]= useState('');
   const userType = useParams('role');
 
    const navigate = useNavigate();
-   const [registerPatient, { loadingP, errorP, dataP }] = useMutation(
-    REGISTER_PATIENT_MUTATION
+   const [register, { loadingP, errorP, dataP }] = useMutation(
+    REGISTER_MUTATION
   );
-  const [registerTherapist, { loadingT, errorT, dataT }] = useMutation(
-    REGISTER_THERAPIST_MUTATION
-  );
-  const validationSchema = yup.object({
-    firstname: yup.string().required("Il faut préciser votre prenom").min(2,"You should enter your real first name"),
-    lastname: yup.string().required("Il faut préciser votre prenom").min(2,"You should enter your real last name"),
-    email: yup.string().required("Il faut préciser votre prenom").email("email invalid"),
-    password: yup.string().required("Il faut préciser votre prenom").min(6,"weak password "),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-    dateOfBirth: yup.date().max(new Date(Date.now() - 567648000000), "You must be at least 18 years").required("Required"),
-  });
-  const initialValues = {
-    firstname:'',
-    lastname:'',
-    password:'',
-    confirmPassword:'',
-    email:'',
-    dateOfBirth: new Date('Mon Mar 09 1998 00:00:00 GMT+0000 (UTC)')
-  }
+ 
+
+
   
-  const {handleSubmit,register,formState:{errors, isSubmitting},setError,clearErrors} = useForm({
-    initialValues,
-    resolver: yupResolver(validationSchema)
-  });
-  const submit = handleSubmit(async (credentials)=>{
-    clearErrors();
-    console.log(credentials);
+ 
+  const submit = async (e)=>{
+    e.preventDefault();
+    console.log(email,name,password,confirmPassword,dayOfBirth,role,dayOfBirth);
     try {
-      let user;
-      if(userType.role === "Patient"){
-       user = await registerPatient({
+  
+      
+       const user = await register({
         variables:{
-          patientInput: {
-            "role": userType.role,
-            "name": credentials.firstname + " " +credentials.lastname,
-            "password": credentials.password,
-            "email": credentials.email,
-            "dateOfBirth": credentials.dateOfBirth
+          userInput: {
+            "role": role,
+            "name": name,
+            "password": password,
+            "email": email,
+            "dateOfBirth": dayOfBirth
           }
         }
       });
-    }else if(userType.role === "Therapist"){
-      user = await registerTherapist({
-        variables:{
-          therapistInput: {
-            "role": userType.role,
-            "name": credentials.firstname + " " +credentials.lastname,
-            "password": credentials.password,
-            "email": credentials.email,
-            "dateOfBirth": credentials.dateOfBirth
-          }
-        }
-      });
-    }
-    console.log(user);
+    
+      console.log(user);
 
       navigate('/login');
     } catch (message) {
-      setError('generic',{type:'generic',message})
+      console.log("error");
     }
-  })
+  }
 
 
   // const [firstname,setFirstName]=useState('');
@@ -102,103 +79,130 @@ function Register (){
   // if (errorT ) return <div>Error: {errorT.message}</div> 
   // if (errorP) return <div>Error: {errorT.message}</div> 
     return (
-        <section>
-        <div className={styles.formBox}>
-            <form action="" onSubmit={submit}>
-                <h2 style={{color:"#fff"}}>Register</h2>
-                <div className="row">
-                <div className="col-md-6 mb-2">
+      <div
+      className="section section-image section-login"
+      style={{
+        backgroundImage: "url(" + require("../../assets/img/login-image.jpg") + ")"
+      }}
+    >
+        <Container>
+            <Row>
+              <Col className="mx-auto" lg="4" md="6">
+                <Card className="card-register">
+                  <h3 className="title mx-auto">Welcome</h3>
+                  
+                  <Form className="register-form" onSubmit={submit}>
+                    <label>Name</label>
+                    <InputGroup className="form-group-no-border">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-touch-id" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input  placeholder="Full Name" name="name" type="text" onChange={(e)=>setName(e.target.value)} />
+                    </InputGroup>
+                    <label>Email</label>
+                    <InputGroup className="form-group-no-border">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-email-85" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input placeholder="Email" type="email"  onChange={(e)=>setEmail(e.target.value)}/>
+                    </InputGroup>
+                    <label>Password</label>
+                    <InputGroup className="form-group-no-border">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input placeholder="Password" type="password" onChange={(e)=>setPassword(e.target.value)}/>
+                    </InputGroup>
+                    <label>Confirm Password</label>
+                    <InputGroup className="form-group-no-border">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input placeholder="Repeat Password" type="password" onChange={(e)=>setconfirmPassword(e.target.value)}/>
+                    </InputGroup>
+                    <label>Birthday</label>
+                    <InputGroup className="form-group-no-border">
+                     
+                    <Datetime
+                    onChange={(e)=>setDayOfBirth(e.toDate())}
+                        timeFormat={false}
+                        inputProps={{placeholder:"Insert Your Birthday"}}
+                        className={`${styles.datePickerTime} w-100`}
+                    />
+                    </InputGroup>
+                    <InputGroup className="m-5" >
 
-                <div className={styles.inputbox}>
-                        <input type="text" className={styles.userInput}  {...register('firstname')}/>
-                        <label htmlFor="name" className={styles.userLabel}  >First Name</label>
-                    </div>
-                        {errors.firstname && <p className="form-error">{errors.firstname.message}</p>}
+                    <div className="form-check-radio m-1">
+        <Label className="form-check-label ">
+            <Input type="radio" name="role" id="patient" value="Patient" onChange={(e)=>setRole(e.target.value)} checked={role === "Patient"}/>
+            Patient
+            <span className="form-check-sign"></span>
+        </Label>
+        
+      </div>
+      <div className="form-check-radio m-1">
+        <Label className="form-check-label">
+          <Input type="radio" name="role" id="therapist" value="Therapist" onChange={(e)=>setRole(e.target.value)}  checked={role === "Therapist"}/>
+          Therapist
+          <span className="form-check-sign"></span>
+        </Label>
+      </div>
+      </InputGroup>
 
-                </div>
-                <div className="col-md-6 mb-2">
-
-                <div className={styles.inputbox}>
-                        <input type="text" className={styles.userInput}   {...register('lastname')}  />
-                        <label htmlFor="lastname" className={styles.userLabel} >Last Name</label>
-                    </div>
-                    {errors.lastname && <p className="form-error">{errors.lastname.message}</p>}
-                </div>
+                    <br/>
+                    {/* <Alert className="alert-with-icon" color="danger" isOpen={alertDanger}>
+          <Container>
+            <div className="alert-wrapper">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                onClick={() => setAlertDanger(false)}
+              >
+                <i className="nc-icon nc-simple-remove" />
+              </button>
+              <div className="message">
+                <i className="nc-icon nc-bell-55" /> Wrong email or password.
               </div>
-              <div className="row">
-                <div className="col-md-6 mb-1 pb-1">
-
-                <div className={styles.inputbox}>
-                    <i className="fa-solid fa-lock"></i>
-                        <input type="password"  className={styles.userInput}   {...register('password')}  />
-                        <label className={styles.userLabel} htmlFor="password" >Password</label>
-                    </div>
-                    {errors.password && <p className="form-error">{errors.password.message}</p>}
-
-                </div>
-                <div className="col-md-6 mb-1 pb-1">
-
-                <div className={styles.inputbox}>
-                        <input type="password" className={styles.userInput}  {...register('confirmPassword')} />
-                        <label htmlFor="password" className={styles.userLabel} >Confirm Password</label>
-                    </div>
-                    {errors.confirmPassword && <p className="form-error">{errors.confirmPassword.message}</p>}
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6 mb-2 d-flex align-items-center">
-
-                <div className={styles.inputbox}>
-                        <input type="email" className={styles.userInput}  {...register('email')} />
-                        <label htmlFor="email" className={styles.userLabel} >Email</label>
-                    </div>
-                    {errors.email && <p className="form-error">{errors.email.message}</p>}
-
-                </div>
-                {/* <div className="col-md-6 mt-4" style={{color:"white"}}>
-
-                  <h6 className="mb-2 pb-1" style={{color:"#fff"}}>Gender: </h6>
-
-                  <div className=" form-check-inline">
-                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
-                      value="FEMALE"  onChange={(e)=> setFirstName(e.target.value)}/>
-                    <label className="form-check-label" htmlFor="femaleGender">Female</label>
+            </div>
+          </Container>
+        </Alert> */}
+                    <Button
+                      block
+                      className="btn-round"
+                      color="danger"
+                      type="submit"
+                      onClick={(e) => submit(e)}
+                    >
+                      Register
+                    </Button>
+                  </Form>
+            <div className="forgot">
+                    <Button
+                      className="btn-link"
+                      color="danger"
+                    >
+                      Already have an <Link to="/login">account</Link> ? 
+                    </Button>
                   </div>
-
-                  <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
-                      value="MALE" onChange={(e)=> setFirstName(e.target.value)}/>
-                    <label className="form-check-label" htmlFor="maleGender">Male</label>
-                  </div>
-
-                  <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
-                      value="OTHER" onChange={(e)=> set(e.target.value)}/>
-                    <label className="form-check-label" htmlFor="otherGender">Other</label>
-                  </div>
-
-                </div> */}
-              </div>
-              <div className="row justify-content-center"  >
-              <div className={styles.inputbox} >
-                        <input type="date" className={styles.userInput}  {...register('dateOfBirth')} />
-                        {errors.dateOfBirth && <p className="form-error">{errors.dateOfBirth.message}</p>}
-
-                    </div>
-              </div>
-
-             {errors.generic && ( <p className="form-error"> {errors.generic.message}</p>)}
-              <div >
-                <button className="register" disabled={isSubmitting}>Resgister</button>
-              </div>
-              <div className={styles.forget+" form-check"}>
-                        <label className="lab form-check-label" htmlFor="">Already have an account? <a href="#" > <strong>Login instead</strong></a></label>
-                        
-                    </div>
-            </form>
-
+                </Card>
+           
+              </Col>
+            </Row>
+         
+          </Container>
         </div>
-    </section>
+
+
     )
 }
 

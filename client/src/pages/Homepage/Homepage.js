@@ -14,7 +14,6 @@ import {
   Row,
   Col
 } from "reactstrap";
-import LandingPageHeader from "../../components/Header/LandingPageHeader";
 function Homepage(){
     return   <div className="main">
       <div className="main">

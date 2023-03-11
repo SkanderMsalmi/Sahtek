@@ -7,7 +7,6 @@ const Profile = React.lazy(()=>import('./pages/Profile/Profile'));
 const Register = React.lazy(()=>import( './pages/Register/Register'));
 const Forgotpassword = React.lazy(()=>import( './pages/forgotPassword/forgotPassword'));
 const Resetpassword = React.lazy(()=>import( './pages/ResetPassword/resetPassword'));
-const ChooseRole = React.lazy(()=>import( './pages/Register/ChooseRole'));
 const Homepage = React.lazy(()=>import("./pages/Homepage/Homepage"));
 const Login = React.lazy(()=>import( './pages/Signin/Login'));
 
@@ -24,10 +23,6 @@ export const router = createBrowserRouter([
             {
               path: 'login',
               element: <Login />,
-            },
-            {
-              path: 'chooseRole',
-              element: <ChooseRole />,
             },
             {
               path: 'register',

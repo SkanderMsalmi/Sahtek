@@ -65,7 +65,7 @@ function Login2 (){
             <Row>
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
-                  <h3 className="title mx-auto">Welcome</h3>
+                  <h3 className="title mx-auto">Welcome Back</h3>
                   <div className="social-line text-center">
                     <Button
                       className="btn-neutral btn-just-icon mt-0"
@@ -151,18 +151,7 @@ function Login2 (){
                     </Button>
                   </div>
                 </Card>
-                <div className="col text-center">
-                  <Button
-                    className="btn-round"
-                    outline
-                    color="neutral"
-                    href="/register-page"
-                    size="lg"
-                    target="_blank"
-                  >
-                    View Register Page
-                  </Button>
-                </div>
+            
               </Col>
             </Row>
          
