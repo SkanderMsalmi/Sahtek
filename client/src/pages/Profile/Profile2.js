@@ -1,7 +1,7 @@
-import styles from './Profile.module.scss'
+// import styles from './Profile.module.scss'
 // import { useQuery, gql } from "@apollo/client";
 // import Patient from "../../components/Profile/Patient";
-import Therapist from "../../components/Profile/Therapist";
+// import Therapist from "../../components/Profile/Therapist";
 import {
     Button,
     Label,
