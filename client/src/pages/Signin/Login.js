@@ -2,62 +2,174 @@ import styles from  "./Login.module.scss";
 import { useMutation,gql } from '@apollo/client';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import {
+    Button,
+    Card,
+    Form,
+    Input,
+    InputGroupAddon,
+    InputGroupText,
+    InputGroup,
+    Container,
+    Row,
+    Col,
+    Alert
+  } from "reactstrap";
 const LOGIN_MUTATION = gql`
-mutation Login($email: String!, $password: String!, $userType: String!) {
-    login(email: $email, password: $password, userType: $userType)
+mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+        email
+        role
+            }
   }
 `;
 
 
-function Login (){
+function Login2 (){
     const navigate = useNavigate();
     const [email,setEmail]=useState('');
     const [password,setPassword]= useState('');
     const [userType,setUserType]= useState('Patient');
+    const [alertDanger, setAlertDanger] = useState(false);
+
     const [login,{data,loading,error}] = useMutation(LOGIN_MUTATION);
 
     const handleSubmit = (event) => {
+        console.log("i have been clicked")
         event.preventDefault();
+        console.log(email)
         console.log(email,password,userType);
-        login({ variables: { email, password,userType } });
-        navigate("/");
+        login({ variables: { email, password } }).then((res)=>{
+            console.log(res.data?.login?.email)
+            if(res.data?.login?.email!=""){
+                navigate("/");
+            }
+            
+            
+        }).catch((err)=>{
+            setAlertDanger(true);
+            console.log(err)
+        })
+       
       };
 
     return (
-
-        <section>
-            <div className={styles.formBox}>
-                <form onSubmit={handleSubmit}>
-                    <h2 style={{color:"#fff"}}>Login</h2>
-                    <div className={styles.inputbox}>
-                    <i className="fa-sharp fa-regular fa-envelope"></i>
-                        <input type="text" className={styles.userInput} required value={email} onChange={(e)=> setEmail(e.target.value)} />
-                        <label htmlFor="email" className={styles.userLabel} >Email</label>
-                    </div>
-                    <div className={styles.inputbox}>
-                    <i className="fa-solid fa-lock"></i>
-                        <input type="password"  className={styles.userInput}  required value={password} onChange={(e)=> setPassword(e.target.value)} />
-                        <label className={styles.userLabel} htmlFor="password" >Password</label>
-                    </div>
-                    <div className={styles.forget+" form-check"}>
-                        <label className="lab form-check-label" htmlFor="rm"><input type="checkbox"  id="rm" className="form-check-input"/>Remeber Me <a href="/forgetpassword" style={{marginLeft:"15px"}}> Forget Password </a></label>
-                        
-                    </div>
-                    <button>Login</button>
-                    <div className={styles.register}>
-                        <p>Don't have an account ? <a href="#">Register</a></p>
-                        </div>
-                    {loading && <p>Loading...</p>}
-      {error && <p>{error.message}</p>}
-      {data && data.login.success && <p>Login successful!</p>}
-      {data && !data.login.success && <p>{data.login.message}</p>}
-                </form>
-
-
+        
+        <div
+          className="section section-image section-login"
+          style={{
+            backgroundImage: "url(" + require("../../assets/img/login-image.jpg") + ")"
+          }}
+        >
+          <Container>
+            <Row>
+              <Col className="mx-auto" lg="4" md="6">
+                <Card className="card-register">
+                  <h3 className="title mx-auto">Welcome</h3>
+                  <div className="social-line text-center">
+                    <Button
+                      className="btn-neutral btn-just-icon mt-0"
+                      color="facebook"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="fa fa-facebook-square" />
+                    </Button>
+                    <Button
+                      className="btn-neutral btn-just-icon mt-0 ml-1"
+                      color="google"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="fa fa-google-plus" />
+                    </Button>
+                    <Button
+                      className="btn-neutral btn-just-icon mt-0 ml-1"
+                      color="twitter"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="fa fa-twitter" />
+                    </Button>
+                  </div>
+                  <Form className="register-form" onSubmit={handleSubmit}>
+                    <label>Email</label>
+                    <InputGroup className="form-group-no-border">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-email-85" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input placeholder="Email" type="email"  value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                    </InputGroup>
+                    <label>Password</label>
+                    <InputGroup className="form-group-no-border">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input placeholder="Password" type="password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
+                    </InputGroup>
+                    <br/>
+                    <Alert className="alert-with-icon" color="danger" isOpen={alertDanger}>
+          <Container>
+            <div className="alert-wrapper">
+              <button
+                type="button"
+                className="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                onClick={() => setAlertDanger(false)}
+              >
+                <i className="nc-icon nc-simple-remove" />
+              </button>
+              <div className="message">
+                <i className="nc-icon nc-bell-55" /> Wrong email or password.
+              </div>
             </div>
-        </section>
-    )
-}
-
-export default Login;
+          </Container>
+        </Alert>
+                    <Button
+                      block
+                      className="btn-round"
+                      color="danger"
+                      type="submit"
+                      onClick={(e) => handleSubmit(e)}
+                    >
+                      Login
+                    </Button>
+                  </Form>
+                  <div className="forgot">
+                    <Button
+                      className="btn-link"
+                      color="danger"
+                      href="/forgetpassword"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      Forgot password?
+                    </Button>
+                  </div>
+                </Card>
+                <div className="col text-center">
+                  <Button
+                    className="btn-round"
+                    outline
+                    color="neutral"
+                    href="/register-page"
+                    size="lg"
+                    target="_blank"
+                  >
+                    View Register Page
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+         
+          </Container>
+        </div>
+  
+          )
+        }
+        
+        export default Login2;
