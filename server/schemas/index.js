@@ -8,6 +8,7 @@ const userT = require('./user')
 const ProductT = require("./product")
 const verificationTokenT = require('./verificationToken')
 const rootType = gql`
+  scalar Upload
   type Query {
     root: String
   }

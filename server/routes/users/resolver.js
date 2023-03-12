@@ -7,6 +7,7 @@ const {key,keyPub} = require('../../keys');
 const Token = require('../../database/models/verificationToken');
 const sendEmail = require('../../utils/sendEmail');
 const crypto = require('crypto');
+const {readFile} = require('../../utils/uploadFile');
 
 const resolvers = {
     Mutation:{
@@ -18,6 +19,9 @@ const resolvers = {
             const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('User with that email already exists');
+    }
+    if (image) {
+     profileImage = await readFile(image);
     }
     const passwordHashed = await bcrypt.hashSync(password, 10);
     let user;

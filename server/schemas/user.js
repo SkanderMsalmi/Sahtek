@@ -12,6 +12,7 @@ type User {
   email: String!
   password: String!
   role: Role!
+  profileImage: String
   patient:Patient
   therapist:Therapist
 }
@@ -25,6 +26,7 @@ type Patient {
   dateOfBirth: String!
   gender: Gender
   address: Address
+  profileImage: String
   phoneNumber: String
   emergencyContact: EmergencyContact
   medicalConditions: [String]
@@ -76,6 +78,7 @@ type Patient {
     license: String
     role: Role!
   dateOfBirth: String!
+  profileImage: String
     specialties: [String!]
     description: String
     availability: String
