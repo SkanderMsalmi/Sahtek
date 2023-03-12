@@ -11,10 +11,7 @@ const {readFile} = require('../../utils/uploadFile');
 
 const resolvers = {
     Mutation:{
-        register: async (parent, args) => {
-            const {email,password,name,dateOfBirth,role
-            
-            } = args.userInput;
+        register: async (parent, {userInput:{email,password,name,dateOfBirth,role},image}) => {
 
             const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -26,11 +23,11 @@ const resolvers = {
     const passwordHashed = await bcrypt.hashSync(password, 10);
     let user;
     if(role == "Patient"){
-      user = new User({email,password:passwordHashed,role,patient:{
+      user = new User({email,password:passwordHashed,role,profileImage,patient:{
         name,dateOfBirth
       }});
     }else if(role == "Therapist"){
-      user = new User({email,password:passwordHashed,role,therapist:{
+      user = new User({email,password:passwordHashed,role,profileImage,therapist:{
         name,dateOfBirth
       }});
     }

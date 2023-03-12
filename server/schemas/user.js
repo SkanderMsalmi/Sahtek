@@ -124,7 +124,7 @@ type Patient {
        current(token:String!):User
 }
  extend type Mutation {
-  register(userInput: UserInput):User
+  register(userInput: UserInput,image: Upload):User
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
      }  
