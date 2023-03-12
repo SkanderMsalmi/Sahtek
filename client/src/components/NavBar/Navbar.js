@@ -30,14 +30,27 @@ import {
   Nav,
   Container
 } from "reactstrap";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+// import { AuthContext } from "../../context/AuthContext";
+import { useSelector, useDispatch } from 'react-redux';
+import { userLogout } from '../../store/users/user.actions';
+import { selectUser } from '../../store/users/users.selectors';
 
 function Navigation() {
-  const {user} = useContext(AuthContext);
+  // const {user} = useContext(AuthContext);
+  const navigate = useNavigate();
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem('token');
+    // Dispatch the action to update the store
+    dispatch(userLogout());
+    navigate('/login')
+  };
   const toggleNavbarCollapse = () => {
     setNavbarCollapse(!navbarCollapse);
     document.documentElement.classList.toggle("nav-open");
@@ -96,7 +109,7 @@ function Navigation() {
           <Nav navbar>
               <NavItem>
                 <NavLink tag={Link}  to="/" >
-                  {user ? (<p>"hello"</p>):(<p>"hwinek"</p>)}
+                  
                   Home
                 </NavLink>
               </NavItem>
@@ -116,14 +129,14 @@ function Navigation() {
                 </NavLink>
               </NavItem>
 
-                {user ? (
+             {user ? (  
  <>
  <NavItem>
  <Button
    className="btn-round"
    color="primary"
    tag={Link}
-   to="/profile"
+   to="/profile2"
  >
     Profile
  </Button>
@@ -132,16 +145,15 @@ function Navigation() {
  <Button
    className="btn-round"
    color="danger"
-   tag={Link}
-   to="/register"
+   onClick={handleLogout}
  >
-    Logout
+    Deconnexion
  </Button>
 </NavItem>
 </>
-                ):(
-                  <>
-<NavItem>
+             ):(
+              <>
+              <NavItem>
               <Button
                 className="btn-round"
                 color="primary"
@@ -150,8 +162,8 @@ function Navigation() {
               >
                  Login
               </Button>
-            </NavItem>
-            <NavItem>
+             </NavItem>
+             <NavItem>
               <Button
                 className="btn-round"
                 color="danger"
@@ -160,10 +172,11 @@ function Navigation() {
               >
                  Register
               </Button>
-            </NavItem>
-</>
+             </NavItem>
+             </>
+             )    
                  
-                )}
+             } 
              
           </Nav>
         </Collapse>

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import styles from "./App.module.scss";
 import Footer from './components/Footer/Footer';
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
@@ -6,17 +6,18 @@ import { Outlet } from 'react-router-dom';
 import Navigation from './components/NavBar/Navbar';
 import { useLocation } from 'react-router-dom'
 import Header from './components/Header/Header';
-import { AuthProvider } from './components/AuthProvider/AuthProvider';
-import { AuthContext } from './context/AuthContext';
-const client = new ApolloClient({
-  uri: "http://127.0.0.1:5000/graphql",
-  cache: new InMemoryCache()
-});
+import client from './apis/apolloClient';
+import store,{Persistor} from './store';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 function App() {
+
 const location = useLocation();
+
   return (
     <ApolloProvider client={client}>
-      <AuthProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={Persistor}>
 <Navigation/>
 { location.pathname=="/"?(<Header />):("")}
         <div className="flex-fill d-flex flex-column">
@@ -25,7 +26,8 @@ const location = useLocation();
           </Suspense>
         </div>
         <Footer />
-        </AuthProvider>
+</PersistGate>
+        </Provider>
   </ApolloProvider>
   );
 }

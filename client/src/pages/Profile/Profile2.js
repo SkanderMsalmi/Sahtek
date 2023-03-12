@@ -18,7 +18,7 @@ import {
   } from "reactstrap";
 import { useEffect, useState } from 'react';
 import ProfilePageHeader from '../../components/Header/ProfilePageHeader';
-
+import withAuth from '../../components/Guard/WithAuth';
 // const USER_PROFILE = gql`{
 // user(ID: "6407bc4ac5255c8b3d88dc76") {
 //     email
@@ -188,4 +188,4 @@ function Profile2(){
         </>
     )}
 
-    export default Profile2;
+    export default withAuth( Profile2);

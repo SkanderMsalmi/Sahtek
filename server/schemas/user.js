@@ -112,12 +112,13 @@ type Patient {
             
 
             type AuthPayload {
-  token: String!
-  user:User!
+  token: String
+  user:User
 }
             extend type Query{
        user(ID:ID!): User
        checkEmailExists(email: String!): Boolean!
+       current(token:String!):User
 }
  extend type Mutation {
   register(userInput: UserInput):User
