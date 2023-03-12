@@ -5,10 +5,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import {useForm} from "react-hook-form";
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
-import { REGISTER_MUTATION } from "../../apis/users";
+import { LOGIN_MUTATION, REGISTER_MUTATION } from "../../apis/users";
 import { Alert, Button, Card, Col, Container, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from "reactstrap";
 import Datetime from 'react-datetime';
 import { Label } from "reactstrap/lib";
+import withGuest from "../../components/Guard/WithGuest";
+import { useDispatch } from "react-redux";
+import { userLoginSuccess } from "../../store/actions";
 
 
 function Register (){
@@ -24,18 +27,19 @@ function Register (){
    const [register, { loadingP, errorP, dataP }] = useMutation(
     REGISTER_MUTATION
   );
+  const [login,{data,loading,error}] = useMutation(LOGIN_MUTATION);
  
+  const dispatch = useDispatch();
 
 
   
  
   const submit = async (e)=>{
     e.preventDefault();
-    console.log(email,name,password,confirmPassword,dayOfBirth,role,dayOfBirth);
     try {
   
       
-       const user = await register({
+        await register({
         variables:{
           userInput: {
             "role": role,
@@ -46,38 +50,23 @@ function Register (){
           }
         }
       });
-    
-      console.log(user);
+      const { data } = await login({ variables: { email, password } });
+      const { user, token } = data.login;
+      // Save the token in localStorage
+      // Dispatch the action to update the store
+      dispatch(userLoginSuccess(user, token));
 
-      navigate('/login');
+      navigate('/profile2');
     } catch (message) {
-      console.log("error");
+      console.log(message);
     }
   }
 
 
-  // const [firstname,setFirstName]=useState('');
-  // const [lastname,setLastName]=useState('');
-  // const [password,setPassword]= useState('');
-  // const [confirmPassword,setConfirmPassword]= useState('');
-  // const [dateOfBirth,setdateOfBirth]= useState('');
-  // const [userType,setUserType]= useState('Patient');
-  // const [registerPatient,{data,loading,error}] = useMutation(Register_MUTATION);
 
-  // const handleSubmits = (event) => {
-  //     event.preventDefault();
-      
-  //   const name = firstname + " " +lastname;
-  //   if(password.match(confirmPassword)){
-  //     registerPatient({ variables: {name,email, password, dateOfBirth } });
-  //   navigate("/login");
-  //   }else{
-  //     throw error
-  //   }
-  //   };
-  // if (loadingT || loadingP) return <div>Loading...</div>;
+  if ( loadingP) return <div>Loading...</div>;
   // if (errorT ) return <div>Error: {errorT.message}</div> 
-  // if (errorP) return <div>Error: {errorT.message}</div> 
+  if (errorP) return <div>Error: {errorP.message}</div> 
     return (
       <div
       className="section section-image section-login"
@@ -206,4 +195,4 @@ function Register (){
     )
 }
 
-export default Register;
+export default withGuest(Register);

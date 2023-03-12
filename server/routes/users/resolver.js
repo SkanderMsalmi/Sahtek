@@ -61,6 +61,24 @@ const resolvers = {
             const user = await models.User.findOne({ where: { email } });
             return Boolean(user);
           },
+        async current(_,{token}){
+          if(token){
+            try {
+              const decodedToken = jwt.verify(token,keyPub);
+              const currentUser = await User.findById(decodedToken.sub).exec();
+              if(currentUser){
+                return currentUser;
+              }else{
+                return null;
+              }
+            } catch (error) {
+              return null;
+            }
+
+          }else{
+            return null;
+          }
+        }
             // sendForgotPasswordEmail: async (
             //     _,
             //     { email },

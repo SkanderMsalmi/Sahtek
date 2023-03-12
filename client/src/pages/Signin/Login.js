@@ -1,4 +1,3 @@
-import styles from  "./Login.module.scss";
 import { useMutation,gql } from '@apollo/client';
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,36 +15,37 @@ import {
     Alert
   } from "reactstrap";
 
-import { AuthContext } from "../../context/AuthContext";
 import { LOGIN_MUTATION } from "../../apis/users";
-
+import { userLoginSuccess } from "../../store/users/user.actions";
+import { useDispatch } from "react-redux";
+import withGuest from '../../components/Guard/WithGuest';
 
 
 
 function Login2 (){
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [email,setEmail]=useState('');
     const [password,setPassword]= useState('');
     const [userType,setUserType]= useState('Patient');
     const [alertDanger, setAlertDanger] = useState(false);
     
     const [login,{data,loading,error}] = useMutation(LOGIN_MUTATION);
-    const {setAuthInfo} = useContext(AuthContext);
 
     const handleSubmit =async (event) => {
         event.preventDefault();
         try {
-          const {data} = await login({variables:{
-            email,
-            password
-          }});
-          console.log(data.login);
-          setAuthInfo({token:data.login.token,user:{...data.login.user}});
+          const { data } = await login({ variables: { email, password } });
+      const { user, token } = data.login;
+      // Save the token in localStorage
+      // Dispatch the action to update the store
+      dispatch(userLoginSuccess(user, token));
+      // Redirect the user to the dashboard page or other authorized page
+      navigate('/');
         } catch (error) {
           console.error(error);
           
         }
-      //  navigate('/');
       };
 
     return (
@@ -156,4 +156,4 @@ function Login2 (){
           )
         }
         
-        export default Login2;
+        export default withGuest(Login2);
