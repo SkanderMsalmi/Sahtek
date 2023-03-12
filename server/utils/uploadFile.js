@@ -11,6 +11,6 @@ module.exports.readFile = async (file) => {
     let url = join(__dirname,`../upload/${name}-${Date.now()}${ext}`);
     const imageStream = await createWriteStream(url);
     await stream.pipe(imageStream);
-    url = `http://localhost:5000${url.split('upload')[1]}`;
+    url = url.split('upload')[1].slice(1);
     return url;
 }
