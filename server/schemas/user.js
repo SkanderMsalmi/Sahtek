@@ -12,6 +12,7 @@ type User {
   email: String!
   password: String!
   role: Role!
+  profileImage: String
   patient:Patient
   therapist:Therapist
 }
@@ -25,6 +26,7 @@ type Patient {
   dateOfBirth: String!
   gender: Gender
   address: Address
+  profileImage: String
   phoneNumber: String
   emergencyContact: EmergencyContact
   medicalConditions: [String]
@@ -76,6 +78,7 @@ type Patient {
     license: String
     role: Role!
   dateOfBirth: String!
+  profileImage: String
     specialties: [String!]
     description: String
     availability: String
@@ -142,8 +145,9 @@ type Patient {
        checkEmailExists(email: String!): Boolean!
 }
  extend type Mutation {
-  registerPatient(patientInput: PatientInput):Patient
-  registerTherapist(therapistInput: TherapistInput):Therapist
+  registerPatient(patientInput: PatientInput,image: Upload):Patient
+  uploadFile(file: Upload!): String!
+  registerTherapist(therapistInput: TherapistInput,image: Upload):Therapist
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
      }  

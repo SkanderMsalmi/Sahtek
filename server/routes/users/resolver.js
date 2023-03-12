@@ -7,38 +7,49 @@ const {key,keyPub} = require('../../keys');
 const Token = require('../../database/models/verificationToken');
 const sendEmail = require('../../utils/sendEmail');
 const crypto = require('crypto');
+const {readFile} = require('../../utils/uploadFile');
 
 const resolvers = {
     Mutation:{
-        registerPatient: async (parent, args) => {
-            const {email,password,name,dateOfBirth,gender,role,
-            address,phoneNumber,emergencyContact,medicalConditions,medications
-            } = args.patientInput;
-
+      uploadFile: async (parent, { file }) => {
+        const url = await readFile(file);
+        console.log(url);
+        return url;
+      },
+        registerPatient: async (parent, {patientInput:{email,password,name,dateOfBirth,gender,role,
+          address,phoneNumber,emergencyContact,medicalConditions,medications
+          },image}) => {
+var profileImage="";
             const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('User with that email already exists');
     }
+    if (image) {
+     profileImage = await readFile(image);
+    }
     const passwordHashed = await bcrypt.hashSync(password, 10);
     
-    const user = new User({email,password:passwordHashed,role,patient:{
+    const user = new User({email,password:passwordHashed,role,profileImage,patient:{
         name,dateOfBirth,gender,address,phoneNumber,emergencyContact,medicalConditions,medications,
       }});
     await user.save();
     return user;   
           },
-     registerTherapist: async (parent, args) => {
-            const {email,password,name,dateOfBirth,gender,role,
-                license,specialty,description,availability,education,
-                experience,languages,fees
-                } = args.therapistInput;
-    
+     registerTherapist: async (parent, {epatientInput:{mail,password,name,dateOfBirth,gender,role,
+      license,specialty,description,availability,education,
+      experience,languages,fees
+      },image}) => {
+var profileImage="";
                 const existingUser = await User.findOne({ email });
         if (existingUser) {
           throw new Error('User with that email already exists');
         }
+        if (image){
+           profileImage = await readFile(image);
+
+        }
         const passwordHashed = await bcrypt.hashSync(password, 10);
-        const user = new User({email,password:passwordHashed,role,therapist:{
+        const user = new User({email,password:passwordHashed,role,profileImage,therapist:{
             name,dateOfBirth,gender,license,specialty,description,availability,education,
             experience,languages,fees,
         }});

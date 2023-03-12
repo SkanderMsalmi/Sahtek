@@ -66,6 +66,10 @@ const AppointmentSchema = new mongoose.Schema({
       required: true,
       enum: ['Patient', 'Therapist']
     },
+    profileImage: {
+      type: String,
+      required: false
+    },
     patient: { type: PatientSchema },
     therapist: { type: TherapistSchema },
   });

@@ -1,6 +1,7 @@
 const express = require('express');
 // const cookie = require('cookie-parser');
 const {router} = require('./routes');
+const {graphqlUploadExpress} = require('graphql-upload');
 const app = express();
 const {ApolloServer} = require('apollo-server-express');
 var cors = require('cors')
@@ -26,6 +27,7 @@ require('./database');
 app.use(cors(corsOptionsDelegate));
 
 const startServer = async () => { 
+    app.use(graphqlUploadExpress());
     const apolloServer= new ApolloServer({
         typeDefs: require('./schemas'),
         resolvers: require('./routes'),
