@@ -18,4 +18,9 @@ mutation RegisterTherapist($therapistInput: TherapistInput) {
   }
 }
 `;
+export const VERIFY_TOKEN_MUTATION = gql`
+mutation VerifyToken($verificationTokenInput: VerificationTokenInput, $userId: ID) {
+  verifyToken(verificationTokenInput: $verificationTokenInput, userId: $userId)
+}
+`;
 

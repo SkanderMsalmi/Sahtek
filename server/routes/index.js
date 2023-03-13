@@ -5,6 +5,7 @@ const feedbackResolvers = require("./feedback/resolver");
 const patientFileResolvers = require("./patientFile/resolver");
 const userResolvers = require('./users/resolver');
 const ProductResolvers = require("./shop/product/resolver");
+const mailVerification= require("./users/mailVerification")
 module.exports= [
     consultationResolvers,
     feedbackResolvers,
@@ -12,5 +13,6 @@ module.exports= [
     postResolvers,
     commentResolvers,
     userResolvers,
-    ProductResolvers
+    ProductResolvers,
+    mailVerification
 ]
