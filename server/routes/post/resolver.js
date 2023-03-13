@@ -1,5 +1,5 @@
 const Post = require('../../database/models/Post');
-
+const {User} = require('../../database/models/User');
 const resolvers = {
     Query: {   
         async getPost(_, {ID}) {
@@ -8,22 +8,30 @@ const resolvers = {
 
         async getAllPosts(){
             return await Post.find();
+        },
+        async findPostByUser(_, {id}){
+            
+            return await Post.find({user: id})
         }
     },
 
     Mutation: {
       
-        async createPost(_,{postInput:{description}}){
+        async createPost(_,{postInput:{description,user}}){
+            console.log(user)
             const createdPost = new Post({
                 description: description,
+                user: user,
                 time: new Date().toISOString(),
                 like: 0
             })
+            console.log(createdPost)
             const res = await createdPost.save();
 
             return res
 
         },
+       
 
         
         deletePost: async (parent, args, context, info)=>{
@@ -43,6 +51,12 @@ const resolvers = {
         },
 
 
+
+    },
+    Post: {
+        user:async (parent, args)=>{
+            return await User.findById(parent.user);
+        }   
 
     }
 

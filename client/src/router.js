@@ -5,7 +5,6 @@ import App from './App';
 // import { rootLoader } from './loaders/rootLoader';
 import Profile2 from './pages/Profile/Profile2';
 
-const Profile = React.lazy(()=>import('./pages/Profile/Profile'));
 const Register = React.lazy(()=>import( './pages/Register/Register'));
 const Forgotpassword = React.lazy(()=>import( './pages/forgotPassword/forgotPassword'));
 const Resetpassword = React.lazy(()=>import( './pages/ResetPassword/resetPassword'));
@@ -31,12 +30,7 @@ export const router = createBrowserRouter([
               path: 'register',
               element: <Register />,
             },
-            {
-              path: 'profile',
-              element: (
-                  <Profile />
-              ),
-            },
+           
             {
               path: 'forgetpassword',
               element: (
@@ -49,8 +43,14 @@ export const router = createBrowserRouter([
                       <Resetpassword/>
                 ),
             },
+             
+            {path: 'profile',
+          element:(
+
+            <Profile2/>
+          )},
            
-            {path: 'profile2',
+            {path: 'profile/:id',
           element:(
 
             <Profile2/>

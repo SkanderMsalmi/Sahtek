@@ -12,7 +12,7 @@ const {readFile} = require('../../utils/uploadFile');
 const resolvers = {
     Mutation:{
         register: async (parent, {userInput:{email,password,name,dateOfBirth,role},image}) => {
-
+let profileImage=""
             const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('User with that email already exists');

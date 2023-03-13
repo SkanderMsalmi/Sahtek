@@ -35,13 +35,13 @@ const userReducer = (state = initialState, action) => {
         if (user.patient) {
           return {
             ...state,
-            user: user.patient,
+            user: user,
             token: action.payload.token,
           };
         } else if (user.therapist) {
           return {
             ...state,
-            user: user.therapist,
+            user: user,
             token: action.payload.token,
           };
         }
