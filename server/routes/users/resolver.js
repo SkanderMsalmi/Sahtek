@@ -43,7 +43,8 @@ const resolvers = {
           role,
           profileImage,
           name,
-          dateOfBirththerapist: {},
+          dateOfBirth,
+          therapist: {},
         });
       }
       //send email verification
