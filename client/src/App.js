@@ -10,6 +10,7 @@ import client from './apis/apolloClient';
 import store,{Persistor} from './store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
+import AnimatedHeader from './components/Header/AnimatedHeader';
 function App() {
 
 const location = useLocation();
@@ -19,7 +20,7 @@ const location = useLocation();
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
 <Navigation/>
-{ location.pathname=="/"?(<Header />):("")}
+{ location.pathname=="/"?(<AnimatedHeader />):("")}
         <div className="flex-fill d-flex flex-column">
           <Suspense>
             <Outlet />
