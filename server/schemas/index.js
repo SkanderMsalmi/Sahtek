@@ -5,8 +5,11 @@ const patientFile = require("./patientFile");
 const postT = require("./post")
 const commentT = require("./comment")
 const userT = require('./user')
-const ProductT = require("./product")
-const verificationTokenT = require('./verificationToken')
+const ProductT = require("./product");
+const verificationToken = require("./verificationToken");
+
+ 
+
 const rootType = gql`
   scalar Upload
   type Query {
@@ -15,7 +18,9 @@ const rootType = gql`
   type Mutation {
     root: String
   }
+  
 `;
+
 module.exports= [
     rootType,
     ConsultationType,
@@ -25,5 +30,6 @@ module.exports= [
     commentT,
     userT,
     ProductT,
-    verificationTokenT,
+    verificationToken
+        
 ]

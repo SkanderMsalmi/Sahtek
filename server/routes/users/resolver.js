@@ -8,6 +8,7 @@ const Token = require("../../database/models/verificationToken");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const { readFile } = require("../../utils/uploadFile");
+const nodemailer = require("nodemailer");
 
 const resolvers = {
   Mutation: {
@@ -78,6 +79,46 @@ const resolvers = {
         throw new ApolloError("Password Incorrect");
       }
     },
+  },
+  resetPassword: async (parent, args) => {
+    const { email } = args;
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "sahtek2023@gmail.com",
+        pass: "qrowlwkuavbwonwo",
+      },
+    });
+
+    const user = await User.findOne({ email });
+    const secret = "ggggg" + user.password;
+    const payload = {
+      email: user.email,
+      id: user.id,
+    };
+    const token = jwt.sign(payload, secret + { expiresIn: "15m" });
+    const mailOptions = {
+      from: "sahtek2023@gmail.com",
+      to: email,
+      subject: "Reset Password Link",
+      text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword/${user.id}/${token}`,
+    };
+    await transporter.sendMail(mailOptions);
+    return true;
+  },
+  resetPasswordlink: async (parent, args) => {
+    const { userid, token, newpassword } = args;
+
+    const user = await User.findById(userid);
+    // const secret=key+user.password
+
+    //const payload=jwt.verify(token,secret)
+    user.password = bcrypt.hashSync(newpassword, 10);
+    await user.save();
+    return true;
   },
   Query: {
     async user(_, { ID }) {

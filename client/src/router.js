@@ -60,6 +60,14 @@ export const router = createBrowserRouter([
         path: "alertCheckMail",
         element: <AlertCheckMail />,
       },
+      {
+        path: "forgetpassword",
+        element: <Forgotpassword />,
+      },
+      {
+        path: "resetpassword/:userid/:token",
+        element: <Resetpassword />,
+      },
     ],
   },
 ]);
