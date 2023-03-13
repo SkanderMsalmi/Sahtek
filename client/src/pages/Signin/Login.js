@@ -180,12 +180,12 @@ function Login2() {
                   className="btn-link"
                   color="danger"
                   href="/forgetpassword"
-                  onClick={(e) => e.preventDefault()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/forgetpassword");
+                  }}
                 >
-                  <a href="/forgetpassword" style={{ marginLeft: "15px" }}>
-                    {" "}
-                    Forget Password?{" "}
-                  </a>
+                  Forget Password?{" "}
                 </Button>
               </div>
             </Card>

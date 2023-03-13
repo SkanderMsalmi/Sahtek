@@ -79,46 +79,47 @@ const resolvers = {
         throw new ApolloError("Password Incorrect");
       }
     },
-  },
-  resetPassword: async (parent, args) => {
-    const { email } = args;
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "sahtek2023@gmail.com",
-        pass: "qrowlwkuavbwonwo",
-      },
-    });
 
-    const user = await User.findOne({ email });
-    const secret = "ggggg" + user.password;
-    const payload = {
-      email: user.email,
-      id: user.id,
-    };
-    const token = jwt.sign(payload, secret + { expiresIn: "15m" });
-    const mailOptions = {
-      from: "sahtek2023@gmail.com",
-      to: email,
-      subject: "Reset Password Link",
-      text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword/${user.id}/${token}`,
-    };
-    await transporter.sendMail(mailOptions);
-    return true;
-  },
-  resetPasswordlink: async (parent, args) => {
-    const { userid, token, newpassword } = args;
+    resetPassword: async (parent, args) => {
+      const { email } = args;
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "sahtek2023@gmail.com",
+          pass: "qrowlwkuavbwonwo",
+        },
+      });
 
-    const user = await User.findById(userid);
-    // const secret=key+user.password
+      const user = await User.findOne({ email });
+      const secret = "ggggg" + user.password;
+      const payload = {
+        email: user.email,
+        id: user.id,
+      };
+      const token = jwt.sign(payload, secret + { expiresIn: "15m" });
+      const mailOptions = {
+        from: "sahtek2023@gmail.com",
+        to: email,
+        subject: "Reset Password Link",
+        text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword/${user.id}/${token}`,
+      };
+      await transporter.sendMail(mailOptions);
+      return true;
+    },
+    resetPasswordlink: async (parent, args) => {
+      const { userid, token, newpassword } = args;
 
-    //const payload=jwt.verify(token,secret)
-    user.password = bcrypt.hashSync(newpassword, 10);
-    await user.save();
-    return true;
+      const user = await User.findById(userid);
+      // const secret=key+user.password
+
+      //const payload=jwt.verify(token,secret)
+      user.password = bcrypt.hashSync(newpassword, 10);
+      await user.save();
+      return true;
+    },
   },
   Query: {
     async user(_, { ID }) {
@@ -145,119 +146,7 @@ const resolvers = {
         return null;
       }
     },
-    // sendForgotPasswordEmail: async (
-    //     _,
-    //     { email },
-    //     { redis }
-    //   ) => {
-    //     const user = await User.findOne({ where: { email } });
-    //     if (!user) {
-    //       return [
-    //         {
-    //           path: "email",
-    //           message: userNotFoundError
-    //         }
-    //       ];
-    //     }
-
-    //     return true;
-    //   },
-    //   forgotPasswordChange: async (
-    //     _,
-    //     { newPassword, key },
-    //     { redis }
-    //   ) => {
-    //     const redisKey = `${forgotPasswordPrefix}${key}`;
-
-    //     const userId = await redis.get(redisKey);
-    //     if (!userId) {
-    //       return [
-    //         {
-    //           path: "key",
-    //           message: expiredKeyError
-    //         }
-    //       ];
-    //     }
-
-    //     try {
-    //       await schema.validate({ newPassword }, { abortEarly: false });
-    //     } catch (err) {
-    //       return formatYupError(err);
-    //     }
-
-    //     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    //     const updatePromise = User.update(
-    //       { id: userId },
-    //       {
-    //         forgotPasswordLocked: false,
-    //         password: hashedPassword
-    //       }
-    //     );
-
-    //     const deleteKeyPromise = redis.del(redisKey);
-
-    //     await Promise.all([updatePromise, deleteKeyPromise]);
-
-    //     return null;
-    //   }
   },
-
-  // sendForgotPasswordEmail: async (
-  //     _,
-  //     { email },
-  //     { redis }
-  //   ) => {
-  //     const user = await User.findOne({ where: { email } });
-  //     if (!user) {
-  //       return [
-  //         {
-  //           path: "email",
-  //           message: userNotFoundError
-  //         }
-  //       ];
-  //     }
-
-  //     return true;
-  //   },
-  //   forgotPasswordChange: async (
-  //     _,
-  //     { newPassword, key },
-  //     { redis }
-  //   ) => {
-  //     const redisKey = `${forgotPasswordPrefix}${key}`;
-
-  //     const userId = await redis.get(redisKey);
-  //     if (!userId) {
-  //       return [
-  //         {
-  //           path: "key",
-  //           message: expiredKeyError
-  //         }
-  //       ];
-  //     }
-
-  //     try {
-  //       await schema.validate({ newPassword }, { abortEarly: false });
-  //     } catch (err) {
-  //       return formatYupError(err);
-  //     }
-
-  //     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-  //     const updatePromise = User.update(
-  //       { id: userId },
-  //       {
-  //         forgotPasswordLocked: false,
-  //         password: hashedPassword
-  //       }
-  //     );
-
-  //     const deleteKeyPromise = redis.del(redisKey);
-
-  //     await Promise.all([updatePromise, deleteKeyPromise]);
-
-  //     return null;
-  //   }
 };
+
 module.exports = resolvers;

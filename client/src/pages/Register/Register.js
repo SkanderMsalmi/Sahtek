@@ -105,11 +105,6 @@ function Register() {
             },
           },
         });
-        const { data } = await login({ variables: { email, password } });
-        const { user, token } = data.login;
-        // Save the token in localStorage
-        // Dispatch the action to update the store
-        dispatch(userLoginSuccess(user, token));
 
         navigate("/alertCheckMail");
       } catch (error) {
