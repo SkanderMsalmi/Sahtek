@@ -1,27 +1,40 @@
 import styles from  "./resetPassword.module.scss";
 import { useMutation,gql } from '@apollo/client';
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
+
+export const RESET_PASSWORDLink = gql`
+  mutation resetPasswordlink($userid:String!,$token:String!,$newpassword:String!){
+    resetPasswordlink(userid:$userid,token:$token,newpassword:$newpassword)
+  }
+`;
 
 
 
 
 function Resetpassword (){
     const navigate = useNavigate();
-    const [email,setEmail]=useState('');
-    const [userType,setUserType]= useState('Patient');
     const [newpassword,setnewPassword]= useState('');
-  const [confirmPassword,setConfirmPassword]= useState('');
+    const [resetPasswordLink] = useMutation(RESET_PASSWORDLink);
+    const [confirmPassword,setConfirmPassword]= useState('');
+    const tokenValue = useParams('token');
+    const userid = useParams('userid');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if(!(newpassword.match(confirmPassword))){
-        console.log("password not matched")
-          }else{
-            console.log("sucess!!!")
-            navigate("/login")
-          }
-      };
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await resetPasswordLink({ variables: { 
+        "newpassword":newpassword,
+        "userid":userid.userid,
+        "token":tokenValue.token} });
+      if (data.resetPasswordLink) {
+        alert('succes!');
+      }
+    } catch (error) {
+      alert("aaaa");
+    }
+  };
+
 
     return (
         <section>
@@ -29,11 +42,11 @@ function Resetpassword (){
                 <form onSubmit={handleSubmit}>
                     <h2 style={{color:"#fff"}}>Reset Password</h2>
                     <div className={styles.inputbox}>
-                        <input type="password" className={styles.userInput} required maxLength={10} minLength={6} value={newpassword} onChange={(e)=> setnewPassword(e.target.value)} />
+                        <input name="newpassword"type="password" className={styles.userInput} required maxLength={10} minLength={6} value={newpassword} onChange={(e)=> setnewPassword(e.target.value)} />
                         <label htmlFor="password" className={styles.userLabel} >Enter New Password</label>
                     </div>
                     <div className={styles.inputbox}>
-                        <input type="password" className={styles.userInput} required maxLength={10} minLength={6}  value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} />
+                        <input name="password2" type="password" className={styles.userInput} required maxLength={10} minLength={6}  value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} />
                         <label htmlFor="password" className={styles.userLabel} >confirm Password</label>
                     </div>
                    

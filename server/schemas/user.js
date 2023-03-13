@@ -147,5 +147,6 @@ type Patient {
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
   resetPassword(email: String!): Boolean
+  resetPasswordlink(userid:String!,token:String!,newpassword:String!):Boolean
      }  
 `

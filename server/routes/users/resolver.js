@@ -9,6 +9,7 @@ const {key,keyPub} = require('../../keys');
 const Token = require('../../database/models/verificationToken');
 const sendEmail = require('../../utils/sendEmail');
 const crypto = require('crypto');
+const user = require('../../schemas/user');
 
 const resolvers = {
     Mutation:{
@@ -61,22 +62,39 @@ const resolvers = {
                   pass: 'qrowlwkuavbwonwo' 
                 },
               });
-           // const user = await User.findOne({ email });
-            
-            // const token = crypto.randomBytes(20).toString('hex');
-            // user.resetPasswordToken = token;
-            // user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-            // await user.save();
+          
+              
+              const user = await User.findOne({ email });
+          const secret="ggggg"+user.password
+              const payload={
+            email: user.email,
+            id:user.id,
+          }
+          const token=jwt.sign(payload,secret+{expiresIn:'15m'})
             const mailOptions = {
               from: 'sahtek2023@gmail.com',
               to: email,
               subject: 'Reset Password Link',
-              text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword`
+              text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword/${user.id}/${token}`
             ,
             };
             await transporter.sendMail(mailOptions);
             return true;
           },
+          resetPasswordlink :async (parent, args) => {
+            const { userid,token,newpassword } = args;
+
+            const user = await User.findById(userid );
+          // const secret=key+user.password
+           
+            //const payload=jwt.verify(token,secret)
+             user.password= bcrypt.hashSync(newpassword, 10)
+             await user.save();
+             return true;
+           },
+           
+           
+          
           async login(parent,{email,password},{res}){
             let userLogged = await User.findOne({email});
             if(userLogged && bcrypt.compareSync(password,userLogged.password)){
