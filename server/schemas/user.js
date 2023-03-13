@@ -12,6 +12,7 @@ type User {
   email: String!
   password: String!
   role: Role!
+  dateOfBirth: String!
   profileImage: String
   patient:Patient
   therapist:Therapist
@@ -19,11 +20,10 @@ type User {
 
 type Patient {
   id: ID!
-  name: String!
+  name: String
   email: String!
   password: String!
-  role: Role!
-  dateOfBirth: String!
+  dateOfBirth: String
   gender: Gender
   address: Address
   profileImage: String
@@ -72,12 +72,11 @@ type Patient {
 
   type Therapist {
     id: ID!
-    name: String!
+    name: String
     email: String!
     password: String!
     license: String
-    role: Role!
-  dateOfBirth: String!
+  dateOfBirth: String
   profileImage: String
     specialties: [String!]
     description: String
@@ -115,10 +114,10 @@ type Patient {
             
 
             type AuthPayload {
-  token: String
-  user:User
-}
-            extend type Query{
+              token: String
+              user:User
+            }
+ extend type Query{
        user(ID:ID!): User
        checkEmailExists(email: String!): Boolean!
        current(token:String!):User

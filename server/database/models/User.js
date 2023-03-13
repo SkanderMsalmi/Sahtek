@@ -5,10 +5,9 @@ const PatientSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    name: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    name: { type: String },
+    dateOfBirth: { type: Date},
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'] },
-    role: {type:String,default:"Patient"},
     address: {
       street: { type: String },
       city: { type: String },
@@ -25,9 +24,8 @@ const PatientSchema = mongoose.Schema({
 });
 
 const TherapistSchema = mongoose.Schema({
-    name: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
-    role: {type:String,default:"Therapist"},
+    name: { type: String },
+    dateOfBirth: { type: Date},
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'] },
     license: { type: String },
     specialty: { type: String },
@@ -70,6 +68,8 @@ const AppointmentSchema = new mongoose.Schema({
       type: String,
       required: false
     },
+    name: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
     patient: { type: PatientSchema },
     therapist: { type: TherapistSchema },
   });

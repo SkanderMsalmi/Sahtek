@@ -12,7 +12,7 @@ const {readFile} = require('../../utils/uploadFile');
 const resolvers = {
     Mutation:{
         register: async (parent, {userInput:{email,password,name,dateOfBirth,role},image}) => {
-
+let profileImage="";
             const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new Error('User with that email already exists');
@@ -23,12 +23,11 @@ const resolvers = {
     const passwordHashed = await bcrypt.hashSync(password, 10);
     let user;
     if(role == "Patient"){
-      user = new User({email,password:passwordHashed,role,profileImage,patient:{
-        name,dateOfBirth
+      user = new User({email,password:passwordHashed,role,profileImage,name,dateOfBirth,patient:{
+        
       }});
     }else if(role == "Therapist"){
-      user = new User({email,password:passwordHashed,role,profileImage,therapist:{
-        name,dateOfBirth
+      user = new User({email,password:passwordHashed,role,profileImage,name,dateOfBirththerapist:{
       }});
     }
    
@@ -38,6 +37,9 @@ const resolvers = {
     
           async login(parent,{email,password},{res}){
             let user = await User.findOne({email});
+            if(!user){
+            throw new ApolloError("Email doesn't exist")
+            }
             if(user && bcrypt.compareSync(password,user.password)){
                 const token = jwt.sign(
                     {},
@@ -50,8 +52,9 @@ const resolvers = {
            return  {
             token,user
            }
+                }else{
+                  throw new ApolloError("Password Incorrect")
                 }
-            return "failed";
             }  
     },
     Query: {   
