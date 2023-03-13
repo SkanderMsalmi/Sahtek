@@ -8,6 +8,7 @@ enum Role {
 
 type User {
   id: ID!
+  verified: Boolean
   name: String!
   email: String!
   password: String!

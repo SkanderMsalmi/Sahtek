@@ -11,6 +11,7 @@ const Forgotpassword = React.lazy(()=>import( './pages/forgotPassword/forgotPass
 const Resetpassword = React.lazy(()=>import( './pages/ResetPassword/resetPassword'));
 const Homepage = React.lazy(()=>import("./pages/Homepage/Homepage"));
 const Login = React.lazy(()=>import( './pages/Signin/Login'));
+const MailVerification = React.lazy(() => import('./pages/Register/MailVerification'));
 
 
 export const router = createBrowserRouter([
@@ -54,7 +55,13 @@ export const router = createBrowserRouter([
           element:(
 
             <Profile2/>
-          )}
+          )},
+          {
+            path: ':userId/verify/:token',
+            element: (
+              <MailVerification />
+            ),
+          },
         ]
     }
 ]);

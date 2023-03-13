@@ -50,6 +50,10 @@ const AppointmentSchema = new mongoose.Schema({
     status: { type: String, enum: ['Scheduled', 'Confirmed', 'Cancelled', 'Completed'], default: 'Scheduled' }
   });
   const userSchema = new mongoose.Schema({
+    verified: {
+      type: Boolean,
+      default: false
+  },
     email: {
       type: String,
       required: true,
