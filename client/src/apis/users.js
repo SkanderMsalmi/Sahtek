@@ -14,6 +14,11 @@ mutation Register($userInput: UserInput) {
   }
 }
 `;
+export const VERIFY_TOKEN_MUTATION = gql`
+mutation VerifyToken($verificationTokenInput: VerificationTokenInput, $userId: ID) {
+  verifyToken(verificationTokenInput: $verificationTokenInput, userId: $userId)
+}
+`;
 
 export  const LOGIN_MUTATION = gql`
 mutation Login($email: String!, $password: String!) {

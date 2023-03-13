@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const verificationToken = new Schema({
 	userId: {
 		type: Schema.Types.ObjectId,
- 		ref: "Patient",
+ 		ref: "User",
 		unique: true,
 	},
 	token: { 

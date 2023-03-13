@@ -12,6 +12,7 @@
     "animejs": "^3.2.1",
     "bootstrap": "^4.6.0",
     "classnames": "2.3.1",
+    "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "http-proxy-middleware": "^2.0.6",
@@ -37,7 +38,7 @@
     "reselect": "^4.1.7",
     "sass": "^1.58.3",
     "web-vitals": "^2.1.4",
-    "yup": "^1.0.0"
+    "yup": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -8,10 +8,10 @@ type verificationToken {
 }
 
 input VerificationTokenInput {
-    userId: Int
+    
     token: String
 
 }  
-extend type Query {
-    getverificationToken(verificationTokenInput: VerificationTokenInput): verificationToken
+extend type Mutation {
+    verifyToken(verificationTokenInput: VerificationTokenInput, userId: ID): String
 }`
