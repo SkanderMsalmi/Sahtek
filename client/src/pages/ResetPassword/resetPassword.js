@@ -16,28 +16,23 @@ export const RESET_PASSWORDLink = gql`
 function Resetpassword() {
   const navigate = useNavigate();
   const [newpassword, setnewPassword] = useState("");
-  const [resetPasswordLink, { loading, error, data }] =
-    useMutation(RESET_PASSWORDLink);
+  const [resetPasswordLink] = useMutation(RESET_PASSWORDLink);
   const [confirmPassword, setConfirmPassword] = useState("");
   const tokenValue = useParams("token");
   const userid = useParams("id");
-
+console.log(userid)
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
-      await resetPasswordLink({
+      const { data } = await resetPasswordLink({
         variables: {
           newpassword: newpassword,
-          userid: userid.id,
+          userid: userid.userid,
           token: tokenValue.token,
         },
       });
-      console.log(data);
-      if (error) {
-        console.log(error);
-      }
-      if (resetPasswordLink) {
+      if (data.resetPasswordLink) {
         alert("succes password updated!");
       }
     } catch (error) {
