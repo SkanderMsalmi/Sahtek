@@ -164,7 +164,6 @@ const resolvers = {
 
     async login(parent, { email, password }, { res }) {
       let user = await User.findOne({ email });
-      let token = await Token.findOne({ userId: user.id });
       if (!user) {
         throw new ApolloError("Email doesn't exist");
       }
@@ -172,6 +171,7 @@ const resolvers = {
       // resend email verification
 
       if (user.verified === false) {
+        let token = await Token.findOne({ userId: user.id });
         if (!token) {
           const token2 = await new Token({
             userId: user.id,
