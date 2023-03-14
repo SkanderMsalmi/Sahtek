@@ -27,7 +27,16 @@ function Register() {
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [passwordType, setPasswordType] = useState("password");
+  const togglePassword = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+      return;
+    }
+    setPasswordType("password");
+  };
   const handleYearChange = (event) => {
     const selectedYear = event.target.value;
     setYear(selectedYear);
@@ -128,7 +137,6 @@ function Register() {
     initialValues,
     resolver: yupResolver(schema),
   });
-  const navigate = useNavigate();
   const [registerUser, { loadingP, errorP, dataP }] =
     useMutation(REGISTER_MUTATION);
 
@@ -181,7 +189,7 @@ function Register() {
     >
       <Container>
         <Row>
-          <Col className="mx-auto" lg="4" md="6">
+          <Col className="mx-auto" lg="9" md="9">
             <Card className="card-register">
               <h3 className="title mx-auto">Welcome</h3>
 
@@ -191,157 +199,225 @@ function Register() {
                 </Alert>
               )}
               <form tag={Form} className="register-form" onSubmit={submit}>
-                <label>Name</label>
-                <InputGroup
-                  className={
-                    errors.name ? "has-danger" : "form-group-no-border"
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="nc-icon nc-touch-id" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <input
-                    className="form-control"
-                    placeholder="Full Name"
-                    name="name"
-                    type="text"
-                    {...register("name")}
-                  />
-                </InputGroup>
-                {errors?.name && (
-                  <Alert color="danger" isOpen={errors?.name}>
-                    {errors.name.message}
-                  </Alert>
-                )}
-
-                <label>Email</label>
-                <InputGroup
-                  className={
-                    errors.email ? "has-danger" : "form-group-no-border"
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="nc-icon nc-email-85" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <input
-                    className="form-control"
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    {...register("email")}
-                  />
-                </InputGroup>
-                {errors?.email && (
-                  <Alert color="danger" isOpen={errors?.email}>
-                    {errors.email.message}
-                  </Alert>
-                )}
-
-                <label>Password</label>
-                <InputGroup
-                  className={
-                    errors.password ? "has-danger" : "form-group-no-border"
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="nc-icon nc-key-25" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <input
-                    className="form-control"
-                    placeholder="Password"
-                    name="password"
-                    type="password"
-                    {...register("password")}
-                  />
-                </InputGroup>
-                {errors?.password && (
-                  <Alert color="danger" isOpen={errors?.password}>
-                    {errors.password.message}
-                  </Alert>
-                )}
-                <label>Confirm Password</label>
-                <InputGroup
-                  className={
-                    errors.confirmPassword
-                      ? "has-danger"
-                      : "form-group-no-border"
-                  }
-                >
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="nc-icon nc-key-25" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <input
-                    className="form-control"
-                    placeholder="Repeat Password"
-                    name="confirmPassword"
-                    type="password"
-                    {...register("confirmPassword")}
-                  />
-                </InputGroup>
-                {errors?.confirmPassword && (
-                  <Alert color="danger" isOpen={errors?.confirmPassword}>
-                    {errors.confirmPassword.message}
-                  </Alert>
-                )}
-
-                <label>
-                  Birthday{" "}
-                  <span className="text-secondary"> (Start By Year )</span>
-                </label>
-                <div>
-                  <FormGroup className="d-flex align-items-center">
-                    <Input
-                      type="select"
-                      name="day"
-                      id="day"
-                      value={day}
-                      onChange={handleDayChange}
-                      className="me-2"
-                    >
-                      <option value="">Day</option>
-                      {dayOptions}
-                    </Input>
-                    <Input
-                      type="select"
-                      name="month"
-                      id="month"
-                      value={month}
-                      onChange={handleMonthChange}
-                      className="me-2"
-                    >
-                      <option value="">Month</option>
-                      {monthOptions}
-                    </Input>
-                    <Input
-                      type="select"
-                      name="year"
-                      id="year"
-                      value={year}
-                      onChange={handleYearChange}
+                <Row>
+                  <Col>
+                    <label>Name</label>
+                    <InputGroup
                       className={
-                        errors?.age
-                          ? "text-danger me-2"
-                          : "form-group-no-border me-2"
+                        errors.name ? "has-danger" : "form-group-no-border"
                       }
                     >
-                      <option value="">Year</option>
-                      {yearOptions}
-                    </Input>
-                  </FormGroup>
-                </div>
-                {errors?.generic && (
-                  <Alert color="danger" isOpen={errors?.age}>
-                    {errors.age.message}
-                  </Alert>
-                )}
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-touch-id" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <input
+                        className="form-control"
+                        placeholder="Full Name"
+                        name="name"
+                        type="text"
+                        {...register("name")}
+                      />
+                    </InputGroup>
+                    {errors?.name && (
+                      <Alert color="danger" isOpen={errors?.name}>
+                        {errors.name.message}
+                      </Alert>
+                    )}
+
+                    <label>Email</label>
+                    <InputGroup
+                      className={
+                        errors.email ? "has-danger" : "form-group-no-border"
+                      }
+                    >
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-email-85" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <input
+                        className="form-control"
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        {...register("email")}
+                      />
+                    </InputGroup>
+                    {errors?.email && (
+                      <Alert color="danger" isOpen={errors?.email}>
+                        {errors.email.message}
+                      </Alert>
+                    )}
+
+                    <label>Password</label>
+                    <InputGroup
+                      className={
+                        errors.password ? "has-danger" : "form-group-no-border"
+                      }
+                    >
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <input
+                        className="form-control"
+                        placeholder="Password"
+                        name="password"
+                        type={passwordType}
+                        {...register("password")}
+                      />
+                    </InputGroup>
+                    {errors?.password && (
+                      <Alert color="danger" isOpen={errors?.password}>
+                        {errors.password.message}
+                      </Alert>
+                    )}
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="checkbox"
+                          onChange={(e) => {
+                            togglePassword();
+                          }}
+                        />{" "}
+                        Show password
+                        <span className="form-check-sign">
+                          <span className="check"></span>
+                        </span>
+                      </Label>
+                    </FormGroup>
+                  </Col>
+                  <Col>
+                    <label>Confirm Password</label>
+                    <InputGroup
+                      className={
+                        errors.confirmPassword
+                          ? "has-danger"
+                          : "form-group-no-border"
+                      }
+                    >
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <input
+                        className="form-control"
+                        placeholder="Repeat Password"
+                        name="confirmPassword"
+                        type={passwordType}
+                        {...register("confirmPassword")}
+                      />
+                    </InputGroup>
+                    {errors?.confirmPassword && (
+                      <Alert color="danger" isOpen={errors?.confirmPassword}>
+                        {errors.confirmPassword.message}
+                      </Alert>
+                    )}
+
+                    <label>
+                      Birthday{" "}
+                      <span className="text-secondary"> (Start By Year )</span>
+                    </label>
+                    <div>
+                      <FormGroup className="d-flex align-items-center">
+                        <Input
+                          type="select"
+                          name="day"
+                          id="day"
+                          value={day}
+                          onChange={handleDayChange}
+                          className="me-2"
+                        >
+                          <option value="">Day</option>
+                          {dayOptions}
+                        </Input>
+                        <Input
+                          type="select"
+                          name="month"
+                          id="month"
+                          value={month}
+                          onChange={handleMonthChange}
+                          className="me-2"
+                        >
+                          <option value="">Month</option>
+                          {monthOptions}
+                        </Input>
+                        <Input
+                          type="select"
+                          name="year"
+                          id="year"
+                          value={year}
+                          onChange={handleYearChange}
+                          className={
+                            errors?.age
+                              ? "text-danger me-2"
+                              : "form-group-no-border me-2"
+                          }
+                        >
+                          <option value="">Year</option>
+                          {yearOptions}
+                        </Input>
+                      </FormGroup>
+                    </div>
+                    {errors?.generic && (
+                      <Alert color="danger" isOpen={errors?.age}>
+                        {errors.age.message}
+                      </Alert>
+                    )}
+                    <label>Gender</label>
+
+                    <InputGroup className="m-auto justify-content-center">
+                      <div className="form-check-radio m-1 ">
+                        <Label className="form-check-label ">
+                          <input
+                            className="form-control"
+                            type="radio"
+                            name="gender"
+                            id="male"
+                            value="Male"
+                            {...register("gender")}
+                          />
+                          Male
+                          <span className="form-check-sign"></span>
+                        </Label>
+                      </div>
+                      <div className="form-check-radio m-1">
+                        <Label className="form-check-label">
+                          <input
+                            className="form-control"
+                            type="radio"
+                            name="gender"
+                            id="female"
+                            value="Female"
+                            {...register("gender")}
+                          />
+                          Female
+                          <span className="form-check-sign"></span>
+                        </Label>
+                      </div>
+                      <div className="form-check-radio m-1">
+                        <Label className="form-check-label">
+                          <input
+                            className="form-control"
+                            type="radio"
+                            name="gender"
+                            id="other"
+                            value="Other"
+                            {...register("gender")}
+                          />
+                          Other
+                          <span className="form-check-sign"></span>
+                        </Label>
+                      </div>
+                    </InputGroup>
+
+                    <br />
+                  </Col>
+                </Row>
                 <InputGroup className="m-auto justify-content-center">
                   <div className="form-check-radio m-1 ">
                     <Label className="form-check-label ">
@@ -377,9 +453,6 @@ function Register() {
                     {errors.role.message}
                   </Alert>
                 )}
-
-                <br />
-
                 <Button
                   block
                   className="btn-round"

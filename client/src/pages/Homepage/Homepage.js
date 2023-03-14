@@ -336,4 +336,4 @@ function Homepage() {
   );
 }
 
-export default isVerified(Homepage);
+export default Homepage;
