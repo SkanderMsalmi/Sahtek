@@ -32,6 +32,7 @@ export const LOGIN_MUTATION = gql`
         email
         role
         verified
+        profileImage
         patient {
           name
         }

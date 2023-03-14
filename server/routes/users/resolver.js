@@ -77,10 +77,19 @@ const resolvers = {
       await existingUser.save();
       return existingUser;
     },
-    update: async (_, { userInput: { id, name, dateOfBirth }, image }) => {
+    update: async (_, { userInput: { id, name, dateOfBirth,password, oldPassword }, image }) => {
       const existingUser = await User.findById(id);
+    
+      const passwordHashed =await bcrypt.hashSync(password, 10)||existingUser.password;
+      
       if (!existingUser) {
         throw new Error("User doesn't exist");
+      }
+      if (password){
+        if (!bcrypt.compareSync(oldPassword, existingUser.password)) {
+          throw new Error("Incorrect password");
+        }
+        existingUser.password=passwordHashed;
       }
       if (image) {
         profileImage = await readFile(image);
