@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { REGISTER_MUTATION } from "../../apis/users";
+import { LOGIN_MUTATION, REGISTER_MUTATION } from "../../apis/users";
 import {
   Alert,
   Button,
@@ -21,12 +21,16 @@ import {
 } from "reactstrap";
 import { Label } from "reactstrap/lib";
 import withGuest from "../../components/Guard/WithGuest";
+import { useDispatch } from "react-redux";
+import { userLoginSuccess } from "../../store/users/user.actions";
 
 function Register() {
   //Date From Select :
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleYearChange = (event) => {
     const selectedYear = event.target.value;
@@ -128,9 +132,9 @@ function Register() {
     initialValues,
     resolver: yupResolver(schema),
   });
-  const navigate = useNavigate();
   const [registerUser, { loadingP, errorP, dataP }] =
     useMutation(REGISTER_MUTATION);
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
   const submit = handleSubmit(async ({ name, role, password, email }) => {
     try {
@@ -162,6 +166,9 @@ function Register() {
           },
         },
       });
+      const { data } = await login({ variables: { email, password } });
+      const { user, token } = data.login;
+      dispatch(userLoginSuccess(user, token));
 
       navigate("/alertCheckMail");
     } catch (error) {
@@ -185,11 +192,11 @@ function Register() {
             <Card className="card-register">
               <h3 className="title mx-auto">Welcome</h3>
 
-              {errors?.generic && (
+              {/* {errors?.generic && (
                 <Alert color="danger" isOpen={errors?.generic}>
                   {errors.generic.error.message}
                 </Alert>
-              )}
+              )} */}
               <form tag={Form} className="register-form" onSubmit={submit}>
                 <label>Name</label>
                 <InputGroup

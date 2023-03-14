@@ -110,9 +110,7 @@ function MailVerification() {
         ////////////////////////    not verified
 
         <div
-          style={{
-            backgroundColor: "#ffffff",
-          }}
+          style={{}}
           className="page-header"
           data-parallax={true}
           ref={pageHeader}
