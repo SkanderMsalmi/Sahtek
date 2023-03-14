@@ -200,11 +200,11 @@ function Register() {
             <Card className="card-register" style={{ maxWidth: "600px" }}>
               <h3 className="title mx-auto">Welcome</h3>
 
-              {/* {errors?.generic && (
+              {errors?.generic && (
                 <Alert color="danger" isOpen={errors?.generic}>
                   {errors.generic.error.message}
                 </Alert>
-              )} */}
+              )}
               <form tag={Form} className="register-form" onSubmit={submit}>
                 <Row>
                   <Col>
@@ -302,7 +302,7 @@ function Register() {
                         </Input>
                       </FormGroup>
                     </div>
-                    {errors?.generic && (
+                    {errors?.generic?.age && (
                       <Alert color="danger" isOpen={errors?.age}>
                         {errors?.age?.message}
                       </Alert>
@@ -467,6 +467,7 @@ function Register() {
                     {errors.role.message}
                   </Alert>
                 )}
+
                 <Button
                   block
                   className="btn-round"
