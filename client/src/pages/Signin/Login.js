@@ -18,7 +18,6 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import { GoogleLogin } from "react-google-login";
 import { LOGIN_MUTATION } from "../../apis/users";
 import { userLoginSuccess } from "../../store/users/user.actions";
 import { useDispatch } from "react-redux";
