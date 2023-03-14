@@ -9,6 +9,8 @@ const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const { readFile } = require("../../utils/uploadFile");
 const nodemailer = require("nodemailer");
+
+
 const BASE_URL = "http://localhost:3000";
 
 const resolvers = {
@@ -173,7 +175,6 @@ const resolvers = {
 
     async login(parent, { email, password }, { res }) {
       let user = await User.findOne({ email });
-      let token = await Token.findOne({ userId: user.id });
       if (!user) {
         throw new ApolloError("Email doesn't exist");
       }
@@ -181,6 +182,7 @@ const resolvers = {
       // resend email verification
 
       if (user.verified === false) {
+        let token = await Token.findOne({ userId: user.id });
         if (!token) {
           const token2 = await new Token({
             userId: user.id,
@@ -188,11 +190,12 @@ const resolvers = {
           }).save();
           const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
-          throw new ApolloError("check your email for verification");
+
+
         } else if (token) {
           const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
-          throw new ApolloError("We have sent you mail to verify your account");
+
         }
       }
       //
@@ -259,10 +262,18 @@ const resolvers = {
 
       const user = await User.findById(id);
       if (user) {
-        const token2 = await new Token({
+       
+        const token2 = new Token({
           userId: id,
           token: crypto.randomBytes(32).toString("hex"),
-        }).save();
+        })
+        const tokenexist = await Token.findOne({ userId: id })
+        if(tokenexist){
+        await Token.findOneAndUpdate(id,{userId : id, token : token2.token })}
+        else{
+          token2.save();
+        }
+        
         const url = `${BASE_URL}/${token2.userId}/verify/${token2.token}`;
         await sendEmail(user.email, "Email Verification", String(url));
 
