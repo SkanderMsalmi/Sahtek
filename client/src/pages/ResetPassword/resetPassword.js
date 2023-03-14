@@ -70,7 +70,7 @@ const submit=handleSubmit(async ({newpassword}) => {
     try {
       await resetPasswordLink({ variables: { 
         "newpassword":newpassword,
-        "userid":userid.id,
+        "userid":userid.userid,
         "token":tokenValue.token} });
 
         
