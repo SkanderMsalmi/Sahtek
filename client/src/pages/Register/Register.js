@@ -121,6 +121,7 @@ function Register() {
       .string()
       .required("Confirm your password ")
       .oneOf([yup.ref("password"), null], "Passwords must match"),
+    gender: yup.string().required("Pleanse Enter Your Gender"),
   });
   const initialValues = {
     name: "",
@@ -128,6 +129,7 @@ function Register() {
     password: "",
     confirmPassword: "",
     role: "",
+    gender: "",
   };
   const {
     register,
@@ -196,7 +198,7 @@ function Register() {
       <Container>
         <Row>
           <Col className="mx-auto" lg="9" md="9">
-            <Card className="card-register">
+            <Card className="card-register" style={{ maxWidth: "600px" }}>
               <h3 className="title mx-auto">Welcome</h3>
 
               {/* {errors?.generic && (
@@ -256,74 +258,6 @@ function Register() {
                         {errors.email.message}
                       </Alert>
                     )}
-
-                    <label>Password</label>
-                    <InputGroup
-                      className={
-                        errors.password ? "has-danger" : "form-group-no-border"
-                      }
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="nc-icon nc-key-25" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <input
-                        className="form-control"
-                        placeholder="Password"
-                        name="password"
-                        type={passwordType}
-                        {...register("password")}
-                      />
-                    </InputGroup>
-                    {errors?.password && (
-                      <Alert color="danger" isOpen={errors?.password}>
-                        {errors.password.message}
-                      </Alert>
-                    )}
-                    <FormGroup check>
-                      <Label check>
-                        <Input
-                          type="checkbox"
-                          onChange={(e) => {
-                            togglePassword();
-                          }}
-                        />{" "}
-                        Show password
-                        <span className="form-check-sign">
-                          <span className="check"></span>
-                        </span>
-                      </Label>
-                    </FormGroup>
-                  </Col>
-                  <Col>
-                    <label>Confirm Password</label>
-                    <InputGroup
-                      className={
-                        errors.confirmPassword
-                          ? "has-danger"
-                          : "form-group-no-border"
-                      }
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="nc-icon nc-key-25" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <input
-                        className="form-control"
-                        placeholder="Repeat Password"
-                        name="confirmPassword"
-                        type={passwordType}
-                        {...register("confirmPassword")}
-                      />
-                    </InputGroup>
-                    {errors?.confirmPassword && (
-                      <Alert color="danger" isOpen={errors?.confirmPassword}>
-                        {errors.confirmPassword.message}
-                      </Alert>
-                    )}
-
                     <label>
                       Birthday{" "}
                       <span className="text-secondary"> (Start By Year )</span>
@@ -374,6 +308,73 @@ function Register() {
                         {errors.age.message}
                       </Alert>
                     )}
+                  </Col>
+                  <Col>
+                    <label>Password</label>
+                    <InputGroup
+                      className={
+                        errors.password ? "has-danger" : "form-group-no-border"
+                      }
+                    >
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <input
+                        className="form-control"
+                        placeholder="Password"
+                        name="password"
+                        type={passwordType}
+                        {...register("password")}
+                      />
+                    </InputGroup>
+                    {errors?.password && (
+                      <Alert color="danger" isOpen={errors?.password}>
+                        {errors.password.message}
+                      </Alert>
+                    )}
+
+                    <InputGroup
+                      className={
+                        errors.confirmPassword
+                          ? "has-danger"
+                          : "form-group-no-border"
+                      }
+                    >
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-key-25" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <input
+                        className="form-control"
+                        placeholder="Repeat Password"
+                        name="confirmPassword"
+                        type={passwordType}
+                        {...register("confirmPassword")}
+                      />
+                    </InputGroup>
+                    {errors?.confirmPassword && (
+                      <Alert color="danger" isOpen={errors?.confirmPassword}>
+                        {errors.confirmPassword.message}
+                      </Alert>
+                    )}
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="checkbox"
+                          onChange={(e) => {
+                            togglePassword();
+                          }}
+                        />{" "}
+                        Show password
+                        <span className="form-check-sign">
+                          <span className="check"></span>
+                        </span>
+                      </Label>
+                    </FormGroup>
+
                     <label>Gender</label>
 
                     <InputGroup className="m-auto justify-content-center">
@@ -420,10 +421,18 @@ function Register() {
                         </Label>
                       </div>
                     </InputGroup>
-
+                    {errors?.gender && (
+                      <Alert color="danger" isOpen={errors?.gender}>
+                        {errors.gender.message}
+                      </Alert>
+                    )}
                     <br />
                   </Col>
                 </Row>
+                <div className="text-center">
+                  <label style={{}}>Are you Patient or Therapist ?</label>
+                </div>
+
                 <InputGroup className="m-auto justify-content-center">
                   <div className="form-check-radio m-1 ">
                     <Label className="form-check-label ">

@@ -13,7 +13,7 @@ function MailVerification() {
   const [validUrl, setValidUrl] = useState(false);
 
   const handleClick = () => {
-    navigate("/login2");
+    navigate("/profile");
   };
 
   const tokenValue = useParams("token");
@@ -101,7 +101,7 @@ function MailVerification() {
                 type="button"
                 outline
               >
-                Log In
+                Go To Profile
               </Button>
             </div>
           </Container>
