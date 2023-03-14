@@ -15,7 +15,7 @@ const resolvers = {
   Mutation: {
     register: async (
       parent,
-      { userInput: { email, password, name, dateOfBirth, role }, image }
+      { userInput: { email, password, name, dateOfBirth, role, gender }, image }
     ) => {
       let profileImage = "";
       const existingUser = await User.findOne({ email });
@@ -36,6 +36,7 @@ const resolvers = {
           name,
           dateOfBirth,
           patient: {},
+          gender,
         });
       } else if (role == "Therapist") {
         user = new User({
@@ -46,6 +47,7 @@ const resolvers = {
           name,
           dateOfBirth,
           therapist: {},
+          gender,
         });
       }
       //send email verification

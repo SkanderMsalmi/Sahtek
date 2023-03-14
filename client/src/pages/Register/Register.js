@@ -145,47 +145,50 @@ function Register() {
     useMutation(REGISTER_MUTATION);
   const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
-  const submit = handleSubmit(async ({ name, role, password, email }) => {
-    try {
-      let isoDate;
-      clearErrors();
-      if (day && month && year) {
-        const dateOfBirth = new Date(year, month - 1, day); // month is 0-based in Date constructor
-        const ageDiffMs = Date.now() - dateOfBirth.getTime();
-        const ageDate = new Date(ageDiffMs); // convert the age difference to a Date object
-        const age = Math.abs(ageDate.getUTCFullYear() - 1970); // get the absolute difference in years
-        if (age < 18) {
-          setError("age", {
-            type: "value",
-            message: "You should be 18 years old or older",
-          });
-        } else {
-          isoDate = dateOfBirth.toISOString();
+  const submit = handleSubmit(
+    async ({ name, role, password, email, gender }) => {
+      try {
+        let isoDate;
+        clearErrors();
+        if (day && month && year) {
+          const dateOfBirth = new Date(year, month - 1, day); // month is 0-based in Date constructor
+          const ageDiffMs = Date.now() - dateOfBirth.getTime();
+          const ageDate = new Date(ageDiffMs); // convert the age difference to a Date object
+          const age = Math.abs(ageDate.getUTCFullYear() - 1970); // get the absolute difference in years
+          if (age < 18) {
+            setError("age", {
+              type: "value",
+              message: "You should be 18 years old or older",
+            });
+          } else {
+            isoDate = dateOfBirth.toISOString();
+          }
         }
-      }
-      console.log(isoDate);
-      await registerUser({
-        variables: {
-          userInput: {
-            role: role,
-            name: name,
-            password: password,
-            email: email,
-            dateOfBirth: isoDate,
+        console.log(isoDate);
+        await registerUser({
+          variables: {
+            userInput: {
+              role: role,
+              name: name,
+              password: password,
+              email: email,
+              dateOfBirth: isoDate,
+              gender: gender,
+            },
           },
-        },
-      });
-      const { data } = await login({ variables: { email, password } });
-      const { user, token } = data.login;
-      dispatch(userLoginSuccess(user, token));
+        });
+        const { data } = await login({ variables: { email, password } });
+        const { user, token } = data.login;
+        dispatch(userLoginSuccess(user, token));
 
-      navigate("/alertCheckMail");
-    } catch (error) {
-      setError("generic", { type: "generic", error });
-      console.log(errors);
+        navigate("/alertCheckMail");
+      } catch (error) {
+        setError("generic", { type: "generic", error });
+        console.log(errors);
+      }
+      // }
     }
-    // }
-  });
+  );
 
   return (
     <div
@@ -305,7 +308,7 @@ function Register() {
                     </div>
                     {errors?.generic && (
                       <Alert color="danger" isOpen={errors?.age}>
-                        {errors.age.message}
+                        {errors?.age?.message}
                       </Alert>
                     )}
                   </Col>

@@ -13,6 +13,7 @@ module.exports = gql`
     email: String!
     password: String!
     role: Role!
+    gender: Gender!
     dateOfBirth: String!
     profileImage: String
     patient: Patient
@@ -36,9 +37,9 @@ module.exports = gql`
   }
 
   enum Gender {
-    MALE
-    FEMALE
-    OTHER
+    Male
+    Female
+    Other
   }
   type Address {
     street: String
@@ -111,6 +112,7 @@ module.exports = gql`
     password: String!
     dateOfBirth: String!
     role: Role!
+    gender: Gender
   }
 
   type AuthPayload {
