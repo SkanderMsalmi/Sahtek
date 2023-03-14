@@ -143,7 +143,6 @@ function Register() {
   });
   const [registerUser, { loadingP, errorP, dataP }] =
     useMutation(REGISTER_MUTATION);
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
   const submit = handleSubmit(
     async ({ name, role, password, email, gender }) => {
@@ -177,9 +176,6 @@ function Register() {
             },
           },
         });
-        const { data } = await login({ variables: { email, password } });
-        const { user, token } = data.login;
-        dispatch(userLoginSuccess(user, token));
 
         navigate("/alertCheckMail");
       } catch (error) {
