@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "./App";
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
@@ -67,6 +67,11 @@ export const router = createBrowserRouter([
       {
         path: "resetpassword/:userid/:token",
         element: <Resetpassword />,
+      },
+      {
+        path: "*",
+        exact: true,
+        element: <Navigate to="/" />,
       },
     ],
   },

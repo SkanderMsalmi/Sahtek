@@ -3,22 +3,23 @@
 // import Patient from "../../components/Profile/Patient";
 // import Therapist from "../../components/Profile/Therapist";
 import {
-    Button,
-    Label,
-    FormGroup,
-    Input,
-    NavItem,
-    NavLink,
-    Nav,
-    TabContent,
-    TabPane,
-    Container,
-    Row,
-    Col
-  } from "reactstrap";
-import { useEffect, useState } from 'react';
-import ProfilePageHeader from '../../components/Header/ProfilePageHeader';
-import withAuth from '../../components/Guard/WithAuth';
+  Button,
+  Label,
+  FormGroup,
+  Input,
+  NavItem,
+  NavLink,
+  Nav,
+  TabContent,
+  TabPane,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
+import { useEffect, useState } from "react";
+import ProfilePageHeader from "../../components/Header/ProfilePageHeader";
+import withAuth from "../../components/Guard/WithAuth";
+import isVerified from "../../components/Guard/IsVerified";
 // const USER_PROFILE = gql`{
 // user(ID: "6407bc4ac5255c8b3d88dc76") {
 //     email
@@ -27,15 +28,15 @@ import withAuth from '../../components/Guard/WithAuth';
 //       name
 //     }
 //   }
-  
+
 //   }
 // `
-function Profile2(){
-    // const { data, loading, error } = useQuery(USER_PROFILE);
-    // if (loading) return "Loading...";
-    // if(error) return <p>{error}</p>
-    // console.log(data);
-    const [activeTab, setActiveTab] = useState("1");
+function Profile2() {
+  // const { data, loading, error } = useQuery(USER_PROFILE);
+  // if (loading) return "Loading...";
+  // if(error) return <p>{error}</p>
+  // console.log(data);
+  const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
     if (activeTab !== tab) {
@@ -50,142 +51,143 @@ function Profile2(){
       document.body.classList.remove("landing-page");
     };
   });
-    return (
-        <>
-        <ProfilePageHeader />
-        <div className="section profile-content">
-          <Container>
-            <div className="owner">
-              <div className="avatar">
-                <img
-                  alt="..."
-                  className="img-circle img-no-padding img-responsive"
-                  src={require("../../assets/img/faces/joe-gardner-2.jpg")}
-                />
-              </div>
-              <div className="name">
-                <h4 className="title">
-                  Jane Faker <br />
-                </h4>
-                <h6 className="description">Music Producer</h6>
-              </div>
+  return (
+    <>
+      <ProfilePageHeader />
+      <div className="section profile-content">
+        <Container>
+          <div className="owner">
+            <div className="avatar">
+              <img
+                alt="..."
+                className="img-circle img-no-padding img-responsive"
+                src={require("../../assets/img/faces/joe-gardner-2.jpg")}
+              />
             </div>
-            <Row>
-              <Col className="ml-auto mr-auto text-center" md="6">
-                <p>
-                  An artist of considerable range, Jane Faker — the name taken by
-                  Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-                  and records all of his own music, giving it a warm, intimate
-                  feel with a solid groove structure.
-                </p>
-                <br />
-                <Button className="btn-round" color="default" outline>
-                  <i className="fa fa-cog" /> Settings
-                </Button>
-              </Col>
-            </Row>
-            <br />
-            <div className="nav-tabs-navigation">
-              <div className="nav-tabs-wrapper">
-                <Nav role="tablist" tabs>
-                  <NavItem>
-                    <NavLink
-                      className={activeTab === "1" ? "active" : ""}
-                      onClick={() => {
-                        toggle("1");
-                      }}
-                    >
-                      Follows
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={activeTab === "2" ? "active" : ""}
-                      onClick={() => {
-                        toggle("2");
-                      }}
-                    >
-                      Following
-                    </NavLink>
-                  </NavItem>
-                </Nav>
-              </div>
+            <div className="name">
+              <h4 className="title">
+                Jane Faker <br />
+              </h4>
+              <h6 className="description">Music Producer</h6>
             </div>
-            {/* Tab panes */}
-            <TabContent className="following" activeTab={activeTab}>
-              <TabPane tabId="1" id="follows">
-                <Row>
-                  <Col className="ml-auto mr-auto" md="6">
-                    <ul className="list-unstyled follows">
-                      <li>
-                        <Row>
-                          <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
-                            <img
-                              alt="..."
-                              className="img-circle img-no-padding img-responsive"
-                              src={require("../../assets/img/faces/clem-onojeghuo-2.jpg")}
-                            />
-                          </Col>
-                          <Col className="ml-auto mr-auto" lg="7" md="4" xs="4">
-                            <h6>
-                              Flume <br />
-                              <small>Musical Producer</small>
-                            </h6>
-                          </Col>
-                          <Col className="ml-auto mr-auto" lg="3" md="4" xs="4">
-                            <FormGroup check>
-                              <Label check>
-                                <Input
-                                  defaultChecked
-                                  defaultValue=""
-                                  type="checkbox"
-                                />
-                                <span className="form-check-sign" />
-                              </Label>
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </li>
-                      <hr />
-                      <li>
-                        <Row>
-                          <Col className="mx-auto" lg="2" md="4" xs="4">
-                            <img
-                              alt="..."
-                              className="img-circle img-no-padding img-responsive"
-                              src={require("../../assets/img/faces/ayo-ogunseinde-2.jpg")}
-                            />
-                          </Col>
-                          <Col lg="7" md="4" xs="4">
-                            <h6>
-                              Banks <br />
-                              <small>Singer</small>
-                            </h6>
-                          </Col>
-                          <Col lg="3" md="4" xs="4">
-                            <FormGroup check>
-                              <Label check>
-                                <Input defaultValue="" type="checkbox" />
-                                <span className="form-check-sign" />
-                              </Label>
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </li>
-                    </ul>
-                  </Col>
-                </Row>
-              </TabPane>
-              <TabPane className="text-center" tabId="2" id="following">
-                <h3 className="text-muted">Not following anyone yet :(</h3>
-                <Button className="btn-round" color="warning">
-                  Find artists
-                </Button>
-              </TabPane>
-            </TabContent>
-          </Container>
-        </div>
-        </>
-    )}
+          </div>
+          <Row>
+            <Col className="ml-auto mr-auto text-center" md="6">
+              <p>
+                An artist of considerable range, Jane Faker — the name taken by
+                Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
+                and records all of his own music, giving it a warm, intimate
+                feel with a solid groove structure.
+              </p>
+              <br />
+              <Button className="btn-round" color="default" outline>
+                <i className="fa fa-cog" /> Settings
+              </Button>
+            </Col>
+          </Row>
+          <br />
+          <div className="nav-tabs-navigation">
+            <div className="nav-tabs-wrapper">
+              <Nav role="tablist" tabs>
+                <NavItem>
+                  <NavLink
+                    className={activeTab === "1" ? "active" : ""}
+                    onClick={() => {
+                      toggle("1");
+                    }}
+                  >
+                    Follows
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                    className={activeTab === "2" ? "active" : ""}
+                    onClick={() => {
+                      toggle("2");
+                    }}
+                  >
+                    Following
+                  </NavLink>
+                </NavItem>
+              </Nav>
+            </div>
+          </div>
+          {/* Tab panes */}
+          <TabContent className="following" activeTab={activeTab}>
+            <TabPane tabId="1" id="follows">
+              <Row>
+                <Col className="ml-auto mr-auto" md="6">
+                  <ul className="list-unstyled follows">
+                    <li>
+                      <Row>
+                        <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
+                          <img
+                            alt="..."
+                            className="img-circle img-no-padding img-responsive"
+                            src={require("../../assets/img/faces/clem-onojeghuo-2.jpg")}
+                          />
+                        </Col>
+                        <Col className="ml-auto mr-auto" lg="7" md="4" xs="4">
+                          <h6>
+                            Flume <br />
+                            <small>Musical Producer</small>
+                          </h6>
+                        </Col>
+                        <Col className="ml-auto mr-auto" lg="3" md="4" xs="4">
+                          <FormGroup check>
+                            <Label check>
+                              <Input
+                                defaultChecked
+                                defaultValue=""
+                                type="checkbox"
+                              />
+                              <span className="form-check-sign" />
+                            </Label>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </li>
+                    <hr />
+                    <li>
+                      <Row>
+                        <Col className="mx-auto" lg="2" md="4" xs="4">
+                          <img
+                            alt="..."
+                            className="img-circle img-no-padding img-responsive"
+                            src={require("../../assets/img/faces/ayo-ogunseinde-2.jpg")}
+                          />
+                        </Col>
+                        <Col lg="7" md="4" xs="4">
+                          <h6>
+                            Banks <br />
+                            <small>Singer</small>
+                          </h6>
+                        </Col>
+                        <Col lg="3" md="4" xs="4">
+                          <FormGroup check>
+                            <Label check>
+                              <Input defaultValue="" type="checkbox" />
+                              <span className="form-check-sign" />
+                            </Label>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </li>
+                  </ul>
+                </Col>
+              </Row>
+            </TabPane>
+            <TabPane className="text-center" tabId="2" id="following">
+              <h3 className="text-muted">Not following anyone yet :(</h3>
+              <Button className="btn-round" color="warning">
+                Find artists
+              </Button>
+            </TabPane>
+          </TabContent>
+        </Container>
+      </div>
+    </>
+  );
+}
 
-    export default withAuth( Profile2);
+export default withAuth(isVerified(Profile2));
