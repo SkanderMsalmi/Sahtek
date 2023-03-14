@@ -82,7 +82,6 @@ const resolvers = {
     update: async (_, { userInput: { id, name, dateOfBirth,password, oldPassword }, image }) => {
       const existingUser = await User.findById(id);
     
-      const passwordHashed =await bcrypt.hashSync(password, 10)||existingUser.password;
       
       if (!existingUser) {
         throw new Error("User doesn't exist");
@@ -91,6 +90,8 @@ const resolvers = {
         if (!bcrypt.compareSync(oldPassword, existingUser.password)) {
           throw new Error("Incorrect password");
         }
+        const passwordHashed =await bcrypt.hashSync(password, 10)||existingUser.password;
+
         existingUser.password=passwordHashed;
       }
       if (image) {

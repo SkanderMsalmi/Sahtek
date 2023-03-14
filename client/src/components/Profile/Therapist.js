@@ -235,8 +235,8 @@ function Therapist(props){
             <Button className="btn-round" color="success" onClick={()=>setEditInfo({...editInfo,specialties:[...editInfo.specialties,""]})}>Add</Button>
 
             <ul style={{padding:0}}>
-                {editInfo.specialties.map((s) => {
-                    return <input className="form-control" type="text" name="specialty" value={s} onChange={(e)=>handleSpecialty(e)}/>
+                {editInfo.specialties.map((s,i) => {
+                    return <input className="form-control" type="text" name="specialty" value={s} onChange={(e)=>handleSpecialty(e,i)}/>
                 })}
             </ul>
             <h5>License</h5>
@@ -252,7 +252,7 @@ function Therapist(props){
                    <div  className={`${styles.contactInfo} col-md-6`}>
 
             <h5>Education</h5>
-            <ul>
+            <ul style={{padding:0}}>
                 {editInfo.education.map((edu) => {
                     return <li>{edu}</li>
                 })}
@@ -267,7 +267,7 @@ function Therapist(props){
             </div>
             <div  className={`${styles.contactInfo} col-md-6`}>
             <h5>Specialties</h5>
-            <ul>
+            <ul style={{padding:0}}>
                 {editInfo.specialties.map((s) => {
                     return <li>{s}</li>
                 })}
