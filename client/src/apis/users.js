@@ -38,6 +38,11 @@ export const LOGIN_MUTATION = gql`
     }
   }
 `;
+export const RESEND_MAIL_VERIFICATION_MUTATION = gql`
+  mutation ResendMailVerification($resendMailVerificationId: ID) {
+    resendMailVerification(id: $resendMailVerificationId)
+  }
+`;
 
 // const API_USERS = '/api/users';
 

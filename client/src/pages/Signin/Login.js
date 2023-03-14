@@ -7,7 +7,6 @@ import {
   Button,
   Card,
   Form,
-  Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
@@ -15,6 +14,9 @@ import {
   Row,
   Col,
   Alert,
+  FormGroup,
+  Label,
+  Input,
 } from "reactstrap";
 
 import { LOGIN_MUTATION } from "../../apis/users";
@@ -26,7 +28,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 function Login2() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [passwordType, setPasswordType] = useState("password");
+  const togglePassword = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+      return;
+    }
+    setPasswordType("password");
+  };
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -149,11 +158,26 @@ function Login2() {
                   <input
                     className="form-control"
                     placeholder="Password"
-                    type="password"
+                    type={passwordType}
                     name="password"
                     {...register("password")}
                   />
                 </InputGroup>
+
+                <FormGroup check>
+                  <Label check>
+                    <Input
+                      type="checkbox"
+                      onChange={(e) => {
+                        togglePassword();
+                      }}
+                    />{" "}
+                    Show Password
+                    <span className="form-check-sign">
+                      <span className="check"></span>
+                    </span>
+                  </Label>
+                </FormGroup>
                 {errors?.password && (
                   <Alert color="danger" isOpen={errors?.password}>
                     {errors.password.message}

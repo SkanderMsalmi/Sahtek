@@ -21,7 +21,7 @@ function AlertCheckMail() {
                 <a
                   className="btn btn-primary mt-5"
                   rel="noreferrer"
-                  href="https://mail.google.com/mail/u/0/"
+                  href="https://mail.google.com/mail/u/"
                   target="_blank"
                 >
                   {" "}
