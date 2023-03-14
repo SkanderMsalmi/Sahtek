@@ -91,7 +91,7 @@ function Register() {
         if (new Date().getFullYear() - dayOfBirth.getFullYear() < 18) {
           setError("age", {
             type: "value",
-            message: "You should be bigger than 18",
+            message: "You should be older than 18",
           });
         }
         await registerUser({

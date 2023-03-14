@@ -122,10 +122,13 @@ type Patient {
        user(ID:ID!): User
        checkEmailExists(email: String!): Boolean!
        current(token:String!):User
+       
 }
  extend type Mutation {
   register(userInput: UserInput,image: Upload):User
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
+  resendMailVerification(id: ID): String
+  
      }  
 `

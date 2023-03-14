@@ -2,7 +2,7 @@ import React from "react";
 import { useMutation, gql } from "@apollo/client";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { VERIFY_TOKEN_MUTATION } from "../../apis/users";
+import { VERIFY_TOKEN_MUTATION, RESEND_MAIL_VERIFICATION_MUTATION } from "../../apis/users";
 
 import { Button, Container, Row, Col, Alert } from "reactstrap";
 
@@ -10,14 +10,39 @@ function MailVerification() {
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [isHiddesn, setisHiddesn] = useState(false);
-  const [validUrl, setValidUrl] = useState(false);
-
-  const handleClick = () => {
-    navigate("/login2");
-  };
-
+  const [validUrl, setValidUrl] = useState();
+  const [resendMailVerification, { loading, error, data }] = useMutation(RESEND_MAIL_VERIFICATION_MUTATION);
   const tokenValue = useParams("token");
   const userid = useParams("userId");
+
+
+  const handleClick = () => {
+    navigate("/login");
+  };
+
+  const ResendMail = () => {
+    async function resendMail() {
+      const { data } = await resendMailVerification({
+        variables: {
+          resendMailVerificationId: userid.userId,
+
+        },
+      });
+      console.log(data.resendMailVerification);
+      if (data.resendMailVerification === "mail sent") {
+        setisHiddesn(true);
+        setAlert(true);
+         
+
+      }
+      else if (data.resendMailVerification === "user not found") {
+      }
+
+    };
+    resendMail();
+  };
+
+
 
   const [verifyToken, { loadingP, errorP, dataP }] = useMutation(
     VERIFY_TOKEN_MUTATION
@@ -53,19 +78,25 @@ function MailVerification() {
 
         console.log(data.verifyToken);
         if (data.verifyToken === "success") {
-          setValidUrl(true);
+          setValidUrl("success");
         }
+        else if (data.verifyToken === "expired") {
+          setValidUrl("expired");
+        } else if (data.verifyToken === "not found") {
+          setValidUrl("not found");
+        }
+
       }
       verification();
     } catch (error) {
       console.log(error);
-      setValidUrl(false);
+
     }
-  }, [userid, tokenValue, verifyToken]);
+  }, [userid, tokenValue]);
 
   return (
     <Fragment>
-      {validUrl ? (
+      {validUrl === "success" ? (
         <div
           style={{
             backgroundColor: "#6bd098",
@@ -106,7 +137,7 @@ function MailVerification() {
             </div>
           </Container>
         </div>
-      ) : (
+      ) : validUrl === "expired" ? (
         ////////////////////////    not verified
 
         <div
@@ -133,10 +164,7 @@ function MailVerification() {
                 <Col className="ml-auto mr-auto download-area" md="5">
                   <Button
                     className="btn-round"
-                    onClick={() => {
-                      setAlert(true);
-                      setisHiddesn(true);
-                    }}
+                    onClick={ResendMail}
                     hidden={isHiddesn}
                     color="danger"
                   >
@@ -165,6 +193,17 @@ function MailVerification() {
             </Container>
           </div>
         </div>
+      ) : (
+        <div
+          style={{
+            backgroundColor: "#ffffff",
+          }}
+          className="page-header"
+          data-parallax={true}
+          ref={pageHeader}
+        > <h1>NOT FOUND</h1></div>
+
+
       )}
     </Fragment>
   );

@@ -8,6 +8,8 @@ const Token = require("../../database/models/verificationToken");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const { readFile } = require("../../utils/uploadFile");
+const BASE_URL = "http://localhost:3000";
+
 
 const resolvers = {
   Mutation: {
@@ -46,8 +48,6 @@ const resolvers = {
         });
       }
       //send email verification
-      const BASE_URL = "http://localhost:3000";
-
       const token2 = await new Token({
         userId: user.id,
         token: crypto.randomBytes(32).toString("hex"),
@@ -59,11 +59,35 @@ const resolvers = {
       return user;
     },
 
+
+
     async login(parent, { email, password }, { res }) {
       let user = await User.findOne({ email });
+      let token = await Token.findOne({ userId: user.id })
       if (!user) {
         throw new ApolloError("Email doesn't exist");
       }
+
+      // resend email verification
+
+      if (user.verified === false) {
+        if (!token) {
+          const token2 = await new Token({
+            userId: user.id,
+            token: crypto.randomBytes(32).toString("hex"),
+          }).save();
+          const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
+          await sendEmail(user.email, "Email Verification", String(url));
+          throw new ApolloError("check your email for verification");
+        } else if (token) {
+          const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
+          await sendEmail(user.email, "Email Verification", String(url));
+          throw new ApolloError("We have sent you mail to verify your account");
+        }
+
+      }
+      //
+
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({}, key, {
           subject: user._id.toString(),
@@ -74,11 +98,44 @@ const resolvers = {
           token,
           user,
         };
+
       } else {
         throw new ApolloError("Password Incorrect");
       }
+
     },
+
+     
+
+    resendMailVerification: async (parent, args, context, info)=>{
+     console.log(args)
+      const{id}= args  
+         
+      const user = await User.findById(id);
+      if (user) {
+
+        const token2 = await new Token({
+          userId: id,
+          token: crypto.randomBytes(32).toString("hex"),
+        }).save();
+        const url = `${BASE_URL}/${token2.userId}/verify/${token2.token}`;
+        await sendEmail(user.email, "Email Verification", String(url));
+
+        return "mail sent"
+      }
+      else if(!user) {
+        return "user not found"
+      }
   },
+  },
+
+
+
+
+
+
+
+
   Query: {
     async user(_, { ID }) {
       return await User.findById(ID);

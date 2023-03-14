@@ -19,8 +19,9 @@ function AlertCheckMail() {
               <p className="note">
                 We have sent you an email to verify your email address and
                 activate your account. The link in the email will expire in
-                1hour
-                <button className="btn btn-primary"> CLick Here</button>
+                one hour <a href="https://mail.google.com/mail/u/"> CLick Here</a>
+
+                {/* <button className="btn btn-primary"> CLick Here</button> */}
               </p>
             </Col>
 
