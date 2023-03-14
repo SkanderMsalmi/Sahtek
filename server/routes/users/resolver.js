@@ -100,20 +100,20 @@ const resolvers = {
       { userInput: { email, password, name, dateOfBirth, role, gender }, image }
     ) => {
       let profileImage = "";
-      if (gender === "OTHER") {
+      if (gender === "Other") {
         profileImage = "http://localhost:5000/other.jpg";
       } else {
         if (role === "Patient") {
-          if (gender === "MALE") {
+          if (gender === "Male") {
             profileImage = "http://localhost:5000/patientM.png";
-          } else if (gender === "FEMALE") {
+          } else if (gender === "Female") {
             profileImage = "http://localhost:5000/patientF.png";
           }
         } else if (role === "Therapist") {
-          if (gender === "MALE") {
+          if (gender === "Male") {
             profileImage = "http://localhost:5000/therapistM.png";
           }
-          if (gender === "FEMALE") {
+          if (gender === "Female") {
             profileImage = "http://localhost:5000/therapistF.png";
           }
         }

@@ -30,6 +30,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import EditUser from "../../components/Profile/EditUser";
 import Therapist from "../../components/Profile/Therapist";
+import isVerified from "../../components/Guard/IsVerified";
 const USER_PROFILE = gql`
   query User($id: ID!) {
     user(ID: $id) {

@@ -28,15 +28,16 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       token
       user {
-      id
-      email
-      role
-      verified
-      patient{
-      name
-      }
-      therapist{
-      name
+        id
+        email
+        role
+        verified
+        patient {
+          name
+        }
+        therapist {
+          name
+        }
       }
     }
   }
@@ -46,26 +47,3 @@ export const RESEND_MAIL_VERIFICATION_MUTATION = gql`
     resendMailVerification(id: $resendMailVerificationId)
   }
 `;
-
-// const API_USERS = '/api/users';
-
-// export async function createUser(newUser){
-//   const response = await fetch(API_USERS,{
-//     method:'POST',
-//     headers:{
-//       'Content-Type':'application/json'
-//     },
-//     body:JSON.stringify(newUser)
-//   });
-//   const body = await response.json();
-//   if(response.ok){
-//     return  body;
-//   }else{
-//     if(body){
-//       throw body;
-//     }else{
-//       throw new Error('Error api createUser');
-//     }
-//   }
-
-// }

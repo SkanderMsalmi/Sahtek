@@ -55,6 +55,26 @@ const AppointmentSchema = new mongoose.Schema({
     ref: "Patient",
     required: true,
   },
+  therapist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Therapist",
+    required: true,
+  },
+  startTime: { type: Date, required: true },
+  endTime: { type: Date, required: true },
+  duration: { type: Number, required: true },
+  notes: { type: String },
+  status: {
+    type: String,
+    enum: ["Scheduled", "Confirmed", "Cancelled", "Completed"],
+    default: "Scheduled",
+  },
+});
+const userSchema = new mongoose.Schema({
+  verified: {
+    type: Boolean,
+    default: false,
+  },
   email: {
     type: String,
     required: true,
@@ -73,9 +93,9 @@ const AppointmentSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  gender: { type: String, enum: ["MALE", "FEMALE", "OTHER"] },
   name: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },
+  gender: { type: String, enum: ["Male", "Female", "Other"] },
   patient: { type: PatientSchema },
   therapist: { type: TherapistSchema },
 });

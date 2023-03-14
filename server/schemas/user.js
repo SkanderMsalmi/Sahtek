@@ -36,9 +36,9 @@ module.exports = gql`
   }
 
   enum Gender {
-    MALE
-    FEMALE
-    OTHER
+    Male
+    Female
+    Other
   }
   type Address {
     street: String
