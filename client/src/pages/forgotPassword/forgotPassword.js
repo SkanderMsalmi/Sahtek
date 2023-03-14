@@ -18,6 +18,8 @@ function Forgetpassword (){
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
      const [resetPassword] = useMutation(RESET_PASSWORD);
+
+     
     // const [password,setPassword]= useState('');
     // const [userType,setUserType]= useState('Patient');
 
@@ -47,18 +49,22 @@ function Forgetpassword (){
             alert('Reset password link sent!');
           }
         } catch (error) {
-          console.log("aaaa");
+          alert('email invalid!')
         }
       };
 
     return (
-        <section>
+        <section
+        style={{
+          backgroundImage:
+            "url(" + require("../../assets/img/login-image.jpg") + ")",
+        }}>
             <div className={styles.formBox}>
                 <form onSubmit={handleSubmit}>
                     <h2 style={{color:"#fff"}}>Forget Password</h2>
                     <div className={styles.inputbox}>
                         <i className="fa-sharp fa-regular fa-envelope"></i>
-                        <input type="text" className={styles.userInput} value={email} onChange={(e)=> setEmail(e.target.value)} />
+                        <input type="text" className={styles.userInput} value={email} onChange={(e)=> setEmail(e.target.value)} required/>
                         <label htmlFor="email" className={styles.userLabel} >Email</label>
                     </div>
                    
