@@ -73,7 +73,7 @@ const submit=handleSubmit(async ({newpassword}) => {
         "userid":userid.id,
         "token":tokenValue.token} });
 
-        alert("succes!");
+        
         console.log("succes")
         navigate("/login")
       
@@ -132,6 +132,10 @@ const submit=handleSubmit(async ({newpassword}) => {
         <Row>
           <Col className="mx-auto" lg="4" md="6">
             <Card className="card-register">
+            {isSubmitting &&(<Alert>
+                    password changed
+                  </Alert>)}
+                 
               <Form className="register-form" onSubmit={submit} >
               <label>new Password</label>
                 <InputGroup
