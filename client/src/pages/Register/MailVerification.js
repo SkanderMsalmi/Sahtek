@@ -185,7 +185,7 @@ function MailVerification() {
             </Container>
           </div>
         </div>
-      ) : (
+      ) : validUrl === "not found" ?(
         <div
           style={{
             backgroundColor: "#ffffff",
@@ -197,6 +197,9 @@ function MailVerification() {
           {" "}
           <h1>NOT FOUND</h1>
         </div>
+      ):(         <div>
+        
+      </div>
       )}
     </Fragment>
   );
