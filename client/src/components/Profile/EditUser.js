@@ -4,6 +4,7 @@ import styles from './Profile2.module.scss'
 import { useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
+import PasswordUpdate from "./PasswordUpdate";
 const UPDATE_USER = gql`mutation Update($userInput: UserUpdateInput, $image: Upload) {
     update(userInput: $userInput, image: $image) {
       name
@@ -11,6 +12,7 @@ const UPDATE_USER = gql`mutation Update($userInput: UserUpdateInput, $image: Upl
     }
   }`
 function EditUser(props){
+    const [changePassword, setChangePassword] = useState(false)
     const [updateUser, { loadingU, errorU, dataU }] =useMutation(UPDATE_USER);
     async function handleUpload() {
         try {
@@ -43,7 +45,9 @@ function EditUser(props){
         }
         // }
       }
-     
+     if (changePassword) {
+      return <PasswordUpdate/>
+     }
  
     return (
 <> 
@@ -72,6 +76,13 @@ function EditUser(props){
                         inputProps={{placeholder:"Insert Your Birthday"}}
                         className={` w-100`}
                     />
+                    <Button
+                      className="btn-round mt-5"
+                      color="danger"
+                      onClick={() => setChangePassword(true)}
+                    >
+                      Change Password
+                    </Button>
 <Button
                       className="btn-round mt-5"
                       color="success"

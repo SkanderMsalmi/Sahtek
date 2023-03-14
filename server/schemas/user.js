@@ -119,6 +119,8 @@ module.exports = gql`
     id: ID!
     name: String
     dateOfBirth: String
+    password: String
+    oldPassword: String
   }
 
   type AuthPayload {

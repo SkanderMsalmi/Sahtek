@@ -1,5 +1,5 @@
 // import styles from './Profile.module.scss'
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 // import Patient from "../../components/Profile/Patient";
 // import Therapist from "../../components/Profile/Therapist";
 import {
@@ -15,7 +15,6 @@ import {
   Container,
   Row,
   Col,
-  Form,
 } from "reactstrap";
 import { useEffect, useState } from "react";
 import ProfilePageHeader from "../../components/Header/ProfilePageHeader";
@@ -24,7 +23,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
 import { useParams } from "react-router-dom";
 import ProfilePosts from "../../components/Posts/profilePosts";
-import Datetime from "react-datetime";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -55,27 +53,11 @@ function Profile2() {
     },
     { notifyOnNetworkStatusChange: true }
   );
-  const initialValues = {
-    date: data?.user?.dateOfBirth * 1,
-    name: data?.user?.name,
-  };
 
-  const schema = yup.object().shape({
-    name: yup.string().required("You should enter your name"),
-    dateOfBirth: yup.string().required("You should enter your date of birth"),
-  });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-    setError,
-    clearErrors,
-  } = useForm({
-    initialValues,
-    resolver: yupResolver(schema),
-  });
+
+
+  
 
   const [activeTab, setActiveTab] = useState("1");
 
@@ -163,12 +145,12 @@ function Profile2() {
           </div>
           <Row>
             <Col className="ml-auto mr-auto text-center" md="6">
-              <p>
+              {/* <p>
                 An artist of considerable range, Jane Faker — the name taken by
                 Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
                 and records all of his own music, giving it a warm, intimate
                 feel with a solid groove structure.
-              </p>
+              </p> */}
               <br />
               {user?.email === data.user?.email ? (
                 <Button
