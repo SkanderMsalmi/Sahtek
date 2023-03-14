@@ -97,7 +97,7 @@ function Therapist(props){
             description: data.user.therapist.description,
             education: data.user.therapist.education,
             experience: data.user.therapist.experience,
-            fees: data.user.therapist.fees,
+            fees: data.user.therapist.fees*1,
             languages: data.user.therapist.languages,
             license: data.user.therapist.license,
             ratings: data.user.therapist.ratings,
@@ -115,7 +115,7 @@ function Therapist(props){
     const handleFees = (e) => {
         const re = /^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/;
         if (e.target.value === '' || re.test(e.target.value)) {
-            setEditInfo({...editInfo, fees: e.target.value})
+            setEditInfo({...editInfo, fees: e.target.value*1})
         }
     }
 
