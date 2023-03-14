@@ -1,11 +1,10 @@
-import styles from "./Register.module.scss";
-import { useMutation, gql } from "@apollo/client";
-import React, { useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LOGIN_MUTATION, REGISTER_MUTATION } from "../../apis/users";
+import { REGISTER_MUTATION } from "../../apis/users";
 import {
   Alert,
   Button,
@@ -13,7 +12,6 @@ import {
   Col,
   Container,
   Form,
-  FormFeedback,
   FormGroup,
   Input,
   InputGroup,
@@ -21,20 +19,75 @@ import {
   InputGroupText,
   Row,
 } from "reactstrap";
-import Datetime from "react-datetime";
 import { Label } from "reactstrap/lib";
 import withGuest from "../../components/Guard/WithGuest";
-import { useDispatch } from "react-redux";
-import { userLoginSuccess } from "../../store/actions";
 
 function Register() {
-  // const [email,setEmail]= useState('');
-  // const [password,setPassword]= useState('');
-  // const [confirmPassword,setconfirmPassword]= useState('');
-  // const [name,setName]= useState('');
-  // const [role,setRole]= useState('Patient');
-  const [dayOfBirth, setDayOfBirth] = useState(new Date());
-  // const userType = useParams('role');
+  //Date From Select :
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+
+  const handleYearChange = (event) => {
+    const selectedYear = event.target.value;
+    setYear(selectedYear);
+  };
+
+  const handleMonthChange = (event) => {
+    const selectedMonth = event.target.value;
+    setMonth(selectedMonth);
+  };
+
+  const handleDayChange = (event) => {
+    const selectedDay = event.target.value;
+    setDay(selectedDay);
+  };
+
+  const months = [
+    { name: "January", value: "01" },
+    { name: "February", value: "02" },
+    { name: "March", value: "03" },
+    { name: "April", value: "04" },
+    { name: "May", value: "05" },
+    { name: "June", value: "06" },
+    { name: "July", value: "07" },
+    { name: "August", value: "08" },
+    { name: "September", value: "09" },
+    { name: "October", value: "10" },
+    { name: "November", value: "11" },
+    { name: "December", value: "12" },
+  ];
+
+  const monthOptions = months.map((month) => (
+    <option key={month.value} value={month.value}>
+      {month.name}
+    </option>
+  ));
+
+  const daysInMonth = (year, month) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  const dayOptions = (() => {
+    if (month && year) {
+      const numDays = daysInMonth(year, month);
+      return Array.from({ length: numDays }, (_, i) => i + 1).map((day) => (
+        <option key={day} value={day}>
+          {day}
+        </option>
+      ));
+    } else {
+      return null;
+    }
+  })();
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
+  const yearOptions = years.map((year) => (
+    <option key={year} value={year}>
+      {year}
+    </option>
+  ));
 
   const schema = yup.object().shape({
     name: yup
@@ -68,7 +121,6 @@ function Register() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
     setError,
     clearErrors,
@@ -76,52 +128,49 @@ function Register() {
     initialValues,
     resolver: yupResolver(schema),
   });
-
   const navigate = useNavigate();
   const [registerUser, { loadingP, errorP, dataP }] =
     useMutation(REGISTER_MUTATION);
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
 
-  const dispatch = useDispatch();
-
-  const submit = handleSubmit(
-    async ({ name, role, password, email, confirmPassword }) => {
-      try {
-        clearErrors();
-        if (new Date().getFullYear() - dayOfBirth.getFullYear() < 18) {
+  const submit = handleSubmit(async ({ name, role, password, email }) => {
+    try {
+      let isoDate;
+      clearErrors();
+      if (day && month && year) {
+        const dateOfBirth = new Date(year, month - 1, day); // month is 0-based in Date constructor
+        const ageDiffMs = Date.now() - dateOfBirth.getTime();
+        const ageDate = new Date(ageDiffMs); // convert the age difference to a Date object
+        const age = Math.abs(ageDate.getUTCFullYear() - 1970); // get the absolute difference in years
+        if (age < 18) {
           setError("age", {
             type: "value",
-            message: "You should be bigger than 18",
+            message: "You should be 18 years old or older",
           });
+        } else {
+          isoDate = dateOfBirth.toISOString();
         }
-        await registerUser({
-          variables: {
-            userInput: {
-              role: role,
-              name: name,
-              password: password,
-              email: email,
-              dateOfBirth: dayOfBirth,
-            },
-          },
-        });
-
-        navigate("/alertCheckMail");
-      } catch (error) {
-        setError("generic", { type: "generic", error });
-        console.log(errors);
       }
-      // }
+      console.log(isoDate);
+      await registerUser({
+        variables: {
+          userInput: {
+            role: role,
+            name: name,
+            password: password,
+            email: email,
+            dateOfBirth: isoDate,
+          },
+        },
+      });
+
+      navigate("/alertCheckMail");
+    } catch (error) {
+      setError("generic", { type: "generic", error });
+      console.log(errors);
     }
-  );
+    // }
+  });
 
-  // const submit = async (e)=>{
-  //   // e.preventDefault();
-  //
-
-  // if ( loadingP) return <div>Loading...</div>;
-  // if (errorT ) return <div>Error: {errorT.message}</div>
-  // if (errorP) return <div>Error: {errorP.message}</div>
   return (
     <div
       className="section section-image section-login"
@@ -191,11 +240,6 @@ function Register() {
                     {errors.email.message}
                   </Alert>
                 )}
-                {error && (
-                  <Alert color="danger" isOpen={error}>
-                    {error}
-                  </Alert>
-                )}
 
                 <label>Password</label>
                 <InputGroup
@@ -247,22 +291,59 @@ function Register() {
                     {errors.confirmPassword.message}
                   </Alert>
                 )}
-                <label>Birthday</label>
-                <InputGroup className="form-group-no-border">
-                  <Datetime
-                    onChange={(e) => setDayOfBirth(e.toDate())}
-                    timeFormat={false}
-                    inputProps={{ placeholder: "Insert Your Birthday" }}
-                    className={`${styles.datePickerTime} w-100`}
-                  />
-                </InputGroup>
-                {errors?.age && (
+
+                <label>
+                  Birthday{" "}
+                  <span className="text-secondary"> (Start By Year )</span>
+                </label>
+                <div>
+                  <FormGroup className="d-flex align-items-center">
+                    <Input
+                      type="select"
+                      name="day"
+                      id="day"
+                      value={day}
+                      onChange={handleDayChange}
+                      className="me-2"
+                    >
+                      <option value="">Day</option>
+                      {dayOptions}
+                    </Input>
+                    <Input
+                      type="select"
+                      name="month"
+                      id="month"
+                      value={month}
+                      onChange={handleMonthChange}
+                      className="me-2"
+                    >
+                      <option value="">Month</option>
+                      {monthOptions}
+                    </Input>
+                    <Input
+                      type="select"
+                      name="year"
+                      id="year"
+                      value={year}
+                      onChange={handleYearChange}
+                      className={
+                        errors?.age
+                          ? "text-danger me-2"
+                          : "form-group-no-border me-2"
+                      }
+                    >
+                      <option value="">Year</option>
+                      {yearOptions}
+                    </Input>
+                  </FormGroup>
+                </div>
+                {errors?.generic && (
                   <Alert color="danger" isOpen={errors?.age}>
-                    You should be more than 18
+                    {errors.age.message}
                   </Alert>
                 )}
-                <InputGroup className="m-5">
-                  <div className="form-check-radio m-1">
+                <InputGroup className="m-auto justify-content-center">
+                  <div className="form-check-radio m-1 ">
                     <Label className="form-check-label ">
                       <input
                         className="form-control"
@@ -298,24 +379,7 @@ function Register() {
                 )}
 
                 <br />
-                {/* <Alert className="alert-with-icon" color="danger" isOpen={alertDanger}>
-          <Container>
-            <div className="alert-wrapper">
-              <button
-                type="button"
-                className="close"
-                data-dismiss="alert"
-                aria-label="Close"
-                onClick={() => setAlertDanger(false)}
-              >
-                <i className="nc-icon nc-simple-remove" />
-              </button>
-              <div className="message">
-                <i className="nc-icon nc-bell-55" /> Wrong email or password.
-              </div>
-            </div>
-          </Container>
-        </Alert> */}
+
                 <Button
                   block
                   className="btn-round"

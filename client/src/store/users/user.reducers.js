@@ -1,10 +1,8 @@
 const initialState = {
-    user: null,
-    token: null,
-  };
+  user: null,
+  token: null,
+};
 
-
-  
 //   const userReducer = (state = initialState, action) => {
 //     switch (action.type) {
 //       case 'USER_LOGIN_SUCCESS':
@@ -23,38 +21,36 @@ const initialState = {
 //         return state;
 //     }
 //   };
-  
+
 //   export default userReducer;
 
 const userReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case 'USER_LOGIN_SUCCESS':
-        const user = action.payload.user;
-        console.log(user);
-        console.log(user);
-        if (user.patient) {
-          return {
-            ...state,
-            user: user.patient,
-            token: action.payload.token,
-          };
-        } else if (user.therapist) {
-          return {
-            ...state,
-            user: user.therapist,
-            token: action.payload.token,
-          };
-        }
-        return state;
-      case 'USER_LOGOUT':
+  switch (action.type) {
+    case "USER_LOGIN_SUCCESS":
+      const user = action.payload.user;
+      if (user.role === "Patient") {
         return {
           ...state,
-          user:null,
-          token: null,
+          user: user,
+          token: action.payload.token,
         };
-      default:
-        return state;
-    }
-  };
+      } else if (user.role === "Therapist") {
+        return {
+          ...state,
+          user: user,
+          token: action.payload.token,
+        };
+      }
+      return state;
+    case "USER_LOGOUT":
+      return {
+        ...state,
+        user: null,
+        token: null,
+      };
+    default:
+      return state;
+  }
+};
 
-  export default userReducer;
+export default userReducer;

@@ -1,4 +1,3 @@
-
 import {
   Button,
   Card,
@@ -12,10 +11,12 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
-function Homepage(){
-    return   <div className="main">
+import isVerified from "../../components/Guard/IsVerified";
+function Homepage() {
+  return (
+    <div className="main">
       <div className="main">
         <div className="section text-center">
           <Container>
@@ -23,7 +24,13 @@ function Homepage(){
               <Col className="ml-auto mr-auto" md="8">
                 <h2 className="title">Your mental health matters</h2>
                 <h5 className="description">
-                Welcome to our mental health website! We offer resources and support to help you manage your mental health, no matter what challenges you may be facing. From self-care tips to online therapy, we're here to provide you with the tools and guidance you need to achieve a better state of mental health and wellbeing. Your mental health matters to us, and we're committed to helping you prioritize it.
+                  Welcome to our mental health website! We offer resources and
+                  support to help you manage your mental health, no matter what
+                  challenges you may be facing. From self-care tips to online
+                  therapy, we're here to provide you with the tools and guidance
+                  you need to achieve a better state of mental health and
+                  wellbeing. Your mental health matters to us, and we're
+                  committed to helping you prioritize it.
                 </h5>
                 <br />
                 <Button
@@ -47,7 +54,9 @@ function Homepage(){
                   <div className="description">
                     <h4 className="info-title">Online Consultation</h4>
                     <p className="description">
-                    Get professional help and support from licensed therapists and mental health experts through our easy-to-use online consultation platform.
+                      Get professional help and support from licensed therapists
+                      and mental health experts through our easy-to-use online
+                      consultation platform.
                     </p>
                     <Button className="btn-link" color="info" href="#pablo">
                       See more
@@ -63,7 +72,9 @@ function Homepage(){
                   <div className="description">
                     <h4 className="info-title">Community Forum</h4>
                     <p>
-                    Connect with others who are going through similar experiences and share your own story in our safe and supportive community forum.
+                      Connect with others who are going through similar
+                      experiences and share your own story in our safe and
+                      supportive community forum.
                     </p>
                     <Button className="btn-link" color="info" href="#pablo">
                       See more
@@ -79,7 +90,9 @@ function Homepage(){
                   <div className="description">
                     <h4 className="info-title">Shop Resources</h4>
                     <p>
-                    Browse our selection of mental health resources and products, including books, journals, and self-care tools to help you prioritize your wellbeing.
+                      Browse our selection of mental health resources and
+                      products, including books, journals, and self-care tools
+                      to help you prioritize your wellbeing.
                     </p>
                     <Button className="btn-link" color="info" href="#pablo">
                       See more
@@ -95,7 +108,9 @@ function Homepage(){
                   <div className="description">
                     <h4 className="info-title"> Chatbot Profiling</h4>
                     <p>
-                    Our AI-powered chatbot uses natural language processing to provide personalized mental health recommendations and support based on your unique needs and concerns.
+                      Our AI-powered chatbot uses natural language processing to
+                      provide personalized mental health recommendations and
+                      support based on your unique needs and concerns.
                     </p>
                     <Button className="btn-link" color="info" href="#pablo">
                       See more
@@ -317,7 +332,8 @@ function Homepage(){
           </Container>
         </div>
       </div>
-  </div>;
+    </div>
+  );
 }
 
-export default Homepage;
+export default isVerified(Homepage);
