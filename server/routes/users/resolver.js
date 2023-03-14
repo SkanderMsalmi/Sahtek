@@ -11,11 +11,97 @@ const { readFile } = require("../../utils/uploadFile");
 
 const resolvers = {
   Mutation: {
+    updateTherapist: async (_, { therapistInput: { id,license,specialties,description,availability,education,experience,languages,fees,ratings,reviews,address, phoneNumber,  } }) => {
+      const existingUser = await User.findById(id);
+      console.log(existingUser)
+      if (!existingUser) {
+        throw new Error("User doesn't exist");
+      }
+      if (license){
+      existingUser.therapist.license = license;
+      }
+      if (specialties){
+      existingUser.therapist.specialties = specialties;
+      }
+      if (description){
+      existingUser.therapist.description = description;
+      }
+      if (availability){
+      existingUser.therapist.availability = availability;
+      }
+      if (education){
+      existingUser.therapist.education = education;
+      }
+      if (experience){
+      existingUser.therapist.experience = experience;
+      }
+      if (languages){
+      existingUser.therapist.languages = languages;
+      }
+      if (fees){
+      existingUser.therapist.fees = fees;
+      }
+      if (ratings){
+      existingUser.therapist.ratings = ratings;
+      }
+      if (reviews){
+      existingUser.therapist.reviews = reviews;
+      }
+      if (address){
+      existingUser.therapist.address = address;
+      }
+      if (phoneNumber){
+      existingUser.therapist.phoneNumber = phoneNumber;
+      }
+      await existingUser.save();
+      return existingUser;
+    },
+    update: async (_, { userInput: { id, name, dateOfBirth },image }) => {
+      const existingUser = await User.findById(id);
+      if (!existingUser) {
+        throw new Error("User doesn't exist");
+      }
+      if (image) {
+        profileImage = await readFile(image);
+        existingUser.profileImage = profileImage;
+      }
+      if (name){
+      existingUser.name = name;
+      }
+      if (dateOfBirth){
+      existingUser.dateOfBirth = dateOfBirth;
+      }
+      await existingUser.save();
+      return existingUser;
+      
+    },
     register: async (
       parent,
-      { userInput: { email, password, name, dateOfBirth, role }, image }
+      { userInput: { email, password, name, dateOfBirth, role,gender }, image }
     ) => {
-      let profileImage = "";
+      let profileImage="";
+      if (gender === "OTHER"){
+        profileImage = "http://localhost:5000/other.jpg"
+      }
+      else{
+      if (role ==="Patient")
+      {
+        if (gender === "MALE"){
+           profileImage = "http://localhost:5000/patientM.png"
+        }
+        else if (gender === "FEMALE"){
+           profileImage = "http://localhost:5000/patientF.png"
+        }
+      }
+      else if (role ==="Therapist") {
+        if (gender === "MALE"){
+          profileImage = "http://localhost:5000/therapistM.png"
+        }
+        if (gender === "FEMALE"){
+          profileImage = "http://localhost:5000/therapistF.png"
+        }
+      }
+    }
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         throw new Error("User with that email already exists");

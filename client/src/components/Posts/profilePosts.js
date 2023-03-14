@@ -20,12 +20,10 @@ const PROFILE_POSTS_QUERY = gql`query FindPostByUser($id: ID!) {
 
   function ProfilePosts(props){
     let { id } = useParams();
-console.log(id)
     const { data, loading, error } = useQuery(PROFILE_POSTS_QUERY, {
         variables: { id: id? id: props.user.id}});
     if (loading) return <p>Loading...</p>;
     if(error) return <p>{error}</p>
-console.log(data.findPostByUser)
     if (data.findPostByUser?.length === 0) return <div><h3 className="text-muted">No posts yet :(</h3>
     <Button className="btn-round" color="warning">
       Find posts

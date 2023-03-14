@@ -13,6 +13,7 @@ type User {
   email: String!
   password: String!
   role: Role!
+  gender: Gender
   dateOfBirth: String!
   profileImage: String
   patient:Patient
@@ -25,10 +26,9 @@ type Patient {
   email: String!
   password: String!
   dateOfBirth: String
-  gender: Gender
   address: Address
-  profileImage: String
   phoneNumber: String
+  profileImage: String
   emergencyContact: EmergencyContact
   medicalConditions: [String]
   medications: [Medication]
@@ -77,13 +77,15 @@ type Patient {
     email: String!
     password: String!
     license: String
-  dateOfBirth: String
-  profileImage: String
+    dateOfBirth: String
+    profileImage: String
     specialties: [String!]
     description: String
     availability: String
+    address: Address
+    phoneNumber: String
     education: [String]
-    experience: String
+    experience: Int
     languages: [String]
     fees: Float
     ratings: [Float]
@@ -110,13 +112,39 @@ type Patient {
                 email: String!
                 password: String!
                 dateOfBirth: String!
+                gender: Gender!
                 role:Role!
             }
-            
+            input UserUpdateInput {
+              id: ID!
+                name: String
+                dateOfBirth: String
+            }
 
             type AuthPayload {
               token: String
               user:User
+            }
+            input TherapistInput {
+              id: ID!
+              license: String
+              specialties: [String]
+              description: String
+              availability: String
+              address: AddressInput
+              phoneNumber: String
+              education: [String]
+              experience: Int
+              languages: [String]
+              fees: Float
+              ratings: [Float]
+              reviews: [String]
+            }
+            input AdressInput {
+              street: String
+              city: String
+              state: String
+              zip: String
             }
  extend type Query{
        user(ID:ID!): User
@@ -127,5 +155,7 @@ type Patient {
   register(userInput: UserInput,image: Upload):User
   login(email: String!, password: String!): AuthPayload!
   verifyEmail(id: ID, otp: String): String
+  update(userInput: UserUpdateInput, image: Upload): User
+  updateTherapist( therapistInput: TherapistInput): User
      }  
 `

@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 // app.use(cookie());
 app.use(express.json());
-
+app.use(express.static('upload'));
 var allowlist = ['http://localhost:3000']
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
