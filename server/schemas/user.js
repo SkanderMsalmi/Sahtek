@@ -13,7 +13,7 @@ module.exports = gql`
     email: String!
     password: String!
     role: Role!
-    gender: Gender!
+    gender: Gender
     dateOfBirth: String!
     profileImage: String
     patient: Patient
@@ -26,10 +26,9 @@ module.exports = gql`
     email: String!
     password: String!
     dateOfBirth: String
-    gender: Gender
     address: Address
-    profileImage: String
     phoneNumber: String
+    profileImage: String
     emergencyContact: EmergencyContact
     medicalConditions: [String]
     medications: [Medication]
@@ -37,9 +36,9 @@ module.exports = gql`
   }
 
   enum Gender {
-    Male
-    Female
-    Other
+    MALE
+    FEMALE
+    OTHER
   }
   type Address {
     street: String
@@ -83,8 +82,10 @@ module.exports = gql`
     specialties: [String!]
     description: String
     availability: String
+    address: Address
+    phoneNumber: String
     education: [String]
-    experience: String
+    experience: Int
     languages: [String]
     fees: Float
     ratings: [Float]
@@ -111,13 +112,39 @@ module.exports = gql`
     email: String!
     password: String!
     dateOfBirth: String!
+    gender: Gender!
     role: Role!
-    gender: Gender
+  }
+  input UserUpdateInput {
+    id: ID!
+    name: String
+    dateOfBirth: String
   }
 
   type AuthPayload {
     token: String
     user: User
+  }
+  input TherapistInput {
+    id: ID!
+    license: String
+    specialties: [String]
+    description: String
+    availability: String
+    address: AddressInput
+    phoneNumber: String
+    education: [String]
+    experience: Int
+    languages: [String]
+    fees: Float
+    ratings: [Float]
+    reviews: [String]
+  }
+  input AdressInput {
+    street: String
+    city: String
+    state: String
+    zip: String
   }
   extend type Query {
     user(ID: ID!): User
@@ -128,6 +155,8 @@ module.exports = gql`
     register(userInput: UserInput, image: Upload): User
     login(email: String!, password: String!): AuthPayload!
     verifyEmail(id: ID, otp: String): String
+    update(userInput: UserUpdateInput, image: Upload): User
+    updateTherapist(therapistInput: TherapistInput): User
     resetPassword(email: String!): Boolean
     resetPasswordlink(
       userid: String!

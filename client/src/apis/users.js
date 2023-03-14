@@ -28,12 +28,15 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       token
       user {
-        dateOfBirth
-        email
-        name
-        verified
-        role
-        id
+      id
+      email
+      role
+      verified
+      patient{
+      name
+      }
+      therapist{
+      name
       }
     }
   }

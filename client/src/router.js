@@ -4,6 +4,7 @@ import App from "./App";
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
 import Profile2 from "./pages/Profile/Profile2";
+
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 
 const Profile = React.lazy(() => import("./pages/Profile/Profile"));
@@ -38,18 +39,19 @@ export const router = createBrowserRouter([
         path: "register",
         element: <Register />,
       },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
+
       {
         path: "forgetpassword",
         element: <Forgotpassword />,
       },
       {
-        path: "resetpassword/:id/:token",
+        path: "resetpassword",
         element: <Resetpassword />,
       },
+
+      { path: "profile", element: <Profile2 /> },
+
+      { path: "profile/:id", element: <Profile2 /> },
 
       { path: "profile2", element: <Profile2 /> },
       {

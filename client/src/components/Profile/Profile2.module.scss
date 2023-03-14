@@ -1,0 +1,48 @@
+/*Profile Pic Start*/
+.pictureContainer {
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+}
+
+
+
+.picture:hover {
+    border: 4px solid #2ca8ff;
+
+}
+
+.content.ct-wizard-green .picture:hover {
+    border-color: #05ae0e;
+}
+
+.content.ct-wizard-blue .picture:hover {
+    border-color: #3472f7;
+}
+
+.content.ct-wizard-orange .picture:hover {
+    border-color: #ff9500;
+}
+
+.content.ct-wizard-red .picture:hover {
+    border-color: #ff3b30;
+}
+
+.inputC {
+    cursor: pointer;
+    display: block;
+    height: 100%;
+    left: 0;
+    opacity: 0 !important;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.pictureSrc {
+    width: 100%;
+
+}
+
+
+/*Profile Pic End*/

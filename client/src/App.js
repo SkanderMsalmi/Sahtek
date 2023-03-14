@@ -10,6 +10,7 @@ import client from "./apis/apolloClient";
 import store, { Persistor } from "./store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+// import AnimatedHeader from './components/Header/AnimatedHeader';
 
 function App() {
   const location = useLocation();
