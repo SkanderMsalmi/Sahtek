@@ -42,7 +42,7 @@ function Therapist(props){
     const user = useSelector(selectUser);
     let { id } = useParams();
 
-    const { data, loading, error } = useQuery(GET_THERAPIST, {
+    const { data, loading, error, refetch } = useQuery(GET_THERAPIST, {
         variables: { id:id? id: user.id },});
     const [updateTherapist] = useMutation(UPDATE_THERAPIST);
     // const [therapist, setTherapist] = useState(null);
@@ -86,8 +86,6 @@ function Therapist(props){
     useEffect(() => {
         if (data) {
            initEdit();
-           console.log("______________________________________________________________________________")
-          console.log( cleanArray(editInfo.specialties))
         }
     }, [data])
     const initEdit = () => {
@@ -220,7 +218,9 @@ function Therapist(props){
         </div>
        {edit?  <div  className={`${styles.contactInfo} col-md-6`}>
             <div style={{display:"flex",alignContent:"center",justifyContent:"space-between"}}>
-            <h5>Biography</h5><span><Button className="btn-round" style={{marginRight:"1rem"}} onClick={()=>initEdit()} color="warning">Reset</Button><Button className="btn-round" style={{marginRight:"1rem"}} onClick={(e)=> handleSubmit(e)} color="success">Save</Button><i onClick={()=>setEdit(!edit)} className={`${styles.gear} fa-solid fa-gear`}></i></span>
+            <h5>Biography</h5><span>
+                {/* <Button className="btn-round" style={{marginRight:"1rem"}} onClick={()=>refetch()} color="warning">Reset</Button> */}
+                <Button className="btn-round" style={{marginRight:"1rem"}} onClick={(e)=> handleSubmit(e)} color="success">Save</Button><i onClick={()=>setEdit(!edit)} className={`${styles.gear} fa-solid fa-gear`}></i></span>
             </div>
             <textarea className="form-control" name="description" placeholder="Describe yourself" value={editInfo.description} onChange={(e) => setEditInfo({...editInfo,description:e.target.value})} />
             <div className="row">
