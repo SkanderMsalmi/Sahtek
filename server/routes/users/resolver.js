@@ -180,26 +180,26 @@ const resolvers = {
         throw new ApolloError("Email doesn't exist");
       }
 
-      // resend email verification
+      // // resend email verification
 
-      if (user.verified === false) {
-        let token = await Token.findOne({ userId: user.id });
-        if (!token) {
-          const token2 = await new Token({
-            userId: user.id,
-            token: crypto.randomBytes(32).toString("hex"),
-          }).save();
-          const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
-          await sendEmail(user.email, "Email Verification", String(url));
+      // if (user.verified === false) {
+      //   let token = await Token.findOne({ userId: user.id });
+      //   if (!token) {
+      //     const token2 = await new Token({
+      //       userId: user.id,
+      //       token: crypto.randomBytes(32).toString("hex"),
+      //     }).save();
+      //     const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
+      //     await sendEmail(user.email, "Email Verification", String(url));
 
 
-        } else if (token) {
-          const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
-          await sendEmail(user.email, "Email Verification", String(url));
+      //   } else if (token) {
+      //     const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
+      //     await sendEmail(user.email, "Email Verification", String(url));
 
-        }
-      }
-      //
+      //   }
+      // }
+      // //
 
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({}, key, {

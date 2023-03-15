@@ -6,21 +6,25 @@ import {
   VERIFY_TOKEN_MUTATION,
   RESEND_MAIL_VERIFICATION_MUTATION,
 } from "../../apis/users";
+import { userLogout } from '../../store/users/user.actions';
 
 import { Button, Container, Row, Col, Alert } from "reactstrap";
+import { useDispatch } from "react-redux";
 
 function MailVerification() {
   const navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [isHiddesn, setisHiddesn] = useState(false);
   const [validUrl, setValidUrl] = useState();
+  
   const [resendMailVerification, { loading, error, data }] = useMutation(
     RESEND_MAIL_VERIFICATION_MUTATION
   );
   const tokenValue = useParams("token");
   const userid = useParams("userId");
-
+  const dispatch = useDispatch();
   const handleClick = () => {
+    dispatch(userLogout());
     navigate("/login");
   };
 

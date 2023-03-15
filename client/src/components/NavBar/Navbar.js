@@ -129,7 +129,7 @@ function Navigation() {
                 </NavLink>
               </NavItem>
 
-             {user ? (  
+             {user && user.verified ? (  
  <>
  <NavItem>
  <Button
