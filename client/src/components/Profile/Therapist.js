@@ -53,10 +53,13 @@ function Therapist(props){
     //   }, [data])
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateTherapist({variables: {therapistInput: editInfo}}).then((res) => {
-            console.log(res)
-            setEdit(false)
-        })
+      
+        setEditInfo({...editInfo, specialties: cleanArray(editInfo.specialties), languages: cleanArray(editInfo.languages), education: cleanArray(editInfo.education)});
+            updateTherapist({variables: {therapistInput: {...editInfo, specialties: cleanArray(editInfo.specialties), languages: cleanArray(editInfo.languages), education: cleanArray(editInfo.education)}}}).then((res) => {
+                console.log(res)
+                setEdit(false)
+            })
+      
     }
     const [edit, setEdit] = useState(false);
     const [editInfo, setEditInfo] = useState({
@@ -83,6 +86,8 @@ function Therapist(props){
     useEffect(() => {
         if (data) {
            initEdit();
+           console.log("______________________________________________________________________________")
+          console.log( cleanArray(editInfo.specialties))
         }
     }, [data])
     const initEdit = () => {
@@ -105,6 +110,13 @@ function Therapist(props){
             specialties: data.user.therapist.specialties,
             phoneNumber: data.user.therapist.phoneNumber}
             )};
+
+    const cleanArray = (array) => {
+       return array.filter(function (el) {
+            return el != "" && el != " " && el != null;
+        });
+    }
+
     const handlePhone = (e) => {
         const re = /^[0-9\b]+$/;
         if (e.target.value === '' || re.test(e.target.value)) {
