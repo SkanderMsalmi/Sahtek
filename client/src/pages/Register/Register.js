@@ -149,6 +149,12 @@ function Register() {
       try {
         let isoDate;
         clearErrors();
+        if (!day || !month || !year) {
+          setError("age", {
+            type: "value",
+            message: "Please Insert your birthday",
+          });
+        }
         if (day && month && year) {
           const dateOfBirth = new Date(year, month - 1, day); // month is 0-based in Date constructor
           const ageDiffMs = Date.now() - dateOfBirth.getTime();
@@ -179,7 +185,12 @@ function Register() {
 
         navigate("/alertCheckMail");
       } catch (error) {
-        setError("generic", { type: "generic", error });
+        console.log(error);
+        setError("generic", {
+          type: "generic",
+          error,
+          message: "Check Your Credentials",
+        });
         console.log(errors);
       }
       // }
@@ -202,7 +213,7 @@ function Register() {
 
               {errors?.generic && (
                 <Alert color="danger" isOpen={errors?.generic}>
-                  {errors.generic.error.message}
+                  {errors.generic.message}
                 </Alert>
               )}
               <form tag={Form} className="register-form" onSubmit={submit}>
@@ -302,7 +313,7 @@ function Register() {
                         </Input>
                       </FormGroup>
                     </div>
-                    {errors?.generic?.age && (
+                    {errors?.age && (
                       <Alert color="danger" isOpen={errors?.age}>
                         {errors?.age?.message}
                       </Alert>

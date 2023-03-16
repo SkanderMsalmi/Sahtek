@@ -10,7 +10,6 @@ const crypto = require("crypto");
 const { readFile } = require("../../utils/uploadFile");
 const nodemailer = require("nodemailer");
 
-
 const BASE_URL = "http://localhost:3000";
 
 const resolvers = {
@@ -79,20 +78,23 @@ const resolvers = {
       await existingUser.save();
       return existingUser;
     },
-    update: async (_, { userInput: { id, name, dateOfBirth,password, oldPassword }, image }) => {
+    update: async (
+      _,
+      { userInput: { id, name, dateOfBirth, password, oldPassword }, image }
+    ) => {
       const existingUser = await User.findById(id);
-    
-      
+
       if (!existingUser) {
         throw new Error("User doesn't exist");
       }
-      if (password){
+      if (password) {
         if (!bcrypt.compareSync(oldPassword, existingUser.password)) {
           throw new Error("Incorrect password");
         }
-        const passwordHashed =await bcrypt.hashSync(password, 10)||existingUser.password;
+        const passwordHashed =
+          (await bcrypt.hashSync(password, 10)) || existingUser.password;
 
-        existingUser.password=passwordHashed;
+        existingUser.password = passwordHashed;
       }
       if (image) {
         profileImage = await readFile(image);
@@ -180,32 +182,29 @@ const resolvers = {
         throw new ApolloError("Email doesn't exist");
       }
 
-      // // resend email verification
+      // resend email verification
 
-      // if (user.verified === false) {
-      //   let token = await Token.findOne({ userId: user.id });
-      //   if (!token) {
-      //     const token2 = await new Token({
-      //       userId: user.id,
-      //       token: crypto.randomBytes(32).toString("hex"),
-      //     }).save();
-      //     const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
-      //     await sendEmail(user.email, "Email Verification", String(url));
-
-
-      //   } else if (token) {
-      //     const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
-      //     await sendEmail(user.email, "Email Verification", String(url));
-
-      //   }
-      // }
-      // //
+      if (user.verified === false) {
+        let token = await Token.findOne({ userId: user.id });
+        if (!token) {
+          const token2 = await new Token({
+            userId: user.id,
+            token: crypto.randomBytes(32).toString("hex"),
+          }).save();
+          const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
+          await sendEmail(user.email, "Email Verification", String(url));
+        } else if (token) {
+          const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
+          await sendEmail(user.email, "Email Verification", String(url));
+        }
+      }
+      //
 
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({}, key, {
           subject: user._id.toString(),
           algorithm: "RS256",
-          expiresIn: 60 * 60 * 60 * 30 * 6,
+          // expiresIn: "1s",
         });
         return {
           token,
@@ -240,51 +239,7 @@ const resolvers = {
         from: "sahtek2023@gmail.com",
         to: email,
         subject: "Reset Password Link",
-        // text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword/${user.id}/${token}`,
-        html: `<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta http-equiv="X-UA-Compatible" content="IE=edge">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Document</title>
-
-				 
-			
-			 
-				  
-			</head>
-			
-			<body  style=" min-height: 60vh;    
-			background: #cdf0f0;    padding-left: 27%;  padding-top: 10%" >
-		 
-			<form class="verify-form" style="      padding: 40px;  
-
-				border-radius: 15px;
-				width: 400px;  background: #ffffff;" >
-					<h3   style="font-size: 25px; font-weight: 700; letter-spacing: -1px; line-height: 48px;  color: #403D39;  
-					  margin-bottom : 15px;
-						margin-top:20px;">Reset password </h3>
-					
-					 
-					  <p   style=" margin-bottom: 0px; font-size: 17px;
-				  color: #1b1b1b;  ">Please click on the following link to reset your password.</p>
-					 <a   href="http://localhost:3000/resetPassword/${user.id}/${token}">
-					   <button style="width: 100%;
-					   margin-top: 40px;
-						   margin-bottom: 20px;
-				  
-					  background   :#51cbce ;
-					   color: #ffffff;
-					  padding:15px;
-					font-size: 17px;
-					  border-radius: 15px;  border-width: 0px"  class="btn btn-primary ">Reset</button></a>
-				   </form> 
-			 
-				
-				
-			</body>
-			</html> `
+        text: `Please click on the following link to reset your password: http://localhost:3000/resetPassword/${user.id}/${token}`,
       };
       await transporter.sendMail(mailOptions);
       return true;
@@ -307,18 +262,17 @@ const resolvers = {
 
       const user = await User.findById(id);
       if (user) {
-       
         const token2 = new Token({
           userId: id,
           token: crypto.randomBytes(32).toString("hex"),
-        })
-        const tokenexist = await Token.findOne({ userId: id })
-        if(tokenexist){
-        await Token.findOneAndUpdate(id,{userId : id, token : token2.token })}
-        else{
+        });
+        const tokenexist = await Token.findOne({ userId: id });
+        if (tokenexist) {
+          await Token.findOneAndUpdate(id, { userId: id, token: token2.token });
+        } else {
           token2.save();
         }
-        
+
         const url = `${BASE_URL}/${token2.userId}/verify/${token2.token}`;
         await sendEmail(user.email, "Email Verification", String(url));
 
