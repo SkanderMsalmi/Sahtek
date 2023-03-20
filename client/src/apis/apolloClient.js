@@ -47,7 +47,9 @@ const client = new ApolloClient({
   link: createUploadLink({
     uri: 'http://localhost:5000/graphql',
   }),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    addTypename: false
+  })
 });
 
 export default client;

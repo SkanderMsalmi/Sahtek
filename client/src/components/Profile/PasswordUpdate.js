@@ -48,11 +48,11 @@ function PasswordUpdate(){
           <Col className="ml-auto mr-auto" md="6">
 <FormGroup> 
             <Label  for="oldPw">Old Password</Label>
-            <input className="mb-5 form-control" type="text" name="name" id="name" placeholder="Old password" value={oldPassword} onChange={(e)=>setOldPassword(e.target.value)}/>
+            <input className="mb-5 form-control" type="password" name="name" id="name" placeholder="Old password" value={oldPassword} onChange={(e)=>setOldPassword(e.target.value)}/>
             <Label  for="oldPw">New Password</Label>
-            <input className="mb-5 form-control" type="text" name="name" id="name" placeholder="New password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)}/>
+            <input className="mb-5 form-control" type="password" name="name" id="name" placeholder="New password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)}/>
             <Label  for="oldPw">Confirm Password</Label>
-            <input className="mb-5 form-control" type="text" name="name" id="name" placeholder="Old password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}/>
+            <input className="mb-5 form-control" type="password" name="name" id="name" placeholder="Old password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}/>
             <Button
                 className="btn-round mt-5"
                 color="danger"

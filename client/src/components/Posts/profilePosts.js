@@ -6,7 +6,8 @@ import {
     Input,
     Row,
     Col,
-    Button
+    Button,
+    Spinner
   } from "reactstrap";
 
 
@@ -22,7 +23,7 @@ const PROFILE_POSTS_QUERY = gql`query FindPostByUser($id: ID!) {
     let { id } = useParams();
     const { data, loading, error } = useQuery(PROFILE_POSTS_QUERY, {
         variables: { id: id? id: props.user.id}});
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Spinner/>;
     if(error) return <p>{error}</p>
     if (data.findPostByUser?.length === 0) return <div><h3 className="text-muted">No posts yet :(</h3>
     <Button className="btn-round" color="warning">

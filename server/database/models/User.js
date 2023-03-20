@@ -24,17 +24,25 @@ const PatientSchema = mongoose.Schema({
   medicalConditions: [{ type: String }],
   medications: [{ name: { type: String }, dosage: { type: String } }],
 });
-
+const LicensesSchema = mongoose.Schema({
+  type: { type: String },
+  license: { type: String },
+  state: { type: String },
+});
 const TherapistSchema = mongoose.Schema({
   name: { type: String },
   dateOfBirth: { type: Date },
-  license: { type: String },
+  licenses: [{type: LicensesSchema}],
   specialty: { type: String },
   description: { type: String },
-  availability: { type: String },
+  availability: [{ 
+  day: { type: String },
+  startTime: { type: String },
+  endTime: { type: String },  
+   }],
   education: [{ type: String }],
   specialties: [{ type: String }],
-  experience: { type: String },
+  experience: { type: Date },
   languages: [{ type: String }],
   phoneNumber: { type: String },
   address: {

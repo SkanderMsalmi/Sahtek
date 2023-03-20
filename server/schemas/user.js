@@ -76,16 +76,16 @@ module.exports = gql`
     name: String
     email: String!
     password: String!
-    license: String
+    licenses: [License]
     dateOfBirth: String
     profileImage: String
     specialties: [String!]
     description: String
-    availability: String
+    availability: [Availability]
     address: Address
     phoneNumber: String
     education: [String]
-    experience: Int
+    experience: String
     languages: [String]
     fees: Float
     ratings: [Float]
@@ -129,18 +129,43 @@ module.exports = gql`
   }
   input TherapistInput {
     id: ID!
-    license: String
+    licenses: [LicenseInput]
     specialties: [String]
     description: String
-    availability: String
+    availability: [AvailabilityInput]
     address: AddressInput
     phoneNumber: String
     education: [String]
-    experience: Int
+    experience: String
     languages: [String]
     fees: Float
     ratings: [Float]
     reviews: [String]
+  }
+  enum LicenseType {
+    Major
+    Minor
+  }
+
+  input LicenseInput {
+    typeL: LicenseType
+    license: String
+    state: String
+  }
+  type License {
+    typeL: LicenseType
+    license: String
+    state: String
+  }
+  input AvailabilityInput {
+    day: String
+    startTime: String
+    endTime: String
+  }
+  type Availability {
+    day: String
+    startTime: String
+    endTime: String
   }
   input AdressInput {
     street: String

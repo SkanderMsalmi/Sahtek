@@ -28,3 +28,15 @@
     color: #2ca8ff;
     cursor: pointer;
 }
+
+.borderless {
+    border: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background-color: #51ccce27 !important;
+}
+
+.btnTrans {
+    background-color: #51ccce21 !important;
+    border: transparent !important;
+}

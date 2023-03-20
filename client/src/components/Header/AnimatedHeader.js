@@ -50,7 +50,9 @@ const handleOnClick = index => {
 <span className={styles.fancy}>Help </span>
  is one click away.
 </h1>
-
+{/* <h2 className={styles.centered+' '+styles.title2}>
+            Get expert help from the comfort of your own home.
+</h2> */}
 <i id="icon" className={`fa-solid fa-heart ${styles.centered} ${styles.icon}`}></i>
 
 

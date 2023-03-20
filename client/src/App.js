@@ -5,7 +5,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { Outlet } from "react-router-dom";
 import Navigation from "./components/NavBar/Navbar";
 import { useLocation } from "react-router-dom";
-import Header from "./components/Header/Header";
+import AnimatedHeader from "./components/Header/AnimatedHeader";
 import client from "./apis/apolloClient";
 import store, { Persistor } from "./store";
 import { Provider } from "react-redux";
@@ -20,7 +20,7 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
           <Navigation />
-          {location.pathname == "/" ? <Header /> : ""}
+          {location.pathname == "/" ? <AnimatedHeader /> : ""}
           <div className="flex-fill d-flex flex-column">
             <Suspense>
               <Outlet />
