@@ -9,7 +9,6 @@ function AnimatedHeader() {
     const [toggled,setToggled]=useState(true);
     const createGrid = () => {
         setSize( 800 );
-        console.log(size)
         setColumns(Math.floor(document.body.clientWidth / size));
         setRows(Math.floor(document.getElementById('heads').clientHeight / size));
     }
