@@ -20,6 +20,9 @@ const Login = React.lazy(() => import("./pages/Signin/Login"));
 const MailVerification = React.lazy(() =>
   import("./pages/Register/MailVerification")
 );
+const Rdv = React.lazy(() =>
+  import("./pages/rdv/Rdv")
+);
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "resetpassword/:userid/:token",
         element: <Resetpassword />,
+      },
+      {
+        path: "rdv",
+        element: <Rdv />,
       },
       {
         path: "*",

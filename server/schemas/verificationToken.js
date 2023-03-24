@@ -14,4 +14,5 @@ input VerificationTokenInput {
 }  
 extend type Mutation {
     verifyToken(verificationTokenInput: VerificationTokenInput, userId: ID): String
+    verifyTokenforpassword(VerificationTokenInput :VerificationTokenInput,userId: ID):String
 }`
