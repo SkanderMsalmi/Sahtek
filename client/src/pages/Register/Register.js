@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LOGIN_MUTATION, REGISTER_MUTATION } from "../../apis/users";
+import { REGISTER_MUTATION } from "../../apis/users";
 import {
   Alert,
   Button,
@@ -21,15 +21,12 @@ import {
 } from "reactstrap";
 import { Label } from "reactstrap/lib";
 import withGuest from "../../components/Guard/WithGuest";
-import { useDispatch } from "react-redux";
-import { userLoginSuccess } from "../../store/users/user.actions";
 
 function Register() {
   //Date From Select :
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState("password");
   const togglePassword = () => {
@@ -141,8 +138,7 @@ function Register() {
     initialValues,
     resolver: yupResolver(schema),
   });
-  const [registerUser, { loadingP, errorP, dataP }] =
-    useMutation(REGISTER_MUTATION);
+  const [registerUser] = useMutation(REGISTER_MUTATION);
 
   const submit = handleSubmit(
     async ({ name, role, password, email, gender }) => {
@@ -169,7 +165,6 @@ function Register() {
             isoDate = dateOfBirth.toISOString();
           }
         }
-        console.log(isoDate);
         await registerUser({
           variables: {
             userInput: {

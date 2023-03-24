@@ -6,7 +6,7 @@ import {
   VERIFY_TOKEN_MUTATION,
   RESEND_MAIL_VERIFICATION_MUTATION,
 } from "../../apis/users";
-import { userLogout } from '../../store/users/user.actions';
+import { userLogout } from "../../store/users/user.actions";
 
 import { Button, Container, Row, Col, Alert } from "reactstrap";
 import { useDispatch } from "react-redux";
@@ -16,7 +16,7 @@ function MailVerification() {
   const [showAlert, setAlert] = useState(false);
   const [isHiddesn, setisHiddesn] = useState(false);
   const [validUrl, setValidUrl] = useState();
-  
+
   const [resendMailVerification, { loading, error, data }] = useMutation(
     RESEND_MAIL_VERIFICATION_MUTATION
   );
@@ -35,7 +35,6 @@ function MailVerification() {
           resendMailVerificationId: userid.userId,
         },
       });
-      console.log(data.resendMailVerification);
       if (data.resendMailVerification === "mail sent") {
         setisHiddesn(true);
         setAlert(true);
@@ -77,7 +76,6 @@ function MailVerification() {
           },
         });
 
-        console.log(data.verifyToken);
         if (data.verifyToken === "success") {
           setValidUrl("success");
         } else if (data.verifyToken === "expired") {

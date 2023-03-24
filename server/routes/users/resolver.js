@@ -35,7 +35,6 @@ const resolvers = {
       }
     ) => {
       const existingUser = await User.findById(id);
-      console.log(existingUser);
       if (!existingUser) {
         throw new Error("User doesn't exist");
       }

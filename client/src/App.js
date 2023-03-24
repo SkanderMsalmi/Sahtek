@@ -1,7 +1,6 @@
-import React, { Suspense, useEffect } from "react";
-import styles from "./App.module.scss";
+import React, { Suspense } from "react";
 import Footer from "./components/Footer/Footer";
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import { Outlet } from "react-router-dom";
 import Navigation from "./components/NavBar/Navbar";
 import { useLocation } from "react-router-dom";
@@ -20,7 +19,7 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
           <Navigation />
-          {location.pathname == "/" ? <Header /> : ""}
+          {location.pathname === "/" ? <Header /> : ""}
           <div className="flex-fill d-flex flex-column">
             <Suspense>
               <Outlet />
