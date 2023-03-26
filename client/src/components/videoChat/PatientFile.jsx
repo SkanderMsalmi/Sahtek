@@ -65,10 +65,10 @@ function PatientFile({ show, handleClick }) {
                         <div className="d-flex justify-content-between  align-items-center">
                             <div className={styles.row}>
 
-                                <button type="submit" className={styles.invisibleBtn} onClick={() => setToggled("new")}  >
-                                    New     </button>
-                                <button type="submit" className={styles.invisibleBtn} onClick={() => setToggled("history")} >
-                                    History     </button>
+                                {/* <button type="submit" className={styles.invisibleBtn} onClick={() => setToggled("new")}  >
+                                    New     </button> */}
+                                <h6>Add note</h6>
+
                             </div>
                             <div className={styles.row}>
 
@@ -87,7 +87,7 @@ function PatientFile({ show, handleClick }) {
                                     <textarea
                                         type="text"
                                         value={note} onChange={(e) => setNote(e.target.value)}
-                                        placeholder="Add note"
+                                        placeholder=". . ."
                                         name="note"
 
                                         className={styles.textarea} />
@@ -96,32 +96,35 @@ function PatientFile({ show, handleClick }) {
                                 </div>
                                 <button type="submit" className={styles.file_btn} onClick={submit} >
                                     Save     </button>
-                                {alert ? (
+                                {/* {alert ? (
                                     <Alert color="success">
-                                        Added successfully                                    </Alert>
-                                ) : null}
+                                        Added successfully
+                                    </Alert>
+                                ) : null} */}
 
                             </div>
 
-                        ) : (
+                        ) : null
+                            // (
 
 
-                            <div>
-                                <div className={styles.card}>
-                                    <div className={styles.cardContent}>
-                                        <div className={styles.cardHeader}>
+                            //     <div>
+                            //         <div className={styles.card}>
+                            //             <div className={styles.cardContent}>
+                            //                 <div className={styles.cardHeader}>
 
-                                            <h6>Date</h6>
-                                        </div>
-                                        <div className={styles.cardBody}>
-                                            <p>Title</p>
-                                        </div>
-                                    </div>
-                                </div>
+                            //                     <h6>Date</h6>
+                            //                 </div>
+                            //                 <div className={styles.cardBody}>
+                            //                     <p>Title</p>
+                            //                 </div>
+                            //             </div>
+                            //         </div>
 
-                            </div>
+                            //     </div>
 
-                        )}
+                            // )
+                        }
                     </div>
 
                 </Col>
