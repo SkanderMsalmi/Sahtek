@@ -286,6 +286,16 @@ const resolvers = {
     async user(_, { ID }) {
       return await User.findById(ID);
     },
+    async therapist(_, { ID }) {
+      const user = await User.findById(ID);
+      if (user.therapist) {
+        const ratings = user.therapist.ratings;
+        const ratingCount = ratings.length;
+        const ratingSum = ratings.reduce((total, rating) => total + rating, 0);
+        const ratingAverage = ratingCount > 0 ? ratingSum / ratingCount : 0;
+        return { user, rating: ratingAverage };
+      } else return await User.findById(ID);
+    },
     checkEmailExists: async (_, { email }, { models }) => {
       const user = await models.User.findOne({ where: { email } });
       return Boolean(user);

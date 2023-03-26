@@ -127,6 +127,10 @@ module.exports = gql`
     token: String
     user: User
   }
+  type TherapistPayload {
+    user: User
+    rating: Int
+  }
   input TherapistInput {
     id: ID!
     license: String
@@ -150,6 +154,7 @@ module.exports = gql`
   }
   extend type Query {
     user(ID: ID!): User
+    therapist(ID: ID!): TherapistPayload
     checkEmailExists(email: String!): Boolean!
     current(token: String!): User
   }
