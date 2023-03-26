@@ -4,6 +4,7 @@ import App from "./App";
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
 import Profile2 from "./pages/Profile/Profile2";
+import VideoCall from "./pages/videoCall/videoCall";
 
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "resetpassword/:userid/:token",
         element: <Resetpassword />,
+      },
+      {
+        path: "videoCall/:id",
+        element: <VideoCall />,
       },
       {
         path: "*",

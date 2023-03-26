@@ -5,7 +5,8 @@ const {graphqlUploadExpress} = require('graphql-upload');
 const app = express();
 const {ApolloServer} = require('apollo-server-express');
 var cors = require('cors')
-
+const server = require('http').createServer(app);
+const socketio = require('socket.io');
 const mongoose = require('mongoose');
 
 // app.use(cookie());
@@ -36,9 +37,29 @@ const startServer = async () => {
           return { req, res };
         }
     });
+
 await apolloServer.start();
 apolloServer.applyMiddleware({app});
-app.listen(5000,()=>{
-    console.log("Server started on port 5000");
-})};
+const http = app.listen(5000, () =>
+  console.log("🚀 Server ready at http://localhost:5000" + server.graphqlPath)
+)
+const io = socketio(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  }
+});
+io.on('connection', (socket) => {
+  socket.emit('me', socket.id);
+  socket.on('disconnect', () => {
+    socket.broadcast.emit('callended');
+  });
+  socket.on('calluser', ({userToCall, signalData, from, name}) => {
+    io.to(userToCall).emit("calluser",{signal: signalData, from, name});
+  });
+  socket.on('answercall', (data) => {
+    io.to(data.to).emit('callaccepted', data.signal);
+  });
+});
+}
 startServer();
