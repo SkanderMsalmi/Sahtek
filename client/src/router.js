@@ -20,6 +20,8 @@ const Login = React.lazy(() => import("./pages/Signin/Login"));
 const MailVerification = React.lazy(() =>
   import("./pages/Register/MailVerification")
 );
+const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
+
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +76,10 @@ export const router = createBrowserRouter([
         path: "*",
         exact: true,
         element: <Navigate to="/" />,
+      },
+      {
+        path: "videoChat",
+        element: <VideoChat />,
       },
     ],
   },
