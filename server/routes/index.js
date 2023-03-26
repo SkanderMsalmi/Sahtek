@@ -6,6 +6,7 @@ const patientFileResolvers = require("./patientFile/resolver");
 const userResolvers = require("./users/resolver");
 const ProductResolvers = require("./shop/product/resolver");
 const mailVerification = require("./users/mailVerification");
+const ratingResolvers = require("./rating/resolver");
 module.exports = [
   consultationResolvers,
   feedbackResolvers,
@@ -15,4 +16,5 @@ module.exports = [
   userResolvers,
   ProductResolvers,
   mailVerification,
+  ratingResolvers,
 ];
