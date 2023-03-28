@@ -11,21 +11,24 @@ import store, { Persistor } from "./store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ContextProvider } from "./apis/socketContext";
+import { PeerProvider } from "./apis/peerContext";
 // import AnimatedHeader from './components/Header/AnimatedHeader';
 
 function App() {
   const location = useLocation();
   if (location.pathname.startsWith("/videoCall")) return (
     <ApolloProvider client={client}>
-    <Provider store={store}>
-      <ContextProvider>
-      <PersistGate loading={null} persistor={Persistor}>
-      <div className="flex-fill d-flex flex-column">
-            <Suspense>
-              <Outlet />
-            </Suspense>
-          </div>
-          </PersistGate>
+      <Provider store={store}>
+        <ContextProvider>
+          <PeerProvider>
+            <PersistGate loading={null} persistor={Persistor}>
+              <div className="flex-fill d-flex flex-column">
+                <Suspense>
+                  <Outlet />
+                </Suspense>
+              </div>
+            </PersistGate>
+          </PeerProvider>
         </ContextProvider>
       </Provider>
     </ApolloProvider>
@@ -41,7 +44,7 @@ function App() {
               <Outlet />
             </Suspense>
           </div>
-        <Footer />
+          <Footer />
         </PersistGate>
       </Provider>
     </ApolloProvider>
