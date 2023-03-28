@@ -1,30 +1,51 @@
 const Consultation = require("../../database/models/consultation");
 const PatientFile = require("../../database/models/patientFile");
+const { User } = require("../../database/models/User");
 
 const resolvers = {
     Query: {
-        getPatientFiles:async ()=>{
+        getPatientFiles: async () => {
             return await PatientFile.find();
         },
-        getPatientFile:async(_, args)=>{
+        getPatientFile: async (_, args) => {
             return await PatientFile.findById(args.id);
-        }
+        },
+        getFilesByTherapist: async (_, { id }) => {
+            return await PatientFile.find({ therapist: id });
+        },
     },
     Mutation: {
-        createPatientFile:async(_, args)=>{
-            return await PatientFile.create(args);
+        // createPatientFile: async (_, args) => {
+        //     return await PatientFile.create(args);
+        // },
+        createPatientFile: async (_, {title,remarks,patient ,therapist}) => {
+            const createFile = new PatientFile({
+                title: title,
+                remarks: remarks,
+                patient: patient,
+                therapist: therapist,
+                createdAt: new Date().toDateString(),
+
+            });
+            return await createFile.save();
         },
-        updatePatientFile:async(_, args)=>{
+        updatePatientFile: async (_, args) => {
             return await PatientFile.updateOne(args);
         },
-        deletePatientFile:async(_, args)=>{
+        deletePatientFile: async (_, args) => {
             return await PatientFile.deleteOne(args);
         }
     },
     PatientFile: {
-        consultation:async (parent)=>{
-            return await Consultation.findById(parent.consultation);
-        }   
+        // consultation: async (parent) => {
+        //     return await Consultation.findById(parent.consultation);
+        // },
+        therapist: async (parent) => {
+            return await User.findById(parent.therapist);
+        },
+        patient: async (parent) => {
+            return await User.findById(parent.patient);
+        }
     }
 }
 
