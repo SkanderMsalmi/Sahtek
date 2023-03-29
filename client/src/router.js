@@ -1,9 +1,11 @@
 import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "./App";
+
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
 import Profile2 from "./pages/Profile/Profile2";
+import Rating from "./pages/Rating/Rating";
 
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 
@@ -17,6 +19,7 @@ const Resetpassword = React.lazy(() =>
 );
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 const Login = React.lazy(() => import("./pages/Signin/Login"));
+// const Rating = React.lazy(() => import("./components/Rating/Rate"));
 const MailVerification = React.lazy(() =>
   import("./pages/Register/MailVerification")
 );
@@ -69,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "resetpassword/:userid/:token",
         element: <Resetpassword />,
+      },
+      {
+        path: "rating/:id",
+        element: <Rating />,
       },
       {
         path: "*",

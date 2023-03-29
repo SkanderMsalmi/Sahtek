@@ -6,11 +6,13 @@ module.exports = gql`
     therapist: ID!
     rating: Float
   }
+
   extend type Query {
     getRating(id: ID!): Rating
+    checkRate(patient: ID!, therapist: ID!): Float
   }
   extend type Mutation {
-    makeRating(patient: ID!, therapist: ID!, rating: Float): Rating
+    makeRating(patient: ID!, therapist: ID!, rating: Float): Boolean
     deleteRating(id: ID!): Int
   }
 `;

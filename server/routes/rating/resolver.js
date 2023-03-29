@@ -6,6 +6,14 @@ const resolvers = {
     getRating: async (_, args) => {
       return await Rating.findById(args.id);
     },
+    checkRate: async (_, args) => {
+      const existingRating = await Rating.findOne({
+        therapist: args.therapist,
+        patient: args.patient,
+      });
+      if (existingRating) return existingRating.rating;
+      else return 0;
+    },
   },
   Mutation: {
     makeRating: async (_, args) => {
@@ -34,7 +42,7 @@ const resolvers = {
           throw new ApolloError("Therapist doesn't exist");
         }
 
-        return newRating;
+        return true;
       } catch (error) {
         throw new ApolloError(error);
       }

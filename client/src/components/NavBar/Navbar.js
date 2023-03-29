@@ -28,13 +28,13 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Container
+  Container,
 } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { AuthContext } from "../../context/AuthContext";
-import { useSelector, useDispatch } from 'react-redux';
-import { userLogout } from '../../store/users/user.actions';
-import { selectUser } from '../../store/users/users.selectors';
+import { useSelector, useDispatch } from "react-redux";
+import { userLogout } from "../../store/users/user.actions";
+import { selectUser } from "../../store/users/users.selectors";
 
 function Navigation() {
   // const {user} = useContext(AuthContext);
@@ -43,13 +43,13 @@ function Navigation() {
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-
+  const url = useLocation();
   const handleLogout = () => {
     // Remove the token from localStorage
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     // Dispatch the action to update the store
     dispatch(userLogout());
-    navigate('/login')
+    navigate("/login");
   };
   const toggleNavbarCollapse = () => {
     setNavbarCollapse(!navbarCollapse);
@@ -84,7 +84,6 @@ function Navigation() {
           <NavbarBrand
             data-placement="bottom"
             href="/index"
-            target="_blank"
             title="Mental Health Website"
           >
             Sahtek
@@ -92,7 +91,7 @@ function Navigation() {
           <button
             aria-expanded={navbarCollapse}
             className={classnames("navbar-toggler navbar-toggler", {
-              toggled: navbarCollapse
+              toggled: navbarCollapse,
             })}
             onClick={toggleNavbarCollapse}
           >
@@ -107,77 +106,73 @@ function Navigation() {
           isOpen={navbarCollapse}
         >
           <Nav navbar>
-              <NavItem>
-                <NavLink tag={Link}  to="/" >
-                  
-                  Home
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/">
-                  Services
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/">
-                  Contact us
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/">
-                  About us
-                </NavLink>
-              </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">
+                Home
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">
+                Services
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">
+                Contact us
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">
+                About us
+              </NavLink>
+            </NavItem>
 
-             {user && user.verified ? (  
- <>
- <NavItem>
- <Button
-   className="btn-round"
-   color="primary"
-   tag={Link}
-   to="/profile2"
- >
-    Profile
- </Button>
-</NavItem>
-<NavItem>
- <Button
-   className="btn-round"
-   color="danger"
-   onClick={handleLogout}
- >
-    Deconnexion
- </Button>
-</NavItem>
-</>
-             ):(
+            {user && user.verified ? (
               <>
-              <NavItem>
-              <Button
-                className="btn-round"
-                color="primary"
-                tag={Link}
-                to="/login"
-              >
-                 Login
-              </Button>
-             </NavItem>
-             <NavItem>
-              <Button
-                className="btn-round"
-                color="danger"
-                tag={Link}
-                to="/register"
-              >
-                 Register
-              </Button>
-             </NavItem>
-             </>
-             )    
-                 
-             } 
-             
+                <NavItem>
+                  <Button
+                    className="btn-round"
+                    color="primary"
+                    tag={Link}
+                    to="/profile2"
+                  >
+                    Profile
+                  </Button>
+                </NavItem>
+                <NavItem>
+                  <Button
+                    className="btn-round"
+                    color="danger"
+                    onClick={handleLogout}
+                  >
+                    Deconnexion
+                  </Button>
+                </NavItem>
+              </>
+            ) : (
+              <>
+                <NavItem>
+                  <Button
+                    className="btn-round"
+                    color="primary"
+                    tag={Link}
+                    to="/login"
+                  >
+                    Login
+                  </Button>
+                </NavItem>
+                <NavItem>
+                  <Button
+                    className="btn-round"
+                    color="danger"
+                    tag={Link}
+                    to="/register"
+                  >
+                    Register
+                  </Button>
+                </NavItem>
+              </>
+            )}
           </Nav>
         </Collapse>
       </Container>
