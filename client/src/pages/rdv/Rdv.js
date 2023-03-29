@@ -1,9 +1,10 @@
-import { useMutation,gql } from '@apollo/client';
+import { useMutation,gql,useQuery } from '@apollo/client';
 import { useState } from "react";
 import { useNavigate,useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import styles from './Rdv.module.scss'
+
 import {
   Button,
   Card,
@@ -20,14 +21,74 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 
 
+const USERS_QUERY = gql`
+  query {
+    users {
+      id
+      name
+          }
+  }
+`;
+export const BOOK_APPOINTMENT=gql`
+mutation bookAppointment($patient:String,$therapist: String,$date: String,$duration: Int,$notes: String,$status: String){
+  bookAppointment(patient:$patient,therapist:$therapist,date:$date,duration:$duration,notes:$notes,status:$status)
+} 
 
+`
 
 
 
 function Rdv (){
+  const [bookAppointment] = useMutation(BOOK_APPOINTMENT);
+  const userid = useParams('userid');
+  const [note, setNote]= useState('note');
+  const [therapist,setTherapist]= useState('therapist');
+  const [date,setDate]= useState('dateapp');
+ 
+
+
+  const initialValues = {
+     
+    therapist: "",
+    date: "",
+    note:"",
     
+  };
+  const {
+    
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+    clearErrors,
+  } = useForm({
+    initialValues,
+    
+  });
+  const submit=handleSubmit(async ({}) => {
+    //clearErrors();
+    try {
+      await bookAppointment ({ variables: { 
+        "patient":userid.userid,
+        "therapist":therapist,
+        "date":date,
+        "duration":1,
+        "notes":note,
+        "status":"Scheduled"
+      } });
 
+        
+        console.log("succes")
+      
+      
+    } catch (error) {
+    console.log("aaaa")
 
+    }
+  });
+  const { loading, error, data } = useQuery(USERS_QUERY);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error </p>
+  console.log(data);
 
 
 
@@ -50,21 +111,21 @@ function Rdv (){
     <form action="https://formbold.com/s/FORM_ID">
       <div class={`${styles.formboldmb5}`}>
         <h5>choose your doctor</h5>
-        <option
-          type="text"
-          name="name"
-          id="name"
-          placeholder="choose a doctor"
-          class={`${styles.formboldforminput}`}
-          
-        />
+        <select>
+      {data.users.map(item=> (
+        <option key={item.id} value={item.id} onChange={(e) => setTherapist(e.target.value)} >
+          {item.name}
+        </option>
+      ))}
+    </select>
       </div>
       <div class={`${styles.formboldmb5}`}
           >
         <textarea
           type="text"
-          name="phone"
-          id="phone"
+          name="note"
+          value={note} onChange={(e) => setNote(e.target.value)} 
+          id="note"
           placeholder="Write your message here..."
           class={`${styles.formboldforminput}`}
         />
@@ -75,27 +136,22 @@ function Rdv (){
           <div class="formbold-mb-5 w-full">
             <label for="date"class={`${styles.formboldformlabel}`}> Date </label>
             <input
-              type="date"
-              name="date"
+              type="datetime-local"
+              name="dateapp"
               id="date"
+              value={date} onChange={(e) => setDate(e.target.value)} 
+
               class={`${styles.formboldforminput}`}
             />
           </div>
         </div>
-        <div class="w-full sm:w-half formbold-px-3">
-          <div class="formbold-mb-5">
-            <label for="time" class={`${styles.formboldformlabel}`}> Time </label>
-            <input
-              type="time"
-              name="time"
-              id="time"
-              class={`${styles.formboldforminput}`}
-            />
-          </div>
-        </div>
+        
+        
       </div>
+      <div class=" d-flex flex-column text-center px-5 mt-3 mb-3"> <small class="agree-text">By Booking this appointment you agree to the</small> <a href="#" class="terms">Terms & Conditions</a> </div> 
+
     <div>
-        <button class={`${styles.formboldbtn}`}>Book Appointment</button>
+        <button class={`${styles.formboldbtn}`} onClick={submit}>Book Appointment</button>
       </div>
     </form>
   </div>

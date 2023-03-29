@@ -50,18 +50,11 @@ const TherapistSchema = mongoose.Schema({
 });
 
 const AppointmentSchema = new mongoose.Schema({
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
-    required: true,
+  patient: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true 
   },
-  therapist: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Therapist",
-    required: true,
+  therapist: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true 
   },
-  startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true },
+  date: {type: Date },
   duration: { type: Number, required: true },
   notes: { type: String },
   status: {

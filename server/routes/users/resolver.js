@@ -1,4 +1,4 @@
-const { Patient, Therapist, User } = require("../../database/models/User");
+const { Patient, Therapist, User, Appointment } = require("../../database/models/User");
 const { ApolloError } = require("apollo-server-errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -262,6 +262,30 @@ const resolvers = {
       return true;
       
     },
+    bookAppointment: async (_, { patient,therapist,date,duration,notes,status }) => {
+   const p=await User.findById(patient);
+   const d=await User.findById(therapist);
+
+   // const existingAppointment = await Appointment.findOne({
+      //   startTime: { $lte: endTime },
+      //   endTime: { $gte: startTime },
+      // });
+      // if (existingAppointment) {
+      //   throw new Error('Time slot not available');
+      // }
+
+      const appointment = new Appointment({
+        patient:p.id,
+        therapist:d.id,
+        date,
+        duration,
+        notes,
+        status,
+      });
+      await appointment.save();
+
+      return true
+    },
 
     resendMailVerification: async (parent, args, context, info) => {
       console.log(args);
@@ -292,8 +316,20 @@ const resolvers = {
   },
 
   Query: {
+    async users() {
+      return await User.find({
+        role:"Therapist"
+        
+      });
+    },
     async user(_, { ID }) {
       return await User.findById(ID);
+    },
+    async getAppointment(_, { ID }) {
+      return await Appointment.findById(ID);
+    },
+    async getAppointments() {
+      return await Appointment.find();
     },
     checkEmailExists: async (_, { email }, { models }) => {
       const user = await models.User.findOne({ where: { email } });

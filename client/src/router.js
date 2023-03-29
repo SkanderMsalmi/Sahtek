@@ -23,7 +23,12 @@ const MailVerification = React.lazy(() =>
 const Rdv = React.lazy(() =>
   import("./pages/rdv/Rdv")
 );
-
+const Appointment = React.lazy(() =>
+  import("./pages/AppoinmentForTherapist/appforTherapist")
+);
+const AppointmentDetails = React.lazy(() =>
+  import("./pages/AppoinmentForTherapist/appDetails")
+);
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -74,8 +79,16 @@ export const router = createBrowserRouter([
         element: <Resetpassword />,
       },
       {
-        path: "rdv",
+        path: "rdv/:userid",
         element: <Rdv />,
+      },
+      {
+        path: "appfortherapist",
+        element: <Appointment />,
+      },
+      {
+        path: "AppoinmentDetails",
+        element: <AppointmentDetails />,
       },
       {
         path: "*",
