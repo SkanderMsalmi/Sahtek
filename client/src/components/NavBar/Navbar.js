@@ -59,8 +59,10 @@ function Navigation() {
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
-        document.documentElement.scrollTop > 299 ||
-        document.body.scrollTop > 299
+        document.documentElement.scrollTop > 50 ||
+        document.body.scrollTop > 50 
+        // || document.body.style.backgroundColor == '#FFFFFF'
+
       ) {
         setNavbarColor("");
       } else if (
