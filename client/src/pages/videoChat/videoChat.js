@@ -10,7 +10,7 @@ import { IoMdMicOff } from 'react-icons/io';
 import styles from './../../components/videoChat/videoChat.module.scss';
 import { CgNotes } from 'react-icons/cg';
 
-const VideoChat = () => {
+const VideoChat = ({ children }) => {
 
     const [show, setShow] = useState(false);
     const [micro, setMicro] = useState(true);
@@ -24,100 +24,100 @@ const VideoChat = () => {
     return (
         <>
             <div className="section section-dark-gray">
-              <Container>
-              <Row className={styles.video_row}>
-                    <VideoPlayer />
-                    <PatientFile show={show} handleClick={handleClick} />
-                </Row>
-             
-             
-              
-                           
-               
-                <Row>
-                    <Col lg="12" md="12"  >
-
-                        <div className={styles.option_row}>
-                            <div>
-
-                            </div>
-                            <div >
-                                {cam ? (
-                                    <Button
-                                        className="btn-round ml-2"
-                                        color="info"
-                                        outline
-                                        target="_blank"
-                                        onClick={() => setCam(false)}
-                                    >
-                                        <MdVideocam className={styles.icon} />
-                                    </Button>
-                                ) : (<Button
-                                    className="btn-round ml-2"
-                                    color="danger"
-                                     
-                                    target="_blank"
-                                    onClick={() => setCam(true)}
-                                >
-                                    <MdVideocamOff className={styles.icon} />
-                                </Button>)}
+                <Container>
+                    <Row className={styles.video_row}>
+                        {children}
+                        <PatientFile show={show} handleClick={handleClick} />
+                    </Row>
 
 
 
 
-                                {micro ? (
-                                    <Button
-                                        className="btn-round ml-2"
-                                        color="info"
-                                        outline
-                                        target="_blank"
-                                        onClick={() => setMicro(false)}
 
-                                    >
-                                        <IoMdMic className={styles.icon} />
-                                    </Button>
-                                ) : (
-                                    <Button
+                    <Row>
+                        <Col lg="12" md="12"  >
+
+                            <div className={styles.option_row}>
+                                <div>
+
+                                </div>
+                                <div >
+                                    {cam ? (
+                                        <Button
+                                            className="btn-round ml-2"
+                                            color="info"
+                                            outline
+                                            target="_blank"
+                                            onClick={() => setCam(false)}
+                                        >
+                                            <MdVideocam className={styles.icon} />
+                                        </Button>
+                                    ) : (<Button
                                         className="btn-round ml-2"
                                         color="danger"
-                                         
-                                        target="_blank"
-                                        onClick={() => setMicro(true)}
 
+                                        target="_blank"
+                                        onClick={() => setCam(true)}
                                     >
-                                        <IoMdMicOff className={styles.icon} />
+                                        <MdVideocamOff className={styles.icon} />
                                     </Button>)}
 
 
 
-                                <Button
-                                    className="btn-round ml-2"
-                                    color="danger"
-                                    target="_blank"
-                                >
-                                    <MdCallEnd className={styles.icon} />
-                                </Button>
+
+                                    {micro ? (
+                                        <Button
+                                            className="btn-round ml-2"
+                                            color="info"
+                                            outline
+                                            target="_blank"
+                                            onClick={() => setMicro(false)}
+
+                                        >
+                                            <IoMdMic className={styles.icon} />
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            className="btn-round ml-2"
+                                            color="danger"
+
+                                            target="_blank"
+                                            onClick={() => setMicro(true)}
+
+                                        >
+                                            <IoMdMicOff className={styles.icon} />
+                                        </Button>)}
+
+
+
+                                    <Button
+                                        className="btn-round ml-2"
+                                        color="danger"
+                                        target="_blank"
+                                    >
+                                        <MdCallEnd className={styles.icon} />
+                                    </Button>
+                                </div>
+
+                                <div>
+                                    <Button
+                                        onClick={() => setShow(!show)}
+                                        className="btn-round"
+                                        color="info"
+                                        outline
+                                        target="_blank"
+                                    >
+                                        <CgNotes className={styles.icon} />
+                                    </Button>
+                                </div>
                             </div>
 
-                            <div>
-                                <Button
-                                    onClick={() => setShow(true)}
-                                    className="btn-round"
-                                    color="info"
-                                    outline
-                                    target="_blank"
-                                >
-                                    <CgNotes className={styles.icon} />
-                                </Button>
-                            </div>
-                        </div>
 
 
 
 
-
-                    </Col>
-                </Row>
+                        </Col>
+                    </Row>
                 </Container>
             </div>{" "}
         </>

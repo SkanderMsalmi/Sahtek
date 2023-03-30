@@ -7,13 +7,15 @@ import { selectUser } from "../../store/users/users.selectors";
 import { useParams } from "react-router-dom";
 import { PeerContext } from "../../apis/peerContext";
 import ReactPlayer from "react-player";
-import { Button } from "reactstrap";
-
+import { Button, Row } from "reactstrap";
+import VideoChat from "../videoChat/videoChat";
+import styles from "./videoCall.module.scss";
 function VideoCall() {
     const user = useSelector(selectUser);
     const [myStream, setMyStream] = useState(null);
     const [remoteEmail, setRemoteEmail] = useState("");
     const { id } = useParams();
+    const [ready, setReady] = useState(false);
     const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, toggleVideo } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
     const { socket } = useContext(SocketContext);
@@ -88,7 +90,7 @@ function VideoCall() {
         }
     }, [peer, handleNegotiation])
     return (
-        <div style={{ height: "99vh", position: "relative" }}>
+        <VideoChat>
             {/* <div >
                 {(!callAccepted || callEnded) && <h1>{me || "null"}</h1>
                 }
@@ -101,13 +103,18 @@ function VideoCall() {
             </div>
             <div style={{ position: "absolute", bottom: "1rem", left: "50%", marginLeft: "-10rem" }}>
                 <Options> <Notification /> </Options>            </div> */}
-            <h4>You are connected to {remoteEmail}</h4>
-            <button onClick={(e) => { console.log(myStream); sendStream(myStream) }}>Send Stream</button>
+            {!ready && <Row style={{ display: "inline" }}>
+                <h4>You are connected to {remoteEmail}</h4>
+                <Button onClick={(e) => { console.log(myStream); sendStream(myStream); setReady(true) }}>Start Stream</Button>
+            </Row>}
+
             <br />
-            {remoteStream && <Button onClick={() => { socket.emit('toggle-video', { isVideoOn: true }) }}>Toggle Video</Button>}
-            <ReactPlayer url={myStream} playing muted />
-            {remoteStream && <ReactPlayer url={remoteStream} playing />}
-        </div>
+            {/* {remoteStream && <Button onClick={() => { socket.emit('toggle-video', { isVideoOn: true }) }}>Toggle Video</Button>} */}
+            {myStream && <ReactPlayer url={myStream} height={(remoteStream && ready) ? "20%" : ""} width={(remoteStream && ready) ? "15%" : ""} playing muted style={(remoteStream && ready) ? { position: "absolute", left: "1rem", zIndex: "2", height: "20%" } : {}} />}
+
+
+            {(remoteStream && ready) && <ReactPlayer url={remoteStream} width="70vw" height="70vh" playing style={{ position: "absolute", inset: 1 }} className={styles.videoContainer} />}
+        </VideoChat>
 
 
     )

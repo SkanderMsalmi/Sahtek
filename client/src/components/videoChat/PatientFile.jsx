@@ -56,7 +56,7 @@ function PatientFile({ show, handleClick }) {
 
         <Fragment>
             {show ? (
-                <Col lg="4" md="12"    >
+                <Col lg="4" md="12" style={{position:"absolute", right:"1rem"}}>
 
 
 
