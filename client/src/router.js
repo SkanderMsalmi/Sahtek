@@ -85,7 +85,9 @@ export const router = createBrowserRouter([
       {
         path: "videoCall/:id",
         element: <VideoCall />,
-        path: "rdv/:userid",
+      },
+      {
+        path: "rdv",
         element: <Rdv />,
       },
       {

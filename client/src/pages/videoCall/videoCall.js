@@ -10,22 +10,41 @@ import ReactPlayer from "react-player";
 import { Button, Row } from "reactstrap";
 import VideoChat from "../videoChat/videoChat";
 import styles from "./videoCall.module.scss";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/client";
+const GET_ROOM_QUERY = gql`
+query GetAppointment($id: ID!) {
+    getAppointment(ID: $id) {
+      patient
+      therapist
+    }
+  }
+`;
 function VideoCall() {
     const user = useSelector(selectUser);
+
     const [myStream, setMyStream] = useState(null);
     const [remoteEmail, setRemoteEmail] = useState("");
     const { id } = useParams();
+    const { data, loading, error } = useQuery(GET_ROOM_QUERY, {
+        variables: {
+            id: id
+        }
+    });
+
     const [ready, setReady] = useState(false);
     const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, toggleVideo } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
     const { socket } = useContext(SocketContext);
     const handleUserJoined = useCallback(async (emailId) => {
+
         console.log("userJoined", emailId)
         const offer = await createOffer(emailId);
         socket.emit('call-user', { emailId, offer })
         setRemoteEmail(emailId);
     }, [createOffer, socket])
     const handleIncommingCall = useCallback(async (data) => {
+
         const { from, offer } = data
         console.log("incomming call", from, offer)
         const ans = await createAnswer(offer);
@@ -34,13 +53,15 @@ function VideoCall() {
 
     }, [createAnswer, socket])
     const handleUserConnected = useCallback(async (emailId) => {
-        console.log("aaaaaaaaaaaaaaaaaaaaaaa")
+
         setRemoteEmail(emailId);
     }, [])
     const handleCallAccepted = useCallback(async (data) => {
+
         const { ans } = data;
         console.log("call accepted", ans)
         await setRemoteAnswer(ans);
+
 
     }, [setRemoteAnswer])
     const getUserMediaStream = useCallback(async () => {
@@ -89,6 +110,15 @@ function VideoCall() {
             peer.removeEventListener('negotiationneeded', handleNegotiation);
         }
     }, [peer, handleNegotiation])
+    if (loading) {
+        return <VideoChat> <div className="spinner-border text-light" style={{ alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}></div> </VideoChat>
+    }
+    if (error) {
+        return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>Room does not exist</h1> </VideoChat>
+    }
+    if (user.id !== data.getAppointment.patient && user.id !== data.getAppointment.therapist) {
+        return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>You are not a part of this room</h1> </VideoChat>
+    }
     return (
         <VideoChat>
             {/* <div >
@@ -103,14 +133,16 @@ function VideoCall() {
             </div>
             <div style={{ position: "absolute", bottom: "1rem", left: "50%", marginLeft: "-10rem" }}>
                 <Options> <Notification /> </Options>            </div> */}
-            {!ready && <Row style={{ display: "inline" }}>
-                <h4>You are connected to {remoteEmail}</h4>
-                <Button onClick={(e) => { console.log(myStream); sendStream(myStream); setReady(true) }}>Start Stream</Button>
+            {!ready && <Row style={{ display: "inline", width: "100%" }}>
+                {(remoteEmail && !remoteStream) && <h4>You are connected to {remoteEmail}</h4>}
+                {(!remoteEmail && !remoteStream) && <h4>Waiting for other user to join</h4>}
+                {(remoteEmail && remoteStream) && <h4>{remoteEmail} is waiting for you to join</h4>}
+                <Button onClick={(e) => { sendStream(myStream); setReady(true) }}>Join Call</Button>
             </Row>}
 
             <br />
             {/* {remoteStream && <Button onClick={() => { socket.emit('toggle-video', { isVideoOn: true }) }}>Toggle Video</Button>} */}
-            {myStream && <ReactPlayer url={myStream} height={(remoteStream && ready) ? "20%" : ""} width={(remoteStream && ready) ? "15%" : ""} playing muted style={(remoteStream && ready) ? { position: "absolute", left: "1rem", zIndex: "2", height: "20%" } : {}} />}
+            {myStream ? <ReactPlayer url={myStream} height={(remoteStream && ready) ? "20%" : ""} width={(remoteStream && ready) ? "15%" : ""} playing muted style={(remoteStream && ready) ? { position: "absolute", left: "1rem", zIndex: "2", height: "20%" } : { marginLeft: "20%" }} /> : <div className="spinner-border text-light" style={{ alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}></div>}
 
 
             {(remoteStream && ready) && <ReactPlayer url={remoteStream} width="70vw" height="70vh" playing style={{ position: "absolute", inset: 1 }} className={styles.videoContainer} />}
