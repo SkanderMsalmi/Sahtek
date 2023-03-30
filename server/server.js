@@ -75,6 +75,12 @@ const startServer = async () => {
       const socketId = emailToSocketMapping.get(emailId);
       socket.to(socketId).emit('accepted-call', { ans });
     });
+    socket.on('toggle-video', (data) => {
+      const { emailId, isVideoOn } = data;
+      const socketId = emailToSocketMapping.get(emailId);
+      socket.to(socketId).emit('toggle-video', { isVideoOn });
+    });
+
     //old
     // socket.emit('me', socket.id);
     // socket.on('disconnect', () => {

@@ -3,18 +3,18 @@ import { useSelector } from "react-redux";
 import { SocketContext } from "../../apis/socketContext";
 import isVerified from "../../components/Guard/IsVerified";
 import withAuth from "../../components/Guard/WithAuth";
-import Notification from "../../components/VideoCall/notification";
-import Options from "../../components/VideoCall/options";
 import { selectUser } from "../../store/users/users.selectors";
 import { useParams } from "react-router-dom";
 import { PeerContext } from "../../apis/peerContext";
 import ReactPlayer from "react-player";
+import { Button } from "reactstrap";
+
 function VideoCall() {
     const user = useSelector(selectUser);
     const [myStream, setMyStream] = useState(null);
     const [remoteEmail, setRemoteEmail] = useState("");
     const { id } = useParams();
-    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream } = useContext(PeerContext);
+    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, toggleVideo } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
     const { socket } = useContext(SocketContext);
     const handleUserJoined = useCallback(async (emailId) => {
@@ -31,6 +31,10 @@ function VideoCall() {
         setRemoteEmail(from);
 
     }, [createAnswer, socket])
+    const handleUserConnected = useCallback(async (emailId) => {
+        console.log("aaaaaaaaaaaaaaaaaaaaaaa")
+        setRemoteEmail(emailId);
+    }, [])
     const handleCallAccepted = useCallback(async (data) => {
         const { ans } = data;
         console.log("call accepted", ans)
@@ -41,15 +45,26 @@ function VideoCall() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         setMyStream(stream);
     }, [])
+
     useEffect(() => {
         socket.on("user-connected", handleUserJoined)
         socket.on("incomming-call", handleIncommingCall)
         socket.on("accepted-call", handleCallAccepted)
+        socket.on("user-connected", handleUserConnected)
+        socket.on("toggle-video", (data) => {
+            const { isVideoOn } = data;
+            toggleVideo();
+        })
 
         return () => {
             socket.off("user-connected", handleUserJoined)
             socket.off("incomming-call", handleIncommingCall)
             socket.off("accepted-call", handleCallAccepted)
+            socket.off("user-connected", handleUserConnected)
+            socket.off("toggle-video", (data) => {
+                const { isVideoOn } = data;
+                toggleVideo();
+            })
         }
     }, [handleUserJoined, handleIncommingCall, handleCallAccepted, socket])
 
@@ -87,7 +102,9 @@ function VideoCall() {
             <div style={{ position: "absolute", bottom: "1rem", left: "50%", marginLeft: "-10rem" }}>
                 <Options> <Notification /> </Options>            </div> */}
             <h4>You are connected to {remoteEmail}</h4>
-            <button onClick={(e) => sendStream(myStream)}>Send Stream</button>
+            <button onClick={(e) => { console.log(myStream); sendStream(myStream) }}>Send Stream</button>
+            <br />
+            {remoteStream && <Button onClick={() => { socket.emit('toggle-video', { isVideoOn: true }) }}>Toggle Video</Button>}
             <ReactPlayer url={myStream} playing muted />
             {remoteStream && <ReactPlayer url={remoteStream} playing />}
         </div>
