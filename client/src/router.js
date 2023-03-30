@@ -24,6 +24,15 @@ const MailVerification = React.lazy(() =>
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
 
 
+const Rdv = React.lazy(() =>
+  import("./pages/rdv/Rdv")
+);
+const Appointment = React.lazy(() =>
+  import("./pages/AppoinmentForTherapist/appforTherapist")
+);
+const AppointmentDetails = React.lazy(() =>
+  import("./pages/AppoinmentForTherapist/appDetails")
+);
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -76,6 +85,16 @@ export const router = createBrowserRouter([
       {
         path: "videoCall/:id",
         element: <VideoCall />,
+        path: "rdv/:userid",
+        element: <Rdv />,
+      },
+      {
+        path: "appfortherapist",
+        element: <Appointment />,
+      },
+      {
+        path: "AppoinmentDetails",
+        element: <AppointmentDetails />,
       },
       {
         path: "*",

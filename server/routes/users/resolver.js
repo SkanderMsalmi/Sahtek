@@ -1,4 +1,4 @@
-const { Patient, Therapist, User } = require("../../database/models/User");
+const { Patient, Therapist, User, Appointment } = require("../../database/models/User");
 const { ApolloError } = require("apollo-server-errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -9,6 +9,8 @@ const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const { readFile } = require("../../utils/uploadFile");
 const nodemailer = require("nodemailer");
+const { Router } = require("express");
+
 
 const BASE_URL = "http://localhost:3000";
 
@@ -78,23 +80,19 @@ const resolvers = {
       await existingUser.save();
       return existingUser;
     },
-    update: async (
-      _,
-      { userInput: { id, name, dateOfBirth, password, oldPassword }, image }
-    ) => {
+    update: async (_, { userInput: { id, name, dateOfBirth,password, oldPassword }, image }) => {
       const existingUser = await User.findById(id);
-
+    
+      const passwordHashed =await bcrypt.hashSync(password, 10)||existingUser.password;
+      
       if (!existingUser) {
         throw new Error("User doesn't exist");
       }
-      if (password) {
+      if (password){
         if (!bcrypt.compareSync(oldPassword, existingUser.password)) {
           throw new Error("Incorrect password");
         }
-        const passwordHashed =
-          (await bcrypt.hashSync(password, 10)) || existingUser.password;
-
-        existingUser.password = passwordHashed;
+        existingUser.password=passwordHashed;
       }
       if (image) {
         profileImage = await readFile(image);
@@ -193,9 +191,12 @@ const resolvers = {
           }).save();
           const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
+
+
         } else if (token) {
           const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
+
         }
       }
       //
@@ -204,7 +205,7 @@ const resolvers = {
         const token = jwt.sign({}, key, {
           subject: user._id.toString(),
           algorithm: "RS256",
-          // expiresIn: "1s",
+          expiresIn: 60 * 60 * 60 * 30 * 6,
         });
         return {
           token,
@@ -234,7 +235,12 @@ const resolvers = {
         email: user.email,
         id: user.id,
       };
-      const token = jwt.sign(payload, secret + { expiresIn: "15m" });
+      const token = jwt.sign(payload, secret + { expiresIn: "2m" });
+      const token2=new Token({
+        userId: user.id,
+          token: token,
+      })
+      token2.save();
       const mailOptions = {
         from: "sahtek2023@gmail.com",
         to: email,
@@ -250,10 +256,35 @@ const resolvers = {
       const user = await User.findById(userid);
       // const secret=key+user.password
 
-      //const payload=jwt.verify(token,secret)
+      
       user.password = bcrypt.hashSync(newpassword, 10);
       await user.save();
       return true;
+      
+    },
+    bookAppointment: async (_, { patient,therapist,date,duration,notes,status }) => {
+   const p=await User.findById(patient);
+   const d=await User.findById(therapist);
+
+   // const existingAppointment = await Appointment.findOne({
+      //   startTime: { $lte: endTime },
+      //   endTime: { $gte: startTime },
+      // });
+      // if (existingAppointment) {
+      //   throw new Error('Time slot not available');
+      // }
+
+      const appointment = new Appointment({
+        patient:p.id,
+        therapist:d.id,
+        date,
+        duration,
+        notes,
+        status,
+      });
+      await appointment.save();
+
+      return true
     },
 
     resendMailVerification: async (parent, args, context, info) => {
@@ -262,17 +293,18 @@ const resolvers = {
 
       const user = await User.findById(id);
       if (user) {
+       
         const token2 = new Token({
           userId: id,
           token: crypto.randomBytes(32).toString("hex"),
-        });
-        const tokenexist = await Token.findOne({ userId: id });
-        if (tokenexist) {
-          await Token.findOneAndUpdate(id, { userId: id, token: token2.token });
-        } else {
+        })
+        const tokenexist = await Token.findOne({ userId: id })
+        if(tokenexist){
+        await Token.findOneAndUpdate(id,{userId : id, token : token2.token })}
+        else{
           token2.save();
         }
-
+        
         const url = `${BASE_URL}/${token2.userId}/verify/${token2.token}`;
         await sendEmail(user.email, "Email Verification", String(url));
 
@@ -284,8 +316,20 @@ const resolvers = {
   },
 
   Query: {
+    async users() {
+      return await User.find({
+        role:"Therapist"
+        
+      });
+    },
     async user(_, { ID }) {
       return await User.findById(ID);
+    },
+    async getAppointment(_, { ID }) {
+      return await Appointment.findById(ID);
+    },
+    async getAppointments() {
+      return await Appointment.find();
     },
     checkEmailExists: async (_, { email }, { models }) => {
       const user = await models.User.findOne({ where: { email } });

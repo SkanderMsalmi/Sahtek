@@ -19,9 +19,14 @@ import {
 } from "reactstrap";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export const RESET_PASSWORDLink = gql`
-  mutation resetPasswordlink($userid:String!,$token:String!,$newpassword:String!){
-    resetPasswordlink(userid:$userid,token:$token,newpassword:$newpassword)
+// export const RESET_PASSWORDLink = gql`
+//   mutation resetPasswordlink($userid:String!,$token:String!,$newpassword:String!){
+//     resetPasswordlink(userid:$userid,token:$token,newpassword:$newpassword)
+//   }
+// `;
+export const verifyTokenforpassword = gql`
+  mutation  verifyTokenforpassword($userid:String!,$token:String!,$newpassword:String!){
+    verifyTokenforpassword(userid:$userid,token:$token,newpassword:$newpassword)
   }
 `;
 
@@ -31,7 +36,7 @@ export const RESET_PASSWORDLink = gql`
 function Resetpassword (){
     const navigate = useNavigate();
     const [newpassword]= useState('newpassword');
-    const [resetPasswordLink] = useMutation(RESET_PASSWORDLink);
+    const [resetPasswordLink] = useMutation(verifyTokenforpassword);
     const tokenValue = useParams('token');
     const userid = useParams('userid');
     const schema = yup.object().shape({
@@ -48,7 +53,7 @@ function Resetpassword (){
       .oneOf([yup.ref("newpassword"), null], "Passwords must match"),
     });
     const initialValues = {
-    
+     
       newpassword: "",
       password2: "",
       

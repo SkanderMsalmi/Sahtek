@@ -94,16 +94,21 @@ module.exports = gql`
   }
 
   type Appointment {
-    id: ID!
-    patient: Patient!
-    therapist: Therapist!
-    startTime: String!
-    endTime: String!
-    duration: Int!
+    patient: ID
+    therapist: ID
+    date: String
+    duration: Int
     notes: String
     status: String
   }
-
+input AppointmentInput{
+  patient: ID!
+  therapist: ID!
+  date: String
+  duration: Int
+  notes: String
+  status: String
+}
   type Token {
     value: String!
   }
@@ -150,8 +155,11 @@ module.exports = gql`
   }
   extend type Query {
     user(ID: ID!): User
+    users:[User]
     checkEmailExists(email: String!): Boolean!
     current(token: String!): User
+    getAppointment(ID: ID!):Appointment
+    getAppointments:[Appointment]
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User
@@ -166,5 +174,6 @@ module.exports = gql`
       newpassword: String!
     ): Boolean
     resendMailVerification(id: ID): String
-  }
+    bookAppointment(patient:ID, therapist: ID,date: String, duration: Int, notes: String, status: String): Boolean
+   }
 `;
