@@ -1,7 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import React from "react";
-import { useParams } from "react-router-dom";
-
+import { Link, useParams,useNavigate } from "react-router-dom";
+ 
 import {
     Button,
     Label,
@@ -36,6 +36,7 @@ function PatienList( {user} ) {
     // const   { data, loading, error }  = useQuery(GET_PATIENTS_FILES);
     //   if (loading) return <p>Loading...</p>;
     let { id } = useParams();
+    const navigate = useNavigate();
     const { data, loading, error } = useQuery(GET_PATIENTS_FILES, {
       variables: {  id: id ? id : user.id }
     });
@@ -74,6 +75,7 @@ function PatienList( {user} ) {
 
                     <Row className="d-flex justify-content-center ">
                         <Col lg="10" md="6">
+                        
 
                             <hr />
                             <ul className="list-unstyled follows">
@@ -81,7 +83,8 @@ function PatienList( {user} ) {
                                     return (
                                         <>
                                             <li>
-                                                <Row>
+                                                <Row onClick={()=>{ navigate("/alertCheckMail");}}>
+                                                <Link to={`patients/files/${p.patient}`}>see files</Link>
 
                                                     <Col className="ml-auto mr-auto" lg="7" md="4" xs="4">
                                                         <h6>

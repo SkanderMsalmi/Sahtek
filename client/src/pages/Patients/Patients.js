@@ -2,7 +2,8 @@ import { selectUser } from "../../store/users/users.selectors";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import PatientList from "../../components/PatientFile/PatientList";
+import PatientList from "../../components/Patients/PatientList";
+
 function Patients() {
     const user = useSelector(selectUser);
     let { id } = useParams();

@@ -21,6 +21,8 @@ const MailVerification = React.lazy(() =>
   import("./pages/Register/MailVerification")
 );
 const Patients = React.lazy(() => import("./pages/Patients/Patients"));
+const PatientFiles = React.lazy(() => import("./pages/Patients/PatientFiles"));
+
 
 
 export const router = createBrowserRouter([
@@ -80,6 +82,11 @@ export const router = createBrowserRouter([
       {
         path: "patients",
         element: <Patients />,
+        
+      },
+      {
+        path: "patients/files/:patientid",
+        element: <PatientFiles />,
         
       },
     ],
