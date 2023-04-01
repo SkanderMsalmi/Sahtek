@@ -1,19 +1,43 @@
 import { gql } from "@apollo/client";
 
- 
-export const GET_PATIENTS_FILES = gql` 
-query GetFilesByTherapist($id: ID!) {
-  getFilesByTherapist(id: $id) {
+
+export const GET_PATIENTS = gql` 
+query GetPatientsByTherapist($id: ID!) {
+  getPatientsByTherapist(id: $id) {
     id
-    title
-    remarks
-    patient {
-      id
-      email
-      name
-    }
-    createdAt
+    email
+    name
+    profileImage
+    dateOfBirth
   }
-}
-    
+} 
+`;
+
+export const GET_PATIENT_FILES = gql` 
+    query GetFilesByPatient($id: ID!) {
+      getFilesByPatient(id: $id) {
+        createdAt
+        patient {
+          id
+          name
+        }
+        remarks
+        title
+      }
+    } 
     `;
+
+export const GET_USER = gql` 
+
+    query User($id: ID!) {
+      user(ID: $id) {
+        dateOfBirth
+        email
+        gender
+        name
+        id
+        profileImage
+      }
+    }
+    `;
+

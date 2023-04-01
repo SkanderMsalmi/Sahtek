@@ -10,8 +10,13 @@ const resolvers = {
         getPatientFile: async (_, args) => {
             return await PatientFile.findById(args.id);
         },
-        getFilesByTherapist: async (_, { id }) => {
-            return await PatientFile.find({ therapist: id });
+        getPatientsByTherapist: async (_, { id }) => {
+             const list = await PatientFile.find({ therapist: id }).distinct("patient");
+             return await User.find({ _id: {$in : list}}); 
+         
+        },
+        getFilesByPatient: async (_, { id }) => {
+            return await PatientFile.find({ patient: id });
         },
     },
     Mutation: {

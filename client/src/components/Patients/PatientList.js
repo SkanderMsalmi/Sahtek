@@ -4,20 +4,14 @@ import { Link, useParams,useNavigate } from "react-router-dom";
  
 import {
     Button,
-    Label,
+    
     FormGroup,
     Input,
-    NavItem,
-    NavLink,
-    Nav,
-    TabContent,
-    TabPane,
+    
     Container,
     Row,
     Col,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText
+   
 } from "reactstrap";
 import { GET_PATIENTS_FILES } from "../../apis/patientsFiles";
 
@@ -83,11 +77,10 @@ function PatienList( {user} ) {
                                     return (
                                         <>
                                             <li>
-                                                <Row onClick={()=>{ navigate("/alertCheckMail");}}>
-                                                <Link to={`patients/files/${p.patient}`}>see files</Link>
-
+                                                <Row >
+ 
                                                     <Col className="ml-auto mr-auto" lg="7" md="4" xs="4">
-                                                        <h6>
+                                                        <h6  >
                                                         {p.patient.name} <br />
                                                             <small>{p.patient.email}</small>
                                                         </h6>
@@ -95,6 +88,8 @@ function PatienList( {user} ) {
                                                     <Col className="ml-auto mr-auto" lg="3" md="4" xs="4">
                                                         <h6>{p.createdAt}</h6>
                                                     </Col>
+                                                    <Col>
+                                                    <Button onClick={()=>{ navigate(`files/${p.patient.id}`);}}>Files</Button></Col>
                                                 </Row>
                                             </li>
                                             <hr />

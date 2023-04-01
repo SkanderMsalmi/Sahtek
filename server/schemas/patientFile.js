@@ -14,7 +14,9 @@ type PatientFile {
 extend type Query {
     getPatientFiles: [PatientFile]
     getPatientFile(id: ID!): PatientFile
-    getFilesByTherapist(id: ID!): [PatientFile]
+    getPatientsByTherapist(id: ID!): [User]
+    getFilesByPatient(id: ID!): [PatientFile]
+
 
 }
 extend type Mutation {
