@@ -23,6 +23,8 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import withAuth from "../../components/Guard/WithAuth";
 import isVerified from "../../components/Guard/IsVerified";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/users/users.selectors";
 const UPDATE_THERAPIST = gql`mutation Mutation($therapistInput: TherapistInput) {
   updateTherapist(therapistInput: $therapistInput) {
     therapist{experience}
@@ -87,7 +89,7 @@ function ProfileCreation() {
       return null;
     }
   })();
-
+  const user = useSelector(selectUser);
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
   const yearOptions = years.map((year) => (
@@ -105,11 +107,15 @@ function ProfileCreation() {
     zip: yup.string().required("You should enter your zip code"),
     city: yup.string().required("You should enter your city"),
     description: yup.string().required("You should enter your description"),
-    licenses: yup.array().of(yup.string().required("You should enter your license")).required("You should enter atleast one license"),
-    languages: yup.array().of(yup.string().required("You should enter your language")).required("You should enter atleast one language"),
+    licenses: yup.array().of(yup.object().shape({ license: yup.string().required("You should enter your license"), state: yup.string().required("You should enter the state"), typeL: yup.string().required("You should enter the type of license") })).required("You should enter atleast one license"),
+    languages: yup.array().of(yup.string().required("Enter a valid language")).min(1, "You should enter atleast one language"),
     specialties: yup.array().of(yup.string().required("You should enter your specialty")).required("You should enter atleast one specialty"),
-    education: yup.array().of(yup.string().required("You should enter your education")).required("You should enter atleast one education"),
+    educations: yup.array().of(yup.string().required("You should enter your education")).required("You should enter atleast one education"),
   });
+  const [languages, setLanguages] = useState([""]);
+  const [licenses, setLicenses] = useState([""]);
+  const [specialties, setSpecialties] = useState([""]);
+  const [educations, setEducations] = useState([""]);
   const initialValues = {
     phoneNumber: "",
     street: "",
@@ -117,10 +123,10 @@ function ProfileCreation() {
     zip: "",
     city: "",
     description: "",
-    licenses: [""],
-    languages: [""],
-    specialties: [""],
-    education: [""],
+    licenses: licenses,
+    languages: languages,
+    specialties: specialties,
+    educations: educations,
   };
 
   const {
@@ -137,10 +143,37 @@ function ProfileCreation() {
 
   const [update, { data, loading, error }] = useMutation(UPDATE_THERAPIST);
 
-  const submit = handleSubmit(async ({ password, email }) => {
+  const submit = handleSubmit(async ({ phoneNumber,
+    street,
+    state,
+    zip,
+    city,
+    description,
+    licenses,
+    languages,
+    specialties,
+    educations }) => {
     try {
       clearErrors();
-      const { data } = await update({ variables: { email, password } });
+      const { data } = await update({
+        variables: {
+          therapistInput: {
+            id: user.id,
+            phoneNumber,
+            address: {
+              street,
+              state,
+              zip,
+              city
+            },
+            description,
+            licenses,
+            languages,
+            specialties,
+            education: educations
+          }
+        }
+      });
       // Save the token in localStorage
       // Dispatch the action to update the store
       // Redirect the user to the dashboard page or other authorized page
@@ -155,7 +188,6 @@ function ProfileCreation() {
   //         setEditInfo({...editInfo, phoneNumber: e.target.value})
   //     }
   // }
-  const [languages, setLanguages] = useState([""]);
   return (
     <div
       className="section section-image section-login"
@@ -228,10 +260,10 @@ function ProfileCreation() {
                     )}
                     <label>
                       Started working on{" "}
-                      <span className="text-secondary"> (Start By Year )</span>
+                      <small className="text-secondary"> (Start By Year )</small>
                     </label>
                     <div>
-                      <FormGroup className="d-flex align-items-center">
+                      <FormGroup className="d-flex align-items-center mb-0">
                         <Input
                           type="select"
                           name="day"
@@ -275,6 +307,41 @@ function ProfileCreation() {
                       <Alert color="danger" isOpen={errors?.yearsOfExperience}>
                         {errors?.yearsOfExperience?.message}
                       </Alert>
+                    )}
+                    <div className="text-center d-flex align-items-baseline justify-content-between mb-1">
+
+                      <label>Languages</label> <Button className="btn-round" color="danger" onClick={() => setLanguages([...languages, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                    </div>
+                    {languages.map((language, index) => {
+                      const fieldName = `languages[${index}]`;
+                      return (
+                        <InputGroup
+                          className={
+                            errors?.languages
+                              ? "has-danger"
+                              : "form-group-no-border"
+                          }
+                          key={index}
+                        >
+
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="nc-icon nc-chat-33" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+
+                          <input
+                            className="form-control"
+                            placeholder="Language"
+                            name={fieldName}
+                            type="text"
+                            {...register(fieldName)}
+                          />
+                        </InputGroup>)
+                    })}
+                    {errors?.languages && (
+                      <Alert color="danger" isOpen={errors?.languages}>
+                        You should fill all your languages                     </Alert>
                     )}
                   </Col>
                   <Col>
@@ -323,13 +390,66 @@ function ProfileCreation() {
                         Write a valid address
                       </Alert>
                     )}
-                    <label>Languages</label> <Button onClick={() => setLanguages([...languages, ""])}><i className="nc-icon nc-simple-add"></i></Button>
-                    {languages.map((language, index) => {
-                      const fieldName = `languages[${index}]`;
+                    <div className="text-center d-flex align-items-baseline justify-content-between mb-1">
+
+                      <label>Licenses</label> <Button className="btn-round" color="danger" onClick={() => setLicenses([...licenses, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                    </div>
+                    {licenses.map((license, index) => {
+                      const fieldName = `licenses[${index}]`;
                       return (
                         <InputGroup
                           className={
-                            errors.languages
+                            errors?.licenses
+                              ? "has-danger"
+                              : "form-group-no-border"
+                          }
+                          key={index}
+                        >
+
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="nc-icon nc-chat-33" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <input
+                            className={errors.licenses ? styles.address + " " + styles.errorAddress : styles.address}
+                            placeholder="License"
+                            name="license"
+                            type="text"
+                            {...register(`licenses[${index}].license`)}
+                          />
+                          <input
+                            className={errors.licenses ? styles.address + " " + styles.errorAddress : styles.address}
+                            placeholder="State"
+                            name="state"
+                            type="text"
+                            {...register(`licenses[${index}].state`)}
+                          />
+                          <input
+                            className={errors.licenses ? styles.address + " " + styles.errorAddress : styles.address}
+                            placeholder="Type"
+                            name="typeL"
+                            type="text"
+                            {...register(`licenses[${index}].typeL`)}
+                          />
+
+                        </InputGroup>)
+                    })}
+                    {errors?.licenses && (
+                      <Alert color="danger" isOpen={errors?.licenses}>
+                        You should fill all your licenses                     </Alert>
+                    )}
+
+                    <div className="text-center d-flex align-items-baseline justify-content-between mb-1">
+
+                      <label>Educations</label> <Button className="btn-round" color="danger" onClick={() => setEducations([...educations, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                    </div>
+                    {educations.map((education, index) => {
+                      const fieldName = `educations[${index}]`;
+                      return (
+                        <InputGroup
+                          className={
+                            errors?.educations
                               ? "has-danger"
                               : "form-group-no-border"
                           }
@@ -344,111 +464,55 @@ function ProfileCreation() {
 
                           <input
                             className="form-control"
-                            placeholder="Language"
+                            placeholder="Education"
                             name={fieldName}
                             type="text"
                             {...register(fieldName)}
                           />
                         </InputGroup>)
                     })}
-                    {errors?.languages && (
-                      <Alert color="danger" isOpen={errors?.languages}>
-                        You should have atleast one language                      </Alert>
-                    )}
-
-
-                    <label>Gender</label>
-
-                    <InputGroup className="m-auto justify-content-center">
-                      <div className="form-check-radio m-1 ">
-                        <Label className="form-check-label ">
-                          <input
-                            className="form-control"
-                            type="radio"
-                            name="gender"
-                            id="male"
-                            value="Male"
-                            {...register("gender")}
-                          />
-                          Male
-                          <span className="form-check-sign"></span>
-                        </Label>
-                      </div>
-                      <div className="form-check-radio m-1">
-                        <Label className="form-check-label">
-                          <input
-                            className="form-control"
-                            type="radio"
-                            name="gender"
-                            id="female"
-                            value="Female"
-                            {...register("gender")}
-                          />
-                          Female
-                          <span className="form-check-sign"></span>
-                        </Label>
-                      </div>
-                      <div className="form-check-radio m-1">
-                        <Label className="form-check-label">
-                          <input
-                            className="form-control"
-                            type="radio"
-                            name="gender"
-                            id="other"
-                            value="Other"
-                            {...register("gender")}
-                          />
-                          Other
-                          <span className="form-check-sign"></span>
-                        </Label>
-                      </div>
-                    </InputGroup>
-                    {errors?.gender && (
-                      <Alert color="danger" isOpen={errors?.gender}>
-                        {errors.gender.message}
-                      </Alert>
+                    {errors?.educations && (
+                      <Alert color="danger" isOpen={errors?.educations}>
+                        You should fill all your educations                       </Alert>
                     )}
                     <br />
                   </Col>
                 </Row>
-                <div className="text-center">
-                  <label style={{}}>Are you Patient or Therapist ?</label>
+                <div className="text-center d-flex align-items-baseline justify-content-center mb-1" style={{ gap: "1rem" }}>
+                  <label style={{}}>Specialties</label>
+                  <Button className="btn-round" color="danger" onClick={() => setSpecialties([...specialties, ""])}><i className="nc-icon nc-simple-add"></i></Button>
                 </div>
 
-                <InputGroup className="m-auto justify-content-center">
-                  <div className="form-check-radio m-1 ">
-                    <Label className="form-check-label ">
+                {specialties.map((specialtie, index) => {
+                  const fieldName = `specialties[${index}]`;
+                  return (
+                    <InputGroup
+                      className={
+                        errors?.specialties
+                          ? "has-danger"
+                          : "form-group-no-border"
+                      }
+                      key={index}
+                    >
+
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="nc-icon nc-chat-33" />
+                        </InputGroupText>
+                      </InputGroupAddon>
+
                       <input
                         className="form-control"
-                        type="radio"
-                        name="role"
-                        id="patient"
-                        value="Patient"
-                        {...register("role")}
+                        placeholder="Specialty"
+                        name={fieldName}
+                        type="text"
+                        {...register(fieldName)}
                       />
-                      Patient
-                      <span className="form-check-sign"></span>
-                    </Label>
-                  </div>
-                  <div className="form-check-radio m-1">
-                    <Label className="form-check-label">
-                      <input
-                        className="form-control"
-                        type="radio"
-                        name="role"
-                        id="therapist"
-                        value="Therapist"
-                        {...register("role")}
-                      />
-                      Therapist
-                      <span className="form-check-sign"></span>
-                    </Label>
-                  </div>
-                </InputGroup>
-                {errors?.role && (
-                  <Alert color="danger" isOpen={errors?.role}>
-                    {errors.role.message}
-                  </Alert>
+                    </InputGroup>)
+                })}
+                {errors?.specialties && (
+                  <Alert color="danger" isOpen={errors?.specialties}>
+                    You should fill all your specialties                    </Alert>
                 )}
 
                 <Button
