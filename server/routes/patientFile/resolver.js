@@ -11,9 +11,9 @@ const resolvers = {
             return await PatientFile.findById(args.id);
         },
         getPatientsByTherapist: async (_, { id }) => {
-             const list = await PatientFile.find({ therapist: id }).distinct("patient");
-             return await User.find({ _id: {$in : list}}); 
-         
+            const list = await PatientFile.find({ therapist: id }).distinct("patient");
+            return await User.find({ _id: { $in: list } });
+
         },
         getFilesByPatient: async (_, { id }) => {
             return await PatientFile.find({ patient: id });
@@ -23,7 +23,7 @@ const resolvers = {
         // createPatientFile: async (_, args) => {
         //     return await PatientFile.create(args);
         // },
-        createPatientFile: async (_, {title,remarks,patient ,therapist}) => {
+        createPatientFile: async (_, { title, remarks, patient, therapist }) => {
             const createFile = new PatientFile({
                 title: title,
                 remarks: remarks,
@@ -35,10 +35,19 @@ const resolvers = {
             return await createFile.save();
         },
         updatePatientFile: async (_, args) => {
-            return await PatientFile.updateOne(args);
+            const { id, remarks, title } = args;
+             const file = await PatientFile.findByIdAndUpdate(
+                id,
+                { remarks, title },
+                { new: true }
+            );
+            return file;
         },
+
         deletePatientFile: async (_, args) => {
-            return await PatientFile.deleteOne(args);
+            const { id } = args;
+            await PatientFile.findByIdAndDelete(id);
+            return "file deleted";
         }
     },
     PatientFile: {

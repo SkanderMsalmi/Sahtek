@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
         
       },
       {
-        path: "patient/:patientid/files",
+        path: "patients/:patientid/files",
         element: <PatientFiles />,
         
       },

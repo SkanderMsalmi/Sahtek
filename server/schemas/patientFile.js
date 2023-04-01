@@ -22,7 +22,7 @@ extend type Query {
 extend type Mutation {
     createPatientFile(title: String, remarks: String!,patient: ID!,
     therapist: ID! ): PatientFile
-    updatePatientFile(id: ID!, remarks: String!): PatientFile
-    deletePatientFile(id: ID!): Int
+    updatePatientFile(id: ID!, remarks: String!,title: String): PatientFile
+    deletePatientFile(id: ID!): String
 }`
 

@@ -16,6 +16,7 @@ query GetPatientsByTherapist($id: ID!) {
 export const GET_PATIENT_FILES = gql` 
     query GetFilesByPatient($id: ID!) {
       getFilesByPatient(id: $id) {
+        id
         createdAt
         patient {
           id
@@ -41,3 +42,9 @@ export const GET_USER = gql`
     }
     `;
 
+
+export const DELETE_PATIENT_FILE_MUTATION  = gql` 
+    mutation DeletePatientFile($id: ID!) {
+      deletePatientFile(id: $id)
+    }
+    `;

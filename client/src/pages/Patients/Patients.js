@@ -47,13 +47,8 @@ function Patients() {
 
                         </Col>
                         <Col lg="3" md="6">
-                            <FormGroup className="has-success">
-                                <Input
-                                    className="form-control-success"
-                                    placeholder="Search"
-                                    id="inputSuccess1"
-                                    type="text"
-                                />
+                        <FormGroup>
+                                <Input placeholder="Search" type="text" />
                             </FormGroup>
                         </Col>
                     </Row>
@@ -89,7 +84,7 @@ function Patients() {
                                                         <h6>{p.email}</h6>
                                                     </Col>
                                                     <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
-                                                    <Link to={`/patient/${p.id}/files`}>Files</Link>
+                                                    <Link to={`/patients/${p.id}/files`}>Files</Link>
                                                     </Col>
                                                 </Row>
                                             </li>

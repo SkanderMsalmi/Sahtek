@@ -49,6 +49,9 @@
 .modal-footer {
     border-top: 1px solid $medium-gray;
     padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     &.no-border-footer{
         border-top: 0 none;
@@ -89,3 +92,6 @@
     display: table;
     content: " ";
 }
+
+
+ 
