@@ -60,9 +60,8 @@ function Navigation() {
     const updateNavbarColor = () => {
       if (
         document.documentElement.scrollTop > 50 ||
-        document.body.scrollTop > 50 
+        document.body.scrollTop > 50
         // || document.body.style.backgroundColor == '#FFFFFF'
-
       ) {
         setNavbarColor("");
       } else if (

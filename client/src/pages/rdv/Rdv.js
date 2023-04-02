@@ -54,8 +54,7 @@ function Rdv() {
   const [bookAppointment] = useMutation(BOOK_APPOINTMENT);
 
   const user = useSelector(selectUser);
-  const [note, setNote] = useState("note");
-  const [therapist, setTherapist] = useState("therapist");
+  const [note, setNote] = useState("");
   const [date, setDate] = useState("dateapp");
   const [selectedValue, setSelectedValue] = useState("");
 
