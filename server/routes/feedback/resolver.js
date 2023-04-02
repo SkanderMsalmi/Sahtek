@@ -17,9 +17,11 @@ const resolvers = {
       });
 
       if (feedback) {
-        return true;
+        const therapist = await User.findById(args.therapist);
+
+        return { feedback, therapist };
       } else {
-        return false;
+        return null;
       }
     },
   },
@@ -32,7 +34,7 @@ const resolvers = {
 
       if (feedback) {
         throw new ApolloError(
-          "You Already made a feedback for this therapist ! if you want update your feedback go to your feedback"
+          "You Already made a feedback for this therapist ! if you want update your feedback go to your feedbacks in your profile"
         );
       }
       const therapist = await User.findById(args.therapist);
