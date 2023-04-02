@@ -30,6 +30,7 @@
     "react-loadable": "^5.5.0",
     "react-multi-carousel": "^2.8.2",
     "react-rating-stars-component": "^2.2.0",
+    "react-player": "^2.12.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
@@ -42,6 +43,8 @@
     "redux-thunk": "^2.4.2",
     "reselect": "^4.1.7",
     "sass": "^1.58.3",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.6.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.0.2"
   },

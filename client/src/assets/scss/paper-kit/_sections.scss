@@ -31,6 +31,9 @@
 .section-dark{
     background-color: #0b1011;
 }
+.section-dark-gray{
+    background-color: #202124;
+}
 .section-image,
 .section-gold,
 .section-dark{
@@ -48,7 +51,7 @@
         color: rgba($white-color, .7);
     }
     hr{
-        border-color: rgba(255, 255, 255, 0.19);
+        border-color: rgba(243, 238, 238, 0.19);
     }
 }
 .page-header,
@@ -89,6 +92,17 @@
 
 .section-login{
     min-height: 700px;
+    
+}
+.section-appo{
+    background-position: center center;
+    background-size: cover;
+    min-height: 300px;
+    margin-top: 10%;
+    color: #EEEEEE;
+    opacity: 0.7;
+    background-color: rgba(0, 0, 0, 0.8);
+
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {

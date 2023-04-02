@@ -6,6 +6,7 @@ import App from "./App";
 // import { rootLoader } from './loaders/rootLoader';
 import Profile2 from "./pages/Profile/Profile2";
 import Rating from "./pages/Rating/Rating";
+import VideoCall from "./pages/videoCall/videoCall";
 
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
@@ -21,7 +22,18 @@ const Login = React.lazy(() => import("./pages/Signin/Login"));
 const MailVerification = React.lazy(() =>
   import("./pages/Register/MailVerification")
 );
+const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
 
+
+const Rdv = React.lazy(() =>
+  import("./pages/rdv/Rdv")
+);
+const Appointment = React.lazy(() =>
+  import("./pages/AppoinmentForTherapist/appforTherapist")
+);
+const AppointmentDetails = React.lazy(() =>
+  import("./pages/AppoinmentForTherapist/appDetails")
+);
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -77,12 +89,31 @@ export const router = createBrowserRouter([
       },
       {
         path: "feedback/:id",
-        element: <Feedback />,
+        element: <Feedback />
+      },{
+        path: "videoCall/:id",
+        element: <VideoCall />,
+      },
+      {
+        path: "rdv",
+        element: <Rdv />,
+      },
+      {
+        path: "appfortherapist",
+        element: <Appointment />,
+      },
+      {
+        path: "AppoinmentDetails",
+        element: <AppointmentDetails />,
       },
       {
         path: "*",
         exact: true,
         element: <Navigate to="/" />,
+      },
+      {
+        path: "videoChat",
+        element: <VideoChat />,
       },
     ],
   },

@@ -1,0 +1,151 @@
+.bloc{
+margin-top: 8%;
+margin-bottom: 20%;
+}
+// // .table{
+// //     width:100%;
+// // 	border:1px solid #EEEEEE}
+// table {
+//     border-collapse: collapse;
+//     width: 100%;
+//   }
+  
+//   th, td {
+//     padding: 8px;
+//     text-align: left;
+//   }
+  
+//   th {
+//     background-color: #f2f2f2;
+//   }
+  
+//   tr:nth-child(even) {
+//     background-color: #f2f2f2;
+//   }
+  
+//   tr:hover {
+//     background-color: #ddd;
+//   }
+/* Colors */
+:root {
+    --primary-color: #0077b6;
+    --secondary-color: #ffd166;
+    --tertiary-color: #f1faee;
+    --dark-text: #333333;
+    --light-text: #ffffff;
+    --light-background: #f8f8f8;
+  }
+  
+  /* General Styles */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  a:hover {
+    color: var(--secondary-color);
+  }
+  
+  /* Appointment List Styles */
+  .appointmentlist {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .appointmentlist h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: var(--dark-text);
+  }
+  
+  .filterbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filterbar input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+    border-bottom: 2px solid var(--primary-color);
+    flex: 1;
+    margin-right: 10px;
+    color: var(--dark-text);
+  }
+  
+  .filterbar input[type="text"]::placeholder {
+    color: var(--primary-color);
+  }
+  
+  .filterbar select {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+    border-bottom: 2px solid var(--primary-color);
+    background-color: var(--tertiary-color);
+    color: var(--dark-text);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+    
+    th, td {
+    text-align: left;
+    padding: 10px;
+    }
+    
+    th {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    text-transform: uppercase;
+    }
+    
+    td {
+    border-bottom: 1px solid var(--light-background);
+    }
+    
+    tr:hover {
+    background-color: var(--light-background);
+    }
+    
+    td:last-child {
+    text-align: center;
+    }
+    
+    td:last-child a {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 10px 20px;
+    border-radius: 3px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+    
+    td:last-child a:hover {
+    background-color: var(--secondary-color);
+    color: var(--dark-text);
+    }
+    
+    @media (max-width: 600px) {
+    .filter-bar {
+    flex-direction: column;
+    }
+    
+    .filter-bar input[type="text"], .filter-bar select {
+    margin-bottom: 10px;
+    }
+    }
+  
