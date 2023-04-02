@@ -7,6 +7,7 @@ import App from "./App";
 import Profile2 from "./pages/Profile/Profile2";
 import Rating from "./pages/Rating/Rating";
 import VideoCall from "./pages/videoCall/videoCall";
+import ProfileCreation from "./pages/Profile/ProfileCreation";
 
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
@@ -24,10 +25,7 @@ const MailVerification = React.lazy(() =>
 );
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
 
-
-const Rdv = React.lazy(() =>
-  import("./pages/rdv/Rdv")
-);
+const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -89,8 +87,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "feedback/:id",
-        element: <Feedback />
-      },{
+        element: <Feedback />,
+      },
+      {
         path: "videoCall/:id",
         element: <VideoCall />,
       },
@@ -105,6 +104,10 @@ export const router = createBrowserRouter([
       {
         path: "AppoinmentDetails",
         element: <AppointmentDetails />,
+      },
+      {
+        path: "profileCreation",
+        element: <ProfileCreation />,
       },
       {
         path: "*",

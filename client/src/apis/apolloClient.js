@@ -22,12 +22,12 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(
-    createUploadLink({
-      uri: "http://localhost:5000/graphql",
-    })
-  ),
-  cache: new InMemoryCache(),
+  link: createUploadLink({
+    uri: "http://localhost:5000/graphql",
+  }),
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
 });
 
 export default client;

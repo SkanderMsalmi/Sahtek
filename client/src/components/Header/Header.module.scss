@@ -1,6 +1,6 @@
 :root {
-    --g1: rgb(98, 0, 234);
-    --g2: rgb(236, 64, 122);
+    --g1: #2ba9cd;
+    --g2: #f33816;
 }
 
 @keyframes background-pan {
@@ -13,8 +13,18 @@
     }
 }
 
+@font-face {
+    font-family: "Dancing Script";
+    src: url("../../assets/fonts/DancingScript-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: "Rubik";
+    src: url("../../assets/fonts/Rubik-VariableFont_wght.ttf");
+}
+
 .animated {
-    animation: background-pan 10s linear infinite;
+    animation: background-pan 15s linear infinite;
     background: linear-gradient(to right,
             var(--g1),
             var(--g2),
@@ -25,12 +35,14 @@
     margin: 0px;
 }
 
-.animated.toggled {
-    animation: none;
-}
+
 
 .animated.toggled>.title {
     opacity: 0;
+}
+
+.animated.toggled>.title2 {
+    opacity: 1;
 }
 
 .animated.toggled>.icon {
@@ -67,24 +79,31 @@
 
 .tile:hover:before {
     background-color: rgb(30, 30, 30);
+    opacity: 0.95;
 }
 
 .tile:before {
-    background-color: rgb(15, 15, 15);
+    background-color: #0b1011;
     content: "";
     inset: 0.5px;
     position: absolute;
+    transition: background-color 0.3s;
 }
 
-.title {
+.title,
+.title2 {
     color: white;
     font-family: "Rubik", sans-serif;
     font-size: 6vw;
     margin: 0px;
     pointer-events: none;
-    transition: opacity 1200ms ease;
+    transition: opacity 600ms ease;
     width: 50vw;
     z-index: 3;
+}
+
+.title2 {
+    opacity: 0;
 }
 
 .title>.fancy {

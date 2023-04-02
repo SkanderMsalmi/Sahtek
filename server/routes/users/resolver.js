@@ -21,7 +21,7 @@ const resolvers = {
       {
         therapistInput: {
           id,
-          license,
+          licenses,
           specialties,
           description,
           availability,
@@ -40,8 +40,8 @@ const resolvers = {
       if (!existingUser) {
         throw new Error("User doesn't exist");
       }
-      if (license) {
-        existingUser.therapist.license = license;
+      if (licenses) {
+        existingUser.therapist.licenses = licenses;
       }
       if (specialties) {
         existingUser.therapist.specialties = specialties;

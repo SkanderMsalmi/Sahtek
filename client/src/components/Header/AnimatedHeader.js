@@ -9,7 +9,6 @@ function AnimatedHeader() {
     const [toggled,setToggled]=useState(true);
     const createGrid = () => {
         setSize( 800 );
-        console.log(size)
         setColumns(Math.floor(document.body.clientWidth / size));
         setRows(Math.floor(document.getElementById('heads').clientHeight / size));
     }
@@ -50,7 +49,9 @@ const handleOnClick = index => {
 <span className={styles.fancy}>Help </span>
  is one click away.
 </h1>
-
+{/* <h2 className={styles.centered+' '+styles.title2}>
+            Get expert help from the comfort of your own home.
+</h2> */}
 <i id="icon" className={`fa-solid fa-heart ${styles.centered} ${styles.icon}`}></i>
 
 

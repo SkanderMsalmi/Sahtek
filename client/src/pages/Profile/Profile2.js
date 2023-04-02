@@ -23,9 +23,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
 import { useParams } from "react-router-dom";
 import ProfilePosts from "../../components/Posts/profilePosts";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
+
 import EditUser from "../../components/Profile/EditUser";
 import Therapist from "../../components/Profile/Therapist";
 import isVerified from "../../components/Guard/IsVerified";
