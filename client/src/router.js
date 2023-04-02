@@ -24,6 +24,8 @@ const MailVerification = React.lazy(() =>
   import("./pages/Register/MailVerification")
 );
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
+const Patients = React.lazy(() => import("./pages/Patients/Patients"));
+const PatientFiles = React.lazy(() => import("./pages/Patients/PatientFiles"));
 
 const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
 const Appointment = React.lazy(() =>
@@ -117,6 +119,14 @@ export const router = createBrowserRouter([
       {
         path: "videoChat",
         element: <VideoChat />,
+      },
+      {
+        path: "patients",
+        element: <Patients />,
+      },
+      {
+        path: "patients/:patientid/files",
+        element: <PatientFiles />,
       },
     ],
   },
