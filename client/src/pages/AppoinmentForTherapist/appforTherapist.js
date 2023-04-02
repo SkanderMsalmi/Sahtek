@@ -7,7 +7,13 @@ import { useMutation, useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 
 
-
+const GET_PATIENT_NAME_QUERY = gql`
+  query {
+    user(id: $patientId) {
+      name
+    }
+  }
+`;
 export const GET_APPOINTMENTS = gql`
   query  {
     getAppointments{ 
@@ -20,13 +26,32 @@ export const GET_APPOINTMENTS = gql`
     }
   }
 `;
+
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
+ //const[getUser]=useQuery(GET_USER);
   //const [getAppointments] = useMutation(getAppointments);
-  const { loading, error, data } = useQuery(GET_APPOINTMENTS);
+  
+  function PatientName(props) {
+    const patientId = props.patientId;
+    const { loadinguser, erroruser, datauser } = useQuery(GET_PATIENT_NAME_QUERY, {
+      variables: { id: patientId },
+    });
+  
+     if (loadinguser) return <p>Loading...</p>;
+     if (erroruser) return datauser
+  
+     const { user } = data;
+     const patientName = user ? user.name : '';
+   
+     return <p>Patient Name: {patientName}</p>;  }
+  const { loading, error, data } = useQuery(GET_APPOINTMENTS
+  );
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error </p>
+  if (error) return <p>Error </p>;
   console.log(data);
+  //console.log(userData);
+  //const user = userData.user;
   // useEffect(() => {
   //   // Fetch appointments from server and update state
  
@@ -75,8 +100,8 @@ const Appointments = () => {
                           {data.getAppointments.map((item) => (
                                     //<tr key={item.id}>
                                   <tr className="cell-1">
-                                    <td>{item.patient}</td>
-                                    <td>{item.notes}</td>
+                                     <PatientName patientId={item.patient} />
+                                     <td>{item.notes}</td>
                                     <td>
                                     {item.status === 'Confirmed' ? (
         <span className="badge badge-success">Confirmed</span>

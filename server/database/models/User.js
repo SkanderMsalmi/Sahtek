@@ -46,7 +46,7 @@ const TherapistSchema = mongoose.Schema({
   fees: { type: Number },
   ratings: [{ type: Number }],
   reviews: [{ type: String }],
-  appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }],
+  //appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Appointment" }],
 });
 
 const AppointmentSchema = new mongoose.Schema({

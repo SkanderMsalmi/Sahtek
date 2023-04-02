@@ -24,6 +24,7 @@
     "react": ">=16.0.0",
     "react-alert-with-buttons": "^0.0.18",
     "react-datetime": "^2.16.3",
+    "react-datetime-picker": "^4.2.1",
     "react-dom": ">=16.0.0",
     "react-hook-form": "^7.43.2",
     "react-icons": "^4.8.0",

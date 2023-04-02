@@ -32,7 +32,7 @@ module.exports = gql`
     emergencyContact: EmergencyContact
     medicalConditions: [String]
     medications: [Medication]
-    appointments: [Appointment]
+    
   }
 
   enum Gender {
@@ -90,7 +90,7 @@ module.exports = gql`
     fees: Float
     ratings: [Float]
     reviews: [String]
-    appointments: [Appointment]
+    
   }
 
   type Appointment {
