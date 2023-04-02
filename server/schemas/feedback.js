@@ -14,6 +14,7 @@ module.exports = gql`
   extend type Query {
     getFeedbacks: [Feedback]
     getFeedback(id: ID!): Feedback
+    checkFeedbackForPatientAndTherapist(patient: ID, therapist: ID): Boolean
   }
   extend type Mutation {
     createFeedback(
@@ -24,7 +25,7 @@ module.exports = gql`
       professionalism: Int!
       effectiveness: Int!
       remarks: String
-    ): Feedback
+    ): Boolean
     updateFeedback(id: ID!, remarks: String!): Feedback
     deleteFeedback(id: ID!): Int
   }
