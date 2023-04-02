@@ -30,7 +30,7 @@ const USERS_QUERY = gql`
   }
 `;
 export const BOOK_APPOINTMENT=gql`
-mutation bookAppointment($patient:String,$therapist: String,$date: String,$duration: Int,$notes: String,$status: String){
+mutation bookAppointment($patient:ID,$therapist: ID,$date: String,$duration: Int,$notes: String,$status: String){
   bookAppointment(patient:$patient,therapist:$therapist,date:$date,duration:$duration,notes:$notes,status:$status)
 } 
 
@@ -44,8 +44,9 @@ function Rdv (){
   const [note, setNote]= useState('note');
   const [therapist,setTherapist]= useState('therapist');
   const [date,setDate]= useState('dateapp');
- 
+  const [selectedValue, setSelectedValue] = useState('');
 
+  const [errorMessage, setErrorMessage] = useState('');
 
   const initialValues = {
      
@@ -57,38 +58,43 @@ function Rdv (){
   const {
     
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting,isSubmitted},
     setError,
     clearErrors,
   } = useForm({
     initialValues,
     
   });
+  const handleSelectChange = (event) => {
+    setSelectedValue(event.target.value);
+  };
+  
   const submit=handleSubmit(async ({}) => {
     //clearErrors();
     try {
       await bookAppointment ({ variables: { 
         "patient":userid.userid,
-        "therapist":therapist,
+        "therapist":selectedValue,
         "date":date,
         "duration":1,
         "notes":note,
         "status":"Scheduled"
       } });
 
-        
+      setErrorMessage("appointment booked");
+
         console.log("succes")
       
       
     } catch (error) {
-    console.log("aaaa")
-
+      setErrorMessage(error.message);
+      //alert(error.message);
     }
   });
   const { loading, error, data } = useQuery(USERS_QUERY);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error </p>
-  console.log(data);
+  //console.log(data);
 
 
 
@@ -104,23 +110,27 @@ function Rdv (){
          <h4>Home - Appoitment</h4>
 
         </div>
+       
 <div class={`${styles.tt}`}>
   
   <div class={`${styles.card} card`}>
     <h3>Book your appoitment</h3>
     <form action="https://formbold.com/s/FORM_ID">
       <div class={`${styles.formboldmb5}`}>
-        <h5>choose your doctor</h5>
-        <select>
+        <select class="browser-default custom-select"  onChange={handleSelectChange}>
+        <option selected>Choose your doctor here</option>
       {data.users.map(item=> (
-        <option key={item.id} value={item.id} onChange={(e) => setTherapist(e.target.value)} >
+        <option key={item.id} value={item.id} >
           {item.name}
         </option>
       ))}
+
     </select>
       </div>
       <div class={`${styles.formboldmb5}`}
           >
+                   <label for="date"class={`${styles.formboldformlabel}`}> Reason  </label>
+
         <textarea
           type="text"
           name="note"
@@ -139,6 +149,8 @@ function Rdv (){
               type="datetime-local"
               name="dateapp"
               id="date"
+              disableClock
+              format='dd/MM/yyyy HH:mm'
               value={date} onChange={(e) => setDate(e.target.value)} 
 
               class={`${styles.formboldforminput}`}
@@ -152,7 +164,14 @@ function Rdv (){
 
     <div>
         <button class={`${styles.formboldbtn}`} onClick={submit}>Book Appointment</button>
+        
       </div>
+      {errorMessage === 'appointment booked' ? (
+       <div style={{ color: 'green' }}>{errorMessage}</div>
+      ) : (
+        <div style={{ color: 'red' }}>{errorMessage}</div>
+        )
+      }
     </form>
   </div>
   <div class={`${styles.work}`}>

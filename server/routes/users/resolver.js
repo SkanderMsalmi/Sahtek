@@ -266,13 +266,14 @@ const resolvers = {
    const p=await User.findById(patient);
    const d=await User.findById(therapist);
 
-   // const existingAppointment = await Appointment.findOne({
-      //   startTime: { $lte: endTime },
-      //   endTime: { $gte: startTime },
-      // });
-      // if (existingAppointment) {
-      //   throw new Error('Time slot not available');
-      // }
+   const existingAppointment = await Appointment.findOne({
+      date:date,
+      therapist:therapist,
+      date:{$lte:(new Date(date).getTime() + 60 * 60 * 1000)}
+      });
+      if (existingAppointment) {
+        throw new Error('Time slot not available');
+      }
 
       const appointment = new Appointment({
         patient:p.id,
