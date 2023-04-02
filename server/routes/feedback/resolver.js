@@ -10,26 +10,41 @@ const resolvers = {
     getFeedback: async (_, args) => {
       return await Feedback.findById(args.id);
     },
-  },
-  Mutation: {
-    createFeedback: async (_, args) => {
-      const feedback = Feedback.find({
+    checkFeedbackForPatientAndTherapist: async (_, args) => {
+      const feedback = await Feedback.findOne({
         patient: args.patient,
         therapist: args.therapist,
       });
+
+      if (feedback) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  Mutation: {
+    createFeedback: async (_, args) => {
+      const feedback = await Feedback.findOne({
+        patient: args.patient,
+        therapist: args.therapist,
+      });
+
       if (feedback) {
         throw new ApolloError(
           "You Already made a feedback for this therapist ! if you want update your feedback go to your feedback"
         );
       }
-      const therapist = User.findById(args.therapist);
-      const patient = User.findById(args.patient);
+      const therapist = await User.findById(args.therapist);
+      const patient = await User.findById(args.patient);
       if (!therapist || !patient) {
         throw new ApolloError("Therapist or Patient Doesn't exist");
       }
       if (therapist && patient) {
-        return await Feedback.create(args);
+        await Feedback.create(args);
+        return true;
       }
+      return false;
     },
     updateFeedback: async (_, args) => {
       return await Feedback.updateOne(args);
