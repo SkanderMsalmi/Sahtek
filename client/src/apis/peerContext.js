@@ -51,7 +51,7 @@ const PeerProvider = ({ children }) => {
         }
     }, [handleTrackEvent, peer])
     return (
-        <PeerContext.Provider value={{ peer, createOffer, createAnswer, setRemoteAnswer, sendStream, toggleVideo, remoteStream }}>
+        <PeerContext.Provider value={{ peer, createOffer, createAnswer, setRemoteAnswer, sendStream, toggleVideo, remoteStream, setRemoteStream }}>
             {children}
         </PeerContext.Provider>
     )

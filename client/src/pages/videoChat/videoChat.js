@@ -1,7 +1,7 @@
 import { Button, Container, Row, Col } from "reactstrap";
 import VideoPlayer from '../../components/videoChat/VideoPlayer';
 import PatientFile from '../../components/videoChat/PatientFile';
-import React, { useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { MdCallEnd } from 'react-icons/md';
 import { MdVideocam } from 'react-icons/md';
 import { MdVideocamOff } from 'react-icons/md';
@@ -9,16 +9,35 @@ import { IoMdMic } from 'react-icons/io';
 import { IoMdMicOff } from 'react-icons/io';
 import styles from './../../components/videoChat/videoChat.module.scss';
 import { CgNotes } from 'react-icons/cg';
+import { SocketContext } from "../../apis/socketContext";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/users/users.selectors";
+import { useNavigate } from "react-router-dom";
 
 const VideoChat = ({ children }) => {
+    const user = useSelector(selectUser);
 
     const [show, setShow] = useState(false);
     const [micro, setMicro] = useState(true);
     const [cam, setCam] = useState(true);
+    const navigate = useNavigate();
 
+    const { socket, setIsVideo } = useContext(SocketContext);
+    const handleVideoToggle = () => {
+        setIsVideo(!cam);
+        socket.emit("toggle-video", { isVideoOn: !cam, emailId: user.email });
 
+    }
+    const handleAudioToggle = () => {
+        socket.emit("toggle-audio", { isAudioOn: !micro, emailId: user.email });
+    }
+    const handleHangUp = () => {
+        socket.emit("hang-up");
+        navigate('/')
+    }
     const handleClick = val => {
         setShow(val)
+
 
     }
     return (
@@ -48,7 +67,7 @@ const VideoChat = ({ children }) => {
                                             color="info"
                                             outline
                                             target="_blank"
-                                            onClick={() => setCam(false)}
+                                            onClick={() => { handleVideoToggle(); setCam(!cam); }}
                                         >
                                             <MdVideocam className={styles.icon} />
                                         </Button>
@@ -57,7 +76,7 @@ const VideoChat = ({ children }) => {
                                         color="danger"
 
                                         target="_blank"
-                                        onClick={() => setCam(true)}
+                                        onClick={() => { handleVideoToggle(); setCam(!cam); }}
                                     >
                                         <MdVideocamOff className={styles.icon} />
                                     </Button>)}
@@ -71,7 +90,7 @@ const VideoChat = ({ children }) => {
                                             color="info"
                                             outline
                                             target="_blank"
-                                            onClick={() => setMicro(false)}
+                                            onClick={() => { handleAudioToggle(); setMicro(false) }}
 
                                         >
                                             <IoMdMic className={styles.icon} />
@@ -82,7 +101,7 @@ const VideoChat = ({ children }) => {
                                             color="danger"
 
                                             target="_blank"
-                                            onClick={() => setMicro(true)}
+                                            onClick={() => { handleAudioToggle(); setMicro(true) }}
 
                                         >
                                             <IoMdMicOff className={styles.icon} />
@@ -94,6 +113,7 @@ const VideoChat = ({ children }) => {
                                         className="btn-round ml-2"
                                         color="danger"
                                         target="_blank"
+                                        onClick={() => handleHangUp()}
                                     >
                                         <MdCallEnd className={styles.icon} />
                                     </Button>

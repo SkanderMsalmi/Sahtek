@@ -52,6 +52,25 @@ const startServer = async () => {
   const emailToSocketMapping = new Map();
   const socketToEmailMapping = new Map();
   io.on('connection', (socket) => {
+    socket.on('hang-up', (data) => {
+      socket.broadcast.emit('hanged-up');
+    });
+    socket.on('toggle-video', (data) => {
+      const { isVideoOn } = data;
+
+      socket.broadcast.emit('user-video', { isVideoOn });
+    });
+    socket.on('toggle-audio', (data) => {
+      const { isAudioOn } = data;
+
+      socket.broadcast.emit('user-audio', { isAudioOn });
+    });
+    socket.on('disconnect', () => {
+      const emailId = socketToEmailMapping.get(socket.id);
+      socketToEmailMapping.delete(socket.id);
+      emailToSocketMapping.delete(emailId);
+      socket.broadcast.emit('user-disconnected', emailId);
+    });
     socket.on('joinroom', (data) => {
       const { roomId, emailId } = data;
       console.log("joinroom", roomId, emailId)
@@ -75,11 +94,11 @@ const startServer = async () => {
       const socketId = emailToSocketMapping.get(emailId);
       socket.to(socketId).emit('accepted-call', { ans });
     });
-    socket.on('toggle-video', (data) => {
-      const { emailId, isVideoOn } = data;
-      const socketId = emailToSocketMapping.get(emailId);
-      socket.to(socketId).emit('toggle-video', { isVideoOn });
-    });
+    // socket.on('toggle-video', (data) => {
+    //   const { emailId, isVideoOn } = data;
+    //   const socketId = emailToSocketMapping.get(emailId);
+    //   socket.to(socketId).emit('toggle-video', { isVideoOn });
+    // });
 
     //old
     // socket.emit('me', socket.id);
