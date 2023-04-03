@@ -26,6 +26,9 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
+import IsPatient from "../../components/Guard/IsPatient";
+import withAuth from "../../components/Guard/WithAuth";
+import isVerified from "../../components/Guard/IsVerified";
 const USER_PROFILE = gql`
   query User($id: ID!) {
     user(ID: $id) {
@@ -339,7 +342,15 @@ const Feedback = () => {
 
   useEffect(() => {
     setIsFeedbacked(dataCheckFeedback?.checkFeedbackForPatientAndTherapist);
-  }, [dataCheckFeedback?.checkFeedbackForPatientAndTherapist]);
+    if (dataTherapist?.user?.role === "Patient") {
+      navigate("/profile");
+    }
+  }, [
+    dataCheckFeedback?.checkFeedbackForPatientAndTherapist,
+    dataTherapist?.user?.therapist,
+    dataTherapist,
+    navigate,
+  ]);
   const next = () => {
     if (animating) return;
     const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
@@ -775,4 +786,4 @@ const Feedback = () => {
   );
 };
 
-export default Feedback;
+export default withAuth(isVerified(IsPatient(Feedback)));

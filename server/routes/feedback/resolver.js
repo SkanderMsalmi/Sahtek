@@ -41,8 +41,11 @@ const resolvers = {
       const patient = await User.findById(args.patient);
       if (!therapist || !patient) {
         throw new ApolloError("Therapist or Patient Doesn't exist");
-      }
-      if (therapist && patient) {
+      } else if (!patient.get("patient")) {
+        throw new ApolloError("This feature is disabled for Therapists");
+      } else if (!therapist.get("therapist")) {
+        throw new ApolloError("You can't make a feedback on Patient");
+      } else if (therapist && patient) {
         await Feedback.create(args);
         return true;
       }
