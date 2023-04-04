@@ -9,7 +9,8 @@ import { gql } from "@apollo/client";
 
 const GET_PATIENT_NAME_QUERY = gql`
   query {
-    user(id: $patientId) {
+    users{
+      id
       name
     }
   }
@@ -29,26 +30,27 @@ export const GET_APPOINTMENTS = gql`
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
- //const[getUser]=useQuery(GET_USER);
+ //const[dataUser,]=useQuery(GET_USER);
   //const [getAppointments] = useMutation(getAppointments);
   
-  function PatientName(props) {
-    const patientId = props.patientId;
-    const { loadinguser, erroruser, datauser } = useQuery(GET_PATIENT_NAME_QUERY, {
-      variables: { id: patientId },
-    });
-  
-     if (loadinguser) return <p>Loading...</p>;
-     if (erroruser) return datauser
-  
-     const { user } = data;
-     const patientName = user ? user.name : '';
+
    
-     return <p>Patient Name: {patientName}</p>;  }
-  const { loading, error, data } = useQuery(GET_APPOINTMENTS
-  );
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error </p>;
+    const { loadinguser, erroruser, datauser } = useQuery(GET_PATIENT_NAME_QUERY);
+    const { loading, error, data } = useQuery(GET_APPOINTMENTS);
+
+     if (loadinguser) return <p>Loading...</p>;
+     if (loading) return <p>Loading...</p>;
+
+     if (erroruser) return datauser
+     if (error) return data
+  
+    //  const { user } = data;
+    //  const patientName = user ? user.name : '';
+   
+    //  return <p>Patient Name: {patientName}</p>;  
+  
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error </p>;
   console.log(data);
   
   //console.log(userData);
@@ -101,7 +103,10 @@ const Appointments = () => {
                           {data.getAppointments.map((item) => (
                                     //<tr key={item.id}>
                                   <tr className="cell-1">
-                                     <PatientName patientId={item.patient} />
+                                     {datauser.users.map(ite => 
+                                     {return(
+                                           (ite.id === item.patient)&&(ite.name))})}
+                                     
                                      <td>{item.notes}</td>
                                     <td>
                                     {item.status === 'Confirmed' ? (
@@ -112,7 +117,8 @@ const Appointments = () => {
       <span className="badge badge-secondary">Scheduled</span>):
       item.status==='Cancelled'?(
       <span className="badge badge-danger">Cancelled</span>):<span></span>}</td>
-                                    <td>{new Date(item.date).toUTCString}</td>
+                                    <td>{new Date(item.date*1).getDate()}/{new Date(item.date * 1).getMonth()}/{new Date(item.date * 1).getFullYear() }   {new Date(item.date * 1).getHours() }:00 HH </td>
+                                    {/* <label>{new Date(datau?.user?.dateOfBirth * 1).getDate()}/{new Date(datau?.user?.dateOfBirth * 1).getMonth()}/{new Date(datau?.user?.dateOfBirth * 1).getFullYear() }</label> */}
                                     <td>{item.duration}</td>
                                     <button type="button" class="btn btn-success" style={{width:'100px',height:'30px'}}>Confirm</button>
                                     <button type="button" style={{width:'100px',height:'30px'}} class="btn btn-danger">Cancel</button>

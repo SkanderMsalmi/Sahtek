@@ -43,7 +43,7 @@ function AppointmentBooked() {
               <p className="note mt-5">
                 
                 <br />
-                <h2>Your appointment booked successfully!</h2><br/>
+                <h5>Your appointment booked successfully!</h5><br/>
                 {/* status:
                 {data.getAppointment.status} */}
               </p>

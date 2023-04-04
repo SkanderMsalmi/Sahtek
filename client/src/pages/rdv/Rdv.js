@@ -249,28 +249,13 @@ function Rdv (){
             args.isDisabled = true;
           }
         }}
-            //min={minTime}
-             //max={maxTime}
-              //name="dateapp"
-              //id="date"
-              //disabled={disabledDates.includes(new Date(date))}
-              //format="dd-MMM-yy HH:mm"
+          
                onChange={(e) => setDate(e.target.value)} 
-              //max={new Date("2023-12-31T23:59").toISOString().slice(0, 16)}
-              // isValidDate={
-              //   (current)=>{
-              //     let today=new Date()
-              //     return current.isAfter(today)           }
-              // }
+              
               placeholder="choose a date and time for your appointment "
               step={60}
               format="dd-MMM-yy"
-              //min={new Date()}
-              //maxDate={maxDate}
-              
-              
-              // min={new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 9, 0, 0)}
-              // max={new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 19, 0, 0)}
+
             ></DatePickerComponent>
             <TimePickerComponent
             format='HH:mm'
@@ -302,18 +287,7 @@ function Rdv (){
   </div>
   <div class={`${styles.work}`}>
     <h3 class={`${styles.fontt}`}>Working Hours</h3>
-    {/* <h5> {data.users.map(item => {return(
-   (item.id ===selectedValue) &&
-  
-    (cleanUpAvailability(item.therapist.availability))&&(item.name)
-  
-  //   item.therapist.availability.array.forEach(element => {return(
-  //   <p>{element.day}</p>,
-  //   <p>{element.startTime}</p>,
-  //   <p>{element.endTime}</p>)
-  // })
-   )
-})}</h5> */}
+   
  {data.users.map(item => {return(
    (item.id ===selectedValue) && (cleanUpAvailability(item.therapist.availability).map((day, index) => (
                   <div className="row" style={{color:'white'}}>
@@ -327,104 +301,14 @@ function Rdv (){
                   <div className="col-md-8" style={{color:'white'}}>Sunday</div>
                   <div className="col-md-4" style={{color:'white'}}>Closed</div>
                 </div>
-    {/* <div class={`${styles.dispo}`}>
-    <h5 class={`${styles.day}`}>Monday - Friday <br></br> Saturday</h5><h5 class={`${styles.time}`}></h5> */}
-    {/* <h3> {data.users.map(item => {
-  if (item.id ===selectedValue) {
-  <p>{item.name} </p>
-   {console.log(item.therapist.availability
-    )}
-  
-}})}</h3> */}
+
     </div>
 </div>
   </div>
 
 
         </>
-    //     <div
-    //     className="section section-image section-login"
-    //     style={{
-    //       backgroundImage:
-    //         "url(" + require("../../assets/img/login-image.jpg") + ")",
-    //     }}
-    //   >
-    //     <Container>
-    //       <Row>
-    //         <Col className="bloc" lg="4" md="6">
-    //           <Card className="card-appoitment">
-    //             <h3 className="title mx-auto">book an appoitment</h3>
-    //             <div className="social-line text-center">
-                 
-    //             </div>
-    //             <Form className="register-form" >
-                  
-    //               <InputGroup
-                    
-    //               >
-    //                 <InputGroupAddon addonType="prepend">
-    //                   <InputGroupText>
-                        
-    //                   </InputGroupText>
-    //                 </InputGroupAddon>
-    //                 <input
-    //                   className="form-control"
-    //                   placeholder="choose a doctor"
-    //                   type="text"
-                    
-    //                 />
-    //               </InputGroup>
-                                   
-    //               <InputGroup>
-                  
-    //                 <InputGroupAddon addonType="prepend">
-    //                   <InputGroupText>
-                        
-    //                   </InputGroupText>
-    //                 </InputGroupAddon>
-    //                 <input
-    //                   className="form-control"
-    //                   placeholder="choose a date"
-    //                   type="datetime-local"
-                      
-    //                 />
-    //               </InputGroup>
-    //               <InputGroup>
-                  
-    //               <InputGroupAddon addonType="prepend">
-    //                 <InputGroupText>
-                      
-    //                 </InputGroupText>
-    //               </InputGroupAddon>
-    //               <textarea
-    //                 className="form-control"
-    //                 placeholder="note"
-    //                 type="text"
-                    
-    //               />
-    //             </InputGroup>
-  
-                 
-                 
-                
-                
-    //               <Button
-    //                 block
-    //                 className="btn-round"
-    //                 color="danger"
-    //                 type="submit"
-    //                 //onClick={(e) => handleSubmit(e)}
-    //               >
-    //                 book 
-    //               </Button>
-    //             </Form>
-                
-    //           </Card>
-    //         </Col>
-    //       </Row>
-    //     </Container>
-    //   </div>
-       
+   
   );
 }
 
