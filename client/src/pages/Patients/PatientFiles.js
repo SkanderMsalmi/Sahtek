@@ -354,7 +354,7 @@ function PatientFiles() {
                                                             <h6>Date of birth</h6>
                                                         </Col>
                                                         <Col md="7" className="text-left">
-                                                            <label>{datau?.user?.dateOfBirth}</label>
+                                                            <label>{new Date(datau?.user?.dateOfBirth * 1).getDate()}/{new Date(datau?.user?.dateOfBirth * 1).getMonth()}/{new Date(datau?.user?.dateOfBirth * 1).getFullYear() }</label>
 
 
                                                         </Col>
