@@ -10,6 +10,7 @@ import {
 import styles from './videoChat.module.scss';
 
 import { CgClose } from 'react-icons/cg';
+import FileEditor from './FileEditor';
 
 
 
@@ -30,9 +31,12 @@ function PatientFile({ show, handleClick }) {
     const [alert, setAlert] = useState(false);
     const [newBtn, setNewBtn] = useState(true);
     const [historyBtn, setHistoryBtn] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [clickedFileId, setClickedFileId] = useState('');
 
     const newClick = () => {
         if (newBtn === false) {
+
             setToggled("new"); setNewBtn(!newBtn); setHistoryBtn(!historyBtn)
 
         }
@@ -46,6 +50,11 @@ function PatientFile({ show, handleClick }) {
         }
 
     }
+
+    const editFile = (id) => {
+        setClickedFileId(id);
+        setEdit(true);
+    };
 
 
 
@@ -75,7 +84,7 @@ function PatientFile({ show, handleClick }) {
         }
     };
 
-    const { data, loading, error } = useQuery(GET_PATIENT_FILES, {
+    const { data, loading, error, refetch } = useQuery(GET_PATIENT_FILES, {
         variables: { id: '641072f723f7b3fae85b6690' }
     });
     if (loading) return <p>Loading...</p>;
@@ -118,20 +127,24 @@ function PatientFile({ show, handleClick }) {
                             <div className={styles.row}>
 
                                 <button className={styles.close_btn} onClick={() => handleClick(false)}>
-                                    <CgClose className={styles.icon} />
+                                    {/* <CgClose className={styles.icon} /> */}
 
                                 </button>
                             </div>
 
 
                         </div>
-                        {toggled == "new" ? (
-                            <div>
 
+                        {edit ? (
+
+                            <FileEditor clickedFileId={clickedFileId} setEdit={setEdit}  refetch={refetch} toggled={toggled} />
+                        ) : toggled == "new" ? (
+                            <div>
                                 <input placeholder="Title"
                                     value={title} onChange={(t) => setTitle(t.target.value)}
                                     className={styles.input}
                                 />
+
 
                                 <div className={styles.row}>
 
@@ -171,7 +184,7 @@ function PatientFile({ show, handleClick }) {
                                     return (
                                         <>
                                             <div>
-                                                <div className={styles.card}>
+                                                <div className={styles.card} key={p.id} onClick={() => editFile(p.id)}>
                                                     <div className={styles.cardContent}>
                                                         <div><div className={styles.cardHeader}>
 
@@ -193,8 +206,11 @@ function PatientFile({ show, handleClick }) {
 
 
 
-                            ) : (<div></div>)
+                            ) : ("")
                         }
+
+
+
                     </div>
 
                 </Col>

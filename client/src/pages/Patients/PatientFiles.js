@@ -98,6 +98,11 @@ function PatientFiles() {
 
 
     };
+    useEffect(() => {
+        if (data1)
+        editfile();
+
+    }, [data1]);
   
 
 
@@ -152,9 +157,7 @@ function PatientFiles() {
     };
 
 
-    if (loading) return <p>Loading...</p>;
-    if (loadingu) return <p>Loading...</p>;
-    if (loading1) return <p>Loading...</p>;
+    if (loading || loadingu) return <p>Loading...</p>;
 
 
     return (
@@ -272,6 +275,7 @@ function PatientFiles() {
 
                             <Col lg="5" md="12" >
 
+                            { (loading1)? <p>Loading...</p>:
 
 
 
@@ -314,7 +318,7 @@ function PatientFiles() {
                                     </CardBody>
                                 </Card>
 
-
+                                            }
 
 
 
