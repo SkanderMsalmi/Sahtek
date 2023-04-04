@@ -190,6 +190,7 @@ input AppointmentInput{
     current(token: String!): User
     getAppointment(ID: ID!):Appointment
     getAppointments:[Appointment]
+    
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User

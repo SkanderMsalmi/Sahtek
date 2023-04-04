@@ -268,7 +268,7 @@ const resolvers = {
    const existingAppointment = await Appointment.findOne({
       date:date,
       therapist:therapist,
-      date:{$lte:(new Date(date).getTime() + 60 * 60 * 1000)}
+      //date:{$lte:(new Date(date).getTime() + 60 * 60 * 1000)}
       });
       if (existingAppointment) {
         throw new Error('Time slot not available');

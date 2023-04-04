@@ -50,6 +50,7 @@ const Appointments = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error </p>;
   console.log(data);
+  
   //console.log(userData);
   //const user = userData.user;
   // useEffect(() => {
@@ -111,11 +112,13 @@ const Appointments = () => {
       <span className="badge badge-secondary">Scheduled</span>):
       item.status==='Cancelled'?(
       <span className="badge badge-danger">Cancelled</span>):<span></span>}</td>
-                              
-                                    <td>{item.date}</td>
+                                    <td>{new Date(item.date).toUTCString}</td>
                                     <td>{item.duration}</td>
-                                    <td><a href="AppoinmentDetails">View Details</a></td>
-                             
+                                    <button type="button" class="btn btn-success" style={{width:'100px',height:'30px'}}>Confirm</button>
+                                    <button type="button" style={{width:'100px',height:'30px'}} class="btn btn-danger">Cancel</button>
+
+
+
                                   </tr>
                                   ))}
                                 

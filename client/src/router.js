@@ -26,8 +26,8 @@ const MailVerification = React.lazy(() =>
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
 const Patients = React.lazy(() => import("./pages/Patients/Patients"));
 const PatientFiles = React.lazy(() => import("./pages/Patients/PatientFiles"));
-
-const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
+const AppointmentBooked = React.lazy(() => import("./pages/rdv/AppointmentBooked"));
+const Rdv = React.lazy(() => import("./pages/rdv/rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -56,6 +56,10 @@ export const router = createBrowserRouter([
       {
         path: "forgetpassword",
         element: <Forgotpassword />,
+      },
+      {
+        path: "appointmentbooked",
+        element: <AppointmentBooked/>,
       },
       {
         path: "resetpassword",
@@ -97,7 +101,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "rdv",
-        element: <Rdv />,
+        element: <Rdv/>,
       },
       {
         path: "appfortherapist",
