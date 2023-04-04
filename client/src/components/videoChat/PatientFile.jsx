@@ -2,15 +2,18 @@ import { useMutation, useQuery } from '@apollo/client';
 import { selectUser } from "../../store/users/users.selectors";
 import { useSelector } from "react-redux";
 import React, { Fragment, useState } from 'react';
-import { Card, CardHeader, CardBody, CardTitle, CardText, Button, Col, Label, Input, Alert, Container, UncontrolledAlert } from 'reactstrap';
+import { Card, CardHeader, CardBody, CardTitle, CardText, Button, Col, Label, Input, Alert, Container, UncontrolledAlert, Row } from 'reactstrap';
 import {
     GET_PATIENT_FILES,
     CREATE_PATIENT_FILE_MUTATION,
 } from "../../apis/patientsFiles";
 import styles from './videoChat.module.scss';
+import style from '../../pages/Patients/Patient.module.scss';
+
 
 import { CgClose } from 'react-icons/cg';
 import FileEditor from './FileEditor';
+import { FiEdit3 } from 'react-icons/fi';
 
 
 
@@ -137,7 +140,7 @@ function PatientFile({ show, handleClick }) {
 
                         {edit ? (
 
-                            <FileEditor clickedFileId={clickedFileId} setEdit={setEdit}  refetch={refetch} toggled={toggled} />
+                            <FileEditor clickedFileId={clickedFileId} setEdit={setEdit} refetch={refetch} toggled={toggled} />
                         ) : toggled == "new" ? (
                             <div>
                                 <input placeholder="Title"
@@ -183,21 +186,59 @@ function PatientFile({ show, handleClick }) {
                                 data.getFilesByPatient.map((p) => {
                                     return (
                                         <>
-                                            <div>
-                                                <div className={styles.card} key={p.id} onClick={() => editFile(p.id)}>
+                                            {/* <div>
+                                                <div className={styles.card}>
                                                     <div className={styles.cardContent}>
-                                                        <div><div className={styles.cardHeader}>
+                                                        <div>
 
-                                                            <h6>{p.title}</h6>
-                                                        </div>
-                                                            <div className={styles.cardBody}>
+                                                            <div className={styles.cardHeader}>
+
+                                                                <h6>{p.title}</h6>
+                                                            </div>
+                                                            <div className={'d-flex justify-content-between'}>
                                                                 <p>{p.createdAt}</p>
+                                                                <FiEdit3 className={style.icon} key={p.id} onClick={() => editFile(p.id)} />
+                                                            </div>
+                                                            <div className={styles.cardBody}>
+
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                 </div>
 
+                                            </div> */}
+                                            <div className={styles.card}  key={p.id}>
+                                                <div className={styles.cardContent}>
+                                                    <Col lg="9" md="8">
+                                                        <div className={styles.cardHeader}>
+
+                                                            <h6>{p.title}</h6>
+                                                        </div>
+
+
+                                                        <div className={styles.cardBody}>
+
+                                                            <p>{p.createdAt}</p>
+
+                                                        </div>
+                                                    </Col>
+
+                                                    <Col lg="3" md="4" xs="4">
+                                                        <Row>
+                                                            <FiEdit3 className={style.icon} key={p.id} onClick={() => editFile(p.id)} />
+
+ 
+
+                                                        </Row>
+
+
+
+                                                    </Col>
+                                                     
+
+
+                                                </div>
                                             </div>
 
                                         </>

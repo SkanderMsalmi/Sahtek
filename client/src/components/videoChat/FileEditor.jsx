@@ -56,16 +56,16 @@ function FileEditor(props) {
             editfile();
 
     }, [data1]);
-    useEffect(()=>
-    {
-        if (props.toggled==="new"){
-        setNote("");
-        setTitle(""); 
-        }
-        else {
-            editfile()
-        }
-    },[props.toggled])
+    // useEffect(()=>
+    // {
+    //     if (props.toggled==="new"){
+    //     setNote("");
+    //     setTitle(""); 
+    //     }
+    //     else {
+    //         editfile()
+    //     }
+    // },[props.toggled])
 
     if (loading1) return <p>Loading...</p>;
 
