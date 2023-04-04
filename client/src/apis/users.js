@@ -48,3 +48,16 @@ export const RESEND_MAIL_VERIFICATION_MUTATION = gql`
     resendMailVerification(id: $resendMailVerificationId)
   }
 `;
+
+
+export const GET_PATIENTS = gql` 
+query GetPatientsByTherapist($id: ID!) {
+  getPatientsByTherapist(id: $id) {
+    id
+    email
+    name
+    profileImage
+    dateOfBirth
+  }
+} 
+`;

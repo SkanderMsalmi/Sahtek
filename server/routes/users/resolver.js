@@ -365,7 +365,22 @@ const resolvers = {
         return null;
       }
     },
+
+    getPatientsByTherapist: async (_, { id }) => {
+      const list = await Appointment.find({ therapist: id }).distinct("patient");
+      return await User.find({ _id: { $in: list } });
+
   },
+  },
+  User: {
+     
+    therapist: async (parent) => {
+        return await User.findById(parent.therapist);
+    },
+    patient: async (parent) => {
+        return await User.findById(parent.patient);
+    }
+}
 };
 
 module.exports = resolvers;

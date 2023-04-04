@@ -1,10 +1,12 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { selectUser } from "../../store/users/users.selectors";
+import { useSelector } from "react-redux";
 import React, { Fragment, useState } from 'react';
 import { Card, CardHeader, CardBody, CardTitle, CardText, Button, Col, Label, Input, Alert, Container, UncontrolledAlert } from 'reactstrap';
 import {
-    GET_PATIENT_FILE,
+    GET_PATIENT_FILES,
     CREATE_PATIENT_FILE_MUTATION,
-} from "../../apis/patientFile";
+} from "../../apis/patientsFiles";
 import styles from './videoChat.module.scss';
 
 import { CgClose } from 'react-icons/cg';
@@ -12,16 +14,38 @@ import { CgClose } from 'react-icons/cg';
 
 
 function PatientFile({ show, handleClick }) {
+    const therapist = useSelector(selectUser);
 
-    const [createPatientFile, { loading, error, data }] = useMutation(
+    const [createPatientFile, { dataa, errorr, loadingg }] = useMutation(
         CREATE_PATIENT_FILE_MUTATION
     );
+
 
     const [toggled, setToggled] = useState("new")
 
 
     const [note, setNote] = useState('');
+    const [title, setTitle] = useState('');
+
     const [alert, setAlert] = useState(false);
+    const [newBtn, setNewBtn] = useState(true);
+    const [historyBtn, setHistoryBtn] = useState(false);
+
+    const newClick = () => {
+        if (newBtn === false) {
+            setToggled("new"); setNewBtn(!newBtn); setHistoryBtn(!historyBtn)
+
+        }
+
+    }
+
+    const historyClick = () => {
+        if (historyBtn === false) {
+            setToggled("history"); setNewBtn(!newBtn); setHistoryBtn(!historyBtn)
+
+        }
+
+    }
 
 
 
@@ -32,8 +56,9 @@ function PatientFile({ show, handleClick }) {
                     variables: {
 
                         remarks: note,
-                        consultation: "640388d2fc5c68cb9ebcc1af"
-
+                        patient: "641072f723f7b3fae85b6690",
+                        therapist: therapist.id,
+                        title: title,
 
                     },
                 });
@@ -50,24 +75,44 @@ function PatientFile({ show, handleClick }) {
         }
     };
 
+    const { data, loading, error } = useQuery(GET_PATIENT_FILES, {
+        variables: { id: '641072f723f7b3fae85b6690' }
+    });
+    if (loading) return <p>Loading...</p>;
+    if (!data) return <p>No data found.</p>;
 
     return (
 
 
         <Fragment>
             {show ? (
-                <Col lg="4" md="12" style={{position:"absolute", right:"1rem"}}>
+                <Col lg="4" md="12" style={{ position: "absolute", right: "1rem" }}>
 
 
 
                     <div className={styles.patient_file_container}>
 
                         <div className="d-flex justify-content-between  align-items-center">
-                            <div className={styles.row}>
 
-                                {/* <button type="submit" className={styles.invisibleBtn} onClick={() => setToggled("new")}  >
-                                    New     </button> */}
-                                <h6>Add note</h6>
+                            <div className={styles.row}>
+                                {newBtn ?
+                                    (
+                                        <button type="submit" className={styles.menuBtnFocus} onClick={newClick}  >
+                                            New     </button>
+                                    ) : (
+
+                                        <button type="submit" className={styles.menuBtn} onClick={newClick}  >
+                                            New     </button>
+                                    )}
+
+                                {historyBtn ? (
+                                    <button type="submit" className={styles.menuBtnFocus} onClick={historyClick}  >
+                                        History     </button>
+                                ) : (
+                                    <button type="submit" className={styles.menuBtn} onClick={historyClick}  >
+                                        History </button>
+                                )}
+
 
                             </div>
                             <div className={styles.row}>
@@ -82,12 +127,18 @@ function PatientFile({ show, handleClick }) {
                         </div>
                         {toggled == "new" ? (
                             <div>
+
+                                <input placeholder="Title"
+                                    value={title} onChange={(t) => setTitle(t.target.value)}
+                                    className={styles.input}
+                                />
+
                                 <div className={styles.row}>
 
                                     <textarea
                                         type="text"
                                         value={note} onChange={(e) => setNote(e.target.value)}
-                                        placeholder=". . ."
+                                        placeholder=""
                                         name="note"
 
                                         className={styles.textarea} />
@@ -96,34 +147,53 @@ function PatientFile({ show, handleClick }) {
                                 </div>
                                 <button type="submit" className={styles.file_btn} onClick={submit} >
                                     Save     </button>
-                                {/* {alert ? (
-                                    <Alert color="success">
-                                        Added successfully
-                                    </Alert>
-                                ) : null} */}
+                                <Alert color="success" isOpen={alert}>
+                                    <Container>
+                                        <button
+                                            type="button"
+                                            className="close"
+                                            data-dismiss="alert"
+                                            aria-label="Close"
+                                            onClick={() => setAlert(false)}
+                                        >
+                                            <i className="nc-icon nc-simple-remove" />
+                                        </button>
+                                        <span>Added successfully!</span>
+                                    </Container>
+                                </Alert>
 
                             </div>
 
-                        ) : null
-                            // (
+                        ) : toggled == "history" ?
+                            (
+
+                                data.getFilesByPatient.map((p) => {
+                                    return (
+                                        <>
+                                            <div>
+                                                <div className={styles.card}>
+                                                    <div className={styles.cardContent}>
+                                                        <div><div className={styles.cardHeader}>
+
+                                                            <h6>{p.title}</h6>
+                                                        </div>
+                                                            <div className={styles.cardBody}>
+                                                                <p>{p.createdAt}</p>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </>
+                                    )
+                                })
 
 
-                            //     <div>
-                            //         <div className={styles.card}>
-                            //             <div className={styles.cardContent}>
-                            //                 <div className={styles.cardHeader}>
 
-                            //                     <h6>Date</h6>
-                            //                 </div>
-                            //                 <div className={styles.cardBody}>
-                            //                     <p>Title</p>
-                            //                 </div>
-                            //             </div>
-                            //         </div>
-
-                            //     </div>
-
-                            // )
+                            ) : (<div></div>)
                         }
                     </div>
 

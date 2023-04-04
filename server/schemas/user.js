@@ -190,6 +190,7 @@ input AppointmentInput{
     current(token: String!): User
     getAppointment(ID: ID!):Appointment
     getAppointments:[Appointment]
+    getPatientsByTherapist(id: ID!): [User]
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User
@@ -205,5 +206,7 @@ input AppointmentInput{
     ): Boolean
     resendMailVerification(id: ID): String
     bookAppointment(patient:ID, therapist: ID,date: String, duration: Int, notes: String, status: String): Boolean
+    
+
    }
 `;
