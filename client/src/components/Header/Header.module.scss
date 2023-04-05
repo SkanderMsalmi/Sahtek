@@ -14,6 +14,11 @@
 }
 
 @font-face {
+    font-family: "Kalam";
+    src: url("../../assets/fonts/Kalam-Regular.ttf");
+}
+
+@font-face {
     font-family: "Dancing Script";
     src: url("../../assets/fonts/DancingScript-VariableFont_wght.ttf");
 }
@@ -23,19 +28,28 @@
     src: url("../../assets/fonts/Rubik-VariableFont_wght.ttf");
 }
 
+.h {
+    background-image: url("../../assets/img/toa-heftiba-_UIVmIBB3JU-unsplash.jpg");
+    height: 100wh;
+
+}
+
 .animated {
-    animation: background-pan 15s linear infinite;
+    animation: background-pan 10s linear infinite;
     background: linear-gradient(to right,
             var(--g1),
             var(--g2),
             var(--g1));
+
     background-size: 200%;
     height: 100wh;
     overflow: hidden;
     margin: 0px;
 }
 
-
+.animated.toggled {
+    animation: none;
+}
 
 .animated.toggled>.title {
     opacity: 0;
@@ -46,12 +60,12 @@
 }
 
 .animated.toggled>.icon {
-    opacity: 1;
+    opacity: 0.8;
 }
 
-.animated.toggled>.tiles>.tile:hover {
-    opacity: 0.1 !important;
-}
+
+
+
 
 .centered {
     left: 50%;
@@ -108,14 +122,18 @@
 
 .title>.fancy {
     color: var(--g2);
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.5em;
+    font-family: 'Kalam', cursive;
+    font-size: 1.2em;
     line-height: 0.9em;
+    margin-right: 0.75rem;
 }
 
 .icon {
-    color: rgba(255, 255, 255, 0.15);
-    font-size: 80vmin;
+    background-image: url("../../assets/img/toa-heftiba-_UIVmIBB3JU-unsplash.jpg");
+    height: 100vw;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 1200ms ease;

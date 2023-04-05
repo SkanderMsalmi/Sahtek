@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ContextProvider } from "./apis/socketContext";
 import { PeerProvider } from "./apis/peerContext";
+import ScrollToTop from "./components/scrollToTop";
 // import AnimatedHeader from './components/Header/AnimatedHeader';
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
           <ContextProvider>
             <PeerProvider>
               <PersistGate loading={null} persistor={Persistor}>
+                <ScrollToTop />
+
                 <div className="flex-fill d-flex flex-column">
                   <Suspense>
                     <Outlet />
@@ -37,8 +40,9 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
+          <ScrollToTop />
           <Navigation />
-          {location.pathname == "/" ? <AnimatedHeader /> : ""}
+          {location.pathname === "/" ? <AnimatedHeader /> : ""}
           <div className="flex-fill d-flex flex-column">
             <Suspense>
               <Outlet />

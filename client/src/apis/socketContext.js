@@ -1,4 +1,4 @@
-import { createContext, useState, useRef, useEffect, useMemo } from "react";
+import { createContext, useState, useRef, useMemo } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
 import { useSelector } from "react-redux";
@@ -6,7 +6,6 @@ import { selectUser } from "../store/users/users.selectors";
 
 const SocketContext = createContext();
 
-const socket = io("http://localhost:5000");
 
 const ContextProvider = ({ children }) => {
     const socket = useMemo(() => io("http://localhost:5000"), []);
@@ -21,6 +20,8 @@ const ContextProvider = ({ children }) => {
     const myVideo = useRef();
     const userVideo = useRef();
     const connectionRef = useRef();
+    const [started, setStarted] = useState(false);
+
 
 
     // useEffect(() => {
@@ -80,7 +81,7 @@ const ContextProvider = ({ children }) => {
         // window.location.reload();
     }
     return (
-        <SocketContext.Provider value={{ isVideo, setIsVideo, call, socket, callAccepted, myVideo, userVideo, stream, name, setName, callEnded, me, callUser, leaveCall, answerCall }}>
+        <SocketContext.Provider value={{ isVideo, setIsVideo, call, socket, callAccepted, myVideo, userVideo, stream, name, setName, callEnded, me, callUser, leaveCall, answerCall, setStarted, started }}>
             {children}
         </SocketContext.Provider>
     )

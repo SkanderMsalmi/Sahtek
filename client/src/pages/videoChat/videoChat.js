@@ -1,7 +1,6 @@
 import { Button, Container, Row, Col } from "reactstrap";
-import VideoPlayer from '../../components/videoChat/VideoPlayer';
 import PatientFile from '../../components/videoChat/PatientFile';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { MdCallEnd } from 'react-icons/md';
 import { MdVideocam } from 'react-icons/md';
 import { MdVideocamOff } from 'react-icons/md';
@@ -22,7 +21,7 @@ const VideoChat = ({ children }) => {
     const [cam, setCam] = useState(true);
     const navigate = useNavigate();
 
-    const { socket, setIsVideo } = useContext(SocketContext);
+    const { socket, setIsVideo, started } = useContext(SocketContext);
     const handleVideoToggle = () => {
         setIsVideo(!cam);
         socket.emit("toggle-video", { isVideoOn: !cam, emailId: user.email });
@@ -53,7 +52,7 @@ const VideoChat = ({ children }) => {
 
 
 
-                    <Row>
+                    {started && <Row>
                         <Col lg="12" md="12"  >
 
                             <div className={styles.option_row}>
@@ -137,7 +136,7 @@ const VideoChat = ({ children }) => {
 
 
                         </Col>
-                    </Row>
+                    </Row>}
                 </Container>
             </div>{" "}
         </>

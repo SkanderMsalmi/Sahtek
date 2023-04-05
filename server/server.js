@@ -52,7 +52,11 @@ const startServer = async () => {
   const emailToSocketMapping = new Map();
   const socketToEmailMapping = new Map();
   io.on('connection', (socket) => {
+    socket.on('disconnect', () => {
+      socket.broadcast.emit("hanged-up");
+    });
     socket.on('hang-up', (data) => {
+      console.log("i hanged up")
       socket.broadcast.emit('hanged-up');
     });
     socket.on('toggle-video', (data) => {
