@@ -71,10 +71,14 @@ function PatientFiles() {
         setModal(!modal);
     };
      function editfile(id){
+        if (id)
         setClickedFileId(id);
         setEdit(true);
+        refetch1().then(()=>{
         setNote(data1.getPatientFile.remarks);
         setTitle(data1.getPatientFile.title);
+        }
+        )
         console.log(`File ${clickedFileId}  `);
 
      }
