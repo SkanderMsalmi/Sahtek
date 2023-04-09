@@ -15,7 +15,7 @@ import {
     Col,
 
 } from "reactstrap";
-import { GET_PATIENTS } from "../../apis/patientsFiles";
+import { GET_PATIENTS } from "../../apis/users";
 
 // import PatientList from "../../components/Patients/PatientList";
 
@@ -74,15 +74,13 @@ function Patients() {
                                                             src={p.profileImage}
                                                         />
                                                     </Col>
-                                                    <Col className="ml-auto mr-auto" lg="5" md="4" xs="4">
+                                                    <Col className="ml-auto mr-auto" lg="8" md="4" xs="4">
                                                         <h6  >
                                                             {p.name} <br />
                                                             <small>{p.email}</small>
                                                         </h6>
                                                     </Col>
-                                                    <Col className="ml-auto mr-auto" lg="3" md="4" xs="4">
-                                                        <h6>{p.email}</h6>
-                                                    </Col>
+                                                   
                                                     <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
                                                     <Link to={`/patients/${p.id}/files`}>Files</Link>
                                                     </Col>
