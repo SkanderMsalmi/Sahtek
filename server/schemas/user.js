@@ -92,6 +92,7 @@ module.exports = gql`
   }
 
   type Appointment {
+    id: ID!
     patient: User
     therapist: User
     date: String
@@ -187,6 +188,7 @@ module.exports = gql`
     checkEmailExists(email: String!): Boolean!
     current(token: String!): User
     getAppointment(ID: ID!): Appointment
+    getAppointmentsByTherapist(therapist: ID!): [Appointment]
     getAppointments: [Appointment]
     getPatientsByTherapist(id: ID!): [User]
     getAppointmentsByPatient(ID: ID!): [Appointment]
@@ -212,5 +214,6 @@ module.exports = gql`
       notes: String
       status: String
     ): Boolean
+    AcceptAppointment(idAppointment: ID): Boolean
   }
 `;

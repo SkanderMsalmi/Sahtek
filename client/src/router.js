@@ -8,7 +8,6 @@ import Profile2 from "./pages/Profile/Profile2";
 import Rating from "./pages/Rating/Rating";
 import VideoCall from "./pages/videoCall/videoCall";
 import ProfileCreation from "./pages/Profile/ProfileCreation";
-
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 import TimeTable from "./components/Calender/TimeTable";
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
@@ -19,6 +18,8 @@ const Forgotpassword = React.lazy(() =>
 const Resetpassword = React.lazy(() =>
   import("./pages/ResetPassword/resetPassword")
 );
+const ChooseTherapist =React.lazy(()=>import("./pages/rdv/ChooseTherapist"));
+
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 const Login = React.lazy(() => import("./pages/Signin/Login"));
 const MailVerification = React.lazy(() =>
@@ -27,8 +28,8 @@ const MailVerification = React.lazy(() =>
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
 const Patients = React.lazy(() => import("./pages/Patients/Patients"));
 const PatientFiles = React.lazy(() => import("./pages/Patients/PatientFiles"));
-
-const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
+const AppointmentBooked = React.lazy(() => import("./pages/rdv/AppointmentBooked"));
+const Rdv = React.lazy(() => import("./pages/rdv/rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -61,6 +62,14 @@ export const router = createBrowserRouter([
       {
         path: "forgetpassword",
         element: <Forgotpassword />,
+      },
+      {
+        path: "chooseTherapist",
+        element: <ChooseTherapist />,
+      },
+      {
+        path: "appointmentbooked",
+        element: <AppointmentBooked/>,
       },
       {
         path: "resetpassword",
@@ -102,7 +111,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "rdv",
-        element: <Rdv />,
+        element: <Rdv/>,
       },
       {
         path: "appfortherapist",
