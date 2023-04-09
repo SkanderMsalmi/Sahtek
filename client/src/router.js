@@ -8,7 +8,6 @@ import Profile2 from "./pages/Profile/Profile2";
 import Rating from "./pages/Rating/Rating";
 import VideoCall from "./pages/videoCall/videoCall";
 import ProfileCreation from "./pages/Profile/ProfileCreation";
-
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 const Register = React.lazy(() => import("./pages/Register/Register"));
@@ -18,6 +17,8 @@ const Forgotpassword = React.lazy(() =>
 const Resetpassword = React.lazy(() =>
   import("./pages/ResetPassword/resetPassword")
 );
+const ChooseTherapist =React.lazy(()=>import("./pages/rdv/ChooseTherapist"));
+
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 const Login = React.lazy(() => import("./pages/Signin/Login"));
 const MailVerification = React.lazy(() =>
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "forgetpassword",
         element: <Forgotpassword />,
+      },
+      {
+        path: "chooseTherapist",
+        element: <ChooseTherapist />,
       },
       {
         path: "appointmentbooked",

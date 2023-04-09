@@ -4,6 +4,8 @@ import {  useNavigate,useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import styles from './Rdv.module.scss'
+import React from "react";
+
 import { useSelector } from "react-redux";
 import moment from 'moment-timezone';
 import { selectUser } from "../../store/users/users.selectors";
@@ -68,7 +70,21 @@ function Rdv (){
   const [selectedValue, setSelectedValue] = useState('');
   const [disabledDates, setDisabledDates] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  
+  let pageHeader = React.createRef();
+
+  React.useEffect(() => {
+    if (window.innerWidth < 991) {
+      const updateScroll = () => {
+        let windowScrollTop = window.pageYOffset / 3;
+        pageHeader.current.style.transform =
+          "translate3d(0," + windowScrollTop + "px,0)";
+      };
+      window.addEventListener("scroll", updateScroll);
+      return function cleanup() {
+        window.removeEventListener("scroll", updateScroll);
+      };
+    }
+  });
   const initialValues = {
      
     therapist: "",
@@ -190,15 +206,17 @@ function Rdv (){
     return (
         <>
   <div>
-        <div  className="section-appo"
-           style={{
-           backgroundImage:
-          "url(" + require("../../assets/img/appo.jpg") + ")",
-           }}>
-         <h2>Get Your Appointment </h2>
-         <h4>Home - Appoitment</h4>
-
-        </div>
+  <div
+        style={{
+          backgroundImage:
+            "url(" + require("../../assets/img/fabio-mangione.jpg") + ")"
+        }}
+        className="page-header page-header-xs"
+        data-parallax={true}
+        ref={pageHeader}
+      >
+        <div className="filter" />
+      </div>
        
 <div class={`${styles.tt}`}>
   
@@ -237,8 +255,9 @@ function Rdv (){
         <div class="w-full sm:w-half formbold-px-3">
           <div class="formbold-mb-5 w-full">
             <label for="date"class={`${styles.formboldformlabel}`}> Date </label>
-           
+            <div className='datepicker-control-section'>
             <DatePickerComponent
+            id="datepicker" 
             inputProps={{
               style:{width:'200px',height:'30px'}
             }}
@@ -256,7 +275,7 @@ function Rdv (){
               step={60}
               format="dd-MMM-yy"
 
-            ></DatePickerComponent>
+            ></DatePickerComponent></div>
             <TimePickerComponent
             format='HH:mm'
             min={min}

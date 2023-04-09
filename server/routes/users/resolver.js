@@ -287,6 +287,38 @@ const resolvers = {
       return true
     },
 
+    AcceptAppointment: async (_, { idAppointment }) => {
+      const appointment=await Appointment.findById(idAppointment)
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "sahtek2023@gmail.com",
+          pass: "qrowlwkuavbwonwo",
+        },
+      });
+
+      const userPatient=await User.findById(appointment.patient);
+      const userTherapist=await User.findById(appointment.therapist);
+      appointment.status='Confirmed';
+      await appointment.save();
+      const mailOptions = {
+        from: "sahtek2023@gmail.com",
+        to: userPatient.email,
+        subject: "Appointment Accepted",
+        text: `Your appointment is confirmed by Dr  ${userTherapist.name} it will be at ${appointment.date} Welcome ${userPatient.name}`,
+      };
+      await transporter.sendMail(mailOptions);
+      return true;
+
+    
+    
+    
+    
+    },
+
     resendMailVerification: async (parent, args, context, info) => {
       console.log(args);
       const { id } = args;
@@ -344,6 +376,10 @@ const resolvers = {
       return await Appointment.find();
 
     },
+    async getAppointmentsByTherapist(_,{therapist})
+  {
+       return await Appointment.find({therapist});
+  },
     checkEmailExists: async (_, { email }, { models }) => {
       const user = await models.User.findOne({ where: { email } });
       return Boolean(user);
