@@ -1,9 +1,10 @@
+const Comment = require("../../database/models/Comment");
 const Post = require("../../database/models/Post");
 const { User } = require("../../database/models/User");
 const resolvers = {
   Query: {
-    async getPost(_, { ID }) {
-      return await Post.findById(ID);
+    async getPost(_, { id }) {
+      return await Post.findById(id);
     },
 
     async getAllPosts() {
@@ -12,6 +13,7 @@ const resolvers = {
     async findPostByUser(_, { id }) {
       return await Post.find({ user: id });
     },
+    
   },
 
   Mutation: {
@@ -19,8 +21,9 @@ const resolvers = {
       const createdPost = new Post({
         description: description,
         user: user,
-        time: new Date().toISOString(),
+        time: new Date().toDateString(),
         like: 0,
+        commentsCount: 0,
       });
       const res = await createdPost.save();
 
@@ -43,8 +46,15 @@ const resolvers = {
       );
       return post;
     },
+
+    LikePost: async (parent, args, context, info) => {
+      const { id } = args;
+      return  await Post.findByIdAndUpdate(id, { $inc: { like: 1 } }, { new: true });
+
+    },
   },
   Post: {
+    
     user: async (parent, args) => {
       return await User.findById(parent.user);
     },
