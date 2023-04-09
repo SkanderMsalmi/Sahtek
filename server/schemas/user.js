@@ -94,8 +94,8 @@ module.exports = gql`
   }
 
   type Appointment {
-    patient: ID
-    therapist: ID
+    patient: User
+    therapist: User
     date: String
     duration: Int
     notes: String
@@ -190,6 +190,7 @@ input AppointmentInput{
     current(token: String!): User
     getAppointment(ID: ID!):Appointment
     getAppointments:[Appointment]
+    getAppointmentsByPatient(ID: ID!):[Appointment]
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User

@@ -69,13 +69,14 @@ function Therapist(props) {
       specialties: cleanArray(editInfo.specialties),
       languages: cleanArray(editInfo.languages),
       education: cleanArray(editInfo.education),
+      licenses: cleanLicenses(editInfo.licenses),
     });
     updateTherapist({
       variables: {
         therapistInput: {
           ...editInfo,
           availability: editInfo.availability,
-          licenses: editInfo.licenses,
+          licenses: cleanLicenses(editInfo.licenses),
           specialties: cleanArray(editInfo.specialties),
           languages: cleanArray(editInfo.languages),
           education: cleanArray(editInfo.education),
@@ -100,7 +101,7 @@ function Therapist(props) {
     experience: "",
     fees: "",
     languages: [],
-    licenses: [{ license: "", state: "", type: "" }],
+    licenses: [{ license: "", state: "", typeL: "" }],
     ratings: [],
     reviews: [],
     specialties: [],
@@ -181,6 +182,11 @@ function Therapist(props) {
       return el !== "" && el !== " " && el !== null;
     });
   };
+  const cleanLicenses = (array) => {
+    return array.filter(function (el) {
+      return el.license !== "" && el.license !== " " && el.license !== null && el.state !== "" && el.state !== " " && el.state !== null && el.typeL !== "" && el.typeL !== " " && el.typeL !== null;
+    })
+  };
 
   const handlePhone = (e) => {
     const re = /^[0-9\b]+$/;
@@ -212,6 +218,24 @@ function Therapist(props) {
     const newSpecialties = [...editInfo.specialties];
     newSpecialties[i] = e.target.value;
     setEditInfo({ ...editInfo, specialties: newSpecialties });
+  };
+
+  const handleLicensesL = (e, i) => {
+    const newLicenses = [...editInfo.licenses];
+    newLicenses[i] = { ...newLicenses[i], license: e.target.value };
+    setEditInfo({ ...editInfo, licenses: newLicenses });
+  };
+
+  const handleLicensesS = (e, i) => {
+    const newLicenses = [...editInfo.licenses];
+    newLicenses[i] = { ...newLicenses[i], state: e.target.value };
+    setEditInfo({ ...editInfo, licenses: newLicenses });
+  };
+
+  const handleLicensesT = (e, i) => {
+    const newLicenses = [...editInfo.licenses];
+    newLicenses[i] = { ...newLicenses[i], typeL: e.target.value };
+    setEditInfo({ ...editInfo, licenses: newLicenses });
   };
   function getExperience(dateString) {
     var today = new Date();
@@ -644,8 +668,69 @@ function Therapist(props) {
                   );
                 })}
               </ul>
-              <h5>License</h5>
-              <p>Major in {editInfo?.licenses[0]?.license}</p>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="mb-2 mt-2"
+              >
+                <h5>License</h5>
+                <Button
+                  className="btn-round"
+                  color="success"
+                  onClick={() =>
+                    setEditInfo({
+                      ...editInfo,
+                      licenses: [...editInfo.licenses, { license: "", state: "", typeL: "" }],
+                    })
+                  }
+                >
+                  Add
+                </Button>
+              </div>
+              {editInfo.licenses.map((license, i) => {
+                return (<div className="input-group mb-3">
+
+                  <input
+                    className={styles.address}
+                    placeholder="License"
+                    name="license"
+                    type="text"
+                    onChange={(e) => handleLicensesL(e, i)}
+                    value={license.license}
+                  />
+                  <input
+                    className={styles.address}
+                    placeholder="State"
+                    name="state"
+                    type="text"
+                    onChange={(e) => handleLicensesS(e, i)}
+                    value={license.state}
+                  />
+                  <select value={license.typeL} className={styles.address}
+                    onChange={(e) => handleLicensesT(e, i)}
+                  >
+                    <option value="">Select</option>
+                    <option value="Major">Major</option>
+                    <option value="Minor">Minor</option>
+                  </select>
+
+                  <div className="input-group-append">
+                    <button
+                      className={`btn btn-outline-danger ${styles.btnTrans}`}
+                      type="button"
+                      onClick={() =>
+                        setEditInfo({
+                          ...editInfo,
+                          licenses: editInfo.licenses.filter(
+                            (license) => license !== editInfo.licenses[i]
+                          ),
+                        })
+                      }
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>)
+              })}
             </div>
           </div>
         </div>
@@ -698,7 +783,11 @@ function Therapist(props) {
                 })}
               </ul>
               <h5>License</h5>
-              <p>Major in {editInfo?.licenses[0]?.license}</p>
+              {editInfo.licenses.map((license) => {
+                return (
+                  <p>{license.typeL} in {license.license} at {license.state}</p>
+                )
+              })}
             </div>
           </div>
         </div>

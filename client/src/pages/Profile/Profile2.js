@@ -55,7 +55,7 @@ function Profile2() {
 
 
 
-  
+
 
   const [activeTab, setActiveTab] = useState("1");
 
@@ -170,9 +170,11 @@ function Profile2() {
               <Nav role="tablist" tabs>
                 {(user.role === "Therapist" ||
                   user?.email === data.user?.email) &&
-                data.user.role === "Patient" ? (
+                  data.user.role === "Patient" ? (
                   <NavItem>
                     <NavLink
+                      style={{ cursor: "pointer" }}
+
                       className={activeTab === "2" ? "active" : ""}
                       onClick={() => {
                         toggle("2");
@@ -185,6 +187,7 @@ function Profile2() {
                   <NavItem>
                     <NavLink
                       className={activeTab === "2" ? "active" : ""}
+                      style={{ cursor: "pointer" }}
                       onClick={() => {
                         toggle("2");
                       }}
@@ -198,6 +201,8 @@ function Profile2() {
                 <NavItem>
                   <NavLink
                     className={activeTab === "1" ? "active" : ""}
+                    style={{ cursor: "pointer" }}
+
                     onClick={() => {
                       toggle("1");
                     }}
@@ -289,7 +294,10 @@ function Profile2() {
               </Row>
             </TabPane>
             <TabPane className="text-center" tabId="1" id="following">
-              <ProfilePosts user={user} />
+              {data.user ? (
+                <ProfilePosts user={{ ...data.user, id: user.id }} />
+              ) : (
+                "Loading...")}
             </TabPane>
           </TabContent>
         </Container>
