@@ -10,6 +10,7 @@ import VideoCall from "./pages/videoCall/videoCall";
 import ProfileCreation from "./pages/Profile/ProfileCreation";
 
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
+import TimeTable from "./components/Calender/TimeTable";
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 const Register = React.lazy(() => import("./pages/Register/Register"));
 const Forgotpassword = React.lazy(() =>
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Homepage />,
+      },
+      {
+        path: "table",
+        element: <TimeTable />,
       },
       {
         path: "login",

@@ -1,6 +1,8 @@
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { Label, FormGroup, Input, Row, Col, Button, Spinner } from "reactstrap";
+import Moment from 'react-moment';
+import { useEffect } from "react";
 
 const PROFILE_POSTS_QUERY = gql`
   query FindPostByUser($id: ID!) {
@@ -17,6 +19,7 @@ function ProfilePosts(props) {
   const { data, loading, error } = useQuery(PROFILE_POSTS_QUERY, {
     variables: { id: id ? id : props.user.id },
   });
+
   if (loading) return <Spinner />;
   if (error) return <p>{error}</p>;
   if (data.findPostByUser?.length === 0)
@@ -38,33 +41,26 @@ function ProfilePosts(props) {
               <>
                 <li>
                   <Row>
-                    <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
+                    <Col className="ml-auto" lg="1" md="4" xs="4">
                       <img
                         alt="..."
                         className="img-circle img-no-padding img-responsive"
-                        src={require("../../assets/img/faces/clem-onojeghuo-2.jpg")}
+                        style={{ width: "3.5rem", height: "3.5rem" }}
+                        src={props.user.profileImage}
                       />
                     </Col>
-                    <Col className="mr-auto" lg="7" md="4" xs="4">
+                    <Col className="mr-auto" lg="10" md="4" xs="4">
                       <h6 style={{ textAlign: "left" }}>
-                        Flume <br />
+                        {props.user.name} <br />
                       </h6>
                       <p style={{ textAlign: "left" }}>{p.description}</p>
-                      <small style={{ textAlign: "left" }}>{p.like} 👍</small>
-                      <small style={{ textAlign: "right" }}>{p.time}</small>
+                      <div className="d-flex justify-content-between">
+                        <small style={{ textAlign: "left" }}>{p.like} 👍</small>
+                        <small style={{ textAlign: "right" }}> <Moment format="YYYY-MM-DD">
+                          {p.time}</Moment></small>
+                      </div>
                     </Col>
-                    <Col className="ml-auto mr-auto" lg="3" md="4" xs="4">
-                      <FormGroup check>
-                        <Label check>
-                          <Input
-                            defaultChecked
-                            defaultValue=""
-                            type="checkbox"
-                          />
-                          <span className="form-check-sign" />
-                        </Label>
-                      </FormGroup>
-                    </Col>
+
                   </Row>
                 </li>
                 <hr />

@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import styles from "./Therapist.module.scss";
 import { selectUser } from "../../store/users/users.selectors";
 import { useEffect, useState } from "react";
-import { Button } from "reactstrap";
+import { Button, Spinner } from "reactstrap";
 
 const GET_THERAPIST = gql`
   query User($id: ID!) {
@@ -56,7 +56,7 @@ function Therapist(props) {
   const user = useSelector(selectUser);
   let { id } = useParams();
 
-  const { data, loading, error, refetch } = useQuery(GET_THERAPIST, {
+  const { data, loading } = useQuery(GET_THERAPIST, {
     variables: { id: id ? id : user.id },
   });
 
@@ -69,13 +69,14 @@ function Therapist(props) {
       specialties: cleanArray(editInfo.specialties),
       languages: cleanArray(editInfo.languages),
       education: cleanArray(editInfo.education),
+      licenses: cleanLicenses(editInfo.licenses),
     });
     updateTherapist({
       variables: {
         therapistInput: {
           ...editInfo,
           availability: editInfo.availability,
-          licenses: editInfo.licenses,
+          licenses: cleanLicenses(editInfo.licenses),
           specialties: cleanArray(editInfo.specialties),
           languages: cleanArray(editInfo.languages),
           education: cleanArray(editInfo.education),
@@ -100,7 +101,7 @@ function Therapist(props) {
     experience: "",
     fees: "",
     languages: [],
-    licenses: [{ license: "", state: "", type: "" }],
+    licenses: [{ license: "", state: "", typeL: "" }],
     ratings: [],
     reviews: [],
     specialties: [],
@@ -132,6 +133,27 @@ function Therapist(props) {
     });
     return newArray;
   }
+  function addMissingDays(array) {
+    let newArray = [];
+    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let i = 0;
+    days.forEach((item) => {
+      if (array[i] === undefined) {
+        newArray.push({ day: item, startTime: "00:00", endTime: "00:00" });
+      }
+      else if (item === array[i].day) {
+        newArray.push(array[i]);
+        i++;
+      }
+      else {
+        newArray.push({ day: item, startTime: "00:00", endTime: "00:00" });
+        i++;
+      }
+    });
+    console.log("new: ", newArray)
+
+    return newArray;
+  }
   const initEdit = () => {
     setEditInfo({
       id: user.id,
@@ -157,8 +179,13 @@ function Therapist(props) {
 
   const cleanArray = (array) => {
     return array.filter(function (el) {
-      return el != "" && el != " " && el != null;
+      return el !== "" && el !== " " && el !== null;
     });
+  };
+  const cleanLicenses = (array) => {
+    return array.filter(function (el) {
+      return el.license !== "" && el.license !== " " && el.license !== null && el.state !== "" && el.state !== " " && el.state !== null && el.typeL !== "" && el.typeL !== " " && el.typeL !== null;
+    })
   };
 
   const handlePhone = (e) => {
@@ -192,11 +219,28 @@ function Therapist(props) {
     newSpecialties[i] = e.target.value;
     setEditInfo({ ...editInfo, specialties: newSpecialties });
   };
+
+  const handleLicensesL = (e, i) => {
+    const newLicenses = [...editInfo.licenses];
+    newLicenses[i] = { ...newLicenses[i], license: e.target.value };
+    setEditInfo({ ...editInfo, licenses: newLicenses });
+  };
+
+  const handleLicensesS = (e, i) => {
+    const newLicenses = [...editInfo.licenses];
+    newLicenses[i] = { ...newLicenses[i], state: e.target.value };
+    setEditInfo({ ...editInfo, licenses: newLicenses });
+  };
+
+  const handleLicensesT = (e, i) => {
+    const newLicenses = [...editInfo.licenses];
+    newLicenses[i] = { ...newLicenses[i], typeL: e.target.value };
+    setEditInfo({ ...editInfo, licenses: newLicenses });
+  };
   function getExperience(dateString) {
     var today = new Date();
     var birthDate = new Date(dateString * 1);
 
-    // Will display time in 10:30:23 format
     var exp = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -204,6 +248,7 @@ function Therapist(props) {
     }
     return exp + " years of experience";
   }
+  if (loading) return <Spinner />;
 
   return (
     <div className="row">
@@ -212,134 +257,180 @@ function Therapist(props) {
           <div className={`${styles.contactInfo} card-body`}>
             <h5 className="card-title">Contact info</h5>
             {edit ? (
-              <ul style={{ padding: "0" }}>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-                  </svg>
-                  <input
-                    className={` form-control ${styles.borderless}`}
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Phone number"
-                    value={editInfo.phoneNumber}
-                    onChange={(e) => handlePhone(e)}
-                  />
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
-                  </svg>{" "}
-                  {props.email}
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                    <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
-                  </svg>
-                  <div style={{ display: "flex" }}>
-                    {" "}
+              <>
+                <ul style={{ padding: "0" }}>
+                  <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
+                    </svg>
                     <input
                       className={` form-control ${styles.borderless}`}
                       type="text"
-                      name="street"
-                      placeholder="Street"
-                      value={editInfo?.address?.street}
-                      onChange={(e) =>
-                        setEditInfo({
-                          ...editInfo,
-                          address: {
-                            ...editInfo.address,
-                            street: e.target.value,
-                          },
-                        })
-                      }
-                    />{" "}
-                    <input
-                      className={` form-control ${styles.borderless}`}
-                      type="text"
-                      placeholder="zip"
-                      name="zip"
-                      value={editInfo?.address?.zip}
-                      onChange={(e) =>
-                        setEditInfo({
-                          ...editInfo,
-                          address: { ...editInfo.address, zip: e.target.value },
-                        })
-                      }
-                    />{" "}
-                    <input
-                      className={` form-control ${styles.borderless}`}
-                      type="text"
-                      name="city"
-                      placeholder="city"
-                      value={editInfo?.address?.city}
-                      onChange={(e) =>
-                        setEditInfo({
-                          ...editInfo,
-                          address: {
-                            ...editInfo.address,
-                            city: e.target.value,
-                          },
-                        })
-                      }
-                    />{" "}
-                    <input
-                      className={` form-control ${styles.borderless}`}
-                      type="text"
-                      name="state"
-                      placeholder="state"
-                      value={editInfo?.address?.state}
-                      onChange={(e) =>
-                        setEditInfo({
-                          ...editInfo,
-                          address: {
-                            ...editInfo.address,
-                            state: e.target.value,
-                          },
-                        })
-                      }
+                      name="phoneNumber"
+                      placeholder="Phone number"
+                      value={editInfo.phoneNumber}
+                      onChange={(e) => handlePhone(e)}
                     />
+                  </li>
+                  <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                    </svg>{" "}
+                    {props.email}
+                  </li>
+                  <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                      <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+                    </svg>
+                    <div style={{ display: "flex" }}>
+                      {" "}
+                      <input
+                        className={` form-control ${styles.borderless}`}
+                        type="text"
+                        name="street"
+                        placeholder="Street"
+                        value={editInfo?.address?.street}
+                        onChange={(e) =>
+                          setEditInfo({
+                            ...editInfo,
+                            address: {
+                              ...editInfo.address,
+                              street: e.target.value,
+                            },
+                          })
+                        }
+                      />{" "}
+                      <input
+                        className={` form-control ${styles.borderless}`}
+                        type="text"
+                        placeholder="zip"
+                        name="zip"
+                        value={editInfo?.address?.zip}
+                        onChange={(e) =>
+                          setEditInfo({
+                            ...editInfo,
+                            address: { ...editInfo.address, zip: e.target.value },
+                          })
+                        }
+                      />{" "}
+                      <input
+                        className={` form-control ${styles.borderless}`}
+                        type="text"
+                        name="city"
+                        placeholder="city"
+                        value={editInfo?.address?.city}
+                        onChange={(e) =>
+                          setEditInfo({
+                            ...editInfo,
+                            address: {
+                              ...editInfo.address,
+                              city: e.target.value,
+                            },
+                          })
+                        }
+                      />{" "}
+                      <input
+                        className={` form-control ${styles.borderless}`}
+                        type="text"
+                        name="state"
+                        placeholder="state"
+                        value={editInfo?.address?.state}
+                        onChange={(e) =>
+                          setEditInfo({
+                            ...editInfo,
+                            address: {
+                              ...editInfo.address,
+                              state: e.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </li>
+                </ul>
+                <h5>Working hours</h5>
+                {addMissingDays(editInfo.availability).map((day, index) => (
+                  <div key={index} className="row mb-1" >
+                    <div className="col-md-8">{day.day}</div>
+                    <div className="col-md-4">
+                      <div style={{ display: "flex" }}>
+                        {" "}
+                        <input
+                          className={` form-control ${styles.borderless}`}
+                          type="text"
+                          name="street"
+                          placeholder="Street"
+                          value={day?.startTime}
+                          onChange={(e) =>
+                            setEditInfo({
+                              ...editInfo,
+                              address: {
+                                ...editInfo.address,
+                                street: e.target.value,
+                              },
+                            })
+                          }
+                        />-
+                        <input
+                          className={` form-control ${styles.borderless}`}
+                          type="text"
+                          placeholder="zip"
+                          name="zip"
+                          value={day.endTime}
+                          onChange={(e) =>
+                            setEditInfo({
+                              ...editInfo,
+                              address: { ...editInfo.address, zip: e.target.value },
+                            })
+                          }
+                        />{" "}
+                      </div>
+                    </div>
                   </div>
-                </li>
-              </ul>
+                ))}
+              </>
             ) : (
-              <ul style={{ padding: "0" }}>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-                  </svg>
-                  Call : <span>&nbsp;{editInfo.phoneNumber}</span>
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
-                  </svg>{" "}
-                  {props.email}
-                </li>
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                    <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
-                  </svg>{" "}
-                  {editInfo.address?.street}, {editInfo.address?.zip}{" "}
-                  {editInfo.address?.city}, {editInfo.address?.state}
-                </li>
-              </ul>
+              <>
+                <ul style={{ padding: "0" }}>
+                  <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
+                    </svg>
+                    Call : <span>&nbsp;{editInfo.phoneNumber}</span>
+                  </li>
+                  <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                      <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                    </svg>{" "}
+                    {props.email}
+                  </li>
+                  <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                      <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+                    </svg>{" "}
+                    {editInfo.address?.street}, {editInfo.address?.zip}{" "}
+                    {editInfo.address?.city}, {editInfo.address?.state}
+                  </li>
+                </ul>
+                <br />
+                <h5>Working hours</h5>
+                {cleanUpAvailability(editInfo.availability).map((day, index) => (
+                  <div className="row">
+                    <div className="col-md-8">{day.day}</div>
+                    <div className="col-md-4">
+                      {day.startTime} - {day.endTime}
+                    </div>
+                  </div>
+                ))}
+                <div className="row">
+                  <div className="col-md-8">Sunday</div>
+                  <div className="col-md-4">Closed</div>
+                </div>
+              </>
+
             )}
 
-            <br />
-            <h5>Working hours</h5>
-            {cleanUpAvailability(editInfo.availability).map((day, index) => (
-              <div className="row">
-                <div className="col-md-8">{day.day}</div>
-                <div className="col-md-4">
-                  {day.startTime} - {day.endTime}
-                </div>
-              </div>
-            ))}
-            <div className="row">
-              <div className="col-md-8">Sunday</div>
-              <div className="col-md-4">Closed</div>
-            </div>
+
             <br />
             <div
               style={{
@@ -385,6 +476,7 @@ function Therapist(props) {
               alignContent: "center",
               justifyContent: "space-between",
             }}
+            className="mb-2"
           >
             <h5>Biography</h5>
             <span>
@@ -410,7 +502,7 @@ function Therapist(props) {
             </span>
           </div>
           <textarea
-            className="form-control"
+            className={` form-control ${styles.borderless}`}
             name="description"
             placeholder="Describe yourself"
             value={editInfo.description}
@@ -457,7 +549,7 @@ function Therapist(props) {
                             setEditInfo({
                               ...editInfo,
                               education: editInfo.education.filter(
-                                (e) => e != editInfo.education[i]
+                                (e) => e !== editInfo.education[i]
                               ),
                             })
                           }
@@ -508,7 +600,7 @@ function Therapist(props) {
                             setEditInfo({
                               ...editInfo,
                               languages: editInfo.languages.filter(
-                                (l) => l != editInfo.languages[i]
+                                (l) => l !== editInfo.languages[i]
                               ),
                             })
                           }
@@ -564,7 +656,7 @@ function Therapist(props) {
                             setEditInfo({
                               ...editInfo,
                               specialties: editInfo.specialties.filter(
-                                (s) => s != editInfo.specialties[i]
+                                (s) => s !== editInfo.specialties[i]
                               ),
                             })
                           }
@@ -576,8 +668,69 @@ function Therapist(props) {
                   );
                 })}
               </ul>
-              <h5>License</h5>
-              <p>Major in {editInfo?.licenses[0]?.license}</p>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="mb-2 mt-2"
+              >
+                <h5>License</h5>
+                <Button
+                  className="btn-round"
+                  color="success"
+                  onClick={() =>
+                    setEditInfo({
+                      ...editInfo,
+                      licenses: [...editInfo.licenses, { license: "", state: "", typeL: "" }],
+                    })
+                  }
+                >
+                  Add
+                </Button>
+              </div>
+              {editInfo.licenses.map((license, i) => {
+                return (<div className="input-group mb-3">
+
+                  <input
+                    className={styles.address}
+                    placeholder="License"
+                    name="license"
+                    type="text"
+                    onChange={(e) => handleLicensesL(e, i)}
+                    value={license.license}
+                  />
+                  <input
+                    className={styles.address}
+                    placeholder="State"
+                    name="state"
+                    type="text"
+                    onChange={(e) => handleLicensesS(e, i)}
+                    value={license.state}
+                  />
+                  <select value={license.typeL} className={styles.address}
+                    onChange={(e) => handleLicensesT(e, i)}
+                  >
+                    <option value="">Select</option>
+                    <option value="Major">Major</option>
+                    <option value="Minor">Minor</option>
+                  </select>
+
+                  <div className="input-group-append">
+                    <button
+                      className={`btn btn-outline-danger ${styles.btnTrans}`}
+                      type="button"
+                      onClick={() =>
+                        setEditInfo({
+                          ...editInfo,
+                          licenses: editInfo.licenses.filter(
+                            (license) => license !== editInfo.licenses[i]
+                          ),
+                        })
+                      }
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>)
+              })}
             </div>
           </div>
         </div>
@@ -630,7 +783,11 @@ function Therapist(props) {
                 })}
               </ul>
               <h5>License</h5>
-              <p>Major in {editInfo?.licenses[0]?.license}</p>
+              {editInfo.licenses.map((license) => {
+                return (
+                  <p>{license.typeL} in {license.license} at {license.state}</p>
+                )
+              })}
             </div>
           </div>
         </div>

@@ -25,21 +25,21 @@ const PatientSchema = mongoose.Schema({
   medications: [{ name: { type: String }, dosage: { type: String } }],
 });
 const LicensesSchema = mongoose.Schema({
-  type: { type: String },
+  typeL: { type: String },
   license: { type: String },
   state: { type: String },
 });
 const TherapistSchema = mongoose.Schema({
   name: { type: String },
   dateOfBirth: { type: Date },
-  licenses: [{type: LicensesSchema}],
+  licenses: [{ type: LicensesSchema }],
   specialty: { type: String },
   description: { type: String },
-  availability: [{ 
-  day: { type: String },
-  startTime: { type: String },
-  endTime: { type: String },  
-   }],
+  availability: [{
+    day: { type: String },
+    startTime: { type: String },
+    endTime: { type: String },
+  }],
   education: [{ type: String }],
   specialties: [{ type: String }],
   experience: { type: Date },
@@ -58,11 +58,13 @@ const TherapistSchema = mongoose.Schema({
 });
 
 const AppointmentSchema = new mongoose.Schema({
-  patient: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true 
+  patient: {
+    type: mongoose.Schema.Types.ObjectId, ref: "User", required: true
   },
-  therapist: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true 
+  therapist: {
+    type: mongoose.Schema.Types.ObjectId, ref: "User", required: true
   },
-  date: {type: Date },
+  date: { type: Date },
   duration: { type: Number, required: true },
   notes: { type: String },
   status: {

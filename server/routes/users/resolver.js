@@ -1,4 +1,9 @@
-const { Patient, Therapist, User, Appointment } = require("../../database/models/User");
+const {
+  Patient,
+  Therapist,
+  User,
+  Appointment,
+} = require("../../database/models/User");
 const { ApolloError } = require("apollo-server-errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -10,7 +15,7 @@ const crypto = require("crypto");
 const { readFile } = require("../../utils/uploadFile");
 const nodemailer = require("nodemailer");
 const { Router } = require("express");
-
+const moment = require("moment");
 
 const BASE_URL = "http://localhost:3000";
 
@@ -79,19 +84,24 @@ const resolvers = {
       await existingUser.save();
       return existingUser;
     },
-    update: async (_, { userInput: { id, name, dateOfBirth,password, oldPassword }, image }) => {
+    update: async (
+      _,
+      { userInput: { id, name, dateOfBirth, password, oldPassword }, image }
+    ) => {
       const existingUser = await User.findById(id);
-    
-      const passwordHashed =await bcrypt.hashSync(password, 10)||existingUser.password;
-      
+      let passwordHashed = "";
+      if (password) {
+        passwordHashed = bcrypt.hashSync(password, 10) || existingUser.password;
+      }
+
       if (!existingUser) {
         throw new Error("User doesn't exist");
       }
-      if (password){
+      if (password) {
         if (!bcrypt.compareSync(oldPassword, existingUser.password)) {
           throw new Error("Incorrect password");
         }
-        existingUser.password=passwordHashed;
+        existingUser.password = passwordHashed;
       }
       if (image) {
         profileImage = await readFile(image);
@@ -190,12 +200,9 @@ const resolvers = {
           }).save();
           const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
-
-
         } else if (token) {
           const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
-
         }
       }
       //
@@ -235,10 +242,10 @@ const resolvers = {
         id: user.id,
       };
       const token = jwt.sign(payload, secret + { expiresIn: "2m" });
-      const token2=new Token({
+      const token2 = new Token({
         userId: user.id,
-          token: token,
-      })
+        token: token,
+      });
       token2.save();
       const mailOptions = {
         from: "sahtek2023@gmail.com",
@@ -255,28 +262,29 @@ const resolvers = {
       const user = await User.findById(userid);
       // const secret=key+user.password
 
-      
       user.password = bcrypt.hashSync(newpassword, 10);
       await user.save();
       return true;
-      
     },
-    bookAppointment: async (_, { patient,therapist,date,duration,notes,status }) => {
-   const p=await User.findById(patient);
-   const d=await User.findById(therapist);
+    bookAppointment: async (
+      _,
+      { patient, therapist, date, duration, notes, status }
+    ) => {
+      const p = await User.findById(patient);
+      const d = await User.findById(therapist);
 
-   const existingAppointment = await Appointment.findOne({
-      date:date,
-      therapist:therapist,
-      date:{$lte:(new Date(date).getTime() + 60 * 60 * 1000)}
+      const existingAppointment = await Appointment.findOne({
+        date: date,
+        therapist: therapist,
+        date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
       if (existingAppointment) {
-        throw new Error('Time slot not available');
+        throw new Error("Time slot not available");
       }
 
       const appointment = new Appointment({
-        patient:p.id,
-        therapist:d.id,
+        patient: p.id,
+        therapist: d.id,
         date,
         duration,
         notes,
@@ -284,7 +292,7 @@ const resolvers = {
       });
       await appointment.save();
 
-      return true
+      return true;
     },
 
     resendMailVerification: async (parent, args, context, info) => {
@@ -293,18 +301,17 @@ const resolvers = {
 
       const user = await User.findById(id);
       if (user) {
-       
         const token2 = new Token({
           userId: id,
           token: crypto.randomBytes(32).toString("hex"),
-        })
-        const tokenexist = await Token.findOne({ userId: id })
-        if(tokenexist){
-        await Token.findOneAndUpdate(id,{userId : id, token : token2.token })}
-        else{
+        });
+        const tokenexist = await Token.findOne({ userId: id });
+        if (tokenexist) {
+          await Token.findOneAndUpdate(id, { userId: id, token: token2.token });
+        } else {
           token2.save();
         }
-        
+
         const url = `${BASE_URL}/${token2.userId}/verify/${token2.token}`;
         await sendEmail(user.email, "Email Verification", String(url));
 
@@ -318,8 +325,7 @@ const resolvers = {
   Query: {
     async users() {
       return await User.find({
-        role:"Therapist"
-        
+        role: "Therapist",
       });
     },
     async user(_, { ID }) {
@@ -342,7 +348,16 @@ const resolvers = {
     },
     async getAppointments() {
       return await Appointment.find();
-
+    },
+    async getAppointmentsByPatient(_, { ID }) {
+      let appointments = await Appointment.find({ patient: ID });
+      //filter this weeks appointments
+      appointments = appointments.filter((appointment) => {
+        const date = new Date(appointment.date);
+        console.log(date);
+        return moment(date).isSame(moment(), "week");
+      });
+      return appointments;
     },
     checkEmailExists: async (_, { email }, { models }) => {
       const user = await models.User.findOne({ where: { email } });
@@ -367,20 +382,28 @@ const resolvers = {
     },
 
     getPatientsByTherapist: async (_, { id }) => {
-      const list = await Appointment.find({ therapist: id }).distinct("patient");
+      const list = await Appointment.find({ therapist: id }).distinct(
+        "patient"
+      );
       return await User.find({ _id: { $in: list } });
-
-  },
+    },
   },
   User: {
-     
     therapist: async (parent) => {
-        return await User.findById(parent.therapist);
+      return await User.findById(parent.therapist);
     },
     patient: async (parent) => {
-        return await User.findById(parent.patient);
-    }
-}
+      return await User.findById(parent.patient);
+    },
+  },
+  Appointment: {
+    async patient(appointment) {
+      return await User.findById(appointment.patient);
+    },
+    async therapist(appointment) {
+      return await User.findById(appointment.therapist);
+    },
+  },
 };
 
 module.exports = resolvers;

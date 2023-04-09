@@ -32,7 +32,6 @@ module.exports = gql`
     emergencyContact: EmergencyContact
     medicalConditions: [String]
     medications: [Medication]
-    
   }
 
   enum Gender {
@@ -90,25 +89,24 @@ module.exports = gql`
     fees: Float
     ratings: [Float]
     reviews: [String]
-    
   }
 
   type Appointment {
-    patient: ID
-    therapist: ID
+    patient: User
+    therapist: User
     date: String
     duration: Int
     notes: String
     status: String
   }
-input AppointmentInput{
-  patient: ID!
-  therapist: ID!
-  date: String
-  duration: Int
-  notes: String
-  status: String
-}
+  input AppointmentInput {
+    patient: ID!
+    therapist: ID!
+    date: String
+    duration: Int
+    notes: String
+    status: String
+  }
   type Token {
     value: String!
   }
@@ -185,12 +183,13 @@ input AppointmentInput{
   extend type Query {
     user(ID: ID!): User
     therapist(ID: ID!): TherapistPayload
-    users:[User]
+    users: [User]
     checkEmailExists(email: String!): Boolean!
     current(token: String!): User
-    getAppointment(ID: ID!):Appointment
-    getAppointments:[Appointment]
+    getAppointment(ID: ID!): Appointment
+    getAppointments: [Appointment]
     getPatientsByTherapist(id: ID!): [User]
+    getAppointmentsByPatient(ID: ID!): [Appointment]
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User
@@ -205,8 +204,13 @@ input AppointmentInput{
       newpassword: String!
     ): Boolean
     resendMailVerification(id: ID): String
-    bookAppointment(patient:ID, therapist: ID,date: String, duration: Int, notes: String, status: String): Boolean
-    
-
-   }
+    bookAppointment(
+      patient: ID
+      therapist: ID
+      date: String
+      duration: Int
+      notes: String
+      status: String
+    ): Boolean
+  }
 `;

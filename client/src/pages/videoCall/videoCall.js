@@ -33,9 +33,14 @@ function VideoCall() {
     });
 
     const [ready, setReady] = useState(false);
-    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, toggleVideo } = useContext(PeerContext);
+    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
-    const { socket } = useContext(SocketContext);
+    const { socket, isVideo, setStarted } = useContext(SocketContext);
+    useEffect(() => {
+        if (myStream) {
+            myStream.getVideoTracks()[0].enabled = isVideo;
+        }
+    }, [isVideo, remoteStream, myStream])
     const handleUserJoined = useCallback(async (emailId) => {
 
         console.log("userJoined", emailId)
@@ -52,6 +57,7 @@ function VideoCall() {
         setRemoteEmail(from);
 
     }, [createAnswer, socket])
+
     const handleUserConnected = useCallback(async (emailId) => {
 
         setRemoteEmail(emailId);
@@ -68,28 +74,40 @@ function VideoCall() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         setMyStream(stream);
     }, [])
-
+    const handleVideoToggle = useCallback(async (data) => {
+        const { isVideoOn } = data;
+        remoteStream.getVideoTracks()[0].enabled = isVideoOn;
+    }, [remoteStream])
+    const handleAudioToggle = useCallback(async (data) => {
+        const { isAudioOn } = data;
+        remoteStream.getAudioTracks()[0].enabled = isAudioOn;
+    }, [remoteStream])
+    const handleHangUp = useCallback(async (data) => {
+        setRemoteStream(null);
+        setRemoteEmail("");
+    }, [setRemoteStream])
+    const handleDisconnect = useCallback(async (data) => {
+        socket.emit("hang-up")
+    }, [socket])
     useEffect(() => {
         socket.on("user-connected", handleUserJoined)
         socket.on("incomming-call", handleIncommingCall)
         socket.on("accepted-call", handleCallAccepted)
         socket.on("user-connected", handleUserConnected)
-        socket.on("toggle-video", (data) => {
-            const { isVideoOn } = data;
-            toggleVideo();
-        })
-
+        socket.on("user-video", handleVideoToggle)
+        socket.on("user-audio", handleAudioToggle)
+        socket.on('hanged-up', handleHangUp)
+        socket.on('disconnect', handleDisconnect)
         return () => {
             socket.off("user-connected", handleUserJoined)
             socket.off("incomming-call", handleIncommingCall)
             socket.off("accepted-call", handleCallAccepted)
             socket.off("user-connected", handleUserConnected)
-            socket.off("toggle-video", (data) => {
-                const { isVideoOn } = data;
-                toggleVideo();
-            })
+            socket.off("user-video", handleVideoToggle)
+            socket.off("user-audio", handleAudioToggle)
+            socket.off('hanged-up', handleHangUp)
         }
-    }, [handleUserJoined, handleIncommingCall, handleCallAccepted, socket])
+    }, [handleUserJoined, handleIncommingCall, handleCallAccepted, handleVideoToggle, handleAudioToggle, handleDisconnect, handleHangUp, handleUserConnected, socket])
 
     useEffect(() => {
         socket.emit("joinroom", { roomId: id, emailId: user.email });
@@ -103,7 +121,7 @@ function VideoCall() {
     const handleNegotiation = useCallback(async () => {
         const offer = await createOffer(remoteEmail);
         socket.emit("call-user", { emailId: remoteEmail, offer })
-    }, [peer, remoteEmail, socket])
+    }, [remoteEmail, socket, createOffer])
     useEffect(() => {
         peer.addEventListener('negotiationneeded', handleNegotiation);
         return () => {
@@ -137,7 +155,7 @@ function VideoCall() {
                 {(remoteEmail && !remoteStream) && <h4>You are connected to {remoteEmail}</h4>}
                 {(!remoteEmail && !remoteStream) && <h4>Waiting for other user to join</h4>}
                 {(remoteEmail && remoteStream) && <h4>{remoteEmail} is waiting for you to join</h4>}
-                <Button onClick={(e) => { sendStream(myStream); setReady(true) }}>Join Call</Button>
+                <Button onClick={(e) => { sendStream(myStream); setReady(true); setStarted(true) }}>Join Call</Button>
             </Row>}
 
             <br />
