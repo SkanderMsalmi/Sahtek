@@ -19,7 +19,7 @@ const Resetpassword = React.lazy(() =>
   import("./pages/ResetPassword/resetPassword")
 );
 // const ChooseTherapist =React.lazy(()=>import("./pages/rdv/ChooseTherapist"));
-
+const Shop = React.lazy(() => import("./pages/Shop/Shop"));
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 const Login = React.lazy(() => import("./pages/Signin/Login"));
 const MailVerification = React.lazy(() =>
@@ -148,10 +148,13 @@ export const router = createBrowserRouter([
         element: <PatientFiles />,
       },
       {
-        path: "home",
+        path: "forum",
         element: <ForumHomepage />,
       },
-
+      {
+        path: "shop",
+        element: <Shop />,
+      },
       {
         path: "comments/:postId",
         element: <PostComments />,
