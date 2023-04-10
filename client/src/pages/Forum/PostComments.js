@@ -48,6 +48,7 @@ function PostComments() {
           variables: {
 
               id: postID,
+              user: user.id,
 
           },
       }).then(() => {
@@ -77,6 +78,11 @@ function PostComments() {
     }
   }, [value]);
 
+
+  useEffect(() => {
+  if(data)
+   refetchP();
+  });
  
 
   function addComment() {
@@ -124,7 +130,7 @@ function PostComments() {
             <div className={styles.card}>
               <div className={styles.cardSide}>
                 <TbArrowBigUp className={styles.upvoteIcon}   onClick={() => { setLike(!like); likePost(data?.getPost?.id) }} />
-                <label>{data?.getPost?.like}</label>
+                <label>{data?.getPost?.likesCount}</label>
               </div>
 
               <div className={styles.cardContent}>

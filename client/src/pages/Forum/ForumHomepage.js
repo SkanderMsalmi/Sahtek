@@ -7,14 +7,14 @@ import { selectUser } from '../../store/users/users.selectors';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_POSTS } from "../../apis/forum";
 import { Link } from 'react-router-dom';
-import { TbArrowBigUp, TbDots } from "react-icons/tb";
+import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
-
 import { LIKE_POST_MUTATION } from "../../apis/forum";
 import { CREATE_POST_MUTATION } from "../../apis/forum";
-
+import { LIKED_POST
+} from "../../apis/forum";
 
 import { Button, Col, Modal } from 'reactstrap';
 
@@ -27,6 +27,8 @@ function ForumHomepage() {
 
     const user = useSelector(selectUser);
     const { data, loading, error, refetch } = useQuery(GET_POSTS)
+    const { data:dataK, loading:loadingK,error: errorK,refetcK: refetchK } = useQuery(LIKED_POST)
+    
     const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
         LIKE_POST_MUTATION
     );
@@ -50,6 +52,7 @@ function ForumHomepage() {
             variables: {
 
                 id: postID,
+                user: user.id,
 
             },
         }).then(() => {
@@ -165,7 +168,7 @@ function ForumHomepage() {
 
 
 
-            {data.getAllPosts.map((p) => {
+            {data?.getAllPosts.map((p) => {
                 return (
                     <>
                         <div className={styles.card} key={p.id}>
@@ -173,18 +176,18 @@ function ForumHomepage() {
                             <div className={styles.cardSide}>
 
                                 <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(p.id) }} />
-                                <label>{p.like}</label>
+                                <label>{p.likesCount}</label>
                             </div>
 
                             <div className={styles.cardContent}>
                                 <div className={styles.cardHeader}>
                                     <div className={styles.row}>
                                         <div className={styles.userImg}>
-                                            <img src={p.user?.profileImage} alt="user" />
+                                            <img src={p?.user?.profileImage} alt="user" />
                                         </div>
                                         <div>
-                                            <span>{p.user?.name}</span>  <br />
-                                            <small> {p.time}</small>
+                                            <span>{p?.user?.name}</span>  <br />
+                                            <small> {p?.time}</small>
                                         </div>
 
                                     </div>

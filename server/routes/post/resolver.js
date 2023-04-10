@@ -1,6 +1,8 @@
 const Comment = require("../../database/models/Comment");
 const Post = require("../../database/models/Post");
 const { User } = require("../../database/models/User");
+const { MongoClient, ObjectId } = require('mongodb');
+
 const resolvers = {
   Query: {
     async getPost(_, { id }) {
@@ -8,12 +10,25 @@ const resolvers = {
     },
 
     async getAllPosts() {
-      return await Post.find();
+      return await Post.find().sort({ $natural: -1 })
     },
     async findPostByUser(_, { id }) {
       return await Post.find({ user: id });
     },
-    
+
+
+    async isLiked(_, { id, user }) {
+      const liked = await Post.findOne({ _id: ObjectId(id), like: { $in: [user] } });
+      if(liked !== null){
+        return true
+      } else{
+        return false
+      }    
+ 
+    },
+
+
+
   },
 
   Mutation: {
@@ -22,7 +37,8 @@ const resolvers = {
         description: description,
         user: user,
         time: new Date().toDateString(),
-        like: 0,
+        like: [],
+        likesCount: 0,
         commentsCount: 0,
       });
       const res = await createdPost.save();
@@ -49,15 +65,26 @@ const resolvers = {
 
     LikePost: async (parent, args, context, info) => {
       const { id } = args;
-      return  await Post.findByIdAndUpdate(id, { $inc: { like: 1 } }, { new: true });
+      const { user } = args;
+      const post = await Post.findById(id);
+      await post.update({ $push: { like: user } }, { new: true });
+
+      const likes = post.like || [];
+      const num = likes.length;
+
+      return await Post.findByIdAndUpdate(id, { likesCount: num + 1 }, { new: true })
+
+
+
 
     },
   },
   Post: {
-    
+
     user: async (parent, args) => {
       return await User.findById(parent.user);
     },
+
   },
 };
 

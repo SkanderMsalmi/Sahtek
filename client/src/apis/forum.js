@@ -6,7 +6,7 @@ export const GET_POSTS = gql
       id
       description
       time
-      like
+      likesCount
       commentsCount
       user {
         id
@@ -17,11 +17,9 @@ export const GET_POSTS = gql
   }
   `;
   export const LIKE_POST_MUTATION= gql
-  `    mutation LikePost($id: ID!) {
-    LikePost(id: $id) {
-      user {
-        id
-      }
+  `    mutation LikePost($id: ID!, $user: ID!) {
+    LikePost(id: $id, user: $user) {
+      description
     }
   }
     `;
@@ -56,7 +54,7 @@ export const GET_POSTS = gql
             id
             description
             time
-            like
+            likesCount
             user {
               id
               name
@@ -79,4 +77,14 @@ export const GET_POSTS = gql
             `;
        
 
- 
+            export const LIKED_POST = gql
+            ` 
+            query Query($isLikedId: ID!, $user: ID!) {
+              isLiked(id: $isLikedId, user: $user)
+            }
+         
+              `;
+         
+           
+         
+        
