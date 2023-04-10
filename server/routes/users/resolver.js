@@ -275,9 +275,10 @@ const resolvers = {
 
       const existingAppointment = await Appointment.findOne({
         date: date,
-        therapist: therapist,
-        date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
+        therapist: d,
+        // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
+      console.log(existingAppointment);
       if (existingAppointment) {
         throw new Error("Time slot not available");
       }
@@ -418,14 +419,7 @@ const resolvers = {
       return await User.find({ _id: { $in: list } });
     },
   },
-  User: {
-    therapist: async (parent) => {
-      return await User.findById(parent.therapist);
-    },
-    patient: async (parent) => {
-      return await User.findById(parent.patient);
-    },
-  },
+
   Appointment: {
     async patient(appointment) {
       return await User.findById(appointment.patient);
