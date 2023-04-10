@@ -1,0 +1,272 @@
+.containerFluid {
+   padding-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(to bottom right,
+            rgba(252, 203, 144, 1),
+            rgba(213, 126, 235, 1));
+   
+ 
+     //background: linear-gradient(to  bottom, #accbee 0%, #e7f0fd 100%);
+     //background-image: linear-gradient(to right bottom, #cfe1b4, #acd8b2, #8aceb6, #69c2bd, #50b4c4);
+
+}
+.postTextArea{
+    text-align: left;
+    border-color: transparent;
+    outline: none;
+    height: 45px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 1em;
+    background-color: #eef8f9;
+    background: rgba(24, 24, 16, 0.2);
+    color: #ececec;
+    overflow-wrap: break-word;
+    resize: none;
+    font-size: 14px;
+
+  
+}
+
+.postTextArea:hover{
+    background: rgba(24, 24, 16, 0.355);
+
+}
+
+.textarea {
+
+    border-color: transparent;
+    outline: none;
+    height: 298px;
+    width: 100%;
+   padding: 20px;
+    
+     
+    color: #000000;
+    overflow-wrap: break-word;
+    resize: none;
+    font-size: 14px;
+    
+}
+
+.textarea:focus{
+    border-color: #ffffff;
+    outline: 1px;
+  
+ 
+}
+
+ 
+
+ 
+::placeholder {
+    color: #383838;
+}
+
+
+.add_post_container {
+
+    width: 700px;
+    height: fit-content;
+    padding: 10px;
+
+    margin-bottom: 10px;
+    margin-top: 15px;
+
+
+  
+    background: rgba(24, 24, 16, 0.2);
+    border-radius: 1em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+    color: #ffffff;
+
+}
+
+
+
+
+
+.row {
+    display: flex;
+    align-items: center;
+    margin-left: 0px;
+
+
+}
+
+.userImg img {
+    width: 35px;
+    height: 35px;
+    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.card {
+
+    display: flex;
+
+    width: 700px;
+    height: fit-content;
+
+    margin-bottom: 5px;
+    background: rgba(24, 24, 16, 0.2);
+    border-radius: 1em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+    color: #ffffff;
+
+
+
+}
+
+
+
+
+.cardSide {
+
+    width: 10%;
+    display: flex;
+
+    flex-direction: column;
+
+
+    align-items: center;
+    padding-top: 10px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+
+}
+
+.cardContent {
+    width: 100%;
+}
+
+
+
+.commentIcon {
+    margin-right: 10px;
+}
+
+
+
+.upvoteIcon {
+
+    width: 25px;
+    height: 25px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+
+
+.cardHeader {
+
+    display: flex;
+    align-items: center;
+    
+    justify-content: space-between;
+    padding: 10px 10px 0px 10px;
+
+
+}
+
+.cardBody {
+    width: 100%;
+
+    padding: 10px 15px 0px 0px;
+
+
+}
+
+.cardBody .p {
+    color: #ffffff;
+
+
+}
+
+
+.cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 5px;
+    padding-bottom: 5px;
+
+
+}
+
+.invisibleBtn {
+    background: transparent;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    color: #ffffff;
+
+    padding: 10px 10px 10px 10px;
+}
+
+.invisibleBtn:hover {
+
+    background: rgba(24, 24, 16, 0.2);
+    border-radius: 1em;
+    cursor: pointer;
+
+}
+
+
+//************Modal********//
+body.active-modal {
+    overflow-y: hidden;
+}
+
+.btn-modal {
+    padding: 10px 20px;
+    display: block;
+    margin: 100px auto 0;
+    font-size: 18px;
+}
+
+.modal, .overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+}
+
+.overlay {
+    background: rgba(49,49,49,0.8);
+}
+.modalcontent {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.4;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 3px;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 7px;
+}

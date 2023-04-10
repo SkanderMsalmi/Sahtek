@@ -31,6 +31,9 @@ const PatientFiles = React.lazy(() => import("./pages/Patients/PatientFiles"));
 const AppointmentBooked = React.lazy(() =>
   import("./pages/rdv/AppointmentBooked")
 );
+const ForumHomepage = React.lazy(() => import("./pages/Forum/ForumHomepage"));
+const PostComments = React.lazy(() => import("./pages/Forum/PostComments"));
+
 const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
@@ -143,6 +146,15 @@ export const router = createBrowserRouter([
       {
         path: "patients/:patientid/files",
         element: <PatientFiles />,
+      },
+      {
+        path: "home",
+        element: <ForumHomepage />,
+      },
+
+      {
+        path: "comments/:postId",
+        element: <PostComments />,
       },
     ],
   },
