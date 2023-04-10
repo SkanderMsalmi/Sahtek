@@ -70,16 +70,17 @@ function Therapist(props) {
       languages: cleanArray(editInfo.languages),
       education: cleanArray(editInfo.education),
       licenses: cleanLicenses(editInfo.licenses),
+      availability: addMissingDays(editInfo.availability)
     });
     updateTherapist({
       variables: {
         therapistInput: {
           ...editInfo,
-          availability: editInfo.availability,
           licenses: cleanLicenses(editInfo.licenses),
           specialties: cleanArray(editInfo.specialties),
           languages: cleanArray(editInfo.languages),
           education: cleanArray(editInfo.education),
+          availability: addMissingDays(editInfo.availability)
         },
       },
     }).then((res) => {
@@ -232,6 +233,17 @@ function Therapist(props) {
     setEditInfo({ ...editInfo, licenses: newLicenses });
   };
 
+  const handleStartTime = (e, i) => {
+    const newAvailability = [...editInfo.availability];
+    newAvailability[i] = { ...newAvailability[i], startTime: e.target.value };
+    console.log(newAvailability)
+    setEditInfo({ ...editInfo, availability: newAvailability });
+  };
+  const handleEndTime = (e, i) => {
+    const newAvailability = [...editInfo.availability];
+    newAvailability[i] = { ...newAvailability[i], endTime: e.target.value };
+    setEditInfo({ ...editInfo, availability: newAvailability });
+  };
   const handleLicensesT = (e, i) => {
     const newLicenses = [...editInfo.licenses];
     newLicenses[i] = { ...newLicenses[i], typeL: e.target.value };
@@ -358,31 +370,21 @@ function Therapist(props) {
                         <input
                           className={` form-control ${styles.borderless}`}
                           type="text"
-                          name="street"
-                          placeholder="Street"
-                          value={day?.startTime}
+                          name="startTime"
+                          placeholder="Start time"
+                          value={editInfo.availability[index]?.startTime}
                           onChange={(e) =>
-                            setEditInfo({
-                              ...editInfo,
-                              address: {
-                                ...editInfo.address,
-                                street: e.target.value,
-                              },
-                            })
+                            handleStartTime(e, index)
                           }
                         />-
                         <input
                           className={` form-control ${styles.borderless}`}
                           type="text"
-                          placeholder="zip"
-                          name="zip"
-                          value={day.endTime}
+                          placeholder="End time"
+                          name="endTime"
+                          value={editInfo.availability[index]?.endTime}
                           onChange={(e) =>
-                            setEditInfo({
-                              ...editInfo,
-                              address: { ...editInfo.address, zip: e.target.value },
-                            })
-                          }
+                            handleEndTime(e, index)}
                         />{" "}
                       </div>
                     </div>
