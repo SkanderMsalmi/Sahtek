@@ -4,12 +4,16 @@ import App from "./App";
 
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
-import Profile2 from "./pages/Profile/Profile2";
-import Rating from "./pages/Rating/Rating";
-import VideoCall from "./pages/videoCall/videoCall";
-import ProfileCreation from "./pages/Profile/ProfileCreation";
-import AlertCheckMail from "./pages/Register/AlertCheckMail";
-import TimeTable from "./components/Calender/TimeTable";
+const Rating = React.lazy(() => import("./pages/Rating/Rating"));
+const VideoCall = React.lazy(() => import("./pages/videoCall/videoCall"));
+const ProfileCreation = React.lazy(() =>
+  import("./pages/Profile/ProfileCreation")
+);
+const AlertCheckMail = React.lazy(() =>
+  import("./pages/Register/AlertCheckMail")
+);
+const TimeTable = React.lazy(() => import("./components/Calender/TimeTable"));
+const Profile2 = React.lazy(() => import("./pages/Profile/Profile2"));
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 const Register = React.lazy(() => import("./pages/Register/Register"));
 const Forgotpassword = React.lazy(() =>
