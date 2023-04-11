@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ContextProvider } from "./apis/socketContext";
 import { PeerProvider } from "./apis/peerContext";
+import style from "./App.module.scss"
 // import AnimatedHeader from './components/Header/AnimatedHeader';
 
 function App() {
@@ -37,12 +38,14 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
+          <div className={style.appContainer}>
           <Navigation />
           {location.pathname == "/" ? <AnimatedHeader /> : ""}
-          <div className="flex-fill d-flex flex-column">
-            <Suspense>
+          
+            <Suspense >
               <Outlet />
             </Suspense>
+         
           </div>
           <Footer />
         </PersistGate>
