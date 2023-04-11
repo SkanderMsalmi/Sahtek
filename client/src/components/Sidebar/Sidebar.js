@@ -40,7 +40,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-gauge"></i>
+                  <i className="fa-solid fa-gauge"></i>
                 </NavIcon>
 
                 <NavText>Dashboard</NavText>
@@ -51,7 +51,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-calendar-check"></i>
+                  <i className="fa-solid fa-calendar-check"></i>
                 </NavIcon>
                 <NavText>Appoitments</NavText>
               </NavItem>
@@ -61,7 +61,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-user-doctor"></i>
+                  <i className="fa-solid fa-user-doctor"></i>
                 </NavIcon>
                 <NavText>My Therapist</NavText>
               </NavItem>
@@ -71,7 +71,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-gear"></i>
+                  <i className="fa-solid fa-gear"></i>
                 </NavIcon>
                 <NavText>Settings</NavText>
               </NavItem>
@@ -86,7 +86,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-gauge"></i>
+                  <i className="fa-solid fa-gauge"></i>
                 </NavIcon>
 
                 <NavText>Dashboard</NavText>
@@ -97,7 +97,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-calendar-check"></i>
+                  <i className="fa-solid fa-calendar-check"></i>
                 </NavIcon>
                 <NavText>Calendar</NavText>
               </NavItem>
@@ -107,7 +107,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-user-doctor"></i>
+                  <i className="fa-solid fa-user-doctor"></i>
                 </NavIcon>
                 <NavText>Patients</NavText>
               </NavItem>
@@ -117,7 +117,7 @@ function Sidebar() {
               >
                 <NavIcon>
                   {" "}
-                  <i class="fa-solid fa-gear"></i>
+                  <i className="fa-solid fa-gear"></i>
                 </NavIcon>
                 <NavText>Settings</NavText>
               </NavItem>

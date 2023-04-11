@@ -76,7 +76,6 @@ const RatingCard = () => {
       id,
     },
   });
-
   const [makeRate, { loadingR, errorR, dataR }] =
     useMutation(MAKE_RATE_THERAPIST);
 
@@ -108,7 +107,7 @@ const RatingCard = () => {
       setProfileImage(therapistData?.user?.profileImage);
       setSpecialities(therapistData?.user?.therapist?.specialties);
     }
-    if (therapistData?.user.role === "Patient") {
+    if (therapistData?.user?.role === "Patient") {
       navigate("/profile");
     }
     if (
