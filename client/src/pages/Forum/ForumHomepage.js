@@ -12,23 +12,33 @@ import { TbArrowBigUpFilled } from "react-icons/tb";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 
 import { LIKE_POST_MUTATION } from "../../apis/forum";
+import {
+    REMOVE_LIKE_POST_MUTATION
+} from "../../apis/forum";
+
 import { CREATE_POST_MUTATION } from "../../apis/forum";
-import { LIKED_POST
+import {
+    LIKED_POST
 } from "../../apis/forum";
 
 import { Button, Col, Modal } from 'reactstrap';
+import { fixObservableSubclass } from '@apollo/client/utilities';
 
 
 function ForumHomepage() {
-    const [like, setLike] = useState(false);
     const [modal, setModal] = React.useState(false);
-    const [postText, setPostText] = useState();
+    const [postText, setPostText] = useState('');
 
 
     const user = useSelector(selectUser);
-    const { data, loading, error, refetch } = useQuery(GET_POSTS)
-    const { data:dataK, loading:loadingK,error: errorK,refetcK: refetchK } = useQuery(LIKED_POST)
-    
+    const { loading, error, data, refetch } = useQuery(GET_POSTS, {
+        variables: { user: user.id },
+    });
+ 
+
+    const [removeLikePost, { data: dataR, loading: loadingR, error: errorR }] = useMutation(
+        REMOVE_LIKE_POST_MUTATION
+    );
     const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
         LIKE_POST_MUTATION
     );
@@ -56,13 +66,33 @@ function ForumHomepage() {
 
             },
         }).then(() => {
-            setLike(!like);
+
             refetch();
         })
             .catch(errorL => console.error(errorL));
 
 
     };
+
+    //** remove Like post*/
+    function removelike(postID) {
+
+        removeLikePost({
+            variables: {
+
+                id: postID,
+                user: user.id,
+
+            },
+        }).then(() => {
+
+            refetch();
+        })
+            .catch(errorL => console.error(errorL));
+
+
+    };
+
 
     /** create post */
 
@@ -79,7 +109,7 @@ function ForumHomepage() {
             },
         }).then(() => {
             setModal(!modal);
-            setPostText();
+            setPostText('');
             refetch();
         })
             .catch(errorP => console.error(errorP));
@@ -91,14 +121,14 @@ function ForumHomepage() {
 
 
 
-    if (loading) return <p>Loading...</p>;
+   
     return (
 
         <div className={styles.containerFluid}>
 
             <div className={styles.add_post_container}>
                 <div className={styles.row}>
-                    <div className={styles.userImg}><img src={user?.profileImage} alt="user" /></div>
+                    <div className={styles.userImg}><img src={user?.profileImage} alt="" /></div>
 
                     <button className={styles.postTextArea} onClick={toggleModal}>What do you want to ask or share?</button>
 
@@ -166,53 +196,62 @@ function ForumHomepage() {
 
 
 
-
-
-            {data?.getAllPosts.map((p) => {
-                return (
-                    <>
-                        <div className={styles.card} key={p.id}>
-
-                            <div className={styles.cardSide}>
-
-                                <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(p.id) }} />
-                                <label>{p.likesCount}</label>
-                            </div>
-
-                            <div className={styles.cardContent}>
-                                <div className={styles.cardHeader}>
-                                    <div className={styles.row}>
-                                        <div className={styles.userImg}>
-                                            <img src={p?.user?.profileImage} alt="user" />
+            {loading ?  ( <p>Loading...</p>):(
+                <div>
+                     {data?.getAllPosts.map((p) => {
+                    return (
+                        <>
+                            <div className={styles.card} key={p.id}>
+    
+                                <div className={styles.cardSide}>
+                                    {p.isLiked ? <TbArrowBigUpFilled className={styles.upvoteIcon} onClick={() => { removelike(p.id) }} /> :
+                                        <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(p.id) }} />
+                                    }
+     
+                                    <label>{p.likesCount}</label>
+                                </div>
+    
+                                <div className={styles.cardContent}>
+                                    <div className={styles.cardHeader}>
+                                        <div className={styles.row}>
+                                            <div className={styles.userImg}>
+                                                <img src={p?.user?.profileImage} alt="" />
+                                            </div>
+                                            <div>
+                                                <span>{p?.user?.name}</span>  <br />
+                                                <small> {p?.time}</small>
+                                            </div>
+    
                                         </div>
-                                        <div>
-                                            <span>{p?.user?.name}</span>  <br />
-                                            <small> {p?.time}</small>
+    
+    
+                                        <div className="text-right">
+                                            <BiDotsHorizontalRounded className={styles.upvoteIcon} />
+                                            
+    
+    
                                         </div>
-
                                     </div>
-
-
-                                    <div className="text-right">
-                                        <BiDotsHorizontalRounded className={styles.upvoteIcon} />
-
-
+                                    <div className={styles.cardBody}>
+                                        <p>{p.description}</p>
+                                    </div>
+                                    <div className={styles.cardFooter}>
+                                        <Link to={`/comments/${p.id}`}>
+                                            <button type="submit" className={styles.invisibleBtn}>
+                                                <FaRegCommentAlt className={styles.commentIcon} /> {p.commentsCount} Comments
+                                            </button></Link>
                                     </div>
                                 </div>
-                                <div className={styles.cardBody}>
-                                    <p>{p.description}</p>                                </div>
-                                <div className={styles.cardFooter}>
-                                    <Link to={`/comments/${p.id}`}>
-                                        <button type="submit" className={styles.invisibleBtn}>
-                                            <FaRegCommentAlt className={styles.commentIcon} /> {p.commentsCount} Comments
-                                        </button></Link>
-                                </div>
                             </div>
-                        </div>
-                    </>
-                )
+                        </>
+                    )
+    
+                })}
+                </div>
+               
+            )}
 
-            })}
+            
 
 
 
