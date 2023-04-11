@@ -94,6 +94,7 @@ module.exports = gql`
   }
 
   type Appointment {
+    id: ID
     patient: User
     therapist: User
     date: String

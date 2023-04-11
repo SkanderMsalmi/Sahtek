@@ -11,6 +11,7 @@ import ProfileCreation from "./pages/Profile/ProfileCreation";
 
 import AlertCheckMail from "./pages/Register/AlertCheckMail";
 import TimeTable from "./components/Calender/TimeTable";
+const AppointmentList = React.lazy(() => import("./pages/PatientAppointment/AppointmentList"))
 const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 const Register = React.lazy(() => import("./pages/Register/Register"));
 const Forgotpassword = React.lazy(() =>
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "table",
         element: <TimeTable />,
+      },
+      {
+        path: "appointments",
+        element: <AppointmentList />,
       },
       {
         path: "login",

@@ -12,6 +12,7 @@ import { SocketContext } from "../../apis/socketContext";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
 import { useNavigate } from "react-router-dom";
+import { PeerContext } from "../../apis/peerContext";
 
 const VideoChat = ({ children }) => {
     const user = useSelector(selectUser);
@@ -22,6 +23,7 @@ const VideoChat = ({ children }) => {
     const navigate = useNavigate();
 
     const { socket, setIsVideo, started } = useContext(SocketContext);
+    const { myStream } = useContext(PeerContext)
     const handleVideoToggle = () => {
         setIsVideo(!cam);
         socket.emit("toggle-video", { isVideoOn: !cam, emailId: user.email });
@@ -32,6 +34,9 @@ const VideoChat = ({ children }) => {
     }
     const handleHangUp = () => {
         socket.emit("hang-up");
+        const tracks = myStream.getTracks();
+
+        tracks.forEach(track => track.stop());
         navigate('/')
     }
     const handleClick = val => {

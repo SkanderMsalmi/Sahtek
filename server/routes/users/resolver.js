@@ -349,13 +349,14 @@ const resolvers = {
     },
     async getAppointmentsByPatient(_, { ID }) {
       let appointments = await Appointment.find({ patient: ID });
-      //filter this weeks appointments
-      appointments = appointments.filter(appointment => {
+
+      return appointments.filter(appointment => {
         const date = new Date(appointment.date);
-        console.log(date)
-        return moment(date).isSame(moment(), 'week');
+        return date > new Date();
+      }).sort((a, b) => {
+        return a.date - b.date;
       });
-      return appointments;
+
     },
     checkEmailExists: async (_, { email }, { models }) => {
       const user = await models.User.findOne({ where: { email } });

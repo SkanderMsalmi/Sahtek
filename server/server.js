@@ -56,7 +56,6 @@ const startServer = async () => {
       socket.broadcast.emit("hanged-up");
     });
     socket.on('hang-up', (data) => {
-      console.log("i hanged up")
       socket.broadcast.emit('hanged-up');
     });
     socket.on('toggle-video', (data) => {
@@ -77,7 +76,6 @@ const startServer = async () => {
     });
     socket.on('joinroom', (data) => {
       const { roomId, emailId } = data;
-      console.log("joinroom", roomId, emailId)
       emailToSocketMapping.set(emailId, socket.id);
       socketToEmailMapping.set(socket.id, emailId);
       socket.join(roomId);

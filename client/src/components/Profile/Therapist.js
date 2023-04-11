@@ -96,7 +96,7 @@ function Therapist(props) {
       street: "",
       zip: "",
     },
-    availability: [],
+    availability: addMissingDays([]),
     description: "",
     education: [],
     experience: "",

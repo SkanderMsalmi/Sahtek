@@ -15,15 +15,19 @@ import { useQuery } from "@apollo/client";
 const GET_ROOM_QUERY = gql`
 query GetAppointment($id: ID!) {
     getAppointment(ID: $id) {
-      patient
-      therapist
+        status
+      patient{
+        id
+      }
+      therapist{
+        id
+      }
     }
   }
 `;
 function VideoCall() {
     const user = useSelector(selectUser);
 
-    const [myStream, setMyStream] = useState(null);
     const [remoteEmail, setRemoteEmail] = useState("");
     const { id } = useParams();
     const { data, loading, error } = useQuery(GET_ROOM_QUERY, {
@@ -33,7 +37,7 @@ function VideoCall() {
     });
 
     const [ready, setReady] = useState(false);
-    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream } = useContext(PeerContext);
+    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
     const { socket, isVideo, setStarted } = useContext(SocketContext);
     useEffect(() => {
@@ -134,8 +138,12 @@ function VideoCall() {
     if (error) {
         return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>Room does not exist</h1> </VideoChat>
     }
-    if (user.id !== data.getAppointment.patient && user.id !== data.getAppointment.therapist) {
+    if (user.id !== data.getAppointment.patient.id && user.id !== data.getAppointment.therapist.id) {
         return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>You are not a part of this room</h1> </VideoChat>
+    }
+    if (data.getAppointment.status !== "Confirmed") {
+        return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>Appointment not yet confirmed</h1> </VideoChat>
+
     }
     return (
         <VideoChat>
