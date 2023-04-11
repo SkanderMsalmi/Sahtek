@@ -12,6 +12,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { ContextProvider } from "./apis/socketContext";
 import { PeerProvider } from "./apis/peerContext";
 import ScrollToTop from "./components/scrollToTop";
+import style from "./App.module.scss";
 // import AnimatedHeader from './components/Header/AnimatedHeader';
 
 function App() {
@@ -39,10 +40,10 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
-          <ScrollToTop />
-          <Navigation />
-          {location.pathname === "/" ? <AnimatedHeader /> : ""}
-          <div className="flex-fill d-flex flex-column">
+          <div className={style.appContainer}>
+            <Navigation />
+            {location.pathname == "/" ? <AnimatedHeader /> : ""}
+
             <Suspense>
               <Outlet />
             </Suspense>

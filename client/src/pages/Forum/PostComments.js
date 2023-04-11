@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './PostComments.module.scss';
- 
+
 import { GET_PATIENTS } from "../../apis/forum";
 import { LIKE_POST_MUTATION } from "../../apis/forum";
 import { CREATE_COMMENT_MUTATION } from "../../apis/forum";
@@ -24,7 +24,7 @@ function PostComments() {
 
   const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
     LIKE_POST_MUTATION
-);
+  );
 
 
   const { data: data2, loading: loading2, error: error2, refetch: refetch2 } = useQuery(GET_COMMENTS_BY_POST, {
@@ -40,23 +40,23 @@ function PostComments() {
   const { dataP, loadingP, errorP, refetch } = useQuery(GET_POSTS)
 
 
-  
-    //** Like post*/
-    function likePost(postID) {
 
-      LikePost({
-          variables: {
+  //** Like post*/
+  function likePost(postID) {
 
-              id: postID,
-              user: user.id,
+    LikePost({
+      variables: {
 
-          },
-      }).then(() => {
-       
-        refetch();
-        refetchP();
-      })
-          .catch(errorL => console.error(errorL));
+        id: postID,
+        user: user.id,
+
+      },
+    }).then(() => {
+
+      refetch();
+      refetchP();
+    })
+      .catch(errorL => console.error(errorL));
 
 
   };
@@ -80,10 +80,10 @@ function PostComments() {
 
 
   useEffect(() => {
-  if(data)
-   refetchP();
+    if (data)
+      refetchP();
   });
- 
+
 
   function addComment() {
 
@@ -107,114 +107,127 @@ function PostComments() {
 
 
   };
- 
 
-  if (loading2 ) return <p>Loading...</p>;
+
+
   return (
 
 
 
 
     <div className={styles.containerFluid}>
-
-      <div className={styles.container}>
-
-
-        <div className={styles.post_container}>
-          <div>
-
-            <div className={styles.darkSection}>
-              <label>{data?.getPost?.user?.name}'s Post</label>
-            </div>
-
-            <div className={styles.card}>
-              <div className={styles.cardSide}>
-                <TbArrowBigUp className={styles.upvoteIcon}   onClick={() => { setLike(!like); likePost(data?.getPost?.id) }} />
-                <label>{data?.getPost?.likesCount}</label>
-              </div>
-
-              <div className={styles.cardContent}>
-                <div className={styles.cardHeader}>
-                  <div className={styles.userImg}><img src={data?.getPost?.user?.profileImage} alt="user" /></div>
-                  <small>{data?.getPost?.user?.name}</small>
-                </div>
-                <div className={styles.cardBody}>
-                  <p>{data?.getPost?.description}</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
+       {loading2 ? (<p>Loading...</p>) : (
+         <div className={styles.container}>
 
 
-        <div className={styles.add_comment}>
-          <div className={styles.row}>
-            <textarea
-              type="text"
-              placeholder="Add a comment"
-              name="comment"
-              className={styles.textarea} ref={textRef} onChange={(e) => setComment(e.target.value)}
-              value={comment}
+         <div className={styles.post_container}>
+           <div>
+ 
+             <div className={styles.darkSection}>
+               <label>{data?.getPost?.user?.name}'s Post</label>
+             </div>
+ 
+             <div className={styles.card}>
+               <div className={styles.cardSide}>
+                 <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { setLike(!like); likePost(data?.getPost?.id) }} />
+                 <label>{data?.getPost?.likesCount}</label>
+               </div>
+ 
+               <div className={styles.cardContent}>
+                 <div className={styles.cardHeader}>
+                   <div className="d-flex  align-items-center">
+                     <div className={styles.userImg}>
+                       <img src={data?.getPost?.user?.profileImage} alt="" />
+                     </div>
+                     <div>
+                       <span>{data?.getPost?.user?.name}</span>  <br />
+                       <small> {data?.getPost?.time}</small>
+                     </div>
+ 
+                   </div>
+ 
+                 </div>
+                 <div className={styles.cardBody}>
+                   <p>{data?.getPost?.description}</p>
+                 </div>
+ 
+               </div>
+             </div>
+           </div>
+         </div>
+ 
+ 
+         <div className={styles.add_comment}>
+           <div className={styles.row}>
+             <textarea
+               type="text"
+               placeholder="Add a comment"
+               name="comment"
+               className={styles.textarea} ref={textRef} onChange={(e) => setComment(e.target.value)}
+               value={comment}
+ 
+             />
+             <button onClick={addComment} className={styles.add_btn} >Add comment</button>
+ 
+           </div>
+         </div>
+ 
+ 
+        
+             {data2.getCommentsByPostId.map((p) => {
+               return (
+                 <>
+                   <div className={styles.comment_card}>
+ 
+                     <div className={styles.cardSide}>
+                       <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
+                     </div>
+ 
+ 
+                     <div className={styles.cardContent}>
+                       <small className={styles.username}> {p.user?.name}</small>
+                       <p>{p.description}</p>
+                     </div>
+ 
+                   </div>
+ 
+                   {/* <div className={styles.card}  >
+                 
+                 <div className={styles.cardContent}>
+                   <Col lg="12" md="8">
+                     <div className={styles.cardHeader}>
+ 
+                       <h6>{p.user?.name}</h6>
+                     </div>
+ 
+ 
+                     <div className={styles.cardBody}>
+ 
+                       <p>{p.description}</p>
+ 
+                     </div>
+                   </Col>
+ 
+                   <Col lg="3" md="4" xs="4">
+ 
+                   </Col>
+ 
+ 
+ 
+                 </div>
+               </div> */}
+                 </>)
+             })}
+            
+ 
+ 
+ 
+ 
+ 
+       </div>
+       )}
 
-            />
-            <button onClick={addComment} className={styles.add_btn} >Add comment</button>
-
-          </div>
-        </div>
-
-
-        {data2.getCommentsByPostId.map((p) => {
-          return (
-            <>
-              <div className={styles.comment_card}>
-
-                <div className={styles.cardSide}>
-                  <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
-                </div>
-
-
-                <div className={styles.cardContent}>
-                  <small className={styles.username}> {p.user?.name}</small>
-                  <p>{p.description}</p>
-                </div>
-
-              </div>
-
-              {/* <div className={styles.card}  >
-                
-                <div className={styles.cardContent}>
-                  <Col lg="12" md="8">
-                    <div className={styles.cardHeader}>
-
-                      <h6>{p.user?.name}</h6>
-                    </div>
-
-
-                    <div className={styles.cardBody}>
-
-                      <p>{p.description}</p>
-
-                    </div>
-                  </Col>
-
-                  <Col lg="3" md="4" xs="4">
-
-                  </Col>
-
-
-
-                </div>
-              </div> */}
-            </>)
-        })}
-
-
-
-
-
-
-      </div>
+      
 
     </div>
   )

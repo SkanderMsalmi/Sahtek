@@ -1,20 +1,22 @@
 import { gql } from "@apollo/client";
 
 export const GET_POSTS = gql
-`   query GetAllPosts {
-    getAllPosts {
+`   query GetAllPosts($user: ID!) {
+  getAllPosts(user: $user) {
+    id
+    description
+    time
+    commentsCount
+    likesCount
+    isLiked(user: $user)
+    isPostedByCurrentuser(user: $user)
+    user{
       id
-      description
-      time
-      likesCount
-      commentsCount
-      user {
-        id
-        name
-        profileImage
-      }
+      profileImage
+      name
     }
   }
+}
   `;
   export const LIKE_POST_MUTATION= gql
   `    mutation LikePost($id: ID!, $user: ID!) {
@@ -23,7 +25,15 @@ export const GET_POSTS = gql
     }
   }
     `;
- 
+    export const REMOVE_LIKE_POST_MUTATION= gql
+    `   mutation RemoveLikePost($id: ID!, $user: ID!) {
+      removeLikePost(id: $id, user: $user) {
+        description
+        likesCount
+      }
+    }
+      `;
+   
     export const CREATE_COMMENT_MUTATION = gql
     `  mutation CreateComment($commentInput: CommentInput!, $post: ID!, $user: ID!) {
       createComment(CommentInput: $commentInput, post: $post, user: $user) {
@@ -77,14 +87,7 @@ export const GET_POSTS = gql
             `;
        
 
-            export const LIKED_POST = gql
-            ` 
-            query Query($isLikedId: ID!, $user: ID!) {
-              isLiked(id: $isLikedId, user: $user)
-            }
-         
-              `;
-         
+           
            
          
         

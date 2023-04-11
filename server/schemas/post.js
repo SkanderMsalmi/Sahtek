@@ -8,6 +8,8 @@ type Post {
     user: User
     commentsCount: Int!
     likesCount: Int!
+    isLiked(  user: ID!): Boolean
+    isPostedByCurrentuser(  user: ID!): Boolean
    
 }
 
@@ -18,9 +20,9 @@ input PostInput {
 
 extend type Query {
     getPost(id: ID!): Post
-    getAllPosts: [Post]
+    getAllPosts(  user: ID!): [Post]
     findPostByUser(id: ID!): [Post]
-    isLiked(id: ID!, user: ID!): Boolean
+  
        
 }
 
@@ -29,6 +31,7 @@ extend type Mutation {
     updatePost(id: ID!, postInput: PostInput): Post
     deletePost(id: ID!): String
     LikePost(id: ID!, user:ID!): Post
+    removeLikePost(id: ID!, user: ID!): Post
 }    
 `
 
