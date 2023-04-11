@@ -359,7 +359,14 @@ const resolvers = {
     async user(_, { ID }) {
       return await User.findById(ID);
     },
-
+    async getTherapistsByPatient(_, { ID }) {
+      let listTherapist = [];
+      const therapistsId = await Appointment.find({ patient: ID });
+      for (let i = 0; i < therapistsId.length; i++) {
+        listTherapist.push(await User.findById(therapistsId[i].therapist));
+      }
+      return listTherapist;
+    },
     async therapist(_, { ID }) {
       const user = await User.findById(ID);
       if (user.therapist) {

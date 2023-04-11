@@ -192,6 +192,7 @@ module.exports = gql`
     getAppointments: [Appointment]
     getPatientsByTherapist(id: ID!): [User]
     getAppointmentsByPatient(ID: ID!): [Appointment]
+    getTherapistsByPatient(ID: ID!): [User]
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User
