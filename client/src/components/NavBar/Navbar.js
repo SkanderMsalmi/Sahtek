@@ -66,7 +66,7 @@ function Navigation() {
         setNavbarColor("");
       } else if (
         document.documentElement.scrollTop < 0 ||
-        document.body.scrollTop <0
+        document.body.scrollTop < 0
       ) {
         setNavbarColor("navbar-transparent");
       }
@@ -107,29 +107,56 @@ function Navigation() {
           isOpen={navbarCollapse}
         >
           <Nav navbar>
-            <NavItem>
-              <NavLink tag={Link} to="/">
-                Home
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={Link} to="/">
-                Services
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={Link} to="/">
-                Contact us
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={Link} to="/">
-                About us
-              </NavLink>
-            </NavItem>
+            {!user && (
+              <>
+                <NavItem>
+                  <NavLink tag={Link} to="/">
+                    Home
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/">
+                    Services
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/">
+                    Contact us
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/">
+                    About us
+                  </NavLink>
+                </NavItem>
+              </>
+            )}
 
             {user && user.verified ? (
               <>
+                {user.role === "Patient" ? (
+                  <NavItem>
+                    <Button
+                      className="btn-round"
+                      color="secondary"
+                      tag={Link}
+                      to="/espace-patient"
+                    >
+                      Espace Patient
+                    </Button>
+                  </NavItem>
+                ) : (
+                  <NavItem>
+                    <Button
+                      className="btn-round"
+                      color="secondary"
+                      tag={Link}
+                      to="/espace-therapist"
+                    >
+                      Espace Therapist
+                    </Button>
+                  </NavItem>
+                )}
                 <NavItem>
                   <Button
                     className="btn-round"

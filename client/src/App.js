@@ -24,7 +24,6 @@ function App() {
             <PeerProvider>
               <PersistGate loading={null} persistor={Persistor}>
                 <ScrollToTop />
-
                 <div className="flex-fill d-flex flex-column">
                   <Suspense>
                     <Outlet />
