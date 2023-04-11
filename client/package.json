@@ -15,6 +15,7 @@
     "apollo-upload-client": "^17.0.0",
     "bootstrap": "^4.6.0",
     "bootstrap-3-card": "^0.2.0",
+    "bootstrap-icons": "^1.10.4",
     "classnames": "2.3.1",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",

@@ -30,8 +30,11 @@ export const GET_APPOINTMENTS_BYTHERAPIST = gql`
   query getAppointmentsByTherapist($therapist:ID!) {
     getAppointmentsByTherapist(therapist:$therapist){ 
       id
-      patient
-      therapist
+      patient{id 
+        name
+      }
+      therapist{id
+        name}
       date
       duration
       notes
@@ -141,11 +144,11 @@ console.log(data);
                         <h1>Appointments</h1>
               {data.getAppointmentsByTherapist.map((item) => (
 
-    <MDBCard alignment='center'>
+    <MDBCard alignment='center' className="card h-100">{console.log(item)}
       <MDBCardHeader>Appointment</MDBCardHeader>
       <MDBCardBody>
-        <MDBCardTitle>Date: {new Date(item.date*1).getDate()}/{new Date(item.date * 1).getMonth()}/{new Date(item.date * 1).getFullYear() }   {new Date(item.date * 1).getHours() }:00 HH </MDBCardTitle>
-       {datauser.users.map(ite =>{return((ite.id === item.patient)&& <MDBCardText>Patient Name: {(ite.name)}</MDBCardText>)})} 
+        <MDBCardTitle>Date: {new Date(item.date*1).getDate()}/{new Date(item.date*1).getMonth()}/{new Date(item.date * 1).getFullYear() }   {new Date(item.date * 1).getHours() }:00 HH </MDBCardTitle>
+       {datauser.users.map(ite =>{return((ite.id === item.patient)&& <MDBCardText>Patient Name: {(ite.name)}</MDBCardText>)})}  
       
       </MDBCardBody>
       <MDBCardFooter className='text-muted'>Status : {item.status === 'Confirmed' ? (

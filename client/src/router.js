@@ -18,7 +18,7 @@ const Forgotpassword = React.lazy(() =>
 const Resetpassword = React.lazy(() =>
   import("./pages/ResetPassword/resetPassword")
 );
-// const ChooseTherapist =React.lazy(()=>import("./pages/rdv/ChooseTherapist"));
+ const ChooseTherapist =React.lazy(()=>import("./pages/rdv/ChooseTherapist"));
 const Shop = React.lazy(() => import("./pages/Shop/Shop"));
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 const Login = React.lazy(() => import("./pages/Signin/Login"));
@@ -34,7 +34,7 @@ const AppointmentBooked = React.lazy(() =>
 const ForumHomepage = React.lazy(() => import("./pages/Forum/ForumHomepage"));
 const PostComments = React.lazy(() => import("./pages/Forum/PostComments"));
 
-const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
+const Rdv = React.lazy(() => import("./pages/rdv/rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -68,10 +68,10 @@ export const router = createBrowserRouter([
         path: "forgetpassword",
         element: <Forgotpassword />,
       },
-      // {
-      //   path: "chooseTherapist",
-      //   element: <ChooseTherapist />,
-      // },
+      {
+        path: "chooseTherapist",
+        element: <ChooseTherapist />,
+      },
       {
         path: "appointmentbooked",
         element: <AppointmentBooked />,
@@ -115,7 +115,7 @@ export const router = createBrowserRouter([
         element: <VideoCall />,
       },
       {
-        path: "rdv",
+        path: "rdv/:id",
         element: <Rdv />,
       },
       {
