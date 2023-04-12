@@ -1,5 +1,7 @@
+import Consultations from "../../Consultations/Consultations";
+
 const PatientAppointments = () => {
-  return <h1>Espace PatientAppointments</h1>;
+  return <Consultations />;
 };
 
 export default PatientAppointments;

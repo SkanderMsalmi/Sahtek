@@ -58,7 +58,7 @@ const PatientTherapist = () => {
   return (
     <div className="section">
       <TherapistSearch />
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", columnGap: "5rem", rowGap: "4rem" }}>
         {therapistData &&
           therapistData?.getTherapistsByPatient?.map((t, index) => (
             <TherapistCard

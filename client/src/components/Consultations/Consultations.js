@@ -33,7 +33,7 @@ function Consultation() {
     if (error) return <p>Error :(</p>;
     if (data.getAppointmentsByPatient?.length === 0) return <p>No appointments this week :(</p>;
     return (
-        <div className="d-flex justify-content-around" style={{ flexWrap: "wrap", columnGap: "12rem", rowGap: "4rem" }}>
+        <div className="d-flex justify-content-around" style={{ flexWrap: "wrap", columnGap: "5rem", rowGap: "4rem" }}>
 
             {data?.getAppointmentsByPatient?.map((appointment) => (
                 <div className={`card ${styles.c}`} style={{ width: "18rem" }}>
