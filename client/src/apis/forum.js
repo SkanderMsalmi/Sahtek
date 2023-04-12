@@ -59,8 +59,8 @@ export const GET_POSTS = gql
      
     
         export const GET_POST = gql
-        ` query GetPost($id: ID!) {
-          getPost(id: $id) {
+        ` query GetPost($id: ID!, $user: ID! ) {
+          getPost(id: $id, user: $user) {
             id
             description
             time
@@ -72,6 +72,7 @@ export const GET_POSTS = gql
               profileImage
             }
             commentsCount
+            isLiked(user: $user)
           }
         }
           `;

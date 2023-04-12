@@ -118,8 +118,7 @@ const resolvers = {
     
     isPostedByCurrentuser: async (post, { user }) => {
 
-      // Check if the current user's ID is in the list of users who have liked the post
-      return await post.user.id === ObjectId(user)
+       return await post.user.id === ObjectId(user)
       
     },
 

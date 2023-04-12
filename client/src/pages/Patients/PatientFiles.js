@@ -168,12 +168,10 @@ function PatientFiles() {
         <>
 
             <div className="section profile-content">
-                <div className=" section section-dark">
-
-                </div>
+                
 
 
-                <Row className="d-flex justify-content-center ">
+                <Row className="d-flex justify-content-center  " style={{marginTop: "75px"}}>
 
                     <Col lg="10" md="6">
 

@@ -3,6 +3,10 @@ import styles from './PostComments.module.scss';
 
 import { GET_PATIENTS } from "../../apis/forum";
 import { LIKE_POST_MUTATION } from "../../apis/forum";
+import {
+    REMOVE_LIKE_POST_MUTATION
+} from "../../apis/forum";
+
 import { CREATE_COMMENT_MUTATION } from "../../apis/forum";
 import { GET_COMMENTS_BY_POST } from "../../apis/forum";
 import { GET_POST } from "../../apis/forum";
@@ -12,7 +16,7 @@ import { GET_POSTS } from "../../apis/forum";
 import { Col } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/users/users.selectors';
-import { TbArrowBigUp } from 'react-icons/tb';
+import { TbArrowBigUp, TbArrowBigUpFilled } from 'react-icons/tb';
 
 
 function PostComments() {
@@ -22,41 +26,62 @@ function PostComments() {
   const [comment, setComment] = useState('');
   const [like, setLike] = useState(false);
 
-  const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
-    LIKE_POST_MUTATION
-  );
+ 
 
 
   const { data: data2, loading: loading2, error: error2, refetch: refetch2 } = useQuery(GET_COMMENTS_BY_POST, {
     variables: { id: id ? id : postid.postId }
   });
   const { data, loading, error, refetch: refetchP } = useQuery(GET_POST, {
-    variables: { id: id ? id : postid.postId }
+    variables: { id: id ? id : postid.postId, user: user.id }
   });
   const [CreateComment, { data: dataC, loading: loadingC, error: errorC }] = useMutation(
     CREATE_COMMENT_MUTATION
   );
 
   const { dataP, loadingP, errorP, refetch } = useQuery(GET_POSTS)
+  const [removeLikePost, { data: dataR, loading: loadingR, error: errorR }] = useMutation(
+    REMOVE_LIKE_POST_MUTATION
+);
+const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
+    LIKE_POST_MUTATION
+);
 
 
+    //** Like post*/
+    function likePost(postID) {
 
-  //** Like post*/
-  function likePost(postID) {
+      LikePost({
+          variables: {
 
-    LikePost({
-      variables: {
+              id: postID,
+              user: user.id,
 
-        id: postID,
-        user: user.id,
+          },
+      }).then(() => {
 
-      },
-    }).then(() => {
+          refetch();
+      })
+          .catch(errorL => console.error(errorL));
 
-      refetch();
-      refetchP();
-    })
-      .catch(errorL => console.error(errorL));
+
+  };
+
+  //** remove Like post*/
+  function removelike(postID) {
+
+      removeLikePost({
+          variables: {
+
+              id: postID,
+              user: user.id,
+
+          },
+      }).then(() => {
+
+          refetch();
+      })
+          .catch(errorL => console.error(errorL));
 
 
   };
@@ -129,7 +154,10 @@ function PostComments() {
  
              <div className={styles.card}>
                <div className={styles.cardSide}>
-                 <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { setLike(!like); likePost(data?.getPost?.id) }} />
+               {data?.getPost?.isLiked ? <TbArrowBigUpFilled className={styles.upvoteIcon} onClick={() => { removelike(data?.getPost?.id) }} /> :
+                                        <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(data?.getPost?.id) }} />
+                                    }
+                 
                  <label>{data?.getPost?.likesCount}</label>
                </div>
  

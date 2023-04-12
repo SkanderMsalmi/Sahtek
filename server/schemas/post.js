@@ -19,7 +19,7 @@ input PostInput {
     }  
 
 extend type Query {
-    getPost(id: ID!): Post
+    getPost(id: ID!,user: ID!): Post
     getAllPosts(  user: ID!): [Post]
     findPostByUser(id: ID!): [Post]
   
