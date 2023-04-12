@@ -25,35 +25,57 @@ function AppointmentBooked() {
   // if (error) return <p>Error </p>;
   return (
     <div
-      className="section section-image  "
-      style={{ height: "100vh", paddingTop: "250px" }}
-    >
-      <div className="section">
-        <Container className="text-center bg-light ">
-          <Row>
-            <Col className="ml-auto mr-auto text-center" md="8">
-              <h2 className=" text-danger mb-5">
-              {/* <div  className="section-appo"
-           style={{
-           backgroundImage:
-          "url(" + require("../../assets/img/appOk.png") + ")",
-           }}></div> */}
-           <img style={{ height: "20vh", width:"20vh"} } src="https://cdn.icon-icons.com/icons2/1494/PNG/512/appointment_102882.png" alt="" />
-</h2>
-              <p className="note mt-5">
-                
-                <br />
-                <h5>Your appointment booked successfully!</h5><br/>
-                {/* status:
-                {data.getAppointment.status} */}
-              </p>
-            </Col>
+    className="section section-image  "
+    style={{ height: "100vh", paddingTop: "250px" }}
+  >
+    <div className="section">
+      <Container className="text-center bg-light ">
+        <Row>
+          <Col className="ml-auto mr-auto text-center" md="8">
+            <h5 style={{color:'green'}}>You successfully created your booking!</h5>
+            <p className="note mt-5">
+            as soon as your appointment is confirmed you will receive a confirmation email
+              <br />
+             <a href="*">back to home page</a>
+            </p>
+          </Col>
 
-            <Row></Row>
-          </Row>
-        </Container>
-      </div>
+          <Row></Row>
+        </Row>
+      </Container>
     </div>
+  </div>
+//     <div
+//       className="section section-image  "
+//       style={{ height: "100vh", paddingTop: "250px" }}
+//     >
+//       <div className="section">
+//         <Container className="text-center bg-light ">
+//           <Row>
+//             <Col className="ml-auto mr-auto text-center" md="8">
+//               <h2 className=" text-danger mb-5">
+//               {/* <div  className="section-appo"
+//            style={{
+//            backgroundImage:
+//           "url(" + require("../../assets/img/appOk.png") + ")",
+//            }}></div> */}
+// <i class="bi bi-calendar4-event"></i>
+// </h2>
+//               <p className="note mt-5">
+//               <i class="bi bi-calendar2-check"></i>
+//                 <br />
+//                 <h5>You successfully created your booking!</h5><br/>
+//                 <p>as soon as your appointment is confirmed you will receive a confirmation email</p>
+//                 {/* status:
+//                 {data.getAppointment.status} */}
+//               </p>
+//             </Col>
+
+//             <Row></Row>
+//           </Row>
+//         </Container>
+//       </div>
+//     </div>
   );
 }
 export default AppointmentBooked;

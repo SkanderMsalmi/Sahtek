@@ -18,6 +18,8 @@ const TimeTable = React.lazy(() => import("./components/Calender/TimeTable"));
 const AppointmentList = React.lazy(() =>
   import("./pages/PatientAppointment/AppointmentList")
 );
+
+const ChooseTherapist = React.lazy(() => import("./pages/rdv/ChooseTherapist"));
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 
 //Feedback
@@ -97,10 +99,10 @@ export const router = createBrowserRouter([
         path: "forgetpassword",
         element: <Forgotpassword />,
       },
-      // {
-      //   path: "chooseTherapist",
-      //   element: <ChooseTherapist />,
-      // },
+      {
+        path: "chooseTherapist",
+        element: <ChooseTherapist />,
+      },
       {
         path: "appointmentbooked",
         element: <AppointmentBooked />,
@@ -144,7 +146,7 @@ export const router = createBrowserRouter([
         element: <VideoCall />,
       },
       {
-        path: "rdv",
+        path: "rdv/:id",
         element: <Rdv />,
       },
       {
