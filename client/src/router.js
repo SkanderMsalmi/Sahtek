@@ -15,6 +15,9 @@ import PatientSettings from "./components/EspaceUser/Patient/PatientSettings";
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
 const TimeTable = React.lazy(() => import("./components/Calender/TimeTable"));
+const AppointmentList = React.lazy(() =>
+  import("./pages/PatientAppointment/AppointmentList")
+);
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
 
 //Feedback
@@ -76,6 +79,10 @@ export const router = createBrowserRouter([
       {
         path: "table",
         element: <TimeTable />,
+      },
+      {
+        path: "appointments",
+        element: <AppointmentList />,
       },
       {
         path: "login",

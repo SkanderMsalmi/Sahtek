@@ -386,13 +386,15 @@ const resolvers = {
     },
     async getAppointmentsByPatient(_, { ID }) {
       let appointments = await Appointment.find({ patient: ID });
-      //filter this weeks appointments
-      appointments = appointments.filter((appointment) => {
-        const date = new Date(appointment.date);
-        console.log(date);
-        return moment(date).isSame(moment(), "week");
-      });
-      return appointments;
+
+      return appointments
+        .filter((appointment) => {
+          const date = new Date(appointment.date);
+          return date > new Date();
+        })
+        .sort((a, b) => {
+          return a.date - b.date;
+        });
     },
     async getAppointmentsByTherapist(_, { therapist }) {
       return await Appointment.find({ therapist });
