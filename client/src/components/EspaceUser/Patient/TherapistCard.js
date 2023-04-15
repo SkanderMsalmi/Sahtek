@@ -14,13 +14,9 @@ function TherapistCard(props) {
   const { name, image, description, id } = props;
   return (
     <div
-      style={{
-        width: "400px",
-        height: "600px",
-        margin: "2rem",
-      }}
+      style={{ width: "18rem" }}
     >
-      <Card>
+      <Card >
         <CardImg
           top
           src={image}

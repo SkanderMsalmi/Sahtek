@@ -276,10 +276,16 @@ const resolvers = {
       const existingAppointment = await Appointment.findOne({
         date: date,
         therapist: d,
+        patient:p
+        // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
+      });
+      const patientaleardyhaveone = await Appointment.findOne({
+        date: date,
+        patient:p
         // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
       console.log(existingAppointment);
-      if (existingAppointment) {
+      if (existingAppointment || patientaleardyhaveone) {
         throw new Error("Time slot not available");
       }
 
@@ -298,6 +304,7 @@ const resolvers = {
 
     AcceptAppointment: async (_, { idAppointment }) => {
       const appointment = await Appointment.findById(idAppointment);
+      
       const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -386,13 +393,15 @@ const resolvers = {
     },
     async getAppointmentsByPatient(_, { ID }) {
       let appointments = await Appointment.find({ patient: ID });
-      //filter this weeks appointments
-      appointments = appointments.filter((appointment) => {
-        const date = new Date(appointment.date);
-        console.log(date);
-        return moment(date).isSame(moment(), "week");
-      });
-      return appointments;
+
+      return appointments
+        .filter((appointment) => {
+          const date = new Date(appointment.date);
+          return date > new Date();
+        })
+        .sort((a, b) => {
+          return a.date - b.date;
+        });
     },
     async getAppointmentsByTherapist(_, { therapist }) {
       return await Appointment.find({ therapist });

@@ -92,7 +92,7 @@ module.exports = gql`
   }
 
   type Appointment {
-    id: ID!
+    id: ID
     patient: User
     therapist: User
     date: String

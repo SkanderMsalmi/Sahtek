@@ -7,7 +7,7 @@ const EspacePatient = () => {
   return (
     <div className="mt-5 container">
       <Sidebar />
-      <div className="main-content" style={{ minHeight: "100vh" }}>
+      <div className="main-content" style={{ minHeight: "100vh", paddingTop: "2rem" }}>
         <Outlet />
       </div>
     </div>

@@ -77,13 +77,12 @@ const GET_APPOINTMENTSDATES = gql`
 
 function Rdv() {
   const navigate = useNavigate();
-
+const therapist=useParams("id");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const user = useSelector(selectUser);
   const [bookAppointment] = useMutation(BOOK_APPOINTMENT);
   const userid = useParams("userid");
   const [note, setNote] = useState("note");
-  const [therapist, setTherapist] = useState("therapist");
   const [date, setDate] = useState("date");
   const [time, setTime] = useState("time");
 
@@ -187,7 +186,7 @@ function Rdv() {
       await bookAppointment({
         variables: {
           patient: user.id,
-          therapist: selectedValue,
+          therapist: therapist.id,
           date: daterdv,
           duration: 1,
           notes: note,
@@ -239,17 +238,7 @@ function Rdv() {
             <h3>Book your appoitment</h3>
             <form action="https://formbold.com/s/FORM_ID">
               <div class={`${styles.formboldmb5}`}>
-                <select
-                  class="browser-default custom-select"
-                  onChange={handleSelectChange}
-                >
-                  <option selected>Choose your doctor here</option>
-                  {data.users.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
+               
               </div>
 
               <div class={`${styles.formboldmb5}`}>
@@ -330,7 +319,8 @@ function Rdv() {
 
             {data.users.map((item) => {
               return (
-                item.id === selectedValue &&
+                
+                item.id === therapist.id &&
                 cleanUpAvailability(item?.therapist?.availability).map(
                   (day, index) => (
                     <div className="row" style={{ color: "white" }}>
