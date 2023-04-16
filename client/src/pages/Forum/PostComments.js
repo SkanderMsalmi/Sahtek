@@ -176,6 +176,7 @@ const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutatio
  
                  </div>
                  <div className={styles.cardBody}>
+                 <p className={styles.title}>{data?.getPost?.title}</p>  
                    <p>{data?.getPost?.description}</p>
                  </div>
  

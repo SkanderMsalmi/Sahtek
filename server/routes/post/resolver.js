@@ -24,7 +24,7 @@ const resolvers = {
   },
 
   Mutation: {
-    async createPost(_, { postInput: { description, user } }) {
+    async createPost(_, { postInput: { description, user, title, community } }) {
       const createdPost = new Post({
         description: description,
         user: user,
@@ -32,6 +32,8 @@ const resolvers = {
         like: [],
         likesCount: 0,
         commentsCount: 0,
+        title:title, 
+        community: community,
       });
       const res = await createdPost.save();
 
@@ -110,7 +112,7 @@ const resolvers = {
     },
 
     isLiked: async (post, { user }) => {
-
+      console.log(user);
       // Check if the current user's ID is in the list of users who have liked the post
       return await post.like.includes(user);
       
@@ -118,7 +120,9 @@ const resolvers = {
     
     isPostedByCurrentuser: async (post, { user }) => {
 
-       return await post.user.id === ObjectId(user)
+      return post.user.toString() === user;
+
+       
       
     },
 

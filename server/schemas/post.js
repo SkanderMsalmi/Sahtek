@@ -2,9 +2,11 @@ const {gql} = require('apollo-server-express');
 module.exports = gql`
 type Post {
     id: ID!
-    description: String,
-    time: String,
-    like: User,    
+    description: String
+    time: String
+    title: String
+    community: String
+    like: User    
     user: User
     commentsCount: Int!
     likesCount: Int!
@@ -16,6 +18,8 @@ type Post {
 input PostInput {
         description: String
         user: ID
+        title: String
+        community: String
     }  
 
 extend type Query {

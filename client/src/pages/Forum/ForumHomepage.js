@@ -17,30 +17,33 @@ import {
 } from "../../apis/forum";
 
 import { CREATE_POST_MUTATION } from "../../apis/forum";
-import {
-    LIKED_POST
-} from "../../apis/forum";
-
-import { Button, Col, Modal } from 'reactstrap';
+ import { DELETE_POST_MUTATION } from "../../apis/forum";
+import { Button, CardTitle, Col, DropdownItem, DropdownMenu, DropdownToggle, Modal, PopoverBody, PopoverHeader, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import { fixObservableSubclass } from '@apollo/client/utilities';
 
 
 function ForumHomepage() {
     const [modal, setModal] = React.useState(false);
-    const [postText, setPostText] = useState('');
+    const [postText, setPostText] = useState();
+    const [title, setTitle] = useState();
+    const [community, setCommunity] = useState();
+
 
 
     const user = useSelector(selectUser);
     const { loading, error, data, refetch } = useQuery(GET_POSTS, {
         variables: { user: user.id },
     });
- 
+
 
     const [removeLikePost, { data: dataR, loading: loadingR, error: errorR }] = useMutation(
         REMOVE_LIKE_POST_MUTATION
     );
     const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
         LIKE_POST_MUTATION
+    );
+    const [deletePost, { data: dataD, loading: loadingD, error: errorD }] = useMutation(
+        DELETE_POST_MUTATION
     );
 
     const [createPost, { data: dataP, loading: loadingP, error: errorP }] = useMutation(
@@ -54,6 +57,25 @@ function ForumHomepage() {
         setModal(!modal);
     };
 
+    
+     //** delete post*/
+     function deleteMyPost(postID) {
+
+        deletePost({
+            variables: {
+
+                id: postID,
+              
+
+            },
+        }).then(() => {
+
+            refetch();
+        })
+            .catch(errorD => console.error(errorD));
+
+
+    };
 
     //** Like post*/
     function likePost(postID) {
@@ -103,13 +125,18 @@ function ForumHomepage() {
 
                 postInput: {
                     description: postText,
-                    user: user.id
+                    user: user.id,
+                    title: title,
+                    community: community
+
                 }
 
             },
         }).then(() => {
             setModal(!modal);
-            setPostText('');
+            setPostText();
+            setTitle();
+            setCommunity();
             refetch();
         })
             .catch(errorP => console.error(errorP));
@@ -121,7 +148,7 @@ function ForumHomepage() {
 
 
 
-   
+
     return (
 
         <div className={styles.containerFluid}>
@@ -134,6 +161,7 @@ function ForumHomepage() {
 
                 </div>
             </div>
+            
 
 
             <Col md="6">
@@ -156,7 +184,21 @@ function ForumHomepage() {
                             Create Post
                         </h5>
                     </div>
-                    <div >
+                    <div  className='d-flex flex-column align-items-center' >
+                        <textarea  type="text"
+                            placeholder="community"
+                           name="community"
+                            value={community} 
+                            className={styles.input} 
+                            onChange={(e) => setCommunity(e.target.value)} />
+
+                             <textarea  type="text"
+                            placeholder="Title"
+                           name="title"
+                            value={title} 
+                            className={styles.input} 
+                            onChange={(e) => setTitle(e.target.value)} />
+
                         <textarea
                             type="text"
                             placeholder="What do you want to ask or share?"
@@ -179,7 +221,7 @@ function ForumHomepage() {
                         </div>
 
                         <div >
-                            {postText == '' ? (
+                            {postText == ''||title == ''||community == ''||postText == null||title == null||community == null ? (
                                 <Button className="btn-round" color="info" disabled >
                                     Post
                                 </Button>
@@ -196,62 +238,101 @@ function ForumHomepage() {
 
 
 
-            {loading ?  ( <p>Loading...</p>):(
+            {loading ? (<p>Loading...</p>) : (
                 <div>
-                     {data?.getAllPosts.map((p) => {
-                    return (
-                        <>
-                            <div className={styles.card} key={p.id}>
-    
-                                <div className={styles.cardSide}>
-                                    {p.isLiked ? <TbArrowBigUpFilled className={styles.upvoteIcon} onClick={() => { removelike(p.id) }} /> :
-                                        <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(p.id) }} />
-                                    }
-     
-                                    <label>{p.likesCount}</label>
-                                </div>
-    
-                                <div className={styles.cardContent}>
-                                    <div className={styles.cardHeader}>
-                                        <div className={styles.row}>
-                                            <div className={styles.userImg}>
-                                                <img src={p?.user?.profileImage} alt="" />
+                    {data?.getAllPosts.map((p) => {
+                        return (
+                            <>
+
+                                <div className={styles.card} key={p.id}>
+
+                                    <div className={styles.cardSide}>
+
+                                        {p.isLiked ?
+                                            <div className={styles.Icon} onClick={() => { removelike(p.id) }}>
+                                                <TbArrowBigUpFilled className={styles.upvoteIcon} />
+
                                             </div>
-                                            <div>
-                                                <span>{p?.user?.name}</span>  <br />
-                                                <small> {p?.time}</small>
+                                            :
+                                            <div className={styles.Icon} onClick={() => { likePost(p.id) }}>
+                                                <TbArrowBigUp className={styles.upvoteIcon} />
+
                                             </div>
-    
-                                        </div>
-    
-    
-                                        <div className="text-right">
-                                            <BiDotsHorizontalRounded className={styles.upvoteIcon} />
-                                            
-    
-    
-                                        </div>
+                                        }
+
+                                        <label>{p.likesCount}</label>
+
+
                                     </div>
-                                    <div className={styles.cardBody}>
-                                        <p>{p.description}</p>
-                                    </div>
-                                    <div className={styles.cardFooter}>
-                                        <Link to={`/comments/${p.id}`}>
-                                            <button type="submit" className={styles.invisibleBtn}>
-                                                <FaRegCommentAlt className={styles.commentIcon} /> {p.commentsCount} Comments
-                                            </button></Link>
+
+                                    <div className={styles.cardContent}>
+                                        <div className={styles.cardHeader}>
+                                            <div className={styles.row}>
+                                                <div className={styles.userImg}>
+                                                    <img src={p?.user?.profileImage} alt="" />
+                                                </div>
+                                                <div>
+                                                    <span>{p?.user?.name}</span>  <br />
+                                                    <small> {p?.time}</small>
+                                                </div>
+
+                                            </div>
+
+                                            {p.isPostedByCurrentuser?( 
+                                            <UncontrolledDropdown >
+                                                
+                                                <DropdownToggle className={styles.iconBtn}
+                                                    aria-expanded={false}
+                                                    aria-haspopup={true}
+
+                                                    color="default"
+                                                    data-toggle="dropdown"
+                                                    
+                                                    nav
+                                                    onClick={(e) => e.preventDefault()}
+                                                    role="button"
+                                                >
+
+                                                    <BiDotsHorizontalRounded className={styles.icon} />
+                                                </DropdownToggle>
+                                                <DropdownMenu className="dropdown-danger" right>
+
+                                                    <DropdownItem
+                                                       
+                                                        onClick={() => deleteMyPost(p.id)}
+                                                    >
+                                                        Delete
+                                                    </DropdownItem>
+
+                                                </DropdownMenu>
+                                            </UncontrolledDropdown>):(null)}
+                                           
+
+
+                                        </div>
+                                         
+                                        <div className={styles.cardBody}>
+                                               <p className={styles.title}>{p.title}</p>                          
+                                            <p>{p.description}</p>
+                                        </div>
+                                        <div className={styles.cardFooter}>
+                                            <Link to={`/comments/${p.id}`}>
+                                                <button type="submit" className={styles.invisibleBtn}>
+                                                    <FaRegCommentAlt className={styles.commentIcon} /> {p.commentsCount} Comments
+                                                </button></Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </>
-                    )
-    
-                })}
-                </div>
-               
+
+                            </>
+                        )
+
+                    })}
+                </div >
+
             )}
 
-            
+
 
 
 

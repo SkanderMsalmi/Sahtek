@@ -4,6 +4,8 @@ export const GET_POSTS = gql
 `   query GetAllPosts($user: ID!) {
   getAllPosts(user: $user) {
     id
+    title
+    community
     description
     time
     commentsCount
@@ -64,6 +66,8 @@ export const GET_POSTS = gql
             id
             description
             time
+            title
+            community
             likesCount
             user {
               id
@@ -86,7 +90,19 @@ export const GET_POSTS = gql
           }
        
             `;
+
+            export const DELETE_POST_MUTATION = gql
+          ` 
+          mutation DeletePost($id: ID!) {
+            deletePost(id: $id)
+          }
+     
        
+            `;
+
+
+
+         
 
            
            
