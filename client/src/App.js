@@ -36,6 +36,18 @@ function App() {
         </Provider>
       </ApolloProvider>
     );
+  else if (location.pathname.startsWith("/espace-admin"))
+    return (
+      <ApolloProvider client={client}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={Persistor}>
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </PersistGate>
+        </Provider>
+      </ApolloProvider>
+    )
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
