@@ -1,4 +1,3 @@
-const Comment = require("../../database/models/Comment");
 const Post = require("../../database/models/Post");
 const { User } = require("../../database/models/User");
 const { MongoClient, ObjectId } = require('mongodb');
