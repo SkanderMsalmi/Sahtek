@@ -5,7 +5,7 @@ export const GET_POSTS = gql
   getAllPosts(user: $user) {
     id
     title
-    community
+     
     description
     time
     commentsCount

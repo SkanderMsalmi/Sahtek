@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { TbArrowBigUp } from "react-icons/tb";
 import { TbArrowBigUpFilled } from "react-icons/tb";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { GET_COMMUNITIES } from "../../apis/community";
 
 import { LIKE_POST_MUTATION } from "../../apis/forum";
 import {
@@ -17,7 +18,7 @@ import {
 } from "../../apis/forum";
 
 import { CREATE_POST_MUTATION } from "../../apis/forum";
- import { DELETE_POST_MUTATION } from "../../apis/forum";
+import { DELETE_POST_MUTATION } from "../../apis/forum";
 import { Button, CardTitle, Col, DropdownItem, DropdownMenu, DropdownToggle, Modal, PopoverBody, PopoverHeader, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import { fixObservableSubclass } from '@apollo/client/utilities';
 
@@ -35,6 +36,8 @@ function ForumHomepage() {
         variables: { user: user.id },
     });
 
+    const {data: dataC, loading: loadingC, error: errorC } = useQuery(GET_COMMUNITIES);
+
 
     const [removeLikePost, { data: dataR, loading: loadingR, error: errorR }] = useMutation(
         REMOVE_LIKE_POST_MUTATION
@@ -49,23 +52,25 @@ function ForumHomepage() {
     const [createPost, { data: dataP, loading: loadingP, error: errorP }] = useMutation(
         CREATE_POST_MUTATION
     );
-
-
+    ///***  choose community */
+    const handleChange = (event) => {
+        setCommunity(event.target.value)
+    }
 
     //** Modal */ 
     const toggleModal = () => {
         setModal(!modal);
     };
 
-    
-     //** delete post*/
-     function deleteMyPost(postID) {
+
+    //** delete post*/
+    function deleteMyPost(postID) {
 
         deletePost({
             variables: {
 
                 id: postID,
-              
+
 
             },
         }).then(() => {
@@ -151,9 +156,9 @@ function ForumHomepage() {
 
     return (
 
-        <div className={styles.containerFluid}>
+        <div className={styles.containerFluid} >
 
-            <div className={styles.add_post_container}>
+            <div className={styles.add_post_container}  >
                 <div className={styles.row}>
                     <div className={styles.userImg}><img src={user?.profileImage} alt="" /></div>
 
@@ -161,7 +166,7 @@ function ForumHomepage() {
 
                 </div>
             </div>
-            
+
 
 
             <Col md="6">
@@ -184,19 +189,30 @@ function ForumHomepage() {
                             Create Post
                         </h5>
                     </div>
-                    <div  className='d-flex flex-column align-items-center' >
-                        <textarea  type="text"
+                    <div className='d-flex flex-column align-items-center' >
+                        {/* <textarea type="text"
                             placeholder="community"
-                           name="community"
-                            value={community} 
-                            className={styles.input} 
-                            onChange={(e) => setCommunity(e.target.value)} />
+                            name="community"
+                            value={community}
+                            className={styles.input}
+                            onChange={(e) => setCommunity(e.target.value)} /> */}
+                        
+                        <select value={community} onChange={handleChange}>
+                        <option value="">Choose Community</option>
+                        {loadingC ? (<p>Loading...</p>) : 
+                           ( dataC.getAllCommunities.map((c) =>
+                           { return (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                            )}))}
 
-                             <textarea  type="text"
+
+                        </select>
+
+                        <textarea type="text"
                             placeholder="Title"
-                           name="title"
-                            value={title} 
-                            className={styles.input} 
+                            name="title"
+                            value={title}
+                            className={styles.input}
                             onChange={(e) => setTitle(e.target.value)} />
 
                         <textarea
@@ -221,7 +237,7 @@ function ForumHomepage() {
                         </div>
 
                         <div >
-                            {postText == ''||title == ''||community == ''||postText == null||title == null||community == null ? (
+                            {postText == '' || title == ''   || postText == null || title == null || community == null ? (
                                 <Button className="btn-round" color="info" disabled >
                                     Post
                                 </Button>
@@ -278,41 +294,41 @@ function ForumHomepage() {
 
                                             </div>
 
-                                            {p.isPostedByCurrentuser?( 
-                                            <UncontrolledDropdown >
-                                                
-                                                <DropdownToggle className={styles.iconBtn}
-                                                    aria-expanded={false}
-                                                    aria-haspopup={true}
+                                            {p.isPostedByCurrentuser ? (
+                                                <UncontrolledDropdown >
 
-                                                    color="default"
-                                                    data-toggle="dropdown"
-                                                    
-                                                    nav
-                                                    onClick={(e) => e.preventDefault()}
-                                                    role="button"
-                                                >
+                                                    <DropdownToggle className={styles.iconBtn}
+                                                        aria-expanded={false}
+                                                        aria-haspopup={true}
 
-                                                    <BiDotsHorizontalRounded className={styles.icon} />
-                                                </DropdownToggle>
-                                                <DropdownMenu className="dropdown-danger" right>
+                                                        color="default"
+                                                        data-toggle="dropdown"
 
-                                                    <DropdownItem
-                                                       
-                                                        onClick={() => deleteMyPost(p.id)}
+                                                        nav
+                                                        onClick={(e) => e.preventDefault()}
+                                                        role="button"
                                                     >
-                                                        Delete
-                                                    </DropdownItem>
 
-                                                </DropdownMenu>
-                                            </UncontrolledDropdown>):(null)}
-                                           
+                                                        <BiDotsHorizontalRounded className={styles.icon} />
+                                                    </DropdownToggle>
+                                                    <DropdownMenu className="dropdown-danger" right>
+
+                                                        <DropdownItem
+
+                                                            onClick={() => deleteMyPost(p.id)}
+                                                        >
+                                                            Delete
+                                                        </DropdownItem>
+
+                                                    </DropdownMenu>
+                                                </UncontrolledDropdown>) : (null)}
+
 
 
                                         </div>
-                                         
+
                                         <div className={styles.cardBody}>
-                                               <p className={styles.title}>{p.title}</p>                          
+                                            <p className={styles.title}>{p.title}</p>
                                             <p>{p.description}</p>
                                         </div>
                                         <div className={styles.cardFooter}>

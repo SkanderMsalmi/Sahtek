@@ -19,5 +19,5 @@ module.exports = [
   ProductResolvers,
   mailVerification,
   ratingResolvers,
-  communityResolvers,
+  
 ];
