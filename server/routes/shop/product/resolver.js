@@ -10,9 +10,7 @@ const resolvers = {
       return await Product.find();
     },
     async getCategories() {
-      return (await Product.find({}, { category: 1, _id: 0 })).map(
-        (item) => item.category
-      );
+      return await Product.distinct("category");
     },
   },
 
