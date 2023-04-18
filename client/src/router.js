@@ -11,6 +11,8 @@ import TherapistAppointments from "./components/EspaceUser/Therapist/TherapistAp
 import TherapistSettings from "./components/EspaceUser/Therapist/TherapistSettings";
 import TherapistPatients from "./components/EspaceUser/Therapist/TherapistPatients";
 import PatientSettings from "./components/EspaceUser/Patient/PatientSettings";
+import HomeShop from "./pages/Shop/HomePage/HomeShop";
+import CategoryShop from "./pages/Shop/CategoryPage/CategoryShop";
 
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
@@ -181,6 +183,16 @@ export const router = createBrowserRouter([
       {
         path: "shop",
         element: <Shop />,
+        children: [
+          {
+            index: true,
+            element: <HomeShop />,
+          },
+          {
+            path: "category/:categoryid",
+            element: <CategoryShop />,
+          },
+        ],
       },
       {
         path: "comments/:postId",

@@ -1,7 +1,7 @@
-import user from './users/user.reducers';
-
+import user from "./users/user.reducers";
+import shopReducer from "./shop/shop.reducers";
 const Reducers = {
-    user,
-   
+  user,
+  shop: shopReducer,
 };
 export default Reducers;

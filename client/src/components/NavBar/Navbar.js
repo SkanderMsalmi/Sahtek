@@ -135,16 +135,28 @@ function Navigation() {
             {user && user.verified ? (
               <>
                 {user.role === "Patient" ? (
-                  <NavItem>
-                    <Button
-                      className="btn-round"
-                      color="secondary"
-                      tag={Link}
-                      to="/espace-patient"
-                    >
-                      Espace Patient
-                    </Button>
-                  </NavItem>
+                  <>
+                    <NavItem>
+                      <Button
+                        className="btn-round"
+                        color="info"
+                        tag={Link}
+                        to="/shop"
+                      >
+                        Shop
+                      </Button>
+                    </NavItem>
+                    <NavItem>
+                      <Button
+                        className="btn-round"
+                        color="secondary"
+                        tag={Link}
+                        to="/espace-patient"
+                      >
+                        Espace Patient
+                      </Button>
+                    </NavItem>
+                  </>
                 ) : (
                   <NavItem>
                     <Button
