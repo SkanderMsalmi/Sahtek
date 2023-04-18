@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 const Shop = () => {
   return (
-    <div className="mt-5 container">
+    <div className="mt-5 container ">
       {/* <AsideBarShop /> */}
       <div
         className="main-content"
