@@ -2,26 +2,39 @@ const {gql} = require('apollo-server-express');
 module.exports = gql`
 type Post {
     id: ID!
-    description: String,
-    time: String,
-    like: User,    
+    description: String
+    time: String
+    title: String
+    community: Community
+    like: [User]    
     user: User
-    commentsCount: Int!
-    likesCount: Int!
+    comments: [Comment]
     isLiked(  user: ID!): Boolean
     isPostedByCurrentuser(  user: ID!): Boolean
    
 }
 
+
 input PostInput {
         description: String
         user: ID
+        title: String
+        community: String
     }  
 
 extend type Query {
     getPost(id: ID!,user: ID!): Post
     getAllPosts(  user: ID!): [Post]
     findPostByUser(id: ID!): [Post]
+    findPostByUserCommunities(id: ID!): [Post]
+    findPostByCommunity(id: ID!): [Post]
+    
+
+
+ 
+    findCommunityByUser(id: ID!): [Community]
+    
+
   
        
 }
@@ -32,7 +45,10 @@ extend type Mutation {
     deletePost(id: ID!): String
     LikePost(id: ID!, user:ID!): Post
     removeLikePost(id: ID!, user: ID!): Post
+
+    
+
 }    
 `
 
-       
+        

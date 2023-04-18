@@ -59,14 +59,13 @@ function Navigation() {
   React.useEffect(() => {
     const updateNavbarColor = () => {
       if (
-        document.documentElement.scrollTop > 0 ||
-        document.body.scrollTop > 0
-        // || document.body.style.backgroundColor == '#FFFFFF'
+        document.documentElement.scrollTop > 299 ||
+        document.body.scrollTop > 299
       ) {
         setNavbarColor("");
       } else if (
-        document.documentElement.scrollTop < 0 ||
-        document.body.scrollTop < 0
+        document.documentElement.scrollTop < 300 ||
+        document.body.scrollTop < 300
       ) {
         setNavbarColor("navbar-transparent");
       }

@@ -8,6 +8,7 @@ const userT = require("./user");
 const ProductT = require("./product");
 const verificationToken = require("./verificationToken");
 const ratingT = require("./rating");
+const communityT = require("./community");
 
 const rootType = gql`
   scalar Upload
@@ -30,4 +31,5 @@ module.exports = [
   ProductT,
   verificationToken,
   ratingT,
+  communityT
 ];

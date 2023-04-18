@@ -2,10 +2,10 @@
     min-height: 100vh;
 
     display: flex;
-   
-    align-items: start;
-    justify-content: center;
-    padding-top: 120px;
+    flex-direction: column;
+    align-items:center ;
+    justify-content: start;
+  
 
     background: linear-gradient(to bottom right,
             rgba(252, 203, 144, 1),
@@ -16,10 +16,35 @@
     //background-image: linear-gradient(to right bottom, #cfe1b4, #acd8b2, #8aceb6, #69c2bd, #50b4c4);
 
 }
-.select{
-    width: 90%;
-    margin-top: 5px;
+.darkSection{
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: rgba(24, 24, 16, 0.507);
+    margin-bottom: 10px;
+
 }
+.communityTitle{
+   
+
+   padding: 5px 0px 5px 0px;
+   display: flex;
+ flex-direction: column;
+   align-items: start;
+
+  p{
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 600;
+    margin-right: 20px;
+  }
+
+  small{
+    color: #ffffff;
+  }
+}
+
 .postTextArea {
     text-align: left;
     border-color: transparent;

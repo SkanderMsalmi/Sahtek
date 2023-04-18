@@ -43,7 +43,7 @@
 margin-left: 46px;
     border-color: transparent;
     outline: none;
-    height: 45px;
+    height: 40px;
     width: 100%;
     padding: 10px;
     border-radius: 1em;
@@ -56,6 +56,11 @@ margin-left: 46px;
 
 
     font-size: 14px;
+}
+.title{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
 .textarea:focus {
@@ -163,52 +168,52 @@ margin-left: 46px;
 }
 
 
-
-.comment_card {
-
-    display: flex;
-    width: 700px;
-    height: fit-content;
-
-    color: #ffffff;
-
-    & .cardSide {
-        width: 50px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 0px;
-        padding-left: 10px;
-        border-bottom-left-radius: 5px;
-        border-top-left-radius: 5px;
-    }
-
-    & .cardContent {
+ .comment_card {
+ 
+        display: flex;    
+        
         width: 100%;
-
-        background: rgba(24, 24, 16, 0.2);
-       
-        box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-        border-radius: 1em;
-        padding: 5px 5px 0px 10px ; 
-        margin-right: 13px;
+        height: fit-content; 
         margin-bottom: 10px;
-       
-       
-
-     &  p {
-            margin-top: 5px;
+        color: #ffffff;
+    
+        & .cardSide2 {
           
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              
+           
+          
+            padding-top: 0px;
+            padding-left: 10px;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
         }
+    
+        & .cardContent {
+            width: fit-content;    
+            background: rgba(24, 24, 16, 0.2);           
+            box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+            border-radius: 1em;
+            padding: 5px 5px 0px 10px ; 
+            margin-right: 13px;
+            margin-bottom: 2px;
+           
+           
+    
+         &  p {
+                margin-top: 5px;
+           
+              
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                  
+            }
+        }
+    
+    
+    
     }
 
-
-
-}
+ 
 
 
 
