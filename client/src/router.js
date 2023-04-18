@@ -67,6 +67,9 @@ const AppointmentBooked = React.lazy(() =>
 const ForumHomepage = React.lazy(() => import("./pages/Forum/ForumHomepage"));
 const PostComments = React.lazy(() => import("./pages/Forum/PostComments"));
 
+const CommunityPage = React.lazy(() => import("./pages/community/communityPage"));
+
+
 const Shop = React.lazy(() => import("./pages/Shop/Shop"));
 export const router = createBrowserRouter([
   {
@@ -181,6 +184,10 @@ export const router = createBrowserRouter([
       {
         path: "shop",
         element: <Shop />,
+      },
+      {
+        path: "community/:communityId",
+        element: <CommunityPage />,
       },
       {
         path: "comments/:postId",

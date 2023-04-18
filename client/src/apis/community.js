@@ -11,17 +11,26 @@ export const GET_COMMUNITIES = gql
     }
   }
   `;
-
-export const CREATE_COMMUNITY = gql
-    `   mutation CreateCommunity($name: String!, $description: String!) {
-    createCommunity(name: $name, description: $description) {
-      id
+  export const GET_COMMUNITIES_BY_USER = gql
+  `   query FindCommunityByUser($id: ID!) {
+    findCommunityByUser(id: $id) {
       name
-      createdAt
-      description
-     
+      id
     }
   }
+`;
+ 
+
+export const CREATE_COMMUNITY = gql
+    `  
+    mutation CreateCommunity($name: String!, $description: String!, $creator: ID!) {
+      createCommunity(name: $name, description: $description, creator: $creator) {
+        id
+        name
+        createdAt
+        description
+      }
+    }
   `;
 export const DELETE_COMMUNITY = gql
     `   mutation DeleteCommunity($deleteCommunityId: ID!) {
@@ -37,4 +46,28 @@ export const JOIN_COMMUNITY = gql
     }
   }
   `;
+
+  export const POSTS_BY_COMMUNITY = gql
+  `    query FindPostByCommunity($id: ID!, $user: ID!) {
+    findPostByCommunity(id: $id) {
+      id
+      description
+      time
+      title
+      community {
+        name
+      }
+      
+      user {
+        name
+        profileImage
+      }
+      commentsCount
+      likesCount
+      isLiked(user: $user)
+      isPostedByCurrentuser(user: $user)
+    }
+  }
+`;
+ 
  

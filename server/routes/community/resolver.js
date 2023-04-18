@@ -18,7 +18,7 @@ const resolvers = {
             const createdCommunity = new Community({
                 name: name,
                 description: description,
-                createdAt: new Date().toDateString(),
+                createdAt: new Date(),
                 members: [],
 
 

@@ -1,22 +1,24 @@
 import { gql } from "@apollo/client";
 
 export const GET_POSTS = gql
-`   query GetAllPosts($user: ID!) {
-  getAllPosts(user: $user) {
+`   query FindPostByUserCommunities($user: ID!) {
+  findPostByUserCommunities(id: $user) {
     id
-    title
-     
     description
     time
+    title
+    community {
+      name
+    }
+    user {
+      id
+      name
+      profileImage
+    }
     commentsCount
     likesCount
     isLiked(user: $user)
     isPostedByCurrentuser(user: $user)
-    user{
-      id
-      profileImage
-      name
-    }
   }
 }
   `;
@@ -67,7 +69,7 @@ export const GET_POSTS = gql
             description
             time
             title
-            community
+            
             likesCount
             user {
               id

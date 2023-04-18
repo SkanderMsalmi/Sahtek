@@ -18,8 +18,9 @@ type Community {
     id: ID!
     name: String
     createdAt: String
-    description: String 
+    description: String
     members: [User]
+    creator: User
    
      
   }
@@ -35,10 +36,16 @@ extend type Query {
     getPost(id: ID!,user: ID!): Post
     getAllPosts(  user: ID!): [Post]
     findPostByUser(id: ID!): [Post]
+    findPostByUserCommunities(id: ID!): [Post]
+    findPostByCommunity(id: ID!): [Post]
+    
 
 
     community(id: ID!): Community
     getAllCommunities: [Community]
+    findCommunityByUser(id: ID!): [Community]
+    
+
   
        
 }
@@ -50,11 +57,11 @@ extend type Mutation {
     LikePost(id: ID!, user:ID!): Post
     removeLikePost(id: ID!, user: ID!): Post
 
-    createCommunity(name: String!, description: String!): Community
+    createCommunity(name: String!, description: String!, creator: ID!): Community
     updateCommunity(id: ID!,  description: String): Community
     deleteCommunity(id: ID!): String
     joinCommunity(id: ID!, userId: ID!): Community
 }    
 `
 
-       
+        
