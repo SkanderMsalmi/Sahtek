@@ -118,9 +118,9 @@ const therapist=useParams("id");
     initialValues,
   });
   const { loading, error, data } = useQuery(USERS_QUERY);
-  const { loadingDates, errorDates, dataDates } = useQuery(
-    GET_APPOINTMENTSDATES
-  );
+  // const { loadingDates, errorDates, dataDates } = useQuery(
+  //   GET_APPOINTMENTSDATES
+  // );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error </p>;
@@ -129,27 +129,8 @@ const therapist=useParams("id");
   };
   const isWeekend = (date) => {
     const day = date.getDay();
-    return day === 0 || day === 6; // 0 -> Sunday, 6 -> Saturday
+    return day === 0 || day === 6; 
   };
-
-  // useEffect(() => {
-  //   if (dataDates) {
-  //     const dates = dataDates.getAppointments.map((a) => new Date(a.date));
-  //     setDisabledDates(dates);
-  //   }
-  // }, [dataDates]);
-  // const bookedDates = dataDates ? dataDates.appointmentDates : [];
-
-  // const isDateBooked = (date) => {
-  //   return bookedDates.some((bookedDate) => {
-  //     const formattedBookedDate = new Date(bookedDate).toISOString().slice(0, 16);
-  //     return formattedBookedDate === date;
-  //   });
-  // };
-
-  // const isDateDisabled = (date) => {
-  //   return isDateBooked(date);
-  // };
 
   function cleanUpAvailability(array) {
     let newArray = [];

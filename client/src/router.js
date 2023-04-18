@@ -30,7 +30,7 @@ const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 // Consultation
 const VideoCall = React.lazy(() => import("./pages/videoCall/videoCall"));
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
-const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
+const Rdv = React.lazy(() => import("./pages/rdv/rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -70,6 +70,8 @@ const ForumHomepage = React.lazy(() => import("./pages/Forum/ForumHomepage"));
 const PostComments = React.lazy(() => import("./pages/Forum/PostComments"));
 
 const Shop = React.lazy(() => import("./pages/Shop/Shop"));
+const Cart = React.lazy(() => import("./pages/Shop/Cart"));
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -87,6 +89,10 @@ export const router = createBrowserRouter([
       {
         path: "appointments",
         element: <AppointmentList />,
+      },
+      {
+        path: "cart",
+        element: <Cart />,
       },
       {
         path: "login",
