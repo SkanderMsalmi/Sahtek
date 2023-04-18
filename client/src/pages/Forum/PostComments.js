@@ -10,7 +10,7 @@ import {
 import { CREATE_COMMENT_MUTATION } from "../../apis/forum";
 import { GET_COMMENTS_BY_POST } from "../../apis/forum";
 import { GET_POST } from "../../apis/forum";
-import { useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_POSTS } from "../../apis/forum";
 import { Col } from 'reactstrap';
@@ -150,6 +150,17 @@ function PostComments() {
 
               <div className={styles.darkSection}>
                 <label>{data?.getPost?.user?.name}'s Post</label>
+
+                <Link to={`/forum`}>
+                  <button
+                    aria-label="Close"
+                    className="close"
+                    type="button"
+
+                  >
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </Link>
               </div>
 
               <div className={styles.card}>
@@ -158,7 +169,7 @@ function PostComments() {
                     <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(data?.getPost?.id) }} />
                   }
 
-                  <label>{data?.getPost?.likesCount}</label>
+                  <label>{data?.getPost?.like?.length}</label>
                 </div>
 
                 <div className={styles.cardContent}>
@@ -169,7 +180,7 @@ function PostComments() {
                       </div>
                       <div>
                         <span>{data?.getPost?.user?.name}</span>  <br />
-                        <small> {data?.getPost?.time}</small>
+                        <small> <Moment fromNow>{data?.getPost?.time}</Moment></small>
                       </div>
 
                     </div>
@@ -212,23 +223,23 @@ function PostComments() {
           {data2.getCommentsByPostId.map((p) => {
             return (
               <>
-              
-                <div className={styles.comment_card}>
-                 
-                    <div className={styles.cardSide2}>
-                      <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
-                    </div>
-               
-                  
-                    <div className='d-flex flex-column '>
-                      <div className={styles.cardContent}>
-                        <small className={styles.username}> {p.user?.name}</small>
-                        <p>{p.description}</p>
-                      </div>
-                      <small ><Moment fromNow>{p?.time}</Moment></small>
 
+                <div className={styles.comment_card}>
+
+                  <div className={styles.cardSide2}>
+                    <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
+                  </div>
+
+
+                  <div className='d-flex flex-column '>
+                    <div className={styles.cardContent}>
+                      <small className={styles.username}> {p.user?.name}</small>
+                      <p>{p.description}</p>
                     </div>
-                  
+                    <small ><Moment fromNow>{p?.time}</Moment></small>
+
+                  </div>
+
 
                 </div>
 

@@ -14,9 +14,14 @@ export const GET_POSTS = gql
       id
       name
       profileImage
+    }   
+    
+    like{
+      id
     }
-    commentsCount
-    likesCount
+    comments{
+      id
+    }
     isLiked(user: $user)
     isPostedByCurrentuser(user: $user)
   }
@@ -33,7 +38,7 @@ export const GET_POSTS = gql
     `   mutation RemoveLikePost($id: ID!, $user: ID!) {
       removeLikePost(id: $id, user: $user) {
         description
-        likesCount
+        
       }
     }
       `;
@@ -69,15 +74,20 @@ export const GET_POSTS = gql
             description
             time
             title
-            
-            likesCount
+            comments{
+              id
+            }
+            like{
+              id
+            }
             user {
               id
               name
               email
               profileImage
             }
-            commentsCount
+            
+            
             isLiked(user: $user)
           }
         }

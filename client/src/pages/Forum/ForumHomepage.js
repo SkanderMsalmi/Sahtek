@@ -1,5 +1,5 @@
 
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import styles from './Posts.module.scss'
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -30,6 +30,7 @@ import { CREATE_COMMUNITY } from "../../apis/community";
 
 
 function ForumHomepage() {
+
     const [modal, setModal] = React.useState(false);
     const [modal2, setModal2] = React.useState(false);
     const [communityDesc, setCommunityDesc] = React.useState();
@@ -80,7 +81,6 @@ function ForumHomepage() {
         setModal2(!modal2);
     };
 
-    const navigate = useNavigate();
 
     //** delete post*/
     function deleteMyPost(postID) {
@@ -248,18 +248,19 @@ function ForumHomepage() {
                             value={community}
                             className={styles.input}
                             onChange={(e) => setCommunity(e.target.value)} /> */}
-
-                            <select value={community} onChange={handleChange}>
-                                <option value="">Choose Community</option>
+                            <div className={styles.select}>
+                            <select className="form-control" aria-label=".form-select-sm example"
+                            value={community} onChange={handleChange}>
+                                <option value=""   >Choose Community</option>
                                 {loadingC ? (<p>Loading...</p>) :
                                     (dataC.findCommunityByUser.map((c) => {
                                         return (
                                             <option key={c.id} value={c.id}>{c.name}</option>
                                         )
                                     }))}
-
-
                             </select>
+                            </div>
+                            
 
                             <textarea type="text"
                                 placeholder="Title"
@@ -329,7 +330,7 @@ function ForumHomepage() {
                                                 </div>
                                             }
 
-                                            <label>{p.likesCount}</label>
+                                            <label>{p?.like?.length}</label>
 
 
                                         </div>
@@ -340,11 +341,11 @@ function ForumHomepage() {
                                                     <label className="label label-primary mr-1">{p?.community?.name}</label>
 
 
-                                                   
 
-                                                        <small>Posted by {p?.user?.name}  <BsDot/> <Moment fromNow>{p?.time}</Moment>        </small>                                            </div>
 
-                                                
+                                                    <small>Posted by {p?.user?.name}  <BsDot /> <Moment fromNow>{p?.time}</Moment>        </small>                                            </div>
+
+
 
                                                 {p.isPostedByCurrentuser ? (
                                                     <UncontrolledDropdown >
@@ -386,7 +387,7 @@ function ForumHomepage() {
                                             <div className={styles.cardFooter}>
                                                 <Link to={`/comments/${p.id}`}>
                                                     <button type="submit" className={styles.invisibleBtn}>
-                                                        <FaRegCommentAlt className={styles.commentIcon} /> {p.commentsCount} Comments
+                                                        <FaRegCommentAlt className={styles.commentIcon} /> {p?.comments?.length} Comments
                                                     </button></Link>
                                             </div>
                                         </div>
@@ -435,7 +436,7 @@ function ForumHomepage() {
                             {dataC.findCommunityByUser.map((c) => {
                                 return (
                                     <>
-                                        <button className={styles.communityBtn}> {c.name}</button>
+                                        <Link to={`/community/${c.id}`}><button className={styles.communityBtn} > {c.name}</button></Link>
                                     </>
 
 

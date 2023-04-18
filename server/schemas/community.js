@@ -4,8 +4,10 @@ type Community {
   id: ID!
   name: String
   createdAt: String
-  description: String 
+  description: String
   members: [User]
+  creator: User
+  posts: [Post]
  
    
 }
@@ -17,10 +19,11 @@ extend type Query {
   
 }
 extend type Mutation {
-    createCommunity(name: String!, description: String!): Community
-    updateCommunity(id: ID!, name: String, description: String): Community
+  createCommunity(name: String!, description: String!, creator: ID!): Community
+  updateCommunity(id: ID!,  description: String): Community
     deleteCommunity(id: ID!): Community
     joinCommunity(id: ID!, userId: ID!): Community
+    leaveCommunity(id: ID!, userId: ID!): Community
    
 }
 

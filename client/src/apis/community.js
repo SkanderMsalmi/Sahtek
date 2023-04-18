@@ -38,8 +38,8 @@ export const DELETE_COMMUNITY = gql
   }
   `;
 export const JOIN_COMMUNITY = gql
-    `   mutation JoinCommunity($joinCommunityId: ID!, $userId: ID!) {
-    joinCommunity(id: $joinCommunityId, userId: $userId) {
+    `   mutation JoinCommunity($id: ID!, $userId: ID!) {
+    joinCommunity(id: $id, userId: $userId) {
       description
       name
       id
@@ -59,15 +59,61 @@ export const JOIN_COMMUNITY = gql
       }
       
       user {
+        id
         name
         profileImage
       }
-      commentsCount
-      likesCount
+      like{
+        id
+      }
+      comments{
+        id
+      }
+     
       isLiked(user: $user)
       isPostedByCurrentuser(user: $user)
     }
   }
 `;
+export const COMMUNITY = gql
+`  query Community($id: ID!, $user: ID!) {
+  community(id: $id) {
+    name
+  
+    members {
+      id
+    }
+    posts {
+      description
+      id
+      time
+      title
+      user {
+        id
+        profileImage
+        name
+      }
+      like{
+        id
+      }
+      comments{
+        id
+      }
+      isLiked(user: $user)
+      isPostedByCurrentuser(user: $user)
+    }
+  }
+}
+`;
+
+export const LEAVE_COMMUNITY = gql
+    ` 
+    mutation LeaveCommunity($id: ID!, $userId: ID!) {
+      leaveCommunity(id: $id, userId: $userId) {
+        description
+       
+      }
+    }
+  `;
  
  

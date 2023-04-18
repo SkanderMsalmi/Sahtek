@@ -6,24 +6,14 @@ type Post {
     time: String
     title: String
     community: Community
-    like: User    
+    like: [User]    
     user: User
-    commentsCount: Int!
-    likesCount: Int!
+    comments: [Comment]
     isLiked(  user: ID!): Boolean
     isPostedByCurrentuser(  user: ID!): Boolean
    
 }
-type Community {
-    id: ID!
-    name: String
-    createdAt: String
-    description: String
-    members: [User]
-    creator: User
-   
-     
-  }
+
 
 input PostInput {
         description: String
@@ -41,8 +31,7 @@ extend type Query {
     
 
 
-    community(id: ID!): Community
-    getAllCommunities: [Community]
+ 
     findCommunityByUser(id: ID!): [Community]
     
 
@@ -57,10 +46,8 @@ extend type Mutation {
     LikePost(id: ID!, user:ID!): Post
     removeLikePost(id: ID!, user: ID!): Post
 
-    createCommunity(name: String!, description: String!, creator: ID!): Community
-    updateCommunity(id: ID!,  description: String): Community
-    deleteCommunity(id: ID!): String
-    joinCommunity(id: ID!, userId: ID!): Community
+    
+
 }    
 `
 

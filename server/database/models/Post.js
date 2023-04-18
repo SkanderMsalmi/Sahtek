@@ -17,8 +17,7 @@ const post = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    commentsCount: Number,
-    likesCount: Number,
+    
 
     
 
