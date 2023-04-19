@@ -6,8 +6,8 @@ module.exports = gql`
     description: String
     category: String
     stock: Int
-    image: String
     price: Float
+    image: String
   }
   input ProductInput {
     name: String
@@ -15,7 +15,7 @@ module.exports = gql`
     category: String
     stock: Int
     price: Float
-    image: String
+    id: ID
   }
   type Query {
     getProduct(ID: ID!): Product
@@ -23,8 +23,8 @@ module.exports = gql`
     getCategories: [String]
   }
   type Mutation {
-    addProduct(productInput: ProductInput): Product
-    updateProduct(id: ID!, productInput: ProductInput): Product
+    addProduct(productInput: ProductInput, image: Upload): Product
+    updateProduct(productInput: ProductInput, img: Upload): Product
     deleteProduct(id: ID!): String
   }
 `;

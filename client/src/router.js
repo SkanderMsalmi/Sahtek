@@ -31,6 +31,15 @@ const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 const VideoCall = React.lazy(() => import("./pages/videoCall/videoCall"));
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
 const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
+const AdminLayout = React.lazy(() => import("./layouts/Admin.js"));
+const Icons = React.lazy(() => import("./views/examples/Icons.js"));
+const Maps = React.lazy(() => import("./views/examples/Maps.js"));
+const ProfileAdmin = React.lazy(() => import("./views/examples/Profile.js"));
+const Tables = React.lazy(() => import("./views/examples/Tables.js"));
+const AdminProducts = React.lazy(() =>
+  import("./components/AdminProducts/AdminProducts")
+);
+
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -69,8 +78,9 @@ const AppointmentBooked = React.lazy(() =>
 const ForumHomepage = React.lazy(() => import("./pages/Forum/ForumHomepage"));
 const PostComments = React.lazy(() => import("./pages/Forum/PostComments"));
 
-const CommunityPage = React.lazy(() => import("./pages/community/communityPage"));
-
+const CommunityPage = React.lazy(() =>
+  import("./pages/community/communityPage")
+);
 
 const Shop = React.lazy(() => import("./pages/Shop/Shop"));
 const Cart = React.lazy(() => import("./pages/Shop/Cart"));
@@ -252,6 +262,36 @@ export const router = createBrowserRouter([
           {
             path: "patients",
             element: <TherapistPatients />,
+          },
+        ],
+      },
+      {
+        path: "espace-admin",
+        element: <AdminLayout />,
+        children: [
+          {
+            index: true,
+            element: <Icons />,
+          },
+          {
+            path: "icons",
+            element: <Icons />,
+          },
+          {
+            path: "maps",
+            element: <Maps />,
+          },
+          {
+            path: "tables",
+            element: <Tables />,
+          },
+          {
+            path: "user-profile",
+            element: <ProfileAdmin />,
+          },
+          {
+            path: "products",
+            element: <AdminProducts />,
           },
         ],
       },

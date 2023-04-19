@@ -30,15 +30,11 @@ export const LOGIN_MUTATION = gql`
       user {
         id
         email
+        name
         role
         verified
         profileImage
-        patient {
-          name
-        }
-        therapist {
-          name
-        }
+        
       }
     }
   }
