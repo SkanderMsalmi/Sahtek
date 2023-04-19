@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { selectUser } from "../../store/users/users.selectors";
 import { useSelector } from "react-redux";
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { Card, CardHeader, CardBody, CardTitle, CardText, Button, Col, Label, Input, Alert, Container, UncontrolledAlert, Row } from 'reactstrap';
 import {
     GET_PATIENT_FILES,
@@ -14,11 +14,13 @@ import style from '../../pages/Patients/Patient.module.scss';
 import { CgClose } from 'react-icons/cg';
 import FileEditor from './FileEditor';
 import { FiEdit3 } from 'react-icons/fi';
+import { PeerContext } from '../../apis/peerContext';
 
 
 
 function PatientFile({ show, handleClick }) {
     const therapist = useSelector(selectUser);
+    const { remoteId } = useContext(PeerContext);
 
     const [createPatientFile, { dataa, errorr, loadingg }] = useMutation(
         CREATE_PATIENT_FILE_MUTATION
@@ -68,7 +70,7 @@ function PatientFile({ show, handleClick }) {
                     variables: {
 
                         remarks: note,
-                        patient: "641072f723f7b3fae85b6690",
+                        patient: remoteId,
                         therapist: therapist.id,
                         title: title,
 
@@ -88,7 +90,7 @@ function PatientFile({ show, handleClick }) {
     };
 
     const { data, loading, error, refetch } = useQuery(GET_PATIENT_FILES, {
-        variables: { id: '641072f723f7b3fae85b6690' }
+        variables: { id: remoteId }
     });
     if (loading) return <p>Loading...</p>;
     if (!data) return <p>No data found.</p>;
