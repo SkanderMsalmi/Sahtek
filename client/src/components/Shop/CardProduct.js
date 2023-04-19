@@ -27,7 +27,7 @@ function CardProduct({ product, isWishlist, onToggleWishlist }) {
   return (
     <Card className="card-product">
       <div className="card-product-image-wrapper">
-        <CardImg top width="100%" src={product.image} alt={product.name} />
+        <CardImg top width="100%" style={{ height: "15rem" }} src={product.image} alt={product.name} />
         <div className="like-icon" onClick={toggleLike}>
           <i
             className={`${likeClass} fa-heart`}

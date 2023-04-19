@@ -8,7 +8,9 @@ const PROFILE_POSTS_QUERY = gql`
   query FindPostByUser($id: ID!) {
     findPostByUser(id: $id) {
       description
-      likesCount
+      like{
+        name
+      }
       time
     }
   }
@@ -56,7 +58,7 @@ function ProfilePosts(props) {
                       <p style={{ textAlign: "left" }}>{p.description}</p>
                       <div className="d-flex justify-content-between">
                         <small style={{ textAlign: "left" }}>
-                          {p.likesCount} 👍
+                          {p.like.length} 👍 {p.like.length > 0 ? p.like.length > 1 ? `by ${p.like[0].name} & ${p.like.length - 1} others` : `by ${p.like[0].name}` : ""}
                         </small>
                         <small style={{ textAlign: "right" }}>
                           {" "}
