@@ -1,5 +1,6 @@
+import ChooseTherapist from "../../../pages/rdv/ChooseTherapist";
 const PatientDashboard = () => {
-  return <h1>Your Dashboard will be available soon ...</h1>;
+  return <ChooseTherapist/>;
 };
 
 export default PatientDashboard;

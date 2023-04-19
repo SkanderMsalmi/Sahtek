@@ -324,7 +324,7 @@ const resolvers = {
         from: "sahtek2023@gmail.com",
         to: userPatient.email,
         subject: "Appointment Accepted",
-        text: `Your appointment is confirmed by Dr  ${userTherapist.name} it will be at ${appointment.date} Welcome ${userPatient.name}`,
+        text: `Your appointment is confirmed by Dr  ${userTherapist.name} it will be at ${appointment.date} Welcome ${userPatient.name} the consultation link:http://localhost:3000/call/${appointment.id} `,
       };
       await transporter.sendMail(mailOptions);
       return true;
