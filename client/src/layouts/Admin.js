@@ -25,6 +25,8 @@ import Sidebar from "../components/Sidebar/SidebarAdmin.js";
 import "../assets/scss/argon-dashboard-react.scss";
 
 import { router } from "../router.js";
+import IsAdmin from "../components/Guard/IsAdmin.js";
+import withAuth from "../components/Guard/WithAuth.js";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);

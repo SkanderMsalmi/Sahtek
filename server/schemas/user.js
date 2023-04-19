@@ -4,6 +4,7 @@ module.exports = gql`
   enum Role {
     Patient
     Therapist
+    Admin
   }
 
   type User {
