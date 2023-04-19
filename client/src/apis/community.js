@@ -2,14 +2,18 @@ import { gql } from "@apollo/client";
 
 export const GET_COMMUNITIES = gql
     `  query GetAllCommunities {
-    getAllCommunities {
-      id
-      name
-      createdAt
-      description
-      
+      getAllCommunities {
+        id
+        name
+        createdAt
+        description
+        members {
+          id
+        }
+        
+         
+      }
     }
-  }
   `;
   export const GET_COMMUNITIES_BY_USER = gql
   `   query FindCommunityByUser($id: ID!) {

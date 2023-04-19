@@ -32,7 +32,7 @@ function Patients() {
 
     return (
         <>
-            <div className="section section-dark text-center">
+            <div className="section   text-center">
 
             </div>
             <div className="section profile-content">
