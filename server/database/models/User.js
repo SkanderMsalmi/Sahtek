@@ -90,7 +90,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ["Patient", "Therapist"],
+    enum: ["Patient", "Therapist", "Admin"],
   },
   profileImage: {
     type: String,
