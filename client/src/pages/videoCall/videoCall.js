@@ -37,9 +37,14 @@ function VideoCall() {
     });
 
     const [ready, setReady] = useState(false);
-    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream } = useContext(PeerContext);
+    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream, setRemoteId } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
     const { socket, isVideo, setStarted } = useContext(SocketContext);
+    useEffect(() => {
+        if (data) {
+            setRemoteId(data.getAppointment.patient.id === user.id ? data.getAppointment.therapist.id : data.getAppointment.patient.id);
+        }
+    }, [data, user])
     useEffect(() => {
         if (myStream) {
             myStream.getVideoTracks()[0].enabled = isVideo;

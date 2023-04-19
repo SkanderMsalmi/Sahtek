@@ -429,7 +429,7 @@ const resolvers = {
     },
 
     getPatientsByTherapist: async (_, { id }) => {
-      const list = await Appointment.find({ therapist: id }).distinct(
+      const list = await Appointment.find({ therapist: id, status: "Confirmed" }).distinct(
         "patient"
       );
       return await User.find({ _id: { $in: list } });

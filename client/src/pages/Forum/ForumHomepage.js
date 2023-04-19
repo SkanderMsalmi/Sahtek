@@ -22,11 +22,11 @@ import {
 
 import { CREATE_POST_MUTATION } from "../../apis/forum";
 import { DELETE_POST_MUTATION } from "../../apis/forum";
-import { Button, CardTitle, Col, DropdownItem, DropdownMenu, DropdownToggle, Modal, PopoverBody, PopoverHeader, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
+import { Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import { fixObservableSubclass } from '@apollo/client/utilities';
 import Moment from 'react-moment';
 // GET_COMMUNITIES  CREATE_COMMUNITY  DELETE_COMMUNITY  JOIN_COMMUNITY
-import { CREATE_COMMUNITY } from "../../apis/community";
+import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY } from "../../apis/community";
 
 
 function ForumHomepage() {
@@ -39,6 +39,9 @@ function ForumHomepage() {
     const [postText, setPostText] = useState();
     const [title, setTitle] = useState();
     const [community, setCommunity] = useState();
+    const [joined, setSetjoined] = useState("Joined");
+    const [joinCommunities, setjoinCommunities] = useState(false);
+
 
 
 
@@ -46,10 +49,18 @@ function ForumHomepage() {
     const { loading, error, data, refetch } = useQuery(GET_POSTS, {
         variables: { user: user.id },
     });
+    const [joinCommunity, { data: dataJ, loading: loadingJ, error: errorJ }] = useMutation(
+        JOIN_COMMUNITY
+    );
+    const [leaveCommunity, { data: datale, loading: loadingle, error: errorle }] = useMutation(
+        LEAVE_COMMUNITY
+    );
 
-    const { data: dataC, loading: loadingC, error: errorC } = useQuery(GET_COMMUNITIES_BY_USER, {
+    const { data: dataC, loading: loadingC, error: errorC, refetch: refetchC } = useQuery(GET_COMMUNITIES_BY_USER, {
         variables: { id: user.id },
     });
+    const { data: dataCom, loading: loadingCom, error: errorCom, refetch: refetchCom } = useQuery(GET_COMMUNITIES);
+
     const [createCommunity, { data: dataCC, loading: loadingCC, error: errorCC }] = useMutation(
         CREATE_COMMUNITY
     );
@@ -81,7 +92,48 @@ function ForumHomepage() {
         setModal2(!modal2);
     };
 
+    //** join community*/
+    function join(communityID) {
 
+        joinCommunity({
+            variables: {
+
+                id: communityID,
+                userId: user.id,
+
+
+            },
+        }).then(() => {
+
+            refetchCom();
+            refetch();
+            refetchC();
+        })
+            .catch(errorJ => console.error(errorJ));
+
+
+    };
+    //** leave community*/
+    function leave(communityID) {
+
+        leaveCommunity({
+            variables: {
+
+                id: communityID,
+                userId: user.id,
+
+
+            },
+        }).then(() => {
+
+            refetchCom();
+            refetchC();
+            refetch();
+        })
+            .catch(errorle => console.error(errorle));
+
+
+    };
     //** delete post*/
     function deleteMyPost(postID) {
 
@@ -97,6 +149,7 @@ function ForumHomepage() {
             refetch();
         })
             .catch(errorD => console.error(errorD));
+
 
 
     };
@@ -157,6 +210,7 @@ function ForumHomepage() {
 
             },
         }).then(() => {
+
             setModal(!modal);
             setPostText();
             setTitle();
@@ -164,6 +218,7 @@ function ForumHomepage() {
             refetch();
         })
             .catch(errorP => console.error(errorP));
+
 
 
     };
@@ -202,6 +257,7 @@ function ForumHomepage() {
 
 
     if (loadingC) return <p>loading...</p>
+    if (loadingCom) return <p>loading...</p>
 
     return (
 
@@ -224,7 +280,7 @@ function ForumHomepage() {
                 <Col md="6">
 
                     {/* Modal */}
-                    <Modal isOpen={modal} toggle={toggleModal}  >
+                    <Modal isOpen={modal} toggle={toggleModal}   >
                         <div className="modal-header">
                             <button
                                 aria-label="Close"
@@ -241,7 +297,7 @@ function ForumHomepage() {
                                 Create Post
                             </h5>
                         </div>
-                        <div className='d-flex flex-column align-items-center' >
+                        <div className={styles.modalContent}>
                             {/* <textarea type="text"
                             placeholder="community"
                             name="community"
@@ -249,18 +305,18 @@ function ForumHomepage() {
                             className={styles.input}
                             onChange={(e) => setCommunity(e.target.value)} /> */}
                             <div className={styles.select}>
-                            <select className="form-control" aria-label=".form-select-sm example"
-                            value={community} onChange={handleChange}>
-                                <option value=""   >Choose Community</option>
-                                {loadingC ? (<p>Loading...</p>) :
-                                    (dataC.findCommunityByUser.map((c) => {
-                                        return (
-                                            <option key={c.id} value={c.id}>{c.name}</option>
-                                        )
-                                    }))}
-                            </select>
+                                <select className="form-control" aria-label=".form-select-sm example"
+                                    value={community} onChange={handleChange}>
+                                    <option value=""   >Choose Community</option>
+                                    {loadingC ? (<p>Loading...</p>) :
+                                        (dataC.findCommunityByUser.map((c) => {
+                                            return (
+                                                <option key={c.id} value={c.id}>{c.name}</option>
+                                            )
+                                        }))}
+                                </select>
                             </div>
-                            
+
 
                             <textarea type="text"
                                 placeholder="Title"
@@ -268,6 +324,10 @@ function ForumHomepage() {
                                 value={title}
                                 className={styles.input}
                                 onChange={(e) => setTitle(e.target.value)} />
+
+
+
+
 
                             <textarea
                                 type="text"
@@ -308,99 +368,170 @@ function ForumHomepage() {
 
 
 
-                {loading ? (<p>Loading...</p>) : (
-                    <>
-                        {data?.findPostByUserCommunities.map((p) => {
-                            return (
-                                <>
+                {loading ? (<p>Loading...</p>) : dataC?.findCommunityByUser.length !== 0 && joinCommunities == false ?
+                    (
+                        <>
+                            {data?.findPostByUserCommunities.map((p) => {
+                                return (
+                                    <>
 
-                                    <div className={styles.card} key={p.id}>
+                                        <div className={styles.card} key={p.id}>
 
-                                        <div className={styles.cardSide}>
+                                            <div className={styles.cardSide}>
 
-                                            {p.isLiked ?
-                                                <div className={styles.Icon} onClick={() => { removelike(p.id) }}>
-                                                    <TbArrowBigUpFilled className={styles.upvoteIcon} />
+                                                {p.isLiked ?
+                                                    <div className={styles.Icon} onClick={() => { removelike(p.id) }}>
+                                                        <TbArrowBigUpFilled className={styles.upvoteIcon} />
 
-                                                </div>
-                                                :
-                                                <div className={styles.Icon} onClick={() => { likePost(p.id) }}>
-                                                    <TbArrowBigUp className={styles.upvoteIcon} />
+                                                    </div>
+                                                    :
+                                                    <div className={styles.Icon} onClick={() => { likePost(p.id) }}>
+                                                        <TbArrowBigUp className={styles.upvoteIcon} />
 
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
 
-                                            <label>{p?.like?.length}</label>
-
-
-                                        </div>
-
-                                        <div className={styles.cardContent}>
-                                            <div className={styles.cardHeader}>
-                                                <div className={styles.row}>
-                                                    <label className="label label-primary mr-1">{p?.community?.name}</label>
+                                                <label>{p?.like?.length}</label>
 
 
+                                            </div>
 
-
-                                                    <small>Posted by {p?.user?.name}  <BsDot /> <Moment fromNow>{p?.time}</Moment>        </small>                                            </div>
+                                            <div className={styles.cardContent}>
+                                                <div className={styles.cardHeader}>
+                                                    <div className={styles.row}>
+                                                        <label className="label label-primary mr-1">{p?.community?.name}</label>
 
 
 
-                                                {p.isPostedByCurrentuser ? (
-                                                    <UncontrolledDropdown >
 
-                                                        <DropdownToggle className={styles.iconBtn}
-                                                            aria-expanded={false}
-                                                            aria-haspopup={true}
+                                                        <small>Posted by {p?.user?.name}  <BsDot /> <Moment fromNow>{p?.time}</Moment>        </small>                                            </div>
 
-                                                            color="default"
-                                                            data-toggle="dropdown"
 
-                                                            nav
-                                                            onClick={(e) => e.preventDefault()}
-                                                            role="button"
-                                                        >
 
-                                                            <BiDotsHorizontalRounded className={styles.icon} />
-                                                        </DropdownToggle>
-                                                        <DropdownMenu className="dropdown-danger" right>
+                                                    {p.isPostedByCurrentuser ? (
+                                                        <UncontrolledDropdown >
 
-                                                            <DropdownItem
+                                                            <DropdownToggle className={styles.iconBtn}
+                                                                aria-expanded={false}
+                                                                aria-haspopup={true}
 
-                                                                onClick={() => deleteMyPost(p.id)}
+                                                                color="default"
+                                                                data-toggle="dropdown"
+
+                                                                nav
+                                                                onClick={(e) => e.preventDefault()}
+                                                                role="button"
                                                             >
-                                                                Delete
-                                                            </DropdownItem>
 
-                                                        </DropdownMenu>
-                                                    </UncontrolledDropdown>) : (null)}
+                                                                <BiDotsHorizontalRounded className={styles.icon} />
+                                                            </DropdownToggle>
+                                                            <DropdownMenu className="dropdown-danger" right>
+
+                                                                <DropdownItem
+
+                                                                    onClick={() => deleteMyPost(p.id)}
+                                                                >
+                                                                    Delete
+                                                                </DropdownItem>
+
+                                                            </DropdownMenu>
+                                                        </UncontrolledDropdown>) : (null)}
 
 
 
-                                            </div>
+                                                </div>
 
-                                            <div className={styles.cardBody}>
-                                                <p className={styles.title}>{p.title}</p>
-                                                <p>{p.description}</p>
-                                            </div>
-                                            <div className={styles.cardFooter}>
-                                                <Link to={`/comments/${p.id}`}>
-                                                    <button type="submit" className={styles.invisibleBtn}>
-                                                        <FaRegCommentAlt className={styles.commentIcon} /> {p?.comments?.length} Comments
-                                                    </button></Link>
+                                                <div className={styles.cardBody}>
+                                                    <p className={styles.title}>{p.title}</p>
+                                                    <p>{p.description}</p>
+                                                </div>
+                                                <div className={styles.cardFooter}>
+                                                    <Link to={`/comments/${p.id}`}>
+                                                        <button type="submit" className={styles.invisibleBtn}>
+                                                            <FaRegCommentAlt className={styles.commentIcon} /> {p?.comments?.length} Comments
+                                                        </button></Link>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </>
-                            )
+                                    </>
+                                )
 
-                        })}
-                    </>
+                            })}
+                        </>
 
 
-                )}
+                    ) : joinCommunities || dataC?.findCommunityByUser.length == 0 ? (
+                        <div className={styles.add_post_container}>
+
+
+                            <Container >
+
+                               
+                                <Row className={styles.cardHeader}>
+                                        <h3>Join Communities</h3>
+                                        <button
+                                            aria-label="Close"
+                                            className="close"
+                                            type="button"
+                                            onClick={() => {setjoinCommunities(!joinCommunities); refetch(); }}
+                                        >
+                                            <span aria-hidden={true}>×</span>
+                                        </button>
+
+                                  
+
+
+                                </Row>
+
+
+
+
+
+                                <Row className="d-flex justify-content-center  ">
+                                    <Col lg="10" md="6">
+
+                                        <hr />
+                                        <ul className="list-unstyled follows">
+                                            {dataCom?.getAllCommunities?.map((c) => {
+                                                return (
+                                                    <>
+                                                        <li>
+                                                            <Row className="d-flex justify-content-center align-items-center ">
+
+                                                                <Col lg="8" md="4" xs="4">
+                                                                    <h6  >
+                                                                        {c.name} <br />
+
+                                                                    </h6>
+                                                                </Col>
+
+                                                                <Col lg="1" md="6">
+                                                                    {(c.members.filter((m) => m.id === user.id).length > 0) ?
+                                                                        <Button size="sm" className="btn-round" color="neutral" onClick={() => leave(c.id)} onMouseLeave={() => setSetjoined("Joined")} onMouseOver={() => setSetjoined("Leave")}> {joined}</Button>
+                                                                        : <Button size="sm" className="btn-round" color="info" onClick={() => join(c.id)}> Join</Button>}
+                                                                </Col>
+                                                            </Row>
+                                                        </li>
+                                                        <hr />
+                                                    </>
+                                                )
+                                            })}
+
+                                        </ul>
+
+                                    </Col>
+                                </Row>
+
+
+
+
+
+                            </Container>
+                        </div>
+                    ) : (null)}
+
+
 
 
 
@@ -420,6 +551,9 @@ function ForumHomepage() {
 
                         <div className="d-flex flex-column align-items-start justify-contents-center">
                             <div className={styles.cardHeader2}>
+                                <Button size="sm" block className="btn-round" color="neutral" onClick={() => setjoinCommunities(!joinCommunities)}>
+                                    Join Community
+                                </Button>
 
                                 <Button size="sm" outline block className="btn-round" color="neutral" onClick={toggleModal2}>
                                     Create Community
