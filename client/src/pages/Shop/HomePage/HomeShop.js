@@ -7,6 +7,11 @@ import SideBarMenu from "../../../components/Shop/Common/SideBarMenu";
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProducts, selectWishlist } from "../../../store/selectors";
+import { selectCountAll } from '../../../store/shop/cartSlice';
+import {NavLink} from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
+import {Link} from "react-router-dom"
+
 import {
   ADD_TO_WISHLIST,
   REMOVE_FROM_WISHLIST,
@@ -47,6 +52,7 @@ const HomeShop = () => {
   const products = useSelector(selectProducts);
   const wishlist = useSelector(selectWishlist);
   const [showWishlist, setShowWishlist] = useState(false);
+  const CartNumber = useSelector(selectCountAll);
 
   const handleWishlistClick = () => {
     setShowWishlist(!showWishlist);
@@ -84,7 +90,7 @@ const HomeShop = () => {
   );
   function addToCart(product) {
     dispatch (increment(product));
-  }
+  };
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -111,6 +117,8 @@ const HomeShop = () => {
       );
     }
   };
+  
+  
   const handleChoosePriceeChange = (event) => {
     setMaxPrice(event.target.value);
   };
@@ -149,6 +157,9 @@ const HomeShop = () => {
           >
             Wishlist
           </button>
+          <Link  className="btn btn-outline-info"
+            style={{ textAlign: "right" }} as={NavLink} to="/cart" >Panier ({CartNumber})</Link>
+
         </div>
       </div>
 
