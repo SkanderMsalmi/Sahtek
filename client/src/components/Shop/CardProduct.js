@@ -17,7 +17,7 @@ import {
 } from '../../store/shop/cartSlice';
 import "./CardProduct.scss";
 import { FaShoppingCart } from "react-icons/fa";
-function CardProduct({ product, isWishlist, onToggleWishlist }) {
+function CardProduct({ product, isWishlist, onToggleWishlist,addToCart }) {
   const [liked, setLiked] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const dispatch = useDispatch();
@@ -27,8 +27,8 @@ function CardProduct({ product, isWishlist, onToggleWishlist }) {
     console.log(product.id);
     onToggleWishlist(product.id);
   };
-  const handleAddToCart = (p) => {
-    dispatch(increment(p));
+  const handleAddToCart = () => {
+    addToCart(product)
   };
  
   const likeClass = isWishlist ? "fas" : "far";
@@ -55,7 +55,7 @@ function CardProduct({ product, isWishlist, onToggleWishlist }) {
             <FaShoppingCart
               size={20}
               color={isAddedToCart ? "green" : "black"}
-              onClick={handleAddToCart(product)}
+              onClick={handleAddToCart}
               style={{ margin: "0.6rem" }}
             />
           </Col>

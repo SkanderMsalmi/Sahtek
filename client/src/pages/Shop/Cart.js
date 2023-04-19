@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {Link} from "react-router-dom"
 
 import { Container } from "react-bootstrap";
 import { Row } from "react-bootstrap";
@@ -45,8 +46,8 @@ export default function Cart() {
             <div class="row">
 
               <div class="col-lg-7">
-                <h5 class="mb-3"><a href="#!" class="text-body"><i
-                      class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+                <h5 class="mb-3"><Link to="/shop" class="text-body"><i
+                      class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</Link></h5>
                 <hr/>
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -64,7 +65,7 @@ export default function Cart() {
                       <div class="d-flex flex-row align-items-center">
                         <div>
                           <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
+                            src={item.image}
                             class="img-fluid rounded-3" alt="Shopping item" style={{width:"65px"}}/>
                         </div>
                         <div class="ms-3">
@@ -74,29 +75,30 @@ export default function Cart() {
                       </div>
                       <div class="d-flex flex-row align-items-center">
                       <button
-                                    className="RemoveItem"
-                                    onClick={() => RemoveItemFromCart(item)}
+                       type="button"
+                       class="btn btn-outline-danger"                                 
+                    onClick={() => RemoveItemFromCart(item)}
                                   >-</button>
                         <div style={{width:"50px"}}>
-                          <h5 class="fw-normal mb-0">{item.quantity}</h5>
+                          <h5 class="fw-normal mb-0" style={{marginLeft:"20px",marginRight:"10px"}}>{item.quantity}</h5>
                         </div>
                         <button
-                                    className="AddItem"
-                                    onClick={() => addItemToCart(item)}
+type="button" class="btn btn-outline-success"                                    onClick={() => addItemToCart(item)}
                                   >+</button>
                         <div style={{width:"80px"}}>
-                          <h5 class="mb-0">{item.price}</h5>
+                          <h5 class="mb-0" style={{marginLeft:"20px",marginRight:"10px"}}>{item.price}</h5>
                         </div>
                         <a href="#!" style={{color: "#cecece"}}onClick={() => DeleteItem(item)}><i class="fas fa-trash-alt" ></i></a>
                       </div>
                     </div>
-             
+                    <hr style={{marginTop:"0.6 rem"}}/>
+
                   </div>
-                
                 );
+                
             })}
                    <button
-                                    className=""
+                                    type="button" class="btn btn-warning"
                                     onClick={() => clear()}
                                   >Clear Card</button>
               </div>
@@ -125,17 +127,17 @@ export default function Cart() {
 
                     <div class="d-flex justify-content-between">
                       <p class="mb-2">Subtotal</p>
-                      <p class="mb-2">{Total}</p>
+                      <p class="mb-2">{Total.toFixed(2)} DT</p>
                     </div>
 
                     <div class="d-flex justify-content-between">
                       <p class="mb-2">Shipping</p>
-                      <p class="mb-2">$20.00</p>
+                      <p class="mb-2">7.00 DT</p>
                     </div>
 
                     <div class="d-flex justify-content-between mb-4">
                       <p class="mb-2">Total(Incl. taxes)</p>
-                      <p class="mb-2">$ </p>
+                      <p class="mb-2">{(Total+7.00).toFixed(2)} DT</p>
                     </div>
 
                     <button type="button" class="btn btn-info btn-block btn-lg">
