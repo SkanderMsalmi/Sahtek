@@ -20,7 +20,6 @@ import { useLocation, Route, Routes, Link, Outlet } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
-import AdminNavbar from "../components/Navbars/AdminNavbar.js";
 import AdminFooter from "../components/Footers/AdminFooter.js";
 import Sidebar from "../components/Sidebar/SidebarAdmin.js";
 import "../assets/scss/argon-dashboard-react.scss";
@@ -37,26 +36,7 @@ const Admin = (props) => {
     mainContent.current.scrollTop = 0;
   }, [location]);
 
-  const getRoutes = (router) => {
-    return router.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
 
-  const getBrandText = () => {
-
-    return "Brand";
-  };
 
   return (
     <>
@@ -71,11 +51,8 @@ const Admin = (props) => {
         style={{ zIndex: 1000 }}
       />
       <div className="main-content" ref={mainContent}>
-        <AdminNavbar
-          {...props}
-          brandText={getBrandText()}
-        />
-        <Outlet style={{ zIndex: 1 }} />
+
+        <Outlet style={{ zIndex: 0 }} />
         <Container fluid>
           <AdminFooter />
         </Container>

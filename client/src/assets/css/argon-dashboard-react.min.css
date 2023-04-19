@@ -3734,7 +3734,6 @@ input[type="button"].btn-block {
   ~ .custom-control-label::before {
   border-color: #5e72e4;
   background-color: #5e72e4;
-  box-shadow: ;
 }
 .custom-checkbox
   .custom-control-input:indeterminate
@@ -14360,7 +14359,6 @@ a.text-lighter:focus {
 }
 .btn:hover {
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  transform: translateY(-1px);
 }
 .btn:not(:last-child) {
   margin-right: 0.5rem;

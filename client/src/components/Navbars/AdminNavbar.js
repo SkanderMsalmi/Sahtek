@@ -16,6 +16,7 @@
 
 */
 import { Link } from "react-router-dom";
+import "./AdminNavbar.module.scss";
 // reactstrap components
 import {
   DropdownMenu,
@@ -33,11 +34,21 @@ import {
   Container,
   Media
 } from "reactstrap";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/users/users.selectors";
+import { useEffect } from "react";
 
 const AdminNavbar = (props) => {
+  const user = useSelector(selectUser);
+  useEffect(() => {
+
+
+    console.log(user)
+  }, [])
+
   return (
     <>
-      <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
+      <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main" style={{ backgroundColor: "transparent" }}>
         <Container fluid>
           <Link
             className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
@@ -57,24 +68,25 @@ const AdminNavbar = (props) => {
               </InputGroup>
             </FormGroup>
           </Form>
-          <Nav className="align-items-center d-none d-md-flex" navbar>
+          <Nav className="align-items-center d-none d-md-flex" navbar >
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
-                      src={require("../../assets/img/theme/team-4-800x800.jpg")}
+                      style={{ height: "100%", width: "100%", objectFit: "cover" }}
+                      src={user.profileImage}
                     />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
-                    <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                    <span className="mb-0 text-sm font-weight-bold" style={{ color: "white" }}>
+                      {user.name}
                     </span>
                   </Media>
                 </Media>
               </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-arrow" right style={{ zIndex: 1000 }}>
+              <DropdownMenu className={`dropdown-menu-arrow navbarM`} style={{ zIndex: 1000, top: "4rem", padding: 0 }}>
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>

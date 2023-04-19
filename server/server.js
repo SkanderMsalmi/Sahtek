@@ -1,13 +1,10 @@
 const express = require('express');
 // const cookie = require('cookie-parser');
-const { router, map } = require('./routes');
 const { graphqlUploadExpress } = require('graphql-upload');
 const app = express();
 const { ApolloServer } = require('apollo-server-express');
 var cors = require('cors')
-const server = require('http').createServer(app);
 const socketio = require('socket.io');
-const mongoose = require('mongoose');
 
 // app.use(cookie());
 app.use(express.json());

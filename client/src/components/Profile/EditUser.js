@@ -1,7 +1,7 @@
-import { Button, Col, Form, FormGroup, Label, Row } from "reactstrap";
+import { Button, Col, FormGroup, Label, Row } from "reactstrap";
 import Datetime from 'react-datetime';
 import styles from './Profile2.module.scss'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import PasswordUpdate from "./PasswordUpdate";
@@ -13,7 +13,7 @@ const UPDATE_USER = gql`mutation Update($userInput: UserUpdateInput, $image: Upl
   }`
 function EditUser(props) {
   const [changePassword, setChangePassword] = useState(false)
-  const [updateUser, { loadingU, errorU, dataU }] = useMutation(UPDATE_USER);
+  const [updateUser] = useMutation(UPDATE_USER);
   async function handleUpload() {
     try {
 

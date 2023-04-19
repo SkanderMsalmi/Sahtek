@@ -13,6 +13,8 @@ import { ContextProvider } from "./apis/socketContext";
 import { PeerProvider } from "./apis/peerContext";
 import ScrollToTop from "./components/scrollToTop";
 import style from "./App.module.scss";
+import Header from "./components/Headers/Header";
+import { Container } from "reactstrap";
 // import AnimatedHeader from './components/Header/AnimatedHeader';
 
 function App() {
@@ -42,7 +44,12 @@ function App() {
         <Provider store={store}>
           <PersistGate loading={null} persistor={Persistor}>
             <Suspense>
-              <Outlet />
+
+              <Header />
+              <Container className="mt-2 pl-4 pr-4 pt-2" fluid style={{ position: "relative", zIndex: 0 }}>
+
+                <Outlet />
+              </Container>
             </Suspense>
           </PersistGate>
         </Provider>

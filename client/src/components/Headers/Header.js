@@ -18,15 +18,25 @@
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import AdminNavbar from "../Navbars/AdminNavbar";
 
-const Header = () => {
+const Header = (props) => {
+
+
+  const getBrandText = () => {
+
+    return "Brand";
+  };
   return (
     <>
-      <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
-        <Container fluid style={{ zIndex: 1, position: "relative" }}>
-          <div className="header-body">
-            {/* Card stats */}
-            <Row>
+      <div className="header bg-gradient-info  ">
+        <div className="header-body">
+          <AdminNavbar
+            {...props}
+            brandText={getBrandText()}
+          />
+          {/* Card stats */}
+          {/* <Row>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
                   <CardBody>
@@ -141,9 +151,8 @@ const Header = () => {
                   </CardBody>
                 </Card>
               </Col>
-            </Row>
-          </div>
-        </Container>
+            </Row> */}
+        </div>
       </div>
     </>
   );

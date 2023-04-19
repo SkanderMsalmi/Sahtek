@@ -34,6 +34,8 @@ const Icons = React.lazy(() => import("./views/examples/Icons.js"));
 const Maps = React.lazy(() => import("./views/examples/Maps.js"));
 const ProfileAdmin = React.lazy(() => import("./views/examples/Profile.js"));
 const Tables = React.lazy(() => import("./views/examples/Tables.js"));
+const AdminProducts = React.lazy(() => import("./components/AdminProducts/AdminProducts"));
+
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -260,6 +262,10 @@ export const router = createBrowserRouter([
           {
             path: "user-profile",
             element: <ProfileAdmin />,
+          },
+          {
+            path: "products",
+            element: <AdminProducts />,
           }
         ]
 
