@@ -46,10 +46,11 @@ const Admin = (props) => {
         {...props}
         router={router}
         logo={{
-          innerLink: "/espace-admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png"),
-          imgAlt: "..."
+          innerLink: "/espace-admin",
+          imgSrc: require("../assets/img/logoSahtek.png"),
+          imgAlt: "Logo Sahtek"
         }}
+
         style={{ zIndex: 1000 }}
       />
       <div className="main-content" ref={mainContent}>
