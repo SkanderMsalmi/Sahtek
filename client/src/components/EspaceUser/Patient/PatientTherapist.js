@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "../../../store/users/users.selectors";
+import ChooseTherapist from "../../../pages/rdv/ChooseTherapist";
 import loader from "../../../assets/img/loading.gif";
 const THERAPISTSBYPATIENTS = gql`
   query GetTherapistsByPatient($id: ID!) {
@@ -56,34 +57,7 @@ const PatientTherapist = () => {
     return <div>Error: {therapistError.message}</div>;
   }
   return (
-    <div className="section">
-      <TherapistSearch />
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          columnGap: "5rem",
-          rowGap: "4rem",
-        }}
-      >
-        {therapistData &&
-          therapistData?.getTherapistsByPatient?.map((t, index) => (
-            <TherapistCard
-              key={index}
-              name={t.name}
-              image={t.profileImage}
-              description={t.therapist.description}
-              id={t.id}
-            />
-          ))}
-        {therapistData?.getTherapistsByPatient?.length === 0 && (
-          <div className=" section d-flex justify-content-center align-items-center w-100">
-            <h2>No Therapist Yet ...</h2>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    <ChooseTherapist/>)
 };
 
 export default PatientTherapist;

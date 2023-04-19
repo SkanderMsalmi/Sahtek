@@ -42,7 +42,7 @@ function Sidebar() {
                 <i className="fa-solid fa-gauge"></i>
               </NavIcon>
 
-              <NavText>Dashboard</NavText>
+              <NavText>Get Your Appointment</NavText>
             </NavItem>
             <NavItem
               eventKey="Appoitments"

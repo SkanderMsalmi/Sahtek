@@ -52,7 +52,7 @@ return(
                     <div className="table-responsive table-borderless"></div>
                         
                     <>
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-2 g-2">
                     {data.users.map((item) => (
   <div class="col">
     <div class="card">
