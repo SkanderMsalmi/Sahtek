@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import AppointmentDetails from './appDetails';
 import { Container } from "reactstrap";
 import { useMutation, useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+
 import { gql } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { selectUser } from "../../store/users/users.selectors";
@@ -53,6 +55,7 @@ mutation AcceptAppointment($idAppointment:ID!){
 
 const Appointments = () => {
   const therapist = useSelector(selectUser);
+  const navigate = useNavigate();
 
   const initialValues = {
     id: "",
@@ -88,6 +91,7 @@ const Appointments = () => {
     const handleButtonClick = (idAppointment) => {
       try {
         const { data } = AcceptAppointment({ variables: { idAppointment } });
+        navigate("/appforTherapist")
       } catch (error) {
         alert("!!!");
       }
@@ -138,7 +142,7 @@ console.log(data);
 
 <div class={`${styles.bloc}`}>
         <div className="d-flex justify-content-center row">
-            <div className="col-md-10">
+            <div className="col-md-8 3">
                 <div className="rounded">
                     <div className="table-responsive table-borderless">
                         <h1>Appointments</h1>
@@ -160,71 +164,11 @@ console.log(data);
       item.status==='Cancelled'?(
       <span className="badge badge-danger">Cancelled</span>):<span></span>}</MDBCardFooter>
        <div style={{paddingLeft:'70%'}}> 
-        <MDBBtn href='#' onClick={() => handleButtonClick(item.id)} disabled={item.status==='Confirmed'}  >Confirme</MDBBtn>
+        <button type="button" class="btn btn-success" onClick={() =>
+        handleButtonClick(item.id)} disabled={item.status==='Confirmed'}  >Confirme</button>
       </div>
     </MDBCard> ))}
-    {/* {data.getAppointments.map((item) => (
-                                    //<tr key={item.id}>
-                                    
-                                     
-    <div class="card" style={{width:"18em" }}>
-  <div class="card-body">
-    <h5 class="card-title">Patient Name: {datauser.users.map(ite =>{
-                                     return((ite.id === item.patient)&&<td> {(ite.name)}</td>)})}</h5>
-    <p class="card-text">Appointment Status:  {item.status === 'Confirmed' ? (
-        <span className="badge badge-success">Confirmed</span>
-      ) : item.status==='Completed'?(
-        <span className="badge badge-info">Completed</span>
-      ):item.status==='Scheduled'?(
-      <span className="badge badge-secondary">Scheduled</span>):
-      item.status==='Cancelled'?(
-      <span className="badge badge-danger">Cancelled</span>):<span></span>}</p>
-      <button type="button" class="btn btn-success" style={{width:'100px',height:'30px'}}>Confirm</button>
-  </div>
-</div>
-    ))} */}
-                        {/* <table className="table">
-                            <thead>
-                                <tr>
-                                    
-                                    <th>Patient Name</th>
-                                    <th>Reason For visit</th>
-                                    <th>status</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody className="table-body">
-                          {data.getAppointments.map((item) => (
-                                    //<tr key={item.id}>
-                                  <tr className="cell-1">
-                                     {datauser.users.map(ite =>{
-                                     return((ite.id === item.patient)&&<td> {(ite.name)}</td>)})}
-                                     
-                                     <td>{item.notes}</td>
-                                    <td>
-                                    {item.status === 'Confirmed' ? (
-        <span className="badge badge-success">Confirmed</span>
-      ) : item.status==='Completed'?(
-        <span className="badge badge-info">Completed</span>
-      ):item.status==='Scheduled'?(
-      <span className="badge badge-secondary">Scheduled</span>):
-      item.status==='Cancelled'?(
-      <span className="badge badge-danger">Cancelled</span>):<span></span>}</td>
-                                    <td>{new Date(item.date*1).getDate()}/{new Date(item.date * 1).getMonth()}/{new Date(item.date * 1).getFullYear() }   {new Date(item.date * 1).getHours() }:00 HH </td>
-                                    {/* <label>{new Date(datau?.user?.dateOfBirth * 1).getDate()}/{new Date(datau?.user?.dateOfBirth * 1).getMonth()}/{new Date(datau?.user?.dateOfBirth * 1).getFullYear() }</label> */}
-                                    {/* <td>{item.duration}</td>
-                                    <button type="button" class="btn btn-success" style={{width:'100px',height:'30px'}}>Confirm</button>
-                                    <button type="button" style={{width:'100px',height:'30px'}} class="btn btn-danger">Cancel</button>
-
-
-
-                                  </tr>
-                                  ))}
-                                
-                            </tbody>
-                        </table> */}
+   
                     </div>
                 </div>
             </div>
@@ -233,84 +177,7 @@ console.log(data);
 
 
 
-//     <container className={`${styles.bloc}`}>
-//       <h1>Appointments</h1>
-      
-//     <input type="text" placeholder="Search appointments" value={searchTerm} onChange={handleSearch} />
-//       <container >
-//       <table className={`${styles.table}`}>
-//         <thead>
-//           <tr>
-//             <th>Patient Name</th>
-//             <th>Appointment Date</th>
-//             <th>Reason for Visit</th>
-//             <th>View Details</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {/* {filteredAppointments.map((appointment) => ( */}
-//             <tr /*key={appointment.id}*/>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td>
-//                 <button >View Details</button>
-//               </td>
-//             </tr>
-        
-//         </tbody>
-        
-//       </table>
-// </container>       
-//     </container>
-/* <div className={`${styles.bloc}`}>
-<div class={`${styles.appointmentlist}`}>
-  <h1>Appointment List</h1>
-  <div class={`${styles.filterbar}`}>
-    <select>
-      <option value="today">Today</option>
-      <option value="this-week">This Week</option>
-      <option value="this-month">This Month</option>
-    </select>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Patient Name</th>
-        <th>Appointment Date</th>
-        <th>Reason for Visit</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John Doe</td>
-        <td>2022-04-15 10:30 AM</td>
-        <td>Check-up</td>
-        <td>
-          <a href="#">View Details</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Jane Smith</td>
-        <td>2022-04-16 2:00 PM</td>
-        <td>Dental Cleaning</td>
-        <td>
-          <a href="#">View Details</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Bob Johnson</td>
-        <td>2022-04-18 1:30 PM</td>
-        <td>Physical Exam</td>
-        <td>
-          <a href="AppoinmentDetails">View Details</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div> */
+
   );
 };
 

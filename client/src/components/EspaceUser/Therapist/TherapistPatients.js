@@ -1,5 +1,7 @@
+import AppforTherapist from "../../../pages/AppoinmentForTherapist/appforTherapist"
+
 const TherapistPatients = () => {
-  return <h1>Espace PatientSettings</h1>;
+  return <AppforTherapist/>;
 };
 
 export default TherapistPatients;

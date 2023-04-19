@@ -42,7 +42,7 @@ function Sidebar() {
                 <i className="fa-solid fa-gauge"></i>
               </NavIcon>
 
-              <NavText>Get Your Appointment</NavText>
+              <NavText>get your appontment</NavText>
             </NavItem>
             <NavItem
               eventKey="Appoitments"
@@ -56,7 +56,7 @@ function Sidebar() {
             </NavItem>
             <NavItem
               eventKey="Appoitments"
-              onClick={() => handleNavigate("/chooseTherapist")}
+              onClick={() => handleNavigate("/espace-patient/therapist")}
             >
               <NavIcon>
                 {" "}
