@@ -20,6 +20,7 @@ import React, { useContext } from "react";
 // nodejs library that concatenates strings
 import classnames from "classnames";
 // reactstrap components
+import logoSahtek from "../../assets/img/logoSahtek.png";
 import {
   Button,
   Collapse,
@@ -58,17 +59,7 @@ function Navigation() {
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
-      if (
-        document.documentElement.scrollTop > 299 ||
-        document.body.scrollTop > 299
-      ) {
-        setNavbarColor("");
-      } else if (
-        document.documentElement.scrollTop < 300 ||
-        document.body.scrollTop < 300
-      ) {
-        setNavbarColor("navbar-transparent");
-      }
+      setNavbarColor("");
     };
 
     window.addEventListener("scroll", updateNavbarColor);
@@ -85,8 +76,14 @@ function Navigation() {
             data-placement="bottom"
             href="/index"
             title="Mental Health Website"
+            style={{ padding: "0" }}
           >
-            Sahtek
+            <img
+              src={logoSahtek}
+              alt="Sahtek"
+              width="120px"
+              style={{ border: "1px solid gray" }}
+            />
           </NavbarBrand>
           <button
             aria-expanded={navbarCollapse}

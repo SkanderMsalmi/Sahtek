@@ -181,11 +181,22 @@ function Register() {
         navigate("/alertCheckMail");
       } catch (error) {
         console.log(error);
-        setError("generic", {
-          type: "generic",
-          error,
-          message: "Check Your Credentials",
-        });
+        if (
+          error.message === "Response not successful: Received status code 400"
+        ) {
+          setError("generic", {
+            type: "generic",
+            error,
+            message: "Error Occured, Try Again ...",
+          });
+        } else if (error.message === "User with that email already exists") {
+          setError("generic", {
+            type: "generic",
+            error,
+            message: "This Mail is Already Exists",
+          });
+        }
+
         console.log(errors);
       }
       // }

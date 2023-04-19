@@ -73,7 +73,8 @@ function Login2() {
       // Dispatch the action to update the store
       dispatch(userLoginSuccess(user, token));
       // Redirect the user to the dashboard page or other authorized page
-      navigate("/profile2");
+      if (user.role === "Patient") navigate("/espace-patient");
+      else navigate("/espace-therapist");
     } catch (error) {
       setError("generic", { type: "generic", error });
     }

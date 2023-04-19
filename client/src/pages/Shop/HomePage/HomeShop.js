@@ -76,7 +76,7 @@ const HomeShop = () => {
   }
   const filteredProducts = products.filter(
     (product) =>
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      product?.name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (selectedCategories.length === 0 ||
         selectedCategories.includes(product.category)) &&
       (maxPrice === "" || product.price < parseInt(maxPrice))

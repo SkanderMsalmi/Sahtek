@@ -58,7 +58,14 @@ const PatientTherapist = () => {
   return (
     <div className="section">
       <TherapistSearch />
-      <div style={{ display: "flex", flexWrap: "wrap", columnGap: "5rem", rowGap: "4rem" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          columnGap: "5rem",
+          rowGap: "4rem",
+        }}
+      >
         {therapistData &&
           therapistData?.getTherapistsByPatient?.map((t, index) => (
             <TherapistCard
@@ -69,9 +76,9 @@ const PatientTherapist = () => {
               id={t.id}
             />
           ))}
-        {!therapistData && (
-          <div className=" section d-flex justify-content-center align-items-center">
-            <p>No Therapist Yet ...</p>
+        {therapistData?.getTherapistsByPatient?.length === 0 && (
+          <div className=" section d-flex justify-content-center align-items-center w-100">
+            <h2>No Therapist Yet ...</h2>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 const PatientDashboard = () => {
-  return <h1>Espace PatientDashboard</h1>;
+  return <h1>Your Dashboard will be available soon ...</h1>;
 };
 
 export default PatientDashboard;
