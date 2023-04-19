@@ -17,6 +17,7 @@ import {
 } from "../../../store/shop/shop.actions";
 import Wishlist from "../../../components/Shop/WishList";
 import Slideshow from "../../../components/Shop/SlideShow";
+import { increment } from "../../../store/shop/cartSlice";
 
 const GET_PRODUCTS = gql`
   query GetAllProducts {
@@ -82,7 +83,7 @@ const HomeShop = () => {
       (maxPrice === "" || product.price < parseInt(maxPrice))
   );
   function addToCart(product) {
-    setCart((prevCart) => [...prevCart, product]);
+    dispatch (increment(product));
   }
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
