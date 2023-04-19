@@ -44,7 +44,7 @@ const resolvers = {
         "_id"
       );
     
-      return await Post.find({ community: { $in: list } });
+      return await Post.find({ community: { $in: list } }).sort({ $natural: -1 })
     },
 
    
@@ -60,6 +60,7 @@ const resolvers = {
 
   Mutation: {
     async createPost(_, { postInput: { description, user, title, community } }) {
+      const existedTitle = Post.findOne({title });
       const createdPost = new Post({
         description: description,
         user: user,

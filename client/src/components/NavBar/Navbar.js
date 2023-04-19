@@ -147,6 +147,16 @@ function Navigation() {
                     <NavItem>
                       <Button
                         className="btn-round"
+                        color="info"
+                        tag={Link}
+                        to="/forum"
+                      >
+                        Forum
+                      </Button>
+                    </NavItem>
+                    <NavItem>
+                      <Button
+                        className="btn-round"
                         color="secondary"
                         tag={Link}
                         to="/espace-patient"
@@ -156,6 +166,17 @@ function Navigation() {
                     </NavItem>
                   </>
                 ) : (
+                  <>
+                   <NavItem>
+                      <Button
+                        className="btn-round"
+                        color="info"
+                        tag={Link}
+                        to="/forum"
+                      >
+                        Forum
+                      </Button>
+                    </NavItem>
                   <NavItem>
                     <Button
                       className="btn-round"
@@ -166,6 +187,8 @@ function Navigation() {
                       Espace Therapist
                     </Button>
                   </NavItem>
+                  </>
+                  
                 )}
                 <NavItem>
                   <Button
