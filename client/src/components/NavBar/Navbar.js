@@ -78,12 +78,14 @@ function Navigation() {
             title="Mental Health Website"
             style={{ padding: "0" }}
           >
-            <img
-              src={logoSahtek}
-              alt="Sahtek"
-              width="120px"
-              style={{ border: "1px solid gray" }}
-            />
+            <Link to={"/"}>
+              <img
+                src={logoSahtek}
+                alt="Sahtek"
+                width="120px"
+                style={{ border: "1px solid gray" }}
+              />
+            </Link>
           </NavbarBrand>
           <button
             aria-expanded={navbarCollapse}
