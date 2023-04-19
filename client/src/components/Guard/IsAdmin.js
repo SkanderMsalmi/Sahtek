@@ -6,7 +6,7 @@ const IsAdmin = (Component) => {
   const AdminGuard = (props) => {
     const user = useSelector(selectUser);
 
-    if (user.role === "Admin") {
+    if (user.role !== "Admin") {
       // If the user is not logged in, redirect to the login page
       return <Navigate to="/profile" />;
     }

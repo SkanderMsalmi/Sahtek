@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./AdminNavbar.module.scss";
 // reactstrap components
 import {
@@ -34,17 +34,22 @@ import {
   Container,
   Media
 } from "reactstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
-import { useEffect } from "react";
+import { userLogout } from "../../store/users/user.actions";
 
 const AdminNavbar = (props) => {
   const user = useSelector(selectUser);
-  useEffect(() => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-
-    console.log(user)
-  }, [])
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem("token");
+    // Dispatch the action to update the store
+    dispatch(userLogout());
+    navigate("/login");
+  };
 
   return (
     <>
@@ -90,7 +95,7 @@ const AdminNavbar = (props) => {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                {/* <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>
@@ -106,8 +111,8 @@ const AdminNavbar = (props) => {
                   <i className="ni ni-support-16" />
                   <span>Support</span>
                 </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem divider /> */}
+                <DropdownItem href=" " onClick={handleLogout}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>

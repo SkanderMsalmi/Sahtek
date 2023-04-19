@@ -34,6 +34,12 @@ export const LOGIN_MUTATION = gql`
         role
         verified
         profileImage
+        therapist {
+          id
+        }
+        patient{
+          id
+        }
         
       }
     }
