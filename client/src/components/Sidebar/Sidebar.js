@@ -56,7 +56,7 @@ function Sidebar() {
             </NavItem>
             <NavItem
               eventKey="Appoitments"
-              onClick={() => handleNavigate("/chooseTherapist")}
+              onClick={() => handleNavigate("/espace-patient/therapist")}
             >
               <NavIcon>
                 {" "}
