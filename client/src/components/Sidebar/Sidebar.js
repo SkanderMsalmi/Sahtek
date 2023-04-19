@@ -81,7 +81,6 @@ function Sidebar() {
             <NavItem
               eventKey="dashboard"
               onClick={() => handleNavigate("/espace-therapist")}
-              active
             >
               <NavIcon>
                 {" "}

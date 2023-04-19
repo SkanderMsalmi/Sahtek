@@ -1,6 +1,6 @@
-import appforTherapist from "../../../pages/AppoinmentForTherapist/appforTherapist" 
+import AppforTherapist from "../../../pages/AppoinmentForTherapist/appforTherapist";
 const TherapistAppointments = () => {
-  return <appforTherapist/>;
+  return <AppforTherapist />;
 };
 
 export default TherapistAppointments;
