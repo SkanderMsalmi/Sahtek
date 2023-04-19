@@ -253,6 +253,11 @@ function ForumHomepage() {
 
 
     };
+    useEffect(() => {
+        if (data) {
+            refetch();
+        }
+    }, [data]);
 
 
 
