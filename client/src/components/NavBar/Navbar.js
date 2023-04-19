@@ -170,7 +170,7 @@ function Navigation() {
                     className="btn-round"
                     color="primary"
                     tag={Link}
-                    to="/profile2"
+                    to="/profile"
                   >
                     Profile
                   </Button>
