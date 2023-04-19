@@ -30,7 +30,7 @@ const Feedback = React.lazy(() => import("./pages/Feedback/Feedback"));
 // Consultation
 const VideoCall = React.lazy(() => import("./pages/videoCall/videoCall"));
 const VideoChat = React.lazy(() => import("./pages/videoChat/videoChat"));
-const Rdv = React.lazy(() => import("./pages/rdv/rdv"));
+const Rdv = React.lazy(() => import("./pages/rdv/Rdv"));
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );

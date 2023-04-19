@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   Card,
   CardImg,
@@ -8,20 +10,27 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import {
+ 
+  increment,
+ 
+} from '../../store/shop/cartSlice';
 import "./CardProduct.scss";
 import { FaShoppingCart } from "react-icons/fa";
 function CardProduct({ product, isWishlist, onToggleWishlist }) {
   const [liked, setLiked] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const dispatch = useDispatch();
+
   const toggleLike = (event) => {
     event.stopPropagation();
     console.log(product.id);
     onToggleWishlist(product.id);
   };
-  const handleAddToCart = () => {
-    // Your code to add product to cart goes here
-    setIsAddedToCart(!isAddedToCart);
+  const handleAddToCart = (p) => {
+    dispatch(increment(p));
   };
+ 
   const likeClass = isWishlist ? "fas" : "far";
 
   return (
@@ -46,7 +55,7 @@ function CardProduct({ product, isWishlist, onToggleWishlist }) {
             <FaShoppingCart
               size={20}
               color={isAddedToCart ? "green" : "black"}
-              onClick={handleAddToCart}
+              onClick={handleAddToCart(product)}
               style={{ margin: "0.6rem" }}
             />
           </Col>
