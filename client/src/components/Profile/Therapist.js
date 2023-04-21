@@ -402,7 +402,11 @@ function Therapist(props) {
                           onChange={(e) =>
                             handleEndTime(e, index)
                           }>
-                          {defaultTime.filter((d) => d > editInfo.availability[index].startTime).map((time, index) => (
+                          {editInfo.availability.length == 0 ? defaultTime.slice(1).map((time, index) => (
+                            <option key={index} value={time}>
+                              {time}
+                            </option>
+                          )) : defaultTime.filter((d) => d > editInfo.availability[index].startTime).map((time, index) => (
                             <option key={index} value={time}>
                               {time}
                             </option>

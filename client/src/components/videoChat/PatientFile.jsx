@@ -93,7 +93,6 @@ function PatientFile({ show, handleClick }) {
         variables: { id: remoteId }
     });
     if (loading) return <p>Loading...</p>;
-    if (!data) return <p>No data found.</p>;
 
     return (
 

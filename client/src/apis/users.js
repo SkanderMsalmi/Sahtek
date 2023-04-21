@@ -36,6 +36,7 @@ export const LOGIN_MUTATION = gql`
         profileImage
         therapist {
           id
+          description
         }
         patient{
           id
