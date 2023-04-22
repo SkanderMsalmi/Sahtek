@@ -5,6 +5,7 @@ export const GET_COMMUNITIES = gql
       getAllCommunities {
         id
         name
+        color
         createdAt
         description
         members {
@@ -59,7 +60,9 @@ export const JOIN_COMMUNITY = gql
       time
       title
       community {
+        id
         name
+        color
       }
       
       user {
@@ -83,7 +86,7 @@ export const COMMUNITY = gql
 `  query Community($id: ID!, $user: ID!) {
   community(id: $id) {
     name
-  
+    color
     members {
       id
     }

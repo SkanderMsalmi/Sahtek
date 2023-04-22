@@ -13,7 +13,7 @@ import { GET_POST } from "../../apis/forum";
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_POSTS } from "../../apis/forum";
-import { Col } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/users/users.selectors';
 import { TbArrowBigUp, TbArrowBigUpFilled } from 'react-icons/tb';
@@ -142,60 +142,61 @@ function PostComments() {
 
     <div className={styles.containerFluid}>
       {loading2 ? (<p>Loading...</p>) : (
+   <Col lg="6" md="12">
         <div className={styles.container}>
 
 
           <div className={styles.post_container}>
-            <div>
 
-              <div className={styles.darkSection}>
-                <label>{data?.getPost?.user?.name}'s Post</label>
 
-                <Link to={`/forum`}>
-                  <button
-                    aria-label="Close"
-                    className="close"
-                    type="button"
+            <div className={styles.darkSection}>
+              <label>{data?.getPost?.user?.name}'s Post</label>
 
-                  >
-                    <span aria-hidden={true}>×</span>
-                  </button>
-                </Link>
+              <Link to={`/forum`}>
+                <button
+                  aria-label="Close"
+                  className="close"
+                  type="button"
+
+                >
+                  <span aria-hidden={true}>×</span>
+                </button>
+              </Link>
+            </div>
+
+            <div className={styles.card}>
+              <div className={styles.cardSide}>
+                {data?.getPost?.isLiked ? <TbArrowBigUpFilled className={styles.upvoteIcon} onClick={() => { removelike(data?.getPost?.id) }} /> :
+                  <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(data?.getPost?.id) }} />
+                }
+
+                <label>{data?.getPost?.like?.length}</label>
               </div>
 
-              <div className={styles.card}>
-                <div className={styles.cardSide}>
-                  {data?.getPost?.isLiked ? <TbArrowBigUpFilled className={styles.upvoteIcon} onClick={() => { removelike(data?.getPost?.id) }} /> :
-                    <TbArrowBigUp className={styles.upvoteIcon} onClick={() => { likePost(data?.getPost?.id) }} />
-                  }
-
-                  <label>{data?.getPost?.like?.length}</label>
-                </div>
-
-                <div className={styles.cardContent}>
-                  <div className={styles.cardHeader}>
-                    <div className="d-flex  align-items-center">
-                      <div className={styles.userImg}>
-                        <img src={data?.getPost?.user?.profileImage} alt="" />
-                      </div>
-                      <div>
-                        <span>{data?.getPost?.user?.name}</span>  <br />
-                        <small> <Moment fromNow>{data?.getPost?.time}</Moment></small>
-                      </div>
-
+              <div className={styles.cardContent}>
+                <div className={styles.cardHeader}>
+                  <div className="d-flex  align-items-center">
+                    <div className={styles.userImg}>
+                      <img src={data?.getPost?.user?.profileImage} alt="" />
+                    </div>
+                    <div>
+                      <span>{data?.getPost?.user?.name}</span>  <br />
+                      <small> <Moment fromNow>{data?.getPost?.time}</Moment></small>
                     </div>
 
                   </div>
-                  <div className={styles.cardBody}>
-                    <p className={styles.title}>{data?.getPost?.title}</p>
-                    <p>{data?.getPost?.description}</p>
-                  </div>
 
                 </div>
+                <div className={styles.cardBody}>
+                  <p className={styles.title}>{data?.getPost?.title}</p>
+                  <p>{data?.getPost?.description}</p>
+                </div>
+
               </div>
-
-
             </div>
+
+
+
 
 
 
@@ -225,23 +226,28 @@ function PostComments() {
               <>
 
                 <div className={styles.comment_card}>
-
-                  <div className={styles.cardSide2}>
-                    <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
-                  </div>
-
-
-                  <div className='d-flex flex-column '>
-                    <div className={styles.cardContent}>
-                      <small className={styles.username}> {p.user?.name}</small>
-                      <p>{p.description}</p>
+                  <Row>     <Col lg="1" md="1" sm="1">
+                    <div className={styles.cardSide2}>
+                      <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
                     </div>
-                    <small ><Moment fromNow>{p?.time}</Moment></small>
+                  </Col>
+                    <Col lg="11" md="11" sm="11">
+                      <div className='d-flex flex-column '>
+                        <div className={styles.cardContent} >
+                          <small className={styles.username}> {p.user?.name}</small>
+                          <p   >{p.description}</p>
+                        </div>
+                        <small ><Moment fromNow>{p?.time}</Moment></small>
 
-                  </div>
+                      </div></Col>
+                  </Row>
+
+
+
 
 
                 </div>
+
 
 
 
@@ -258,11 +264,13 @@ function PostComments() {
 
 
         </div>
+        </Col>
       )}
 
 
 
     </div>
+
   )
 
 }

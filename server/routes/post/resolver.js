@@ -39,19 +39,19 @@ const resolvers = {
 
 
     async findPostByUserCommunities(_, { id }) {
-       
+
       const list = await Community.find({ members: ObjectId(id) }).distinct(
         "_id"
       );
-    
+
       return await Post.find({ community: { $in: list } }).sort({ $natural: -1 })
     },
 
-   
 
-    
 
-   
+
+
+
 
 
 
@@ -60,14 +60,13 @@ const resolvers = {
 
   Mutation: {
     async createPost(_, { postInput: { description, user, title, community } }) {
-      const existedTitle = Post.findOne({title });
+      const existedTitle = Post.findOne({ title });
       const createdPost = new Post({
         description: description,
         user: user,
         time: new Date(),
         like: [],
-        likesCount: 0,
-        commentsCount: 0,
+       
         title: title,
         community: community,
       });
@@ -99,9 +98,9 @@ const resolvers = {
       const post = await Post.findById(id);
       if (post) {
         const u = await post.like.includes(user)
-        if (!u) {         
+        if (!u) {
 
-          return await Post.findByIdAndUpdate(id, { $push: { like: user }}, { new: true })
+          return await Post.findByIdAndUpdate(id, { $push: { like: user } }, { new: true })
 
         }
       }
@@ -119,7 +118,7 @@ const resolvers = {
       if (post) {
         const u = await post.like.includes(user)
         if (u) {
-        
+
 
           return await Post.findByIdAndUpdate(id, { $pull: { like: user } }, { new: true })
 
@@ -146,13 +145,21 @@ const resolvers = {
 
 
     async createCommunity(_, { name, description, creator }) {
+      function generateRandomColor() {
+        const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        return color;
+      }
+      const existingCommunity = await Community.findOne({ name: { $regex: `^${name}$`, $options: 'i' } });
+      if (existingCommunity) {
+        throw new Error('A community with this name already exists');
+      }
       const createdCommunity = new Community({
         name: name,
         description: description,
         createdAt: new Date(),
         members: [],
         creator: creator,
-
+        color: generateRandomColor()
 
       });
       const res = await createdCommunity.save();
@@ -198,11 +205,11 @@ const resolvers = {
     },
 
 
-   leaveCommunity: async (parent, args, context, info) => {
+    leaveCommunity: async (parent, args, context, info) => {
       const { id } = args;
       const { userId } = args;
       const community = await Community.findById(id);
-     
+
       if (community) {
         if (community.members.includes(userId)) {
           community.members.pull(userId);
@@ -244,17 +251,17 @@ const resolvers = {
       let users = [];
       if (parent.like) {
         users = await User.find({ _id: { $in: parent.like } });
-      } 
+      }
       return users;
     },
     comments: async (parent, args) => {
       return await Comment.find({ post: parent._id });
     },
-   
-    
-     
-    
-    
+
+
+
+
+
     isLiked: async (post, { user }) => {
 
       // Check if the current user's ID is in the list of users who have liked the post

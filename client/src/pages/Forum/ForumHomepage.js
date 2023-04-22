@@ -22,7 +22,7 @@ import {
 
 import { CREATE_POST_MUTATION } from "../../apis/forum";
 import { DELETE_POST_MUTATION } from "../../apis/forum";
-import { Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
+import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import { fixObservableSubclass } from '@apollo/client/utilities';
 import Moment from 'react-moment';
 // GET_COMMUNITIES  CREATE_COMMUNITY  DELETE_COMMUNITY  JOIN_COMMUNITY
@@ -31,21 +31,10 @@ import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY } fr
 
 function ForumHomepage() {
 
-    const [modal, setModal] = React.useState(false);
-    const [modal2, setModal2] = React.useState(false);
-    const [communityDesc, setCommunityDesc] = React.useState();
-    const [communityName, setCommunityName] = React.useState();
-
-    const [postText, setPostText] = useState();
-    const [title, setTitle] = useState();
-    const [community, setCommunity] = useState();
-    const [joined, setSetjoined] = useState("Joined");
-    const [joinCommunities, setjoinCommunities] = useState(false);
-
-
-
-
+  
     const user = useSelector(selectUser);
+    const [alertMessage, setAlertMessage] = useState('');
+
     const { loading, error, data, refetch } = useQuery(GET_POSTS, {
         variables: { user: user.id },
     });
@@ -78,6 +67,31 @@ function ForumHomepage() {
     const [createPost, { data: dataP, loading: loadingP, error: errorP }] = useMutation(
         CREATE_POST_MUTATION
     );
+
+    const [modal, setModal] = React.useState(false);
+    const [modal2, setModal2] = React.useState(false);
+    const [communityDesc, setCommunityDesc] = React.useState('');
+    const [communityName, setCommunityName] = React.useState('');
+
+    const [postText, setPostText] = useState('');
+    const [title, setTitle] = useState('');
+    const [community, setCommunity] = useState('');
+   
+    const [buttonTexts, setButtonTexts] = useState(['Joined']);
+    const [joinCommunities, setjoinCommunities] = useState(false);
+
+
+
+
+ 
+
+ 
+    useEffect(() => {
+        if (dataCom?.getAllCommunities) {
+console.log(buttonTexts);        }
+    }, [dataCom]);
+
+
     ///***  choose community */
     const handleChange = (event) => {
         setCommunity(event.target.value)
@@ -91,6 +105,21 @@ function ForumHomepage() {
     const toggleModal2 = () => {
         setModal2(!modal2);
     };
+
+    const resetCommunitymodal = () => {
+        setCommunityDesc('');
+        setCommunityName('');
+        setAlertMessage('');
+
+    }
+    const resetPostmodal = () => {
+        setPostText('');
+        setTitle('');
+
+
+    }
+
+    
 
     //** join community*/
     function join(communityID) {
@@ -212,9 +241,9 @@ function ForumHomepage() {
         }).then(() => {
 
             setModal(!modal);
-            setPostText();
-            setTitle();
-            setCommunity();
+            setPostText('');
+            setTitle('');
+            setCommunity('');
             refetch();
         })
             .catch(errorP => console.error(errorP));
@@ -230,10 +259,7 @@ function ForumHomepage() {
 
         createCommunity({
             variables: {
-
-
                 description: communityDesc,
-
                 name: communityName,
                 creator: user.id,
 
@@ -243,13 +269,14 @@ function ForumHomepage() {
 
         }).then(() => {
             setModal2(!modal2);
-            setCommunityDesc();
-            setCommunityName();
+            setCommunityDesc('');
+            setCommunityName('');
+            setAlertMessage('');
 
 
         })
-            // .then((d)=>{ navigate(`/mail-verification/${d.data.register.id}`);})
-            .catch(errorCC => console.error(errorCC));
+            .catch(errorCC => setAlertMessage(`${errorCC.message}`)
+            );
 
 
     };
@@ -263,6 +290,26 @@ function ForumHomepage() {
 
     if (loadingC) return <p>loading...</p>
     if (loadingCom) return <p>loading...</p>
+    
+    const handleMouseOver = (index) => {
+        setButtonTexts((prevButtonTexts) => {
+          const newButtonTexts = [...prevButtonTexts];
+          newButtonTexts[index] =
+            prevButtonTexts[index] === 'Leave' ? 'Joined' : 'Leave';
+          return newButtonTexts;
+        });
+      };
+
+      const handleMouseLeave = (index) => {
+        setButtonTexts((prevButtonTexts) => {
+          const newButtonTexts = [...prevButtonTexts];
+          newButtonTexts[index] =
+            prevButtonTexts[index] === 'Leave' ? 'Joined':'Joined';
+          return newButtonTexts;
+        });
+      };
+     
+     
 
     return (
 
@@ -291,7 +338,7 @@ function ForumHomepage() {
                                 aria-label="Close"
                                 className="close"
                                 type="button"
-                                onClick={toggleModal}
+                                onClick={() => { toggleModal(); resetPostmodal(); }}
                             >
                                 <span aria-hidden={true}>×</span>
                             </button>
@@ -303,12 +350,7 @@ function ForumHomepage() {
                             </h5>
                         </div>
                         <div className={styles.modalContent}>
-                            {/* <textarea type="text"
-                            placeholder="community"
-                            name="community"
-                            value={community}
-                            className={styles.input}
-                            onChange={(e) => setCommunity(e.target.value)} /> */}
+
                             <div className={styles.select}>
                                 <select className="form-control" aria-label=".form-select-sm example"
                                     value={community} onChange={handleChange}>
@@ -323,7 +365,7 @@ function ForumHomepage() {
                             </div>
 
 
-                            <textarea type="text"
+                            <input type="text"
                                 placeholder="Title"
                                 name="title"
                                 value={title}
@@ -349,7 +391,7 @@ function ForumHomepage() {
                                     className="btn-link"
                                     color="default"
                                     type="button"
-                                    onClick={toggleModal}
+                                    onClick={() => { toggleModal(); resetPostmodal(); }}
                                 >
                                     Cancel
                                 </Button>
@@ -404,7 +446,9 @@ function ForumHomepage() {
                                             <div className={styles.cardContent}>
                                                 <div className={styles.cardHeader}>
                                                     <div className={styles.row}>
-                                                        <label className="label label-primary mr-1">{p?.community?.name}</label>
+                                                        <Link to={`/community/${p?.community?.id}`}  >
+                                                            <label className="label  mr-1" style={{ background: p?.community?.color, cursor: "pointer" }}>{p?.community?.name}</label>
+                                                        </Link>
 
 
 
@@ -472,19 +516,19 @@ function ForumHomepage() {
 
                             <Container >
 
-                               
-                                <Row className={styles.cardHeader}>
-                                        <h3>Join Communities</h3>
-                                        <button
-                                            aria-label="Close"
-                                            className="close"
-                                            type="button"
-                                            onClick={() => {setjoinCommunities(!joinCommunities); refetch(); }}
-                                        >
-                                            <span aria-hidden={true}>×</span>
-                                        </button>
 
-                                  
+                                <Row className={styles.cardHeader}>
+                                    <h3>Join Communities</h3>
+                                    <button
+                                        aria-label="Close"
+                                        className="close"
+                                        type="button"
+                                        onClick={() => { setjoinCommunities(!joinCommunities); refetch(); }}
+                                    >
+                                        <span aria-hidden={true}>×</span>
+                                    </button>
+
+
 
 
                                 </Row>
@@ -498,10 +542,11 @@ function ForumHomepage() {
 
                                         <hr />
                                         <ul className="list-unstyled follows">
-                                            {dataCom?.getAllCommunities?.map((c) => {
+                                            {dataCom?.getAllCommunities?.map((c,index) => {
+
                                                 return (
                                                     <>
-                                                        <li>
+                                                        <li key={c.id}>
                                                             <Row className="d-flex justify-content-center align-items-center ">
 
                                                                 <Col lg="8" md="4" xs="4">
@@ -513,7 +558,12 @@ function ForumHomepage() {
 
                                                                 <Col lg="1" md="6">
                                                                     {(c.members.filter((m) => m.id === user.id).length > 0) ?
-                                                                        <Button size="sm" className="btn-round" color="neutral" onClick={() => leave(c.id)} onMouseLeave={() => setSetjoined("Joined")} onMouseOver={() => setSetjoined("Leave")}> {joined}</Button>
+                                                                        <Button size="sm" className="btn-round" color="neutral" onClick={() => leave(c.id)} 
+                                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                                        onMouseOver={() => handleMouseOver(index)}
+                                                                        >
+                                                                        {buttonTexts[index] ?? 'Joined'}
+                                                                      </Button>
                                                                         : <Button size="sm" className="btn-round" color="info" onClick={() => join(c.id)}> Join</Button>}
                                                                 </Col>
                                                             </Row>
@@ -595,7 +645,7 @@ function ForumHomepage() {
                                 aria-label="Close"
                                 className="close"
                                 type="button"
-                                onClick={toggleModal2}
+                                onClick={() => { toggleModal2(); resetCommunitymodal(); }}
                             >
                                 <span aria-hidden={true}>×</span>
                             </button>
@@ -606,11 +656,12 @@ function ForumHomepage() {
                                 Create Community
                             </h5>
                         </div>
-                        <div className='d-flex flex-column align-items-center' >
+                        <div className={styles.modalContent}>
 
-
-
-                            <textarea type="text"
+                            {alertMessage && <Alert color="danger" style={{ width: "100%" }}>
+                                {alertMessage}
+                            </Alert>}
+                            <input type="text"
                                 placeholder="Name"
                                 name="name"
                                 value={communityName}
@@ -632,7 +683,7 @@ function ForumHomepage() {
                                     className="btn-link"
                                     color="default"
                                     type="button"
-                                    onClick={toggleModal2}
+                                    onClick={() => { toggleModal2(); resetCommunitymodal(); }}
                                 >
                                     Cancel
                                 </Button>

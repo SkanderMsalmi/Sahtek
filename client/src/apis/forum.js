@@ -8,7 +8,9 @@ export const GET_POSTS = gql
     time
     title
     community {
+      id
       name
+      color
     }
     user {
       id
