@@ -10,7 +10,7 @@ import pandas as pd
 from time import sleep
 
 def profanity_filter(text):
-    profanity_list = ['fuck','unfuck' , 'shit', 'asshole', 'bitch', 'damn']
+    profanity_list = ['fuck','unfuck' , 'shit', 'asshole', 'bitch', 'damn', 'dick']
     
     words = text.split()
     

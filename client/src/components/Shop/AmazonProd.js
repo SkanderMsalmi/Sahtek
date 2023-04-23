@@ -11,12 +11,12 @@ import {
   Col,
 } from "reactstrap";
 
-import "./CardProduct.scss";
+import "./AmazonProd.scss";
 function AmazonProd({ product }) {
-  const [title, description] = product.product.split(":");
+  const [title, description, description2] = product.product.split(":");
   return (
-    <Card className="card-product">
-      <div className="card-product-image-wrapper">
+    <Card className="card-amazon">
+      <div className="card-amazon-image-wrapper">
         <CardImg top width="100%" style={{ height: "15rem" }} src={product.image} alt={product.name} />
         {/* <div className="like-icon" onClick={toggleLike}>
           <i
@@ -27,7 +27,7 @@ function AmazonProd({ product }) {
       </div>
       <CardBody>
         <CardTitle className="h5" title={title}>{title}</CardTitle>
-        <CardText>{description}</CardText>
+        <CardText>{description}{description2 ? ':' + description2 : ''}</CardText>
 
         <CardText>  <div style={{ display: "-webkit-inline-box" }}> <Rating
           count={5}

@@ -22,7 +22,7 @@ import Slideshow from "../../../components/Shop/SlideShow";
 import { increment } from "../../../store/shop/cartSlice";
 import { Spinner } from "reactstrap";
 import AmazonProd from "../../../components/Shop/AmazonProd";
-
+import styles from "./HomeShop.Module.scss";
 const GET_PRODUCTS = gql`
   query GetAllProducts {
     getAllProducts {
@@ -213,7 +213,7 @@ const HomeShop = () => {
         {loadingAmazon && <Spinner />}
         {JSON.parse(dataAmazon?.getAmazonProducts).map((product, index) => (
           <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-3">
-            <a href={product.productUrl} target="_blank"> <AmazonProd product={product} /></a>
+            <a href={product.productUrl} target="_blank"> <AmazonProd className={styles.amz} product={product} /></a>
           </div>
         ))}
 
