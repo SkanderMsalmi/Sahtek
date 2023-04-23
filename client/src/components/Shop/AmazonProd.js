@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Rating from "react-rating-stars-component";
 
 import {
   Card,
@@ -28,7 +29,14 @@ function AmazonProd({ product }) {
         <CardTitle className="h5" title={title}>{title}</CardTitle>
         <CardText>{description}</CardText>
 
-        <CardText>{product.rating}<br /><small> ({product.ratingCount} ratings)</small></CardText>
+        <CardText>  <div style={{ display: "-webkit-inline-box" }}> <Rating
+          count={5}
+          size={30}
+          activeColor="#ffd700"
+          isHalf={true}
+          value={Math.round(product.rating.split(' ')[0] * 2) / 2}
+          edit={false}
+        /><small>{product.rating.split(' ')[0].split('.')[1] === '0' ? product.rating.split(' ')[0].split('.')[0] : product.rating.split(' ')[0]}/5</small></div><br /><small> ({product.ratingCount} ratings)</small></CardText>
         <Row>
           <Col xs={6} className="price">
             ${product.price}
