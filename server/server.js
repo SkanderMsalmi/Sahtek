@@ -5,7 +5,18 @@ const app = express();
 const { ApolloServer } = require('apollo-server-express');
 var cors = require('cors')
 const socketio = require('socket.io');
+const { spawn } = require("child_process");
 
+
+const runAmazonProducts = async () => {
+  return new Promise((resolve, reject) => {
+    const childPython = spawn('python', ['utils/datamining.py']);
+    var result = '';
+    return result;
+
+  })
+
+}
 // app.use(cookie());
 app.use(express.json());
 app.use(express.static('upload'));
@@ -24,7 +35,12 @@ require('./database');
 
 app.use(cors(corsOptionsDelegate));
 
+setInterval(async () => {
+  await runAmazonProducts();
+}, 1000 * 60 * 60 * 24);
+runAmazonProducts();
 const startServer = async () => {
+
   app.use(graphqlUploadExpress());
   const apolloServer = new ApolloServer({
     typeDefs: require('./schemas'),

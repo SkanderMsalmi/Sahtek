@@ -83,7 +83,7 @@ function Navigation() {
                 src={logoSahtek}
                 alt="Sahtek"
                 width="120px"
-                style={{ border: "1px solid gray" }}
+                style={{ border: "1px solid gray", mixBlendMode: "color-burn" }}
               />
             </Link>
           </NavbarBrand>
@@ -167,7 +167,7 @@ function Navigation() {
                   </>
                 ) : (
                   <>
-                   <NavItem>
+                    <NavItem>
                       <Button
                         className="btn-round"
                         color="info"
@@ -177,18 +177,18 @@ function Navigation() {
                         Forum
                       </Button>
                     </NavItem>
-                  <NavItem>
-                    <Button
-                      className="btn-round"
-                      color="secondary"
-                      tag={Link}
-                      to="/espace-therapist"
-                    >
-                      Espace Therapist
-                    </Button>
-                  </NavItem>
+                    <NavItem>
+                      <Button
+                        className="btn-round"
+                        color="secondary"
+                        tag={Link}
+                        to="/espace-therapist"
+                      >
+                        Espace Therapist
+                      </Button>
+                    </NavItem>
                   </>
-                  
+
                 )}
                 <NavItem>
                   <Button

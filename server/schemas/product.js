@@ -21,6 +21,7 @@ module.exports = gql`
     getProduct(ID: ID!): Product
     getAllProducts: [Product]
     getCategories: [String]
+    getAmazonProducts: String
   }
   type Mutation {
     addProduct(productInput: ProductInput, image: Upload): Product
