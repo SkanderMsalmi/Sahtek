@@ -25,7 +25,6 @@ function AdminProducts() {
 
     const toggle = () => setModal(!modal);
     useEffect(() => {
-        console.log("aaaa", data)
         if (data) {
             setProducts(data.getAllProducts)
         }
