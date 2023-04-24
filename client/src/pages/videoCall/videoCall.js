@@ -37,9 +37,14 @@ function VideoCall() {
     });
 
     const [ready, setReady] = useState(false);
-    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream } = useContext(PeerContext);
+    const { peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream, setRemoteId } = useContext(PeerContext);
     // const { name, me, callAccepted, myVideo, userVideo, callEnded, stream, leaveCall, call, callUser  } = useContext(SocketContext);
     const { socket, isVideo, setStarted } = useContext(SocketContext);
+    useEffect(() => {
+        if (data) {
+            setRemoteId(data.getAppointment.patient.id === user.id ? data.getAppointment.therapist.id : data.getAppointment.patient.id);
+        }
+    }, [data, user])
     useEffect(() => {
         if (myStream) {
             myStream.getVideoTracks()[0].enabled = isVideo;
@@ -122,6 +127,9 @@ function VideoCall() {
     useEffect(() => {
         getUserMediaStream();
     }, [getUserMediaStream, handleCallAccepted])
+    useEffect(() => {
+        console.log(data);
+    }, [data])
     const handleNegotiation = useCallback(async () => {
         const offer = await createOffer(remoteEmail);
         socket.emit("call-user", { emailId: remoteEmail, offer })
@@ -135,10 +143,14 @@ function VideoCall() {
     if (loading) {
         return <VideoChat> <div className="spinner-border text-light" style={{ alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}></div> </VideoChat>
     }
+    if (data === undefined) {
+        return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>Room does not exist</h1> </VideoChat>
+    }
     if (error) {
         return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>Room does not exist</h1> </VideoChat>
     }
-    if (user.id !== data.getAppointment.patient.id && user.id !== data.getAppointment.therapist.id) {
+
+    if (user.id !== data.getAppointment?.patient.id && user.id !== data.getAppointment?.therapist.id) {
         return <VideoChat> <h1 className="text-light" style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>You are not a part of this room</h1> </VideoChat>
     }
     if (data.getAppointment.status !== "Confirmed") {

@@ -3,6 +3,7 @@ import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 const PeerContext = createContext();
 const PeerProvider = ({ children }) => {
     const [myStream, setMyStream] = useState(null);
+    const [remoteId, setRemoteId] = useState("");
 
     const [remoteStream, setRemoteStream] = useState(null);
     const peer = useMemo(() => new RTCPeerConnection({
@@ -42,7 +43,7 @@ const PeerProvider = ({ children }) => {
         }
     }, [handleTrackEvent, peer])
     return (
-        <PeerContext.Provider value={{ peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream }}>
+        <PeerContext.Provider value={{ peer, createOffer, createAnswer, setRemoteAnswer, sendStream, remoteStream, setRemoteStream, setMyStream, myStream, remoteId, setRemoteId }}>
             {children}
         </PeerContext.Provider>
     )

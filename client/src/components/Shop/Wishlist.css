@@ -1,0 +1,12 @@
+.wishlist {
+    background-color: rgba(199, 199, 199, 0.445);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .card-img{
+    margin: 1rem;
+    width: 150px !important; 
+  }
+  

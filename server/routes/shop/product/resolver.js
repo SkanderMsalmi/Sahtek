@@ -1,54 +1,75 @@
-const Product = require('../../../database/models/product');
+const Product = require("../../../database/models/product");
+const { readFile, readProduct } = require("../../../utils/uploadFile");
 
 const resolvers = {
-    Query: {   
-        async getProduct(_, {ID}) {
-            return await Product.findById(ID)
-        },
-
-        async getAllProducts(){
-            return await Product.find();
-        }
+  Query: {
+    async getProduct(_, { ID }) {
+      return await Product.findById(ID);
     },
 
-    Mutation: {
-      
-        async addProduct(_,{productInput:{name,category,description,price,stock}}){
-            const createdProduct = new Product({
-                name:name,
-                category:category,
-                description:description,
-                price:price,
-                stock:stock,
-               
-            })
-            const res = await createdProduct.save();
+    async getAllProducts() {
+      return await Product.find();
+    },
+    async getCategories() {
+      return await Product.distinct("category");
+    },
+  },
 
-            return res
+  Mutation: {
+    async addProduct(
+      _,
+      { productInput: { name, category, description, price, stock }, image }
+    ) {
+      img = await readProduct(image);
+      const createdProduct = new Product({
+        name: name,
+        category: category,
+        description: description,
+        price: price,
+        stock: stock,
+        image: img,
+      });
+      const res = await createdProduct.save();
+    },
 
-        },
+    deleteProduct: async (parent, args, context, info) => {
+      const { id } = args;
+      await Product.findByIdAndDelete(id);
+      return "Product deleted";
+    },
 
-        
-        deleteProduct: async (parent, args, context, info)=>{
-            const{id}= args
-            await Product.findByIdAndDelete(id)
-            return "Product deleted";
-        },
+    updateProduct: async (
+      parent,
+      {
+        productInput: { id, name, description, category, stock, price, image },
+        img,
+      },
+      context,
+      info
+    ) => {
+      if (!id) {
+        const createdProduct = new Product({
+          name: name,
+          category: category,
+          description: description,
+          price: price,
+          stock: stock,
+          image: img,
+        });
+        const res = await createdProduct.save();
 
-        updateProduct: async(parent, args, context, info)=>{
-            const{id}= args
-            const {stock}= args.productInput
-            const product = await Product.findByIdAndUpdate(
-                id,{stock},{new: true}
+        return res;
+      }
+      if (img) image = await readProduct(img);
 
-                );
-            return  product
-        },
-
-
-
-    }
-
-}
+      const product = await Product.findByIdAndUpdate(
+        id,
+        { name, description, category, stock, price, image },
+        { new: true }
+      );
+      return product;
+    },
+  },
+};
 
 module.exports = resolvers;

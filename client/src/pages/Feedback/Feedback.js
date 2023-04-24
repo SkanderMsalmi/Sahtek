@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -26,6 +26,9 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
+import IsPatient from "../../components/Guard/IsPatient";
+import withAuth from "../../components/Guard/WithAuth";
+import isVerified from "../../components/Guard/IsVerified";
 const USER_PROFILE = gql`
   query User($id: ID!) {
     user(ID: $id) {
@@ -38,14 +41,34 @@ const USER_PROFILE = gql`
     }
   }
 `;
+
+const CHECK_FEEDBACK_EXIST = gql`
+  query CheckFeedbackForPatientAndTherapist($patient: ID, $therapist: ID) {
+    checkFeedbackForPatientAndTherapist(
+      patient: $patient
+      therapist: $therapist
+    ) {
+      feedback {
+        communication
+        effectiveness
+        empathy
+        professionalism
+      }
+      therapist {
+        profileImage
+        name
+      }
+    }
+  }
+`;
 const Feedback = () => {
   const CREATE_FEEDBACK = gql`
     mutation CreateFeedback(
       $patient: ID!
-      $communication: Int!
-      $empathy: Int!
-      $professionalism: Int!
-      $effectiveness: Int!
+      $communication: Float!
+      $empathy: Float!
+      $professionalism: Float!
+      $effectiveness: Float!
       $therapist: ID!
       $remarks: String
     ) {
@@ -267,6 +290,8 @@ const Feedback = () => {
       questions: [{ id: 22, text: "Write any remarks you have here" }],
     },
   ];
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const { id } = useParams("id");
   const {
     data: dataTherapist,
@@ -280,8 +305,18 @@ const Feedback = () => {
     },
     { notifyOnNetworkStatusChange: true }
   );
-  const user = useSelector(selectUser);
-  const navigate = useNavigate();
+  const {
+    data: dataCheckFeedback,
+    loading: loadingCheckFeedback,
+    error: errorCheckFeedback,
+  } = useQuery(
+    CHECK_FEEDBACK_EXIST,
+    {
+      variables: { patient: user.id, therapist: id },
+    },
+    { notifyOnNetworkStatusChange: true }
+  );
+  const [isFeedbacked, setIsFeedbacked] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [submitted, setSubmitted] = useState(0);
@@ -304,6 +339,18 @@ const Feedback = () => {
     19: 1,
     20: 1,
   });
+
+  useEffect(() => {
+    setIsFeedbacked(dataCheckFeedback?.checkFeedbackForPatientAndTherapist);
+    if (dataTherapist?.user?.role === "Patient") {
+      navigate("/profile");
+    }
+  }, [
+    dataCheckFeedback?.checkFeedbackForPatientAndTherapist,
+    dataTherapist?.user?.therapist,
+    dataTherapist,
+    navigate,
+  ]);
   const next = () => {
     if (animating) return;
     const nextIndex = activeIndex === items.length - 1 ? 0 : activeIndex + 1;
@@ -325,10 +372,10 @@ const Feedback = () => {
   };
   const [createFeedback, { loading, error, data }] =
     useMutation(CREATE_FEEDBACK);
-  let [communicationResultat, setcommunicationResultat] = useState(0);
-  let [empathyResultat, setempathyResultat] = useState(0);
-  let [professionalismResultat, setprofessionalismResultat] = useState(0);
-  let [effectivenessResultat, seteffectivenessResultat] = useState(0);
+  const [communicationResultat, setcommunicationResultat] = useState(1);
+  const [empathyResultat, setempathyResultat] = useState(1);
+  const [professionalismResultat, setprofessionalismResultat] = useState(1);
+  const [effectivenessResultat, seteffectivenessResultat] = useState(1);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -351,29 +398,36 @@ const Feedback = () => {
       sommeEff += selectedAnswers[i];
     }
     setcommunicationResultat(sommeC / 4);
+    const communication = sommeC / 4;
     setempathyResultat(sommeE / 4);
+    const empathy = sommeE / 4;
     setprofessionalismResultat(sommeP / 4);
+    const professionalism = sommeP / 4;
     seteffectivenessResultat(sommeEff / 4);
+    const effectiveness = sommeEff / 4;
     createFeedback({
       variables: {
         patient: user.id,
         therapist: id,
-        communication: communicationResultat,
-        empathy: empathyResultat,
-        professionalism: professionalismResultat,
-        effectiveness: effectivenessResultat,
+        communication,
+        empathy,
+        professionalism,
+        effectiveness,
         remarks: remark,
       },
-    });
-    if (data?.createFeedback === true) {
-      setSubmitted(1);
-      setTimeout(() => {
-        navigate("/profile2");
-      }, 5000);
-    } else {
-      setSubmitted(2);
-    }
-    console.log("error" + error.message);
+    })
+      .then((res) => {
+        if (res.data?.createFeedback === true) {
+          setSubmitted(1);
+          // setTimeout(() => {
+          //   navigate("/profile2");
+          // }, 7000);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setSubmitted(2);
+      });
   };
 
   const slides = items.map((item) => {
@@ -465,12 +519,12 @@ const Feedback = () => {
         className="page-header"
         data-parallax={true}
       >
-        {submitted === 1 ? (
+        {!isFeedbacked && submitted === 1 ? (
           <div
             className={`${styles.modalbox} ${styles.success} ${styles.center} ${styles.animate}`}
           >
             <div className={`${styles.icon}`}>
-              <span class="fa-solid fa-check"></span>
+              <span className="fa-solid fa-check"></span>
             </div>
 
             <h1>Success!</h1>
@@ -498,44 +552,44 @@ const Feedback = () => {
                       Dr. {dataTherapist.user.name}
                     </CardTitle>
                   </Row>
-                  <div className="progress-container progress-primary m-2">
+                  <div className="progress-container progress-danger m-2">
                     <span className="progress-badge">
                       Communication {communicationResultat} / 5
                     </span>
                     <Progress
                       max="5"
                       value={communicationResultat}
-                      barClassName="progress-bar-primary"
+                      barClassName="progress-bar-danger"
                     />
                   </div>
-                  <div className="progress-container progress-warning m-2">
+                  <div className="progress-container progress-primary m-2">
                     <span className="progress-badge">
                       Professionalism {professionalismResultat} / 5
                     </span>
                     <Progress
                       max="5"
                       value={professionalismResultat}
-                      barClassName="progress-bar-warning"
+                      barClassName="progress-bar-primary"
                     />
                   </div>
-                  <div className="progress-container progress-warning m-2">
+                  <div className="progress-container progress-success m-2">
                     <span className="progress-badge">
-                      Empathy {empathyResultat} / 5
+                      Empathy {empathyResultat}/5
                     </span>
                     <Progress
                       max="5"
                       value={empathyResultat}
-                      barClassName="progress-bar-warning"
+                      barClassName="progress-bar-success"
                     />
                   </div>
-                  <div className="progress-container progress-warning m-2">
+                  <div className="progress-container progress-info m-2">
                     <span className="progress-badge">
                       Effectiveness {effectivenessResultat} / 5
                     </span>
                     <Progress
                       max="5"
                       value={effectivenessResultat}
-                      barClassName="progress-bar-warning"
+                      barClassName="progress-bar-info"
                     />
                   </div>
                 </CardBody>
@@ -545,12 +599,12 @@ const Feedback = () => {
               </Button>
             </div>
           </div>
-        ) : submitted === 2 ? (
+        ) : !isFeedbacked && submitted === 2 ? (
           <div
             className={`${styles.modalbox} ${styles.error} ${styles.center} ${styles.animate}`}
           >
             <div className={`${styles.icon}`}>
-              <span class="fa-solid fa-xmark"></span>
+              <span className="fa-solid fa-xmark"></span>
             </div>
 
             <h1>Error!</h1>
@@ -565,7 +619,7 @@ const Feedback = () => {
               </Button>
             </div>
           </div>
-        ) : submitted === 0 ? (
+        ) : !isFeedbacked && submitted === 0 ? (
           <>
             <Container className={styles.carousel}>
               <div className={`" text-center m-2 " ${styles.carousel}`}>
@@ -614,10 +668,122 @@ const Feedback = () => {
               </div>
             </Container>
           </>
+        ) : isFeedbacked ? (
+          <div
+            className={`${styles.modalbox} ${styles.success} ${styles.center} ${styles.animate}`}
+          >
+            <h1>Feedback Done</h1>
+            <div className="m-5">
+              <p>You have already give us your feedback on your therapist</p>
+              <div className="border">
+                <CardBody>
+                  <Row
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CardImg
+                      top
+                      src={
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .therapist.profileImage
+                      }
+                      alt="Therapist"
+                      style={{ width: "100px", margin: "0.6rem" }}
+                    />
+                    <CardTitle tag="h5">
+                      Dr.{" "}
+                      {
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .therapist.name
+                      }
+                    </CardTitle>
+                  </Row>
+                  <div className="progress-container progress-danger m-2">
+                    <span className="progress-badge">
+                      Communication{" "}
+                      {
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.communication
+                      }
+                      /5
+                    </span>
+                    <Progress
+                      max="5"
+                      value={
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.communication
+                      }
+                      barClassName="progress-bar-danger"
+                    />
+                  </div>
+                  <div className="progress-container progress-primary m-2">
+                    <span className="progress-badge">
+                      Professionalism{" "}
+                      {
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.professionalism
+                      }
+                      /5
+                    </span>
+                    <Progress
+                      max="5"
+                      value={
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.professionalism
+                      }
+                      barClassName="progress-bar-primary"
+                    />
+                  </div>
+                  <div className="progress-container progress-success m-2">
+                    <span className="progress-badge">
+                      Empathy{" "}
+                      {
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.empathy
+                      }
+                      /5
+                    </span>
+                    <Progress
+                      max="5"
+                      value={
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.empathy
+                      }
+                      barClassName="progress-bar-success"
+                    />
+                  </div>
+                  <div className="progress-container progress-info m-2">
+                    <span className="progress-badge">
+                      Effectiveness{" "}
+                      {
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.effectiveness
+                      }
+                      /5
+                    </span>
+                    <Progress
+                      max="5"
+                      value={
+                        dataCheckFeedback?.checkFeedbackForPatientAndTherapist
+                          .feedback.effectiveness
+                      }
+                      barClassName="progress-bar-info"
+                    />
+                  </div>
+                </CardBody>
+              </div>
+              <Button color="primary" href="/profile" className="mt-5">
+                Go to your profile
+              </Button>
+            </div>
+          </div>
         ) : null}
       </div>
     </>
   );
 };
 
-export default Feedback;
+export default withAuth(isVerified(IsPatient(Feedback)));

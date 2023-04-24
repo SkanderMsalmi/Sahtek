@@ -17,9 +17,11 @@ const resolvers = {
       });
 
       if (feedback) {
-        return true;
+        const therapist = await User.findById(args.therapist);
+
+        return { feedback, therapist };
       } else {
-        return false;
+        return null;
       }
     },
   },
@@ -32,15 +34,18 @@ const resolvers = {
 
       if (feedback) {
         throw new ApolloError(
-          "You Already made a feedback for this therapist ! if you want update your feedback go to your feedback"
+          "You Already made a feedback for this therapist ! if you want update your feedback go to your feedbacks in your profile"
         );
       }
       const therapist = await User.findById(args.therapist);
       const patient = await User.findById(args.patient);
       if (!therapist || !patient) {
         throw new ApolloError("Therapist or Patient Doesn't exist");
-      }
-      if (therapist && patient) {
+      } else if (!patient.get("patient")) {
+        throw new ApolloError("This feature is disabled for Therapists");
+      } else if (!therapist.get("therapist")) {
+        throw new ApolloError("You can't make a feedback on Patient");
+      } else if (therapist && patient) {
         await Feedback.create(args);
         return true;
       }

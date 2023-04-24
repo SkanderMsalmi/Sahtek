@@ -16,9 +16,12 @@ import {
 } from "reactstrap";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/users/users.selectors";
+import IsPatient from "../../components/Guard/IsPatient";
+import isVerified from "../../components/Guard/IsVerified";
+import withAuth from "../../components/Guard/WithAuth";
 
 const THERAPIST = gql`
   query User($id: ID!) {
@@ -26,6 +29,7 @@ const THERAPIST = gql`
       email
       name
       profileImage
+      role
       therapist {
         dateOfBirth
         description
@@ -45,6 +49,7 @@ const MAKE_RATE_THERAPIST = gql`
   }
 `;
 const RatingCard = () => {
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
   let id = useParams("id").id;
   const [isRated, setIsRated] = useState(false);
@@ -71,7 +76,6 @@ const RatingCard = () => {
       id,
     },
   });
-
   const [makeRate, { loadingR, errorR, dataR }] =
     useMutation(MAKE_RATE_THERAPIST);
 
@@ -101,7 +105,10 @@ const RatingCard = () => {
     if (!therapistLoading && !therapistError && therapistData) {
       setName(therapistData?.user?.name);
       setProfileImage(therapistData?.user?.profileImage);
-      setSpecialities(therapistData.user.therapist.specialties);
+      setSpecialities(therapistData?.user?.therapist?.specialties);
+    }
+    if (therapistData?.user?.role === "Patient") {
+      navigate("/profile");
     }
     if (
       !ratingLoading &&
@@ -109,7 +116,6 @@ const RatingCard = () => {
       ratingData &&
       ratingData.checkRate > 0
     ) {
-      console.log("hello");
       setRating(ratingData.checkRate);
       setIsRated(true);
     }
@@ -121,6 +127,7 @@ const RatingCard = () => {
     ratingLoading,
     ratingError,
     ratingData,
+    navigate,
   ]);
   if (therapistLoading) {
     return <p>Loading</p>;
@@ -158,7 +165,7 @@ const RatingCard = () => {
                   </CardSubtitle>
                   <CardText>
                     {therapistData
-                      ? therapistData.user.therapist.description
+                      ? therapistData?.user?.therapist?.description
                       : "no description"}
                   </CardText>
                   <div className="d-flex align-items-center">
@@ -195,4 +202,4 @@ const RatingCard = () => {
   );
 };
 
-export default RatingCard;
+export default withAuth(isVerified(IsPatient(RatingCard)));

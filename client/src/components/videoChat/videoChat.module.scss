@@ -19,23 +19,31 @@
     position: absolute;
     right: 1rem;
 }
+.input{
+    border-color: transparent;
+    outline: none;    
+    width: 100%;
+     border-radius: 8px;
+     background: transparent;
+    color: #202124;
+    overflow-wrap: break-word;
+    resize: none;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
 
 .textarea {
 
     border-color: transparent;
     outline: none;
-    height: 390px;
+    height: 350px;
     width: 100%;
     padding: 10px;
     border-radius: 8px;
-    background-color: #eef8f9;
     background: #e7e9eb;
     color: #202124;
     overflow-wrap: break-word;
     resize: none;
-
-
-
     font-size: 14px;
 }
 
@@ -48,7 +56,7 @@
 
 
 ::placeholder {
-    color: #202124;
+    color: #8e9094;
 }
 
 .video_row {
@@ -91,6 +99,12 @@
     margin-bottom: 10px;
 
 
+}
+
+.rowCenter {
+    display: flex;
+    align-items: center;
+   
 }
 
 .option_row {
@@ -163,7 +177,7 @@
     & :hover {
         background-color: #c8cbcd;
         border-radius: 8px;
-        cursor: pointer;
+     
 
     }
 
@@ -191,6 +205,9 @@
 
 .cardContent {
     width: 100%;
+    display: flex;
+    align-items: center;
+    
 }
 
 
@@ -233,8 +250,15 @@
 
 .cardBody {
     width: 100%;
+    
 
     padding: 0px 10px 5px 10px;
+
+    &  p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
 
 }
@@ -257,7 +281,7 @@
 
 }
 
-.invisibleBtn {
+.menuBtn {
     background: #e7e9eb;
     border: none !important;
     display: flex;
@@ -270,7 +294,7 @@
     margin-right: 5px;
 }
 
-.invisibleBtn:hover {
+.menuBtn:hover {
 
     background: #c8cbcd;
     border-radius: 8px;
@@ -278,10 +302,20 @@
 
 }
 
-.invisibleBtn:focus {
-
-    background: #c8cbcd;
+.menuBtnFocus {
+   
+    border: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+   
     border-radius: 8px;
+    ;
+    padding: 5px 10px 5px 10px;
+    margin-right: 5px;
+    background: #5e5f5f;
+    color: white;
+     
     cursor: pointer;
 
 }

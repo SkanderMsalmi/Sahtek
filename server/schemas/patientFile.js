@@ -14,7 +14,6 @@ type PatientFile {
 extend type Query {
     getPatientFiles: [PatientFile]
     getPatientFile(id: ID!): PatientFile
-    getPatientsByTherapist(id: ID!): [User]
     getFilesByPatient(id: ID!): [PatientFile]
 
 
@@ -23,6 +22,6 @@ extend type Mutation {
     createPatientFile(title: String, remarks: String!,patient: ID!,
     therapist: ID! ): PatientFile
     updatePatientFile(id: ID!, remarks: String!,title: String): PatientFile
-    deletePatientFile(id: ID!): String
+    deletePatientFile(id: ID!): Boolean
 }`
 

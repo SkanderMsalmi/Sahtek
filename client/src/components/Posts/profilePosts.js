@@ -1,14 +1,16 @@
 import { useQuery, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { Label, FormGroup, Input, Row, Col, Button, Spinner } from "reactstrap";
-import Moment from 'react-moment';
+import Moment from "react-moment";
 import { useEffect } from "react";
 
 const PROFILE_POSTS_QUERY = gql`
   query FindPostByUser($id: ID!) {
     findPostByUser(id: $id) {
       description
-      like
+      like{
+        name
+      }
       time
     }
   }
@@ -55,12 +57,15 @@ function ProfilePosts(props) {
                       </h6>
                       <p style={{ textAlign: "left" }}>{p.description}</p>
                       <div className="d-flex justify-content-between">
-                        <small style={{ textAlign: "left" }}>{p.like} 👍</small>
-                        <small style={{ textAlign: "right" }}> <Moment format="YYYY-MM-DD">
-                          {p.time}</Moment></small>
+                        <small style={{ textAlign: "left" }}>
+                          {p.like.length} 👍 {p.like.length > 0 ? p.like.length > 1 ? `by ${p.like[0].name} & ${p.like.length - 1} others` : `by ${p.like[0].name}` : ""}
+                        </small>
+                        <small style={{ textAlign: "right" }}>
+                          {" "}
+                          <Moment format="YYYY-MM-DD">{p.time}</Moment>
+                        </small>
                       </div>
                     </Col>
-
                   </Row>
                 </li>
                 <hr />

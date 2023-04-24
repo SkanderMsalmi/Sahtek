@@ -22,7 +22,7 @@ function TimeTable() {
         variables: { id: user.id },
     });
     if (loading) return <Spinner />;
-    if (error) return <p>Error :(</p>;
+    if (error) return <p>Error :</p>;
     if (data.getAppointmentsByPatient?.length === 0) return <p>No appointments this week :(</p>;
     return (
 

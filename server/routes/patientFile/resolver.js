@@ -1,5 +1,4 @@
-const Consultation = require("../../database/models/consultation");
-const PatientFile = require("../../database/models/patientFile");
+ const PatientFile = require("../../database/models/patientFile");
 const { User } = require("../../database/models/User");
 
 const resolvers = {
@@ -10,19 +9,13 @@ const resolvers = {
         getPatientFile: async (_, args) => {
             return await PatientFile.findById(args.id);
         },
-        getPatientsByTherapist: async (_, { id }) => {
-            const list = await PatientFile.find({ therapist: id }).distinct("patient");
-            return await User.find({ _id: { $in: list } });
-
-        },
+        
         getFilesByPatient: async (_, { id }) => {
             return await PatientFile.find({ patient: id });
         },
     },
     Mutation: {
-        // createPatientFile: async (_, args) => {
-        //     return await PatientFile.create(args);
-        // },
+         
         createPatientFile: async (_, { title, remarks, patient, therapist }) => {
             const createFile = new PatientFile({
                 title: title,
@@ -46,8 +39,11 @@ const resolvers = {
 
         deletePatientFile: async (_, args) => {
             const { id } = args;
-            await PatientFile.findByIdAndDelete(id);
-            return "file deleted";
+            const result = await PatientFile.findByIdAndDelete(id);
+            if(result){
+                return true
+            }else {return false}
+            
         }
     },
     PatientFile: {

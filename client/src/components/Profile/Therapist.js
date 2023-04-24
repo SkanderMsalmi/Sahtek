@@ -236,8 +236,13 @@ function Therapist(props) {
   const handleStartTime = (e, i) => {
     const newAvailability = [...editInfo.availability];
     newAvailability[i] = { ...newAvailability[i], startTime: e.target.value };
-    console.log(newAvailability)
+    if (editInfo.availability[i].endTime >= e.target.value) {
+      newAvailability[i] = { ...newAvailability[i], startTime: e.target.value, endTime: defaultTime[defaultTime.indexOf(e.target.value) + 1] };
+
+      setEditInfo({ ...editInfo, availability: newAvailability });
+    }
     setEditInfo({ ...editInfo, availability: newAvailability });
+
   };
   const handleEndTime = (e, i) => {
     const newAvailability = [...editInfo.availability];
@@ -260,6 +265,18 @@ function Therapist(props) {
     }
     return exp + " years of experience";
   }
+  const defaultTime = [
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+  ]
   if (loading) return <Spinner />;
 
   return (
@@ -367,25 +384,36 @@ function Therapist(props) {
                     <div className="col-md-4">
                       <div style={{ display: "flex" }}>
                         {" "}
-                        <input
-                          className={` form-control ${styles.borderless}`}
-                          type="text"
-                          name="startTime"
-                          placeholder="Start time"
+                        <select className={` form-control ${styles.borderless}`}
                           value={editInfo.availability[index]?.startTime}
                           onChange={(e) =>
                             handleStartTime(e, index)
-                          }
-                        />-
-                        <input
-                          className={` form-control ${styles.borderless}`}
-                          type="text"
-                          placeholder="End time"
-                          name="endTime"
+                          }>
+                          {defaultTime.map((time, index) => (
+                            <option key={index} value={time}>
+                              {time}
+                            </option>
+                          ))}
+
+                        </select>
+                        -
+                        <select className={` form-control ${styles.borderless}`}
                           value={editInfo.availability[index]?.endTime}
                           onChange={(e) =>
-                            handleEndTime(e, index)}
-                        />{" "}
+                            handleEndTime(e, index)
+                          }>
+                          {editInfo.availability.length == 0 ? defaultTime.slice(1).map((time, index) => (
+                            <option key={index} value={time}>
+                              {time}
+                            </option>
+                          )) : defaultTime.filter((d) => d > editInfo.availability[index].startTime).map((time, index) => (
+                            <option key={index} value={time}>
+                              {time}
+                            </option>
+                          ))}
+
+                        </select>
+
                       </div>
                     </div>
                   </div>

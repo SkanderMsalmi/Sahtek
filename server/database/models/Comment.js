@@ -6,7 +6,15 @@ const comment = new mongoose.Schema({
     time: String,
     post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post'
+        ref: 'Post',
+        required: true
+
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+        
     },
  
 })

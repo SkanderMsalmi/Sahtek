@@ -60,12 +60,7 @@ function SectionDownload() {
                 pages.
               </p>
             </Col>
-            <Col className="ml-auto mr-auto" sm="5">
-              <Button className="btn-round" color="info" href="#pablo" disabled>
-                <i aria-hidden={true} className="nc-icon nc-spaceship" />{" "}
-                Upgrade to PRO
-              </Button>
-            </Col>
+
           </Row>
           <Row className="justify-content-md-center sharing-area text-center">
             <Col className="text-center" lg="8" md="12">

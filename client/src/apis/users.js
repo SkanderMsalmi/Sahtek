@@ -30,15 +30,18 @@ export const LOGIN_MUTATION = gql`
       user {
         id
         email
+        name
         role
         verified
         profileImage
-        patient {
-          name
-        }
         therapist {
-          name
+          id
+          description
         }
+        patient{
+          id
+        }
+        
       }
     }
   }
@@ -47,4 +50,17 @@ export const RESEND_MAIL_VERIFICATION_MUTATION = gql`
   mutation ResendMailVerification($resendMailVerificationId: ID) {
     resendMailVerification(id: $resendMailVerificationId)
   }
+`;
+
+
+export const GET_PATIENTS = gql` 
+query GetPatientsByTherapist($id: ID!) {
+  getPatientsByTherapist(id: $id) {
+    id
+    email
+    name
+    profileImage
+    dateOfBirth
+  }
+} 
 `;

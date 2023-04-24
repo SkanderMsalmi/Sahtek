@@ -1,0 +1,8 @@
+.table-responsive {
+    overflow-x: hidden !important;
+}
+
+.dropdown.show .dropdown-menu[x-placement=bottom-start] {
+    top: 40rem !important;
+    z-index: 1000 !important;
+}

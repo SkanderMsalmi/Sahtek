@@ -4,6 +4,7 @@ module.exports = gql`
   enum Role {
     Patient
     Therapist
+    Admin
   }
 
   type User {
@@ -32,7 +33,6 @@ module.exports = gql`
     emergencyContact: EmergencyContact
     medicalConditions: [String]
     medications: [Medication]
-    
   }
 
   enum Gender {
@@ -90,7 +90,6 @@ module.exports = gql`
     fees: Float
     ratings: [Float]
     reviews: [String]
-    
   }
 
   type Appointment {
@@ -102,14 +101,14 @@ module.exports = gql`
     notes: String
     status: String
   }
-input AppointmentInput{
-  patient: ID!
-  therapist: ID!
-  date: String
-  duration: Int
-  notes: String
-  status: String
-}
+  input AppointmentInput {
+    patient: ID!
+    therapist: ID!
+    date: String
+    duration: Int
+    notes: String
+    status: String
+  }
   type Token {
     value: String!
   }
@@ -186,12 +185,15 @@ input AppointmentInput{
   extend type Query {
     user(ID: ID!): User
     therapist(ID: ID!): TherapistPayload
-    users:[User]
+    users: [User]
     checkEmailExists(email: String!): Boolean!
     current(token: String!): User
-    getAppointment(ID: ID!):Appointment
-    getAppointments:[Appointment]
-    getAppointmentsByPatient(ID: ID!):[Appointment]
+    getAppointment(ID: ID!): Appointment
+    getAppointmentsByTherapist(therapist: ID!): [Appointment]
+    getAppointments: [Appointment]
+    getPatientsByTherapist(id: ID!): [User]
+    getAppointmentsByPatient(ID: ID!): [Appointment]
+    getTherapistsByPatient(ID: ID!): [User]
   }
   extend type Mutation {
     register(userInput: UserInput, image: Upload): User
@@ -206,6 +208,14 @@ input AppointmentInput{
       newpassword: String!
     ): Boolean
     resendMailVerification(id: ID): String
-    bookAppointment(patient:ID, therapist: ID,date: String, duration: Int, notes: String, status: String): Boolean
-   }
+    bookAppointment(
+      patient: ID
+      therapist: ID
+      date: String
+      duration: Int
+      notes: String
+      status: String
+    ): Boolean
+    AcceptAppointment(idAppointment: ID): Boolean
+  }
 `;

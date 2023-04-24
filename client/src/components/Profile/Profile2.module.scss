@@ -9,7 +9,12 @@
 
 .picture:hover {
     border: 4px solid #2ca8ff;
+    transition: all .25s ease;
+}
 
+.picture {
+    transition: all .25s ease;
+    border: 0px solid #2ca8ff;
 }
 
 .content.ct-wizard-green .picture:hover {

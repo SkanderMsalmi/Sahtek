@@ -27,6 +27,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 function Login2() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
   const [passwordType, setPasswordType] = useState("password");
   const togglePassword = () => {
     if (passwordType === "password") {
@@ -73,7 +75,12 @@ function Login2() {
       // Dispatch the action to update the store
       dispatch(userLoginSuccess(user, token));
       // Redirect the user to the dashboard page or other authorized page
-      navigate("/profile2");
+      if (user.role === "Therapist" && user.therapist.description === null) {
+        return navigate("/profilecreation");
+      }
+      else if (user.role === "Admin") { return navigate("/espace-admin/products"); }
+      else if (user.role === "Patient") navigate("/espace-patient");
+      else navigate("/espace-therapist");
     } catch (error) {
       setError("generic", { type: "generic", error });
     }

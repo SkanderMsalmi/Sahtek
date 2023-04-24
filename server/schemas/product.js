@@ -1,26 +1,30 @@
-const {gql} = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 module.exports = gql`
-type Product {
-    name: String,
-    description: String,
-    category:String
-    stock: Int,
-    price:Float
-}
-input ProductInput {
-    name: String,
-    description: String,
-    category:String
-    stock: Int,
-    price:Float
-}  
-type Query {
+  type Product {
+    id: ID
+    name: String
+    description: String
+    category: String
+    stock: Int
+    price: Float
+    image: String
+  }
+  input ProductInput {
+    name: String
+    description: String
+    category: String
+    stock: Int
+    price: Float
+    id: ID
+  }
+  type Query {
     getProduct(ID: ID!): Product
     getAllProducts: [Product]
-}
-type Mutation {
-    addProduct(productInput: ProductInput): Product
-    updateProduct(id: ID!, productInput: ProductInput): Product
+    getCategories: [String]
+  }
+  type Mutation {
+    addProduct(productInput: ProductInput, image: Upload): Product
+    updateProduct(productInput: ProductInput, img: Upload): Product
     deleteProduct(id: ID!): String
-}    
-`
+  }
+`;

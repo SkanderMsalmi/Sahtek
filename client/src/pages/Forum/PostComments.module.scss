@@ -1,0 +1,255 @@
+.containerFluid {
+     
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding-top: 100px;
+    background: linear-gradient(to bottom right,
+            rgba(252, 203, 144, 1),
+            rgba(213, 126, 235, 1));
+
+}
+
+.container {  
+
+    padding-bottom: 5rem;
+    width: 700px;
+    height: 100%; 
+    background: rgba(24, 24, 16, 0.2);
+    border-radius: 1em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+ 
+}
+
+.darkSection{
+    text-align: center;
+    color: #ffffff;
+    width: 100%;
+    background-color: #eef8f9;
+    background: rgba(24, 24, 16, 0.071);
+    padding: 15px;
+    border-top-right-radius: 1em;
+    border-top-left-radius: 1em;
+
+}
+
+
+.textarea {
+margin-left: 46px;
+    border-color: transparent;
+    outline: none;
+    height: 40px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 1em;
+    background-color: #eef8f9;
+    background: rgba(24, 24, 16, 0.2);
+    color: #ffffff;
+    overflow-wrap: break-word;
+    resize: none;
+
+
+
+    font-size: 14px;
+}
+.title{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.textarea:focus {
+    border-color: #ffffff;
+    outline: 1px;
+
+}
+
+.textarea::-webkit-scrollbar {
+    width: 0px;
+}
+
+
+
+::placeholder {
+    color: #ffffff;
+}
+
+.post_container {
+    .card {
+        padding-top: 10px;
+        display: flex;
+      
+        height: fit-content;
+        background: rgba(24, 24, 16, 0.2);
+        color: #ffffff;
+
+        .cardHeader {
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px 10px 0px 10px;
+
+
+        }
+
+
+        .cardBody {
+            width: 100%;
+
+            padding: 15px 15px 20px 10px;
+
+            .p {
+                color: #ffffff;
+            }
+
+        }
+    }
+
+}
+
+.add_comment {
+
+    width: 100%;
+    height: fit-content;
+    padding: 10px 10px 10px 0px;
+    margin-bottom: 10px;
+    background: rgba(24, 24, 16, 0.2);
+    backdrop-filter: blur(15px);
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+    color: #ffffff;
+
+
+    .add_btn {
+        font-size: 14px;
+        border-radius: 15px;
+        width: 126px;
+        height: 35px;
+        color: black;
+        outline: none;
+        border-width: 0px;
+        margin-left: 10px;
+
+        &:hover {
+            background: rgba(24, 24, 16, 0.401);
+            color: white;
+            outline: none;
+            cursor: pointer;
+        }
+
+    }
+
+}
+
+
+
+
+
+.row {
+    display: flex;
+    align-items: start;
+
+
+}
+
+.userImg img {
+    width: 30px;
+    height: 30px;
+    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    margin-right: 5px;
+
+}
+
+
+ .comment_card {
+ 
+        display: flex;    
+        
+        width: 100%;
+        height: fit-content; 
+        margin-bottom: 10px;
+        color: #ffffff;
+    
+        & .cardSide2 {
+          
+           
+          
+            padding-top: 0px;
+            padding-left: 10px;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+        }
+    
+        & .cardContent {
+            width: fit-content;    
+            background: rgba(24, 24, 16, 0.2);           
+            box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+            border-radius: 1em;
+            padding: 5px 5px 0px 10px ; 
+            margin-right: 13px;
+            margin-bottom: 2px;
+           
+           
+    
+         &  p {
+                margin-top: 5px;
+           
+              
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                  
+            }
+        }
+    
+    
+    
+    }
+
+ 
+
+
+
+.cardSide {
+
+    width: 10%;
+    display: flex;
+
+    flex-direction: column;
+
+
+    align-items: center;
+    padding-top: 10px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+
+
+
+}
+
+.cardContent {
+    width: 100%;
+}
+
+
+
+.commentIcon {
+    margin-right: 10px;
+}
+
+
+
+.upvoteIcon {
+
+    width: 25px;
+    height: 25px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}

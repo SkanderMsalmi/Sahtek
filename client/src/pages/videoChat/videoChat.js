@@ -58,7 +58,7 @@ const VideoChat = ({ children }) => {
 
 
                     {started && <Row>
-                        <Col lg="12" md="12"  >
+                        <Col lg="12" md="12" className="d-flex justify-content-center" >
 
                             <div className={styles.option_row}>
                                 <div>
@@ -123,7 +123,7 @@ const VideoChat = ({ children }) => {
                                     </Button>
                                 </div>
 
-                                <div>
+                                <div hidden={user.role !== 'Therapist'} className="right">
                                     <Button
                                         onClick={() => setShow(!show)}
                                         className="btn-round"

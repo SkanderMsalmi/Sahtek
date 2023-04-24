@@ -4,21 +4,39 @@ import React, { useState, useEffect } from 'react';
 import AppointmentDetails from './appDetails';
 import { Container } from "reactstrap";
 import { useMutation, useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+
 import { gql } from "@apollo/client";
+import { useForm } from "react-hook-form";
+import { selectUser } from "../../store/users/users.selectors";
 
-
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardTitle,
+  MDBCardText,
+  MDBCardHeader,
+  MDBCardFooter,
+  MDBBtn
+} from 'mdb-react-ui-kit';
+import { useSelector } from "react-redux";
 const GET_PATIENT_NAME_QUERY = gql`
   query {
-    user(id: $patientId) {
+    users{
+      id
       name
     }
   }
 `;
-export const GET_APPOINTMENTS = gql`
-  query  {
-    getAppointments{ 
-      patient
-      therapist
+export const GET_APPOINTMENTS_BYTHERAPIST = gql`
+  query getAppointmentsByTherapist($therapist:ID!) {
+    getAppointmentsByTherapist(therapist:$therapist){ 
+      id
+      patient{id 
+        name
+      }
+      therapist{id
+        name}
       date
       duration
       notes
@@ -26,30 +44,79 @@ export const GET_APPOINTMENTS = gql`
     }
   }
 `;
+export const ACCEPT_APPOINTMENT=gql`
+mutation AcceptAppointment($idAppointment:ID!){
+  AcceptAppointment(idAppointment:$idAppointment)
+}
+
+
+
+`
 
 const Appointments = () => {
+  const therapist = useSelector(selectUser);
+  const navigate = useNavigate();
+
+  const initialValues = {
+    id: "",
+};
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitted },
+    setError,
+    clearErrors,
+  } = useForm({
+    initialValues,
+    
+  });
   const [appointments, setAppointments] = useState([]);
- //const[getUser]=useQuery(GET_USER);
+ //const[dataUser,]=useQuery(GET_USER);
   //const [getAppointments] = useMutation(getAppointments);
   
-  function PatientName(props) {
-    const patientId = props.patientId;
-    const { loadinguser, erroruser, datauser } = useQuery(GET_PATIENT_NAME_QUERY, {
-      variables: { id: patientId },
-    });
-  
+
+    const[AcceptAppointment]=useMutation(ACCEPT_APPOINTMENT);
+    const { loading:loadinguser, error:erroruser, data:datauser } = useQuery(GET_PATIENT_NAME_QUERY);
+    const { loading:loading, error:error, data:data } = useQuery(GET_APPOINTMENTS_BYTHERAPIST, {
+      variables: { therapist: therapist.id },
+    },);
+
      if (loadinguser) return <p>Loading...</p>;
+     if (loading) return <p>Loading...</p>;
+
      if (erroruser) return datauser
-  
-     const { user } = data;
-     const patientName = user ? user.name : '';
+     if (error) return data
+    
+    // const
+    const handleButtonClick = (idAppointment) => {
+      try {
+        const { data } = AcceptAppointment({ variables: { idAppointment } });
+        navigate("/appforTherapist")
+      } catch (error) {
+        alert("!!!");
+      }
+    };
+console.log(data);
    
-     return <p>Patient Name: {patientName}</p>;  }
-  const { loading, error, data } = useQuery(GET_APPOINTMENTS
-  );
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error </p>;
-  console.log(data);
+    // const submit = handleSubmit(async ({ id }) => {
+    //   //e.preventDefault();
+    //   try {
+    //     const { data } = await AcceptAppointment({ variables: { id } });
+    //   } catch (error) {
+    //     alert("!!!");
+    //   }
+    // });
+    //  const { user } = data;
+    //  const patientName = user ? user.name : '';
+   
+    //  return <p>Patient Name: {patientName}</p>;  
+  
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error </p>;
+  //console.log(datauser);
+
+  //console.log("aaaaa");
+
   //console.log(userData);
   //const user = userData.user;
   // useEffect(() => {
@@ -75,52 +142,33 @@ const Appointments = () => {
 
 <div class={`${styles.bloc}`}>
         <div className="d-flex justify-content-center row">
-            <div className="col-md-10">
+            <div className="col-md-8 3">
                 <div className="rounded">
                     <div className="table-responsive table-borderless">
                         <h1>Appointments</h1>
-                        <select>
-      <option value="today">Today</option>
-      <option value="this-week">This Week</option>
-      <option value="this-month">This Month</option>
-    </select>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    
-                                    <th>Patient Name</th>
-                                    <th>Reason For visit</th>
-                                    <th>status</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody className="table-body">
-                          {data.getAppointments.map((item) => (
-                                    //<tr key={item.id}>
-                                  <tr className="cell-1">
-                                     <PatientName patientId={item.patient} />
-                                     <td>{item.notes}</td>
-                                    <td>
-                                    {item.status === 'Confirmed' ? (
+              {data.getAppointmentsByTherapist.map((item) => (
+
+    <MDBCard alignment='center' className="card h-100">{console.log(item)}
+      <MDBCardHeader>Appointment</MDBCardHeader>
+      <MDBCardBody>
+        <MDBCardTitle>Date: {new Date(item.date*1).getDate()}/{new Date(item.date*1).getMonth()}/{new Date(item.date * 1).getFullYear() }   {new Date(item.date * 1).getHours() }:00 HH </MDBCardTitle>
+       {datauser.users.map(ite =>{return((ite.id === item.patient)&& <MDBCardText>Patient Name: {(ite.name)}</MDBCardText>)})}  
+      
+      </MDBCardBody>
+      <MDBCardFooter className='text-muted'>Status : {item.status === 'Confirmed' ? (
         <span className="badge badge-success">Confirmed</span>
       ) : item.status==='Completed'?(
         <span className="badge badge-info">Completed</span>
       ):item.status==='Scheduled'?(
       <span className="badge badge-secondary">Scheduled</span>):
       item.status==='Cancelled'?(
-      <span className="badge badge-danger">Cancelled</span>):<span></span>}</td>
-                              
-                                    <td>{item.date}</td>
-                                    <td>{item.duration}</td>
-                                    <td><a href="AppoinmentDetails">View Details</a></td>
-                             
-                                  </tr>
-                                  ))}
-                                
-                            </tbody>
-                        </table>
+      <span className="badge badge-danger">Cancelled</span>):<span></span>}</MDBCardFooter>
+       <div style={{paddingLeft:'70%'}}> 
+        <button type="button" class="btn btn-success" onClick={() =>
+        handleButtonClick(item.id)} disabled={item.status==='Confirmed'}  >Confirme</button>
+      </div>
+    </MDBCard> ))}
+   
                     </div>
                 </div>
             </div>
@@ -129,84 +177,7 @@ const Appointments = () => {
 
 
 
-//     <container className={`${styles.bloc}`}>
-//       <h1>Appointments</h1>
-      
-//     <input type="text" placeholder="Search appointments" value={searchTerm} onChange={handleSearch} />
-//       <container >
-//       <table className={`${styles.table}`}>
-//         <thead>
-//           <tr>
-//             <th>Patient Name</th>
-//             <th>Appointment Date</th>
-//             <th>Reason for Visit</th>
-//             <th>View Details</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {/* {filteredAppointments.map((appointment) => ( */}
-//             <tr /*key={appointment.id}*/>
-//               <td></td>
-//               <td></td>
-//               <td></td>
-//               <td>
-//                 <button >View Details</button>
-//               </td>
-//             </tr>
-        
-//         </tbody>
-        
-//       </table>
-// </container>       
-//     </container>
-/* <div className={`${styles.bloc}`}>
-<div class={`${styles.appointmentlist}`}>
-  <h1>Appointment List</h1>
-  <div class={`${styles.filterbar}`}>
-    <select>
-      <option value="today">Today</option>
-      <option value="this-week">This Week</option>
-      <option value="this-month">This Month</option>
-    </select>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Patient Name</th>
-        <th>Appointment Date</th>
-        <th>Reason for Visit</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John Doe</td>
-        <td>2022-04-15 10:30 AM</td>
-        <td>Check-up</td>
-        <td>
-          <a href="#">View Details</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Jane Smith</td>
-        <td>2022-04-16 2:00 PM</td>
-        <td>Dental Cleaning</td>
-        <td>
-          <a href="#">View Details</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Bob Johnson</td>
-        <td>2022-04-18 1:30 PM</td>
-        <td>Physical Exam</td>
-        <td>
-          <a href="AppoinmentDetails">View Details</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div> */
+
   );
 };
 
