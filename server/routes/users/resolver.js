@@ -341,7 +341,11 @@ const resolvers = {
     },
 
     async getAppointment(_, { ID }) {
-      return await Appointment.findById(ID);
+      const a = await Appointment.findById(ID);
+      if (a === null) {
+        throw new Error('Appointment not found');
+      }
+      return a;
     },
     async getAppointments() {
       return await Appointment.find();
