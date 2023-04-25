@@ -171,7 +171,7 @@ function VideoCall() {
             </div>
             <div style={{ position: "absolute", bottom: "1rem", left: "50%", marginLeft: "-10rem" }}>
                 <Options> <Notification /> </Options>            </div> */}
-            {!ready && <Row style={{ display: "inline", width: "100%" }}>
+            {!ready && <Row className="mb-2" style={{ display: "inline", width: "100%", textAlign: "center", color: "whitesmoke" }}>
                 {(remoteEmail && !remoteStream) && <h4>You are connected to {remoteEmail}</h4>}
                 {(!remoteEmail && !remoteStream) && <h4>Waiting for other user to join</h4>}
                 {(remoteEmail && remoteStream) && <h4>{remoteEmail} is waiting for you to join</h4>}
