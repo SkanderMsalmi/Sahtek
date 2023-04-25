@@ -16,6 +16,7 @@ type Community {
 extend type Query {
     community(id: ID!): Community
     getAllCommunities: [Community]
+    findCommunityByUser(id: ID!): [Community]
   
 }
 extend type Mutation {

@@ -14,7 +14,10 @@ type Post {
    
 }
 
-
+type Question {
+    title: String!
+    similarity: Float!
+  }
 input PostInput {
         description: String
         user: ID
@@ -28,11 +31,14 @@ extend type Query {
     findPostByUser(id: ID!): [Post]
     findPostByUserCommunities(id: ID!): [Post]
     findPostByCommunity(id: ID!): [Post]
+  
+    similarQuestions(newQuestion: String): [Question]
+
     
 
 
  
-    findCommunityByUser(id: ID!): [Community]
+  
     
 
   

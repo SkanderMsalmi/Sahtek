@@ -5,28 +5,24 @@ import { FaRegCommentAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/users/users.selectors';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_POSTS } from "../../apis/forum";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { TbArrowBigUp } from "react-icons/tb";
 import { BsDot } from "react-icons/bs";
 
 
 import { TbArrowBigUpFilled } from "react-icons/tb";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { GET_COMMUNITIES_BY_USER } from "../../apis/community";
-
-import { LIKE_POST_MUTATION } from "../../apis/forum";
-import {
-    REMOVE_LIKE_POST_MUTATION
-} from "../../apis/forum";
-
-import { CREATE_POST_MUTATION } from "../../apis/forum";
-import { DELETE_POST_MUTATION } from "../../apis/forum";
+ 
+  
+ import { DELETE_POST_MUTATION,GET_POSTS,
+    CREATE_POST_MUTATION,
+    REMOVE_LIKE_POST_MUTATION,
+    LIKE_POST_MUTATION } from "../../apis/forum";
 import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import { fixObservableSubclass } from '@apollo/client/utilities';
 import Moment from 'react-moment';
 // GET_COMMUNITIES  CREATE_COMMUNITY  DELETE_COMMUNITY  JOIN_COMMUNITY
-import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY } from "../../apis/community";
+import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY,GET_COMMUNITIES_BY_USER } from "../../apis/community";
 
 
 function ForumHomepage() {
