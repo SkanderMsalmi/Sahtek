@@ -82,7 +82,7 @@ function Patients() {
                                                     </Col>
                                                    
                                                     <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
-                                                    <Link to={`/patients/${p.id}/files`}>Files</Link>
+                                                    <Link to={`/espace-therapist/${p.id}/files`}>Files</Link>
                                                     </Col>
                                                 </Row>
                                             </li>

@@ -90,7 +90,7 @@ function PatientFile({ show, handleClick }) {
     };
 
     const { data, loading, error, refetch } = useQuery(GET_PATIENT_FILES, {
-        variables: { id: remoteId }
+        variables: { id: remoteId , therapistId:therapist}
     });
     if (loading) return <p>Loading...</p>;
 

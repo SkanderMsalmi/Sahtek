@@ -191,7 +191,7 @@ function PatientFiles() {
                                     return (
                                         <>
 
-                                            <div className={styles.card}  key={p.id}>
+                                            <div className={styles.card}  key={p.id}  onClick={() => editfile(p.id)} style={{cursor: "pointer"}}>
                                                 <div className={styles.cardContent}>
                                                     <Col lg="9" md="8">
                                                         <div className={styles.cardHeader}>

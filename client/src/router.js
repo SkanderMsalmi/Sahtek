@@ -190,10 +190,7 @@ export const router = createBrowserRouter([
         element: <VideoChat />,
       },
        
-      {
-        path: "patients/:patientid/files",
-        element: <PatientFiles />,
-      },
+      
       {
         path: "forum",
         element: <ForumHomepage />,
@@ -261,6 +258,10 @@ export const router = createBrowserRouter([
           {
             path: "patients",
             element: <Patients />,
+          },
+          {
+            path: ":patientid/files",
+            element: <PatientFiles />,
           },
 
            
