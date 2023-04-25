@@ -6,6 +6,11 @@
     position: relative;
     cursor: pointer;
     height: 33rem;
+    width: 90%;
+}
+
+.card-amazon-image-wrapper>img {
+    object-fit: scale-down;
 }
 
 .card-amazon:hover {
