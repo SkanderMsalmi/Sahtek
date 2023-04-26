@@ -14,7 +14,10 @@ type Post {
    
 }
 
-type Question {
+type Newpost {
+    id: ID!
+    community: Community     
+    comments: [Comment]
     title: String!
     similarity: Float!
   }
@@ -32,7 +35,7 @@ extend type Query {
     findPostByUserCommunities(id: ID!): [Post]
     findPostByCommunity(id: ID!): [Post]
   
-    similarQuestions(newQuestion: String): [Question]
+    similarQuestions(newQuestion: String): [Newpost]
 
     
 

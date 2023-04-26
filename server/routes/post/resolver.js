@@ -62,19 +62,30 @@ const resolvers = {
     async similarQuestions(_, { newQuestion }) {
       function calculateQuestionSimilarity(question1, question2) {
         const maxLength = Math.max(question1.length, question2.length);
+        // remove common English articles from both questions
+        const pattern = /\b(the|an?|a)\b/gi;
+        question1 = question1.replace(pattern, '').trim();
+        question2 = question2.replace(pattern, '').trim();
+
+        // Levenshtein distance function from the "natural" library
+        // This function calculates the minimum number
+        // of edits (insertions, deletions, or substitutions)
+        // needed to transform one string into another.
         const levenshtein = natural.LevenshteinDistance;
-        const distance = levenshtein(question1, question2);
+        const distance = levenshtein(question1.toLowerCase(), question2.toLowerCase());
         const similarity = 1 - (distance / maxLength);
         return similarity;
       }
 
-      const existingQuestions = await Post.find().distinct("title");
+      const existingQuestions = await Post.find();
 
-      const similarQuestions = existingQuestions
-        .map((existingQuestion) => {
-          const similarity = calculateQuestionSimilarity(newQuestion, existingQuestion);
+      const similarQuestions = existingQuestions.map((e) => {
+          const similarity = calculateQuestionSimilarity(newQuestion, e.title);
           return {
-            title: existingQuestion,
+            id: e.id,
+            community: e.community   ,
+            comments: e.comments,
+            title: e.title,
             similarity: similarity
           };
         })
@@ -174,6 +185,15 @@ const resolvers = {
 
 
   },
+
+  Newpost:{
+    community: async (parent, args) => {
+      return await Community.findById(parent.community);
+    },
+    comments: async (parent, args) => {
+      return await Comment.find({ post: parent._id });
+    },
+  },
   Post: {
 
     user: async (parent, args) => {
@@ -216,7 +236,7 @@ const resolvers = {
 
   },
 
-  
+
 };
 
 module.exports = resolvers;

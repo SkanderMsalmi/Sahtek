@@ -1,38 +1,68 @@
 
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import styles from './Posts.module.scss'
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/users/users.selectors';
 import { useMutation, useQuery } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TbArrowBigUp } from "react-icons/tb";
 import { BsDot } from "react-icons/bs";
 
 
 import { TbArrowBigUpFilled } from "react-icons/tb";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
- 
-  
- import { DELETE_POST_MUTATION,GET_POSTS,
+
+
+import {
+    DELETE_POST_MUTATION, GET_POSTS,
     CREATE_POST_MUTATION,
     REMOVE_LIKE_POST_MUTATION,
-    LIKE_POST_MUTATION } from "../../apis/forum";
-import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
-import { fixObservableSubclass } from '@apollo/client/utilities';
+    LIKE_POST_MUTATION,
+    GET_SIMILAR_QUESTIONS
+} from "../../apis/forum";
+import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import Moment from 'react-moment';
 // GET_COMMUNITIES  CREATE_COMMUNITY  DELETE_COMMUNITY  JOIN_COMMUNITY
-import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY,GET_COMMUNITIES_BY_USER } from "../../apis/community";
+import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY, GET_COMMUNITIES_BY_USER } from "../../apis/community";
 
 
 function ForumHomepage() {
 
-  
+
     const user = useSelector(selectUser);
     const [alertMessage, setAlertMessage] = useState('');
+    const [modal, setModal] = React.useState(false);
+    const [modal2, setModal2] = React.useState(false);
+    const [communityDesc, setCommunityDesc] = React.useState('');
+    const [communityName, setCommunityName] = React.useState('');
+
+    const [postText, setPostText] = useState('');
+    const [title, setTitle] = useState('');
+    const [community, setCommunity] = useState('');
+
+    const [buttonTexts, setButtonTexts] = useState([]);
+    const [joinCommunities, setjoinCommunities] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const inputRef = useRef(null);
+    const [isConditionTrue, setIsConditionTrue] = useState(false);
+
+    const Inputstyle = {
+
+        borderColor: isConditionTrue ? 'red' : '#e0dcdc',
+
+    };
+
+
 
     const { loading, error, data, refetch } = useQuery(GET_POSTS, {
         variables: { user: user.id },
+    });
+    const { loading: loadingQ, error: errorQ, data: dataQ, refetch: refetchQuestion } = useQuery(GET_SIMILAR_QUESTIONS, {
+        variables: { newQuestion: title },
+        onError: (error) => {
+            console.log(error);
+        }
     });
     const [joinCommunity, { data: dataJ, loading: loadingJ, error: errorJ }] = useMutation(
         JOIN_COMMUNITY
@@ -64,28 +94,30 @@ function ForumHomepage() {
         CREATE_POST_MUTATION
     );
 
-    const [modal, setModal] = React.useState(false);
-    const [modal2, setModal2] = React.useState(false);
-    const [communityDesc, setCommunityDesc] = React.useState('');
-    const [communityName, setCommunityName] = React.useState('');
-
-    const [postText, setPostText] = useState('');
-    const [title, setTitle] = useState('');
-    const [community, setCommunity] = useState('');
-   
-    const [buttonTexts, setButtonTexts] = useState(['Joined']);
-    const [joinCommunities, setjoinCommunities] = useState(false);
 
 
 
 
- 
 
- 
+
     useEffect(() => {
-        if (dataCom?.getAllCommunities) {
-console.log(buttonTexts);        }
-    }, [dataCom]);
+        if (dataQ?.similarQuestions?.filter((m) => m.similarity == 1).length > 0) {
+            setIsConditionTrue(true);
+            setAlertMessage('Title already exist!');
+
+        } else  {
+            setIsConditionTrue(false);
+            setAlertMessage('');
+        }
+        refetchQuestion();
+
+    }, [title]);
+
+    useEffect(() => {
+        if (dataQ?.similarQuestions);
+
+        refetchQuestion();
+    }, [title]);
 
 
     ///***  choose community */
@@ -115,7 +147,7 @@ console.log(buttonTexts);        }
 
     }
 
-    
+
 
     //** join community*/
     function join(communityID) {
@@ -286,33 +318,33 @@ console.log(buttonTexts);        }
 
     if (loadingC) return <p>loading...</p>
     if (loadingCom) return <p>loading...</p>
-    
+
     const handleMouseOver = (index) => {
         setButtonTexts((prevButtonTexts) => {
-          const newButtonTexts = [...prevButtonTexts];
-          newButtonTexts[index] =
-            prevButtonTexts[index] === 'Leave' ? 'Joined' : 'Leave';
-          return newButtonTexts;
+            const newButtonTexts = [...prevButtonTexts];
+            newButtonTexts[index] =
+                prevButtonTexts[index] === 'Leave' ? 'Joined' : 'Leave';
+            return newButtonTexts;
         });
-      };
+    };
 
-      const handleMouseLeave = (index) => {
+    const handleMouseLeave = (index) => {
         setButtonTexts((prevButtonTexts) => {
-          const newButtonTexts = [...prevButtonTexts];
-          newButtonTexts[index] =
-            prevButtonTexts[index] === 'Leave' ? 'Joined':'Joined';
-          return newButtonTexts;
+            const newButtonTexts = [...prevButtonTexts];
+            newButtonTexts[index] =
+                prevButtonTexts[index] === 'Leave' ? 'Joined' : 'Joined';
+            return newButtonTexts;
         });
-      };
-     
-     
+    };
+
+
 
     return (
 
         <div className={styles.containerFluid} >
 
 
-            <Col lg="6" md="12">
+            <Col lg="6" md="6">
 
                 <div className={styles.add_post_container}  >
                     <div className={styles.row}>
@@ -347,6 +379,8 @@ console.log(buttonTexts);        }
                         </div>
                         <div className={styles.modalContent}>
 
+
+
                             <div className={styles.select}>
                                 <select className="form-control" aria-label=".form-select-sm example"
                                     value={community} onChange={handleChange}>
@@ -360,14 +394,43 @@ console.log(buttonTexts);        }
                                 </select>
                             </div>
 
+                            {alertMessage && <p style={{ color: "red", marginLeft: "2px", fontSize: "13px" }}>
+                                {alertMessage}
+                            </p>}
+                            <div style={{ position: "relative", width: "100%" }}>
+                                <Input style={Inputstyle}
+                                    type="text"
+                                    placeholder="Title"
+                                    name="title"
+                                    value={title}
+                                    className={styles.input}
+                                    onFocus={() => setDropdownOpen(true)}
+                                  
+                                    onChange={(e) => { setTitle(e.target.value); setDropdownOpen(true); }}>
+                                </Input>
 
-                            <input type="text"
-                                placeholder="Title"
-                                name="title"
-                                value={title}
-                                className={styles.input}
-                                onChange={(e) => setTitle(e.target.value)} />
+                                {loadingQ ? (null) : dropdownOpen ? (
 
+                                    <div className={styles.searchDropdown}  >
+
+                                        <> {dataQ?.similarQuestions?.map((s) => (
+                                            <Link to={`/comments/${s.id}`}  >
+                                                <div key={s.title} className={styles.suggestions}
+                                                >
+                                                    <span>{s.title}</span>
+                                                   
+                                                    <p>{s.comments?.length} Comments</p>
+                                                    <hr className="my-1" />
+                                                </div>
+                                            </Link>
+                                        ))}
+                                        </>
+
+
+                                    </div>
+                                ) : (null)}
+
+                            </div>
 
 
 
@@ -377,6 +440,7 @@ console.log(buttonTexts);        }
                                 placeholder="What do you want to ask or share?"
                                 name="post"
                                 value={postText}
+                                onFocus={() => setDropdownOpen(false)}
                                 className={styles.textarea} onChange={(e) => setPostText(e.target.value)}  >
 
                             </textarea>
@@ -394,7 +458,8 @@ console.log(buttonTexts);        }
                             </div>
 
                             <div >
-                                {postText == '' || title == '' || postText == null || title == null || community == null ? (
+                                {postText == '' || title == '' || postText == null || title == null ||
+                                    community == null || dataQ?.similarQuestions?.filter((m) => m.similarity === 1.00).length > 0 ? (
                                     <Button className="btn-round" color="info" disabled >
                                         Post
                                     </Button>
@@ -538,7 +603,7 @@ console.log(buttonTexts);        }
 
                                         <hr />
                                         <ul className="list-unstyled follows">
-                                            {dataCom?.getAllCommunities?.map((c,index) => {
+                                            {dataCom?.getAllCommunities?.map((c, index) => {
 
                                                 return (
                                                     <>
@@ -554,12 +619,12 @@ console.log(buttonTexts);        }
 
                                                                 <Col lg="1" md="6">
                                                                     {(c.members.filter((m) => m.id === user.id).length > 0) ?
-                                                                        <Button size="sm" className="btn-round" color="neutral" onClick={() => leave(c.id)} 
-                                                                        onMouseLeave={() => handleMouseLeave(index)}
-                                                                        onMouseOver={() => handleMouseOver(index)}
+                                                                        <Button size="sm" className="btn-round" color="neutral" onClick={() => leave(c.id)}
+                                                                            onMouseLeave={() => handleMouseLeave(index)}
+                                                                            onMouseOver={() => handleMouseOver(index)}
                                                                         >
-                                                                        {buttonTexts[index] ?? 'Joined'}
-                                                                      </Button>
+                                                                            {buttonTexts[index] ?? 'Joined'}
+                                                                        </Button>
                                                                         : <Button size="sm" className="btn-round" color="info" onClick={() => join(c.id)}> Join</Button>}
                                                                 </Col>
                                                             </Row>
@@ -593,7 +658,7 @@ console.log(buttonTexts);        }
 
 
             </Col>
-            <Col lg="2" md="12">
+            <Col lg="2" md="4" sm="3">
 
                 <div className={styles.communityCard}>
 

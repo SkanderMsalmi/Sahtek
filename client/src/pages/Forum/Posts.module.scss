@@ -153,6 +153,38 @@
 
 }
 
+.suggestions:hover{
+    background-color: rgb(192, 192, 192);    
+}
+.searchDropdown {
+    position: absolute;
+  
+     z-index: 1;
+    background-color: rgb(209, 208, 208);    
+    width: 100%;
+    border-radius: 3px;
+    overflow-wrap: break-word;
+    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.301);
+     max-height: 230px ;
+     overflow-y: auto;
+
+     & p{
+        font-size: 12px;
+        padding-left: 10px;
+        color: #4a4a4a;
+
+     }
+
+     & span {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a4a4a;
+        padding-left: 10px;
+
+     }
+  }
+
 .userImg img {
     width: 35px;
     height: 35px;
@@ -195,7 +227,7 @@
 
 }
 .communityBtn{
-
+text-align: left;
     background:transparent;
     border: none !important;
     display: flex;
