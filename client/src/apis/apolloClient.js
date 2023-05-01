@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 const httpLink = createHttpLink({
-  uri: "http://localhost:5000/graphql",
+  uri: "https://sah-tek-serv.onrender.com/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -22,10 +22,12 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(
-    createUploadLink({
-      uri: "http://localhost:5000/graphql",
-    })
+  link: httpLink.concat(
+    authLink.concat(
+      createUploadLink({
+        uri: "https://sah-tek-serv.onrender.com/graphql",
+      })
+    )
   ),
   cache: new InMemoryCache({
     addTypename: false,
