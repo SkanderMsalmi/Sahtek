@@ -16,7 +16,7 @@ import style from "./App.module.scss";
 import Header from "./components/Headers/Header";
 import { Container } from "reactstrap";
 // import AnimatedHeader from './components/Header/AnimatedHeader';
-
+export const URL = process.env.REACT_APP_SERVER_URL;
 function App() {
   const location = useLocation();
   if (location.pathname.startsWith("/videoCall"))
@@ -44,17 +44,19 @@ function App() {
         <Provider store={store}>
           <PersistGate loading={null} persistor={Persistor}>
             <Suspense>
-
               <Header />
-              <Container className="mt-2 pl-4 pr-4 pt-2" fluid style={{ position: "relative", zIndex: 0 }}>
-
+              <Container
+                className="mt-2 pl-4 pr-4 pt-2"
+                fluid
+                style={{ position: "relative", zIndex: 0 }}
+              >
                 <Outlet />
               </Container>
             </Suspense>
           </PersistGate>
         </Provider>
       </ApolloProvider>
-    )
+    );
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
