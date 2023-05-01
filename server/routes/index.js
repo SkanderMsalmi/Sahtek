@@ -7,8 +7,8 @@ const userResolvers = require("./users/resolver");
 const ProductResolvers = require("./shop/product/resolver");
 const mailVerification = require("./users/mailVerification");
 const ratingResolvers = require("./rating/resolver");
-const communityResolvers = require("./community/resolver")
-
+const communityResolvers = require("./community/resolver");
+const chatbotResolver = require("./chatbot/resolver");
 module.exports = [
   consultationResolvers,
   feedbackResolvers,
@@ -19,5 +19,5 @@ module.exports = [
   ProductResolvers,
   mailVerification,
   ratingResolvers,
-  
+  chatbotResolver,
 ];

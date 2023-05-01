@@ -19,6 +19,7 @@
     "bootstrap": "^4.6.0",
     "bootstrap-3-card": "^0.2.0",
     "bootstrap-icons": "^1.10.4",
+    "botpress": "^10.51.10",
     "chart.js": "^4.2.1",
     "classnames": "2.3.1",
     "formik": "^2.2.9",

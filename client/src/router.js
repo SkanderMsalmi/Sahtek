@@ -14,6 +14,7 @@ import PatientSettings from "./components/EspaceUser/Patient/PatientSettings";
 import HomeShop from "./pages/Shop/HomePage/HomeShop";
 import CategoryShop from "./pages/Shop/CategoryPage/CategoryShop";
 import PatientFile from "./components/videoChat/PatientFile";
+import Chatbot from "./components/ChatWidget/ChatWidget";
 
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
@@ -24,7 +25,6 @@ const AppointmentList = React.lazy(() =>
 
 const ChooseTherapist = React.lazy(() => import("./pages/rdv/ChooseTherapist"));
 const Homepage = React.lazy(() => import("./pages/Homepage/Homepage"));
-
 
 //Feedback
 const Rating = React.lazy(() => import("./pages/Rating/Rating"));
@@ -189,7 +189,7 @@ export const router = createBrowserRouter([
         path: "videoChat",
         element: <VideoChat />,
       },
-       
+
       {
         path: "patients/:patientid/files",
         element: <PatientFiles />,
@@ -220,6 +220,7 @@ export const router = createBrowserRouter([
         path: "comments/:postId",
         element: <PostComments />,
       },
+      { path: "chat", element: <Chatbot /> },
       {
         path: "espace-patient",
         element: <EspacePatient />,
@@ -262,9 +263,6 @@ export const router = createBrowserRouter([
             path: "patients",
             element: <Patients />,
           },
-
-           
-          
         ],
       },
       {
