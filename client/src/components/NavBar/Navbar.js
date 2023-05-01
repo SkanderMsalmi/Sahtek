@@ -139,6 +139,16 @@ function Navigation() {
                         className="btn-round"
                         color="info"
                         tag={Link}
+                        to="/chat"
+                      >
+                        Doc Bot
+                      </Button>
+                    </NavItem>
+                    <NavItem>
+                      <Button
+                        className="btn-round"
+                        color="info"
+                        tag={Link}
                         to="/shop"
                       >
                         Shop
@@ -167,7 +177,7 @@ function Navigation() {
                   </>
                 ) : (
                   <>
-                   <NavItem>
+                    <NavItem>
                       <Button
                         className="btn-round"
                         color="info"
@@ -177,18 +187,17 @@ function Navigation() {
                         Forum
                       </Button>
                     </NavItem>
-                  <NavItem>
-                    <Button
-                      className="btn-round"
-                      color="secondary"
-                      tag={Link}
-                      to="/espace-therapist"
-                    >
-                      Espace Therapist
-                    </Button>
-                  </NavItem>
+                    <NavItem>
+                      <Button
+                        className="btn-round"
+                        color="secondary"
+                        tag={Link}
+                        to="/espace-therapist"
+                      >
+                        Espace Therapist
+                      </Button>
+                    </NavItem>
                   </>
-                  
                 )}
                 <NavItem>
                   <Button
