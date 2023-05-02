@@ -47,17 +47,22 @@ const startServer = async () => {
   });
 
   app.use(
-    express.static(path.resolve(__dirname, "..", "client/build"), {
-      etag: false, // disable etags
-      maxAge: "1d", // cache for 1 day
-      setHeaders: (res, path) => {
-        res.set("Cache-Control", "public, max-age=86400");
-      },
-      fallthrough: false, // return 404 if file not found
-    })
+    express.static(
+      path.resolve(__dirname, "..", "https://sah-tek.onrender.com/build"),
+      {
+        etag: false, // disable etags
+        maxAge: "1d", // cache for 1 day
+        setHeaders: (res, path) => {
+          res.set("Cache-Control", "public, max-age=86400");
+        },
+        fallthrough: false, // return 404 if file not found
+      }
+    )
   );
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+    res.sendFile(
+      path.join(__dirname + "https://sah-tek.onrender.com/build/index.html")
+    );
   });
 
   await apolloServer.start();
