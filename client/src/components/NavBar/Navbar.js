@@ -146,8 +146,8 @@ function Navigation() {
                   <>
                     <NavItem>
                       <Button
-                className="btn-link mr-1"
-                color="info"
+                        className="btn-round mr-1"
+                        color="danger"
                         tag={Link}
                         to="/chat"
                       >
@@ -157,7 +157,7 @@ function Navigation() {
                     <NavItem>
                       <Button
                         className="btn-round"
-                        color="info"
+                        color="primary"
                         tag={Link}
                         to="/shop"
                       >
@@ -166,8 +166,8 @@ function Navigation() {
                     </NavItem>
                     <NavItem>
                       <Button
-                className="btn-link mr-1"
-                color="info"
+                        className="btn-round mr-1"
+                        color="info"
                         tag={Link}
                         to="/forum"
                       >
@@ -176,8 +176,8 @@ function Navigation() {
                     </NavItem>
                     <NavItem>
                       <Button
-                className="btn-link mr-1"
-                color="info"
+                        className="btn-round mr-1"
+                        color="info"
                         tag={Link}
                         to="/espace-patient"
                       >

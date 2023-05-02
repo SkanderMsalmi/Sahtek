@@ -276,12 +276,12 @@ const resolvers = {
       const existingAppointment = await Appointment.findOne({
         date: date,
         therapist: d,
-        patient:p
+        patient: p,
         // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
       const patientaleardyhaveone = await Appointment.findOne({
         date: date,
-        patient:p
+        patient: p,
         // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
       console.log(existingAppointment);
@@ -304,7 +304,7 @@ const resolvers = {
 
     AcceptAppointment: async (_, { idAppointment }) => {
       const appointment = await Appointment.findById(idAppointment);
-      
+
       const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -368,9 +368,12 @@ const resolvers = {
     },
     async getTherapistsByPatient(_, { ID }) {
       let listTherapist = [];
-      const therapistsId = await Appointment.find({ patient: ID });
+      const therapistsId = await Appointment.find({
+        patient: ID,
+        status: "Confirmed",
+      }).distinct("therapist");
       for (let i = 0; i < therapistsId.length; i++) {
-        listTherapist.push(await User.findById(therapistsId[i].therapist));
+        listTherapist.push(await User.findById(therapistsId[i]));
       }
       return listTherapist;
     },
@@ -388,7 +391,7 @@ const resolvers = {
     async getAppointment(_, { ID }) {
       const a = await Appointment.findById(ID);
       if (a === null) {
-        throw new Error('Appointment not found');
+        throw new Error("Appointment not found");
       }
       return a;
     },
@@ -433,9 +436,10 @@ const resolvers = {
     },
 
     getPatientsByTherapist: async (_, { id }) => {
-      const list = await Appointment.find({ therapist: id, status: "Confirmed" }).distinct(
-        "patient"
-      );
+      const list = await Appointment.find({
+        therapist: id,
+        status: "Confirmed",
+      }).distinct("patient");
       return await User.find({ _id: { $in: list } });
     },
   },
