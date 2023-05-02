@@ -32,14 +32,12 @@ function Patients() {
 
     return (
         <>
-            <div className="section   text-center">
-
-            </div>
+           
             <div className="section profile-content">
                 <Container >
 
                     <br />
-                    <Row className="d-flex justify-content-center align-items-center ">
+                    <Row className="d-flex justify-content-center align-items-center "  style={{marginTop: "21px"}}>
 
                         <Col lg="7" md="6">
 
@@ -64,7 +62,7 @@ function Patients() {
                                 {data.getPatientsByTherapist.map((p) => {
                                     return (
                                         <>
-                                            <li>
+                                            <li  key={p.id}>
                                                 <Row  className="d-flex justify-content-center align-items-center ">
                                                     <Col className="avatar">
                                                         <img
@@ -74,12 +72,14 @@ function Patients() {
                                                             src={p.profileImage}
                                                         />
                                                     </Col>
-                                                    <Col className="ml-auto mr-auto" lg="8" md="4" xs="4">
+                                                    <Col className="ml-auto mr-auto" lg="4" md="4" xs="4">
                                                         <h6  >
-                                                            {p.name} <br />
-                                                            <small>{p.email}</small>
-                                                        </h6>
+                                                            {p.name} </h6> 
+                                                           
+                                                        
                                                     </Col>
+                                                    <Col  className="ml-auto mr-auto" lg="4" md="4" xs="4">
+                                                    <p>{p.email}</p></Col>
                                                    
                                                     <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
                                                     <Link to={`/espace-therapist/${p.id}/files`}>Files</Link>

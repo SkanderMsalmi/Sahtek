@@ -21,6 +21,9 @@ export const GET_COMMUNITIES = gql
     findCommunityByUser(id: $id) {
       name
       id
+      creator {
+        id
+      }
     }
   }
 `;
@@ -38,9 +41,9 @@ export const CREATE_COMMUNITY = gql
     }
   `;
 export const DELETE_COMMUNITY = gql
-    `   mutation DeleteCommunity($deleteCommunityId: ID!) {
-    deleteCommunity(id: $deleteCommunityId)
-  }
+    ` mutation DeleteCommunity($id: ID!) {
+      deleteCommunity(id: $id) 
+    }
   `;
 export const JOIN_COMMUNITY = gql
     `   mutation JoinCommunity($id: ID!, $userId: ID!) {

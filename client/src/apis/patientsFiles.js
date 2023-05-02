@@ -21,6 +21,8 @@ query GetFilesByPatient($id: ID!, $therapistId: ID!) {
 }
     `;
 
+    
+
 
     export const GET_FILE = gql` 
     query GetPatientFile($id: ID!) {

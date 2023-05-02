@@ -11,7 +11,7 @@ import { BsDot } from "react-icons/bs";
 
 
 import { TbArrowBigUpFilled } from "react-icons/tb";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
+import { BiDotsHorizontalRounded, BiDotsVerticalRounded } from "react-icons/bi";
 
 
 import {
@@ -24,7 +24,13 @@ import {
 import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import Moment from 'react-moment';
 // GET_COMMUNITIES  CREATE_COMMUNITY  DELETE_COMMUNITY  JOIN_COMMUNITY
-import { CREATE_COMMUNITY, GET_COMMUNITIES, JOIN_COMMUNITY, LEAVE_COMMUNITY, GET_COMMUNITIES_BY_USER } from "../../apis/community";
+import {
+    CREATE_COMMUNITY,
+    GET_COMMUNITIES, DELETE_COMMUNITY,
+    JOIN_COMMUNITY,
+    LEAVE_COMMUNITY,
+    GET_COMMUNITIES_BY_USER
+} from "../../apis/community";
 
 
 function ForumHomepage() {
@@ -34,12 +40,12 @@ function ForumHomepage() {
     const [alertMessage, setAlertMessage] = useState('');
     const [modal, setModal] = React.useState(false);
     const [modal2, setModal2] = React.useState(false);
-    const [communityDesc, setCommunityDesc] = React.useState('');
-    const [communityName, setCommunityName] = React.useState('');
+    const [communityDesc, setCommunityDesc] = React.useState();
+    const [communityName, setCommunityName] = React.useState();
 
     const [postText, setPostText] = useState('');
     const [title, setTitle] = useState('');
-    const [community, setCommunity] = useState('');
+    const [community, setCommunity] = useState();
 
     const [buttonTexts, setButtonTexts] = useState([]);
     const [joinCommunities, setjoinCommunities] = useState(false);
@@ -58,16 +64,20 @@ function ForumHomepage() {
     const { loading, error, data, refetch } = useQuery(GET_POSTS, {
         variables: { user: user.id },
     });
+
     const { loading: loadingQ, error: errorQ, data: dataQ, refetch: refetchQuestion } = useQuery(GET_SIMILAR_QUESTIONS, {
         variables: { newQuestion: title },
         onError: (error) => {
             console.log(error);
         }
     });
-    const [joinCommunity, { data: dataJ, loading: loadingJ, error: errorJ }] = useMutation(
+    const [joinCommunity] = useMutation(
         JOIN_COMMUNITY
     );
-    const [leaveCommunity, { data: datale, loading: loadingle, error: errorle }] = useMutation(
+    const [deleteCommunity] = useMutation(
+        DELETE_COMMUNITY
+    );
+    const [leaveCommunity] = useMutation(
         LEAVE_COMMUNITY
     );
 
@@ -76,48 +86,50 @@ function ForumHomepage() {
     });
     const { data: dataCom, loading: loadingCom, error: errorCom, refetch: refetchCom } = useQuery(GET_COMMUNITIES);
 
-    const [createCommunity, { data: dataCC, loading: loadingCC, error: errorCC }] = useMutation(
+    const [createCommunity] = useMutation(
         CREATE_COMMUNITY
     );
 
-    const [removeLikePost, { data: dataR, loading: loadingR, error: errorR }] = useMutation(
+    const [removeLikePost] = useMutation(
         REMOVE_LIKE_POST_MUTATION
     );
-    const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
+    const [LikePost] = useMutation(
         LIKE_POST_MUTATION
     );
-    const [deletePost, { data: dataD, loading: loadingD, error: errorD }] = useMutation(
+    const [deletePost] = useMutation(
         DELETE_POST_MUTATION
     );
 
-    const [createPost, { data: dataP, loading: loadingP, error: errorP }] = useMutation(
+    const [createPost] = useMutation(
         CREATE_POST_MUTATION
     );
+    const [searchQuery, setSearchQuery] = useState("");
 
 
-
+    useEffect(() => {
+        if (dataC)
+            refetchC();
+        refetchCom();
+    }, [dataC]);
 
 
 
 
     useEffect(() => {
-        if (dataQ?.similarQuestions?.filter((m) => m.similarity == 1).length > 0) {
-            setIsConditionTrue(true);
-            setAlertMessage('Title already exist!');
+        if (dataQ?.similarQuestions) {
+            if (dataQ?.similarQuestions?.filter((m) => m.similarity > 0.8).length > 0) {
+                setIsConditionTrue(true);
+                setAlertMessage('Title already exist!');
 
-        } else  {
-            setIsConditionTrue(false);
-            setAlertMessage('');
+            } else {
+                setIsConditionTrue(false);
+                setAlertMessage('');
+            }
+            refetchQuestion();
         }
-        refetchQuestion();
 
     }, [title]);
 
-    useEffect(() => {
-        if (dataQ?.similarQuestions);
-
-        refetchQuestion();
-    }, [title]);
 
 
     ///***  choose community */
@@ -135,8 +147,8 @@ function ForumHomepage() {
     };
 
     const resetCommunitymodal = () => {
-        setCommunityDesc('');
-        setCommunityName('');
+        setCommunityDesc();
+        setCommunityName();
         setAlertMessage('');
 
     }
@@ -191,6 +203,27 @@ function ForumHomepage() {
 
 
     };
+    //** delete community*/
+    function deleteMyCommunity(comID) {
+
+        deleteCommunity({
+            variables: {
+
+                id: comID,
+
+
+            },
+        }).then(() => {
+
+            refetch();
+            refetchC();
+        })
+            .catch(errorDel => console.error(errorDel));
+
+
+
+    };
+
     //** delete post*/
     function deleteMyPost(postID) {
 
@@ -271,7 +304,7 @@ function ForumHomepage() {
             setModal(!modal);
             setPostText('');
             setTitle('');
-            setCommunity('');
+            setCommunity();
             refetch();
         })
             .catch(errorP => console.error(errorP));
@@ -297,9 +330,10 @@ function ForumHomepage() {
 
         }).then(() => {
             setModal2(!modal2);
-            setCommunityDesc('');
-            setCommunityName('');
+            setCommunityDesc();
+            setCommunityName();
             setAlertMessage('');
+            refetchC();
 
 
         })
@@ -313,6 +347,7 @@ function ForumHomepage() {
             refetch();
         }
     }, [data]);
+
 
 
 
@@ -336,6 +371,11 @@ function ForumHomepage() {
             return newButtonTexts;
         });
     };
+
+    const searchedCommunity = dataCom?.getAllCommunities?.filter(
+        (c) =>
+            c?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
 
 
@@ -405,7 +445,7 @@ function ForumHomepage() {
                                     value={title}
                                     className={styles.input}
                                     onFocus={() => setDropdownOpen(true)}
-                                  
+
                                     onChange={(e) => { setTitle(e.target.value); setDropdownOpen(true); }}>
                                 </Input>
 
@@ -418,7 +458,7 @@ function ForumHomepage() {
                                                 <div key={s.title} className={styles.suggestions}
                                                 >
                                                     <span>{s.title}</span>
-                                                   
+
                                                     <p>{s.comments?.length} Comments</p>
                                                     <hr className="my-1" />
                                                 </div>
@@ -459,12 +499,12 @@ function ForumHomepage() {
 
                             <div >
                                 {postText == '' || title == '' || postText == null || title == null ||
-                                    community == null || dataQ?.similarQuestions?.filter((m) => m.similarity === 1.00).length > 0 ? (
-                                    <Button className="btn-round" color="info" disabled >
+                                    community == null || dataQ?.similarQuestions?.filter((m) => m.similarity > 0.8).length > 0 ? (
+                                    <Button className="btn-round" color="default" disabled >
                                         Post
                                     </Button>
                                 ) : (
-                                    <Button className="btn-round" color="info" onClick={addPost} >
+                                    <Button className="btn-round" color="default" onClick={addPost} >
                                         Post
                                     </Button>
                                 )}
@@ -571,7 +611,17 @@ function ForumHomepage() {
                         </>
 
 
-                    ) : joinCommunities || dataC?.findCommunityByUser.length == 0 ? (
+                    ) : joinCommunities === false ? (
+                        <div className={styles.centercard} >
+
+
+                            <h4 className='text-center'>Explore a variety of topics and connect with others by joining communities and accessing their posts</h4>
+
+
+
+                        </div>
+
+                    ) : joinCommunities ? (
                         <div className={styles.add_post_container}>
 
 
@@ -579,18 +629,18 @@ function ForumHomepage() {
 
 
                                 <Row className={styles.cardHeader}>
+
                                     <h3>Join Communities</h3>
+                                    <br />
+
                                     <button
                                         aria-label="Close"
                                         className="close"
                                         type="button"
-                                        onClick={() => { setjoinCommunities(!joinCommunities); refetch(); }}
+                                        onClick={() => { refetch(); setjoinCommunities(!joinCommunities); }}
                                     >
                                         <span aria-hidden={true}>×</span>
                                     </button>
-
-
-
 
                                 </Row>
 
@@ -600,10 +650,19 @@ function ForumHomepage() {
 
                                 <Row className="d-flex justify-content-center  ">
                                     <Col lg="10" md="6">
+                                        <div className={styles.row}>
 
-                                        <hr />
+                                            <input className={styles.postTextArea}
+                                                placeholder='Search'
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
+
+                                        </div>
+                                        <br />
+
+
                                         <ul className="list-unstyled follows">
-                                            {dataCom?.getAllCommunities?.map((c, index) => {
+                                            {searchedCommunity.map((c, index) => {
 
                                                 return (
                                                     <>
@@ -611,21 +670,22 @@ function ForumHomepage() {
                                                             <Row className="d-flex justify-content-center align-items-center ">
 
                                                                 <Col lg="8" md="4" xs="4">
-                                                                    <h6  >
+                                                                    <Link to={`/community/${c?.id}`}  >  <h6 style={{ color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                                                                         {c.name} <br />
 
-                                                                    </h6>
+                                                                    </h6> </Link>
                                                                 </Col>
 
                                                                 <Col lg="1" md="6">
                                                                     {(c.members.filter((m) => m.id === user.id).length > 0) ?
-                                                                        <Button size="sm" className="btn-round" color="neutral" onClick={() => leave(c.id)}
+                                                                        <Button size="sm" className="btn-round" color="info" onClick={() => leave(c.id)}
                                                                             onMouseLeave={() => handleMouseLeave(index)}
                                                                             onMouseOver={() => handleMouseOver(index)}
+                                                                            style={{ width: "80px" }}
                                                                         >
                                                                             {buttonTexts[index] ?? 'Joined'}
                                                                         </Button>
-                                                                        : <Button size="sm" className="btn-round" color="info" onClick={() => join(c.id)}> Join</Button>}
+                                                                        : <Button style={{ width: "80px" }} size="sm" className="btn-round" outline color="neutral" onClick={() => join(c.id)}> Join</Button>}
                                                                 </Col>
                                                             </Row>
                                                         </li>
@@ -683,10 +743,60 @@ function ForumHomepage() {
 
 
                         <div className={styles.communityCardBody}>
-                            {dataC.findCommunityByUser.map((c) => {
+                            {dataC?.findCommunityByUser?.map((c) => {
                                 return (
                                     <>
-                                        <Link to={`/community/${c.id}`}><button className={styles.communityBtn} > {c.name}</button></Link>
+                                        <Link to={`/community/${c.id}`}>
+                                            <div className={styles.communityBtn} >
+                                                <div style={{ color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>  {c.name}</div>
+
+                                                {c?.creator?.id === user.id ? (
+                                                    <UncontrolledDropdown >
+
+                                                        <DropdownToggle className={styles.iconBtn}
+                                                            aria-expanded={false}
+                                                            aria-haspopup={true}
+
+                                                            color="default"
+                                                            data-toggle="dropdown"
+
+                                                            nav
+                                                            onClick={(e) => e.preventDefault()}
+                                                            role="button"
+                                                        >
+
+                                                            <BiDotsVerticalRounded className={styles.smallicon} />
+                                                        </DropdownToggle>
+                                                        <DropdownMenu className="dropdown-default" right>
+                                                            <DropdownItem
+
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    
+                                                                }}
+                                                            >
+                                                                Edit
+                                                            </DropdownItem>
+                                                            <DropdownItem
+
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    deleteMyCommunity(c.id);
+                                                                }}                                                      >
+                                                                Delete
+                                                            </DropdownItem>
+
+
+                                                        </DropdownMenu>
+                                                    </UncontrolledDropdown>) : (null)}
+
+
+                                            </div>
+                                        </Link>
+
+
+
+
                                     </>
 
 
@@ -752,11 +862,11 @@ function ForumHomepage() {
 
                             <div >
                                 {communityDesc == '' || communityName == '' || communityDesc == null || communityName == null ? (
-                                    <Button className="btn-round" color="info" disabled >
+                                    <Button className="btn-round" color="default" disabled >
                                         Create
                                     </Button>
                                 ) : (
-                                    <Button className="btn-round" color="info" onClick={addCommunity} >
+                                    <Button className="btn-round" color="default" onClick={addCommunity} >
                                         Create
                                     </Button>
                                 )}

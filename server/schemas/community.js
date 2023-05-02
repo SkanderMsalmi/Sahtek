@@ -22,7 +22,7 @@ extend type Query {
 extend type Mutation {
   createCommunity(name: String!, description: String!, creator: ID!): Community
   updateCommunity(id: ID!,  description: String): Community
-    deleteCommunity(id: ID!): Community
+    deleteCommunity(id: ID!): String
     joinCommunity(id: ID!, userId: ID!): Community
     leaveCommunity(id: ID!, userId: ID!): Community
    

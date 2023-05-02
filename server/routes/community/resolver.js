@@ -26,31 +26,41 @@ const resolvers = {
     Mutation: {
 
         async createCommunity(_, { name, description, creator }) {
+            //color function
             function generateRandomColor() {
-                const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+                let r, g, b;
+                do {
+                    r = Math.floor(Math.random() * 200); // generates a random value between 0 and 200 for the red channel
+                    g = Math.floor(Math.random() * 200); // generates a random value between 0 and 200 for the green channel
+                    b = Math.floor(Math.random() * 200); // generates a random value between 0 and 200 for the blue channel
+                } while (r + g + b > 500);
+                const color = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`; // constructs a hexadecimal color string
+
                 return color;
             }
             const existingCommunity = await Community.findOne({ name: { $regex: `^${name}$`, $options: 'i' } });
             if (existingCommunity) {
                 throw new Error('A community with this name already exists');
             }
+            //create
             const createdCommunity = new Community({
                 name: name,
                 description: description,
                 createdAt: new Date(),
-                members: [],
+                members: [creator],
                 creator: creator,
                 color: generateRandomColor()
 
             });
             const res = await createdCommunity.save();
 
+
             return res;
         },
 
         deleteCommunity: async (parent, args, context, info) => {
             const { id } = args;
-            await Community.findByIdAndDelete(id)
+            if(await Community.findByIdAndDelete(id))
             return "Community deleted";
         },
 
@@ -116,15 +126,20 @@ const resolvers = {
 
     Community: {
 
-       
+
 
         members: async (parent, args) => {
             return await User.find({ _id: { $in: parent.members } });
         },
         posts: async (parent, args) => {
             return await Post.find({ community: parent._id });
+        },
+        creator: async (parent, args) => {
+            return await User.findById(parent.creator);
         }
-        
+
+
+
 
 
 
