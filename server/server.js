@@ -45,7 +45,17 @@ const startServer = async () => {
       return { req, res };
     },
   });
-  app.use(express.static(path.join(__dirname, "client/build")));
+
+  app.use(
+    express.static(path.resolve(__dirname, "..", "client/build"), {
+      etag: false, // disable etags
+      maxAge: "1d", // cache for 1 day
+      setHeaders: (res, path) => {
+        res.set("Cache-Control", "public, max-age=86400");
+      },
+      fallthrough: false, // return 404 if file not found
+    })
+  );
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname + "/client/build/index.html"));
   });
