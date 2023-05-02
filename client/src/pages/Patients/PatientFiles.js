@@ -80,7 +80,7 @@ function PatientFiles() {
             setTitle(data1.getPatientFile.title);
         }
         )
-        console.log(`File ${clickedFileId}  `);
+        //console.log(`File ${clickedFileId}  `);
 
     }
 
@@ -93,7 +93,7 @@ function PatientFiles() {
                 id: clickedFileId,
             },
         }).then(() => {
-            console.log(`File ${clickedFileId} deleted successfully`);
+           // console.log(`File ${clickedFileId} deleted successfully`);
             setClickedFileId('');
             setTitle('');
             setNote('');
@@ -141,7 +141,7 @@ function PatientFiles() {
 
 
                         })
-                        .catch(errore => setAlertMessage(`${errore.message}`)
+                        .catch(errore => setAlertMessage("Note field required!")
                         );
 
 
@@ -162,7 +162,7 @@ function PatientFiles() {
 
 
                     })
-                        .catch(errorr => setAlertMessage(`${errorr.message}`)
+                        .catch(errorr => setAlertMessage("Note field required!")
                         );
 
 

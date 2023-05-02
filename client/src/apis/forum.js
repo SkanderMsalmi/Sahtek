@@ -25,7 +25,7 @@ export const GET_POSTS = gql
       id
     }
     isLiked(user: $user)
-    isPostedByCurrentuser(user: $user)
+  
   }
 }
   `;
@@ -52,6 +52,13 @@ export const CREATE_COMMENT_MUTATION = gql
       }
     }
       `;
+      export const DELETE_COMMENT_MUTATION = gql
+      `   mutation DeleteComment($id: ID!) {
+        deleteComment(id: $id)
+      }
+          `;
+
+   
 
 export const GET_COMMENTS_BY_POST = gql
   `  query GetCommentsByPostId($id: ID!) {
@@ -61,6 +68,7 @@ export const GET_COMMENTS_BY_POST = gql
           time
            
           user {
+            id
             name
             profileImage
           }

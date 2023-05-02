@@ -6,19 +6,19 @@
     align-items: center;
     justify-content: start;
     padding-top: 100px;
-    background: linear-gradient(to bottom right,
-    rgba(252, 203, 144, 1),
-    rgba(213, 126, 235, 1));
-  
-
+    // background: linear-gradient(to bottom right,
+    // rgba(252, 203, 144, 1),
+    // rgba(213, 126, 235, 1));
+    background: rgb(236, 236, 236);
+    background: radial-gradient(circle, rgba(236, 236, 236, 1) 0%, rgba(150, 173, 186, 0.9024859943977591) 100%);
 }
 
 .container {
 
     padding-bottom: 5rem;
-   
+
     height: 100%;
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(255, 255, 255);
     border-radius: 1em;
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.05);
@@ -29,9 +29,9 @@
 
 .darkSection {
     text-align: center;
-    color: #ffffff;
+    color: #252525;
     width: 100%;
-    background-color: #eef8f9;
+
     background: rgba(24, 24, 16, 0.071);
     padding: 15px;
     border-top-right-radius: 1em;
@@ -41,7 +41,7 @@
 
 
 .textarea {
-    margin-left: 9%;
+
     border-color: transparent;
     outline: none;
     height: 40px;
@@ -49,8 +49,8 @@
     padding: 10px;
     border-radius: 1em;
     background-color: #eef8f9;
-    background: rgba(24, 24, 16, 0.2);
-    color: #ffffff;
+    background: rgba(24, 24, 16, 0.071);
+    color: #252525;
     overflow-wrap: break-word;
     resize: none;
 
@@ -66,7 +66,7 @@
 }
 
 .textarea:focus {
-    border-color: #ffffff;
+    border-color: #252525;
     outline: 1px;
 
 }
@@ -78,7 +78,7 @@
 
 
 ::placeholder {
-    color: #ffffff;
+    color: #252525;
 }
 
 .post_container {
@@ -87,8 +87,8 @@
         display: flex;
 
         height: fit-content;
-        background: rgba(24, 24, 16, 0.2);
-        color: #ffffff;
+        background: rgba(255, 255, 255);
+        color: #252525;
 
         .cardHeader {
 
@@ -107,7 +107,7 @@
             padding: 15px 15px 20px 10px;
 
             .p {
-                color: #ffffff;
+                color: #252525;
             }
 
         }
@@ -120,25 +120,27 @@
     width: 100%;
     height: fit-content;
     padding: 10px 10px 10px 0px;
-    margin-bottom: 10px;
-    background: rgba(24, 24, 16, 0.2);
+    margin-bottom: 20px;
+    background: rgba(24, 24, 16, 0.071);
     backdrop-filter: blur(15px);
     box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-    color: #ffffff;
+    color: #252525;
 
 
     .add_btn {
         font-size: 14px;
         border-radius: 15px;
         width: 130px;
-        height:40px;
+        height: 40px;
         color: black;
         outline: none;
-        border-width: 0px;
+        border-width: 1px;
         margin-left: 10px;
+
 
         &:hover {
             background: rgba(24, 24, 16, 0.401);
+            border-width: 0px;
             color: white;
             outline: none;
             cursor: pointer;
@@ -172,19 +174,19 @@
 
 .comment_card {
 
-    
+
 
     width: 100%;
     height: fit-content;
     margin-bottom: 10px;
-    color: #ffffff;
+    color: #252525;
     padding-right: 10px;
-    
+
 
     & .cardSide2 {
 
-       
-      
+
+
         padding-top: 0px;
         padding-left: 20px;
         border-bottom-left-radius: 5px;
@@ -193,21 +195,22 @@
 
     & .cardContent {
         max-width: 100%;
-        width:fit-content;
-        display: inline-block; 
-         box-sizing: border-box;
-         overflow-wrap: break-word;
-         white-space: normal; 
+        width: fit-content;
+        display: inline-block;
+        box-sizing: border-box;
+        overflow-wrap: break-word;
+        white-space: normal;
 
 
-        background: rgba(24, 24, 16, 0.2);
+        background: rgba(24, 24, 16, 0.122);
+
         box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
         border-radius: 1em;
         padding: 5px 5px 5px 10px;
-      
+
         margin-bottom: 2px;
-        
-        
+
+
 
 
 
@@ -228,7 +231,13 @@
 }
 
 
+.username {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
 
+}
 
 .cardSide {
 
@@ -257,6 +266,12 @@
     margin-right: 10px;
 }
 
+
+.icon {
+    width: 25px;
+    height: 25px;
+    color: #252525;
+}
 
 
 .upvoteIcon {

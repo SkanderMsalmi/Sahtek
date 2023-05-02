@@ -67,13 +67,25 @@ const resolvers = {
         updateCommunity: async (parent, args, context, info) => {
             const { id } = args;
             const { description } = args
+            const { name } = args
+            
+            const sameCommunityName = await Community.findOne({name});
+            if(sameCommunityName){
+                if(sameCommunityName.id !== id){
+                    throw new Error('A community with this name already exists');
+                }
+            }
+           else{
+                const community = await Community.findByIdAndUpdate(
+                    id,
+                    { name,description },
+                    { new: true }
+                );
+                return community;
+             
+            }
 
-            const community = await Community.findByIdAndUpdate(
-                id,
-                { description },
-                { new: true }
-            );
-            return community;
+            
         },
 
         joinCommunity: async (parent, args, context, info) => {

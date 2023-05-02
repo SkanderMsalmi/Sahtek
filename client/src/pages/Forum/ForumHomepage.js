@@ -23,13 +23,14 @@ import {
 } from "../../apis/forum";
 import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import Moment from 'react-moment';
-// GET_COMMUNITIES  CREATE_COMMUNITY  DELETE_COMMUNITY  JOIN_COMMUNITY
 import {
+    COMMUNITY,
     CREATE_COMMUNITY,
     GET_COMMUNITIES, DELETE_COMMUNITY,
     JOIN_COMMUNITY,
     LEAVE_COMMUNITY,
-    GET_COMMUNITIES_BY_USER
+    GET_COMMUNITIES_BY_USER,
+    UPDATE_COMMUNITY
 } from "../../apis/community";
 
 
@@ -38,8 +39,13 @@ function ForumHomepage() {
 
     const user = useSelector(selectUser);
     const [alertMessage, setAlertMessage] = useState('');
+     
+    const [deletemodal, setDeletemodal] = React.useState(false);
+
     const [modal, setModal] = React.useState(false);
     const [modal2, setModal2] = React.useState(false);
+    const [modalEditCom, setModalEditCom] = React.useState(false);
+
     const [communityDesc, setCommunityDesc] = React.useState();
     const [communityName, setCommunityName] = React.useState();
 
@@ -52,6 +58,7 @@ function ForumHomepage() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const inputRef = useRef(null);
     const [isConditionTrue, setIsConditionTrue] = useState(false);
+    const [clickedFileId, setClickedFileId] = useState('');
 
     const Inputstyle = {
 
@@ -71,6 +78,9 @@ function ForumHomepage() {
             console.log(error);
         }
     });
+    const { loading: loadingCo, error: errorCo, data: dataCo, refetch: refetchCo } = useQuery(COMMUNITY, {
+        variables: { id: clickedFileId, user: user.id },
+    });
     const [joinCommunity] = useMutation(
         JOIN_COMMUNITY
     );
@@ -88,6 +98,9 @@ function ForumHomepage() {
 
     const [createCommunity] = useMutation(
         CREATE_COMMUNITY
+    );
+    const [updateCommunity, { error: errorUpdateCom }] = useMutation(
+        UPDATE_COMMUNITY
     );
 
     const [removeLikePost] = useMutation(
@@ -130,13 +143,16 @@ function ForumHomepage() {
 
     }, [title]);
 
-
+ 
 
     ///***  choose community */
     const handleChange = (event) => {
         setCommunity(event.target.value)
     }
-
+    const toggleDeleteModal = (id) => {
+        setClickedFileId(id);
+        setDeletemodal(!deletemodal);
+    };
     //** Modal */ 
     const toggleModal = () => {
         setModal(!modal);
@@ -145,6 +161,26 @@ function ForumHomepage() {
     const toggleModal2 = () => {
         setModal2(!modal2);
     };
+    //** update community Modal */ 
+    const toggleModalEditCom = (id) => {
+        if (id)
+            setClickedFileId(id);
+
+        refetchCo().then(() => {
+            setCommunityName(dataCo?.community?.name);
+            setCommunityDesc(dataCo?.community?.description);
+
+        }
+        )
+
+
+    };
+    useEffect(() => {
+        if (dataCo)
+            toggleModalEditCom();
+
+    }, [dataCo]);
+
 
     const resetCommunitymodal = () => {
         setCommunityDesc();
@@ -204,17 +240,20 @@ function ForumHomepage() {
 
     };
     //** delete community*/
-    function deleteMyCommunity(comID) {
+    function deleteMyCommunity() {
 
         deleteCommunity({
             variables: {
 
-                id: comID,
+                id: clickedFileId,
 
 
             },
         }).then(() => {
-
+            setClickedFileId('');
+            setCommunityDesc();
+            setCommunityName();
+            setDeletemodal(!deletemodal)
             refetch();
             refetchC();
         })
@@ -313,7 +352,35 @@ function ForumHomepage() {
 
     };
 
+    /** edit community */
 
+    function editCommunity(comId) {
+
+        updateCommunity({
+            variables: {
+                id: comId,
+                description: communityDesc,
+                name: communityName,
+
+
+
+            },
+
+
+        }).then(() => {
+            setModalEditCom(!modalEditCom)
+            setCommunityDesc();
+            setCommunityName();
+            setAlertMessage('');
+            refetchC();
+            refetch();
+
+
+        }).catch(errorUpdateCom => setAlertMessage(`${errorUpdateCom.message}`));
+
+
+
+    };
     /** create community */
 
     function addCommunity() {
@@ -353,6 +420,9 @@ function ForumHomepage() {
 
     if (loadingC) return <p>loading...</p>
     if (loadingCom) return <p>loading...</p>
+
+
+
 
     const handleMouseOver = (index) => {
         setButtonTexts((prevButtonTexts) => {
@@ -558,7 +628,7 @@ function ForumHomepage() {
 
 
 
-                                                    {p.isPostedByCurrentuser ? (
+                                                    {p.user.id === user.id ? (
                                                         <UncontrolledDropdown >
 
                                                             <DropdownToggle className={styles.iconBtn}
@@ -670,7 +740,7 @@ function ForumHomepage() {
                                                             <Row className="d-flex justify-content-center align-items-center ">
 
                                                                 <Col lg="8" md="4" xs="4">
-                                                                    <Link to={`/community/${c?.id}`}  >  <h6 style={{ color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                                    <Link to={`/community/${c?.id}`}  >  <h6 style={{ color: "#252525", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                                                                         {c.name} <br />
 
                                                                     </h6> </Link>
@@ -685,7 +755,7 @@ function ForumHomepage() {
                                                                         >
                                                                             {buttonTexts[index] ?? 'Joined'}
                                                                         </Button>
-                                                                        : <Button style={{ width: "80px" }} size="sm" className="btn-round" outline color="neutral" onClick={() => join(c.id)}> Join</Button>}
+                                                                        : <Button style={{ width: "80px" }} size="sm" className="btn-round" outline color="default" onClick={() => join(c.id)}> Join</Button>}
                                                                 </Col>
                                                             </Row>
                                                         </li>
@@ -727,11 +797,11 @@ function ForumHomepage() {
 
                         <div className="d-flex flex-column align-items-start justify-contents-center">
                             <div className={styles.cardHeader2}>
-                                <Button size="sm" block className="btn-round" color="neutral" onClick={() => setjoinCommunities(!joinCommunities)}>
+                                <Button size="sm" block className="btn-round" color="default" onClick={() => setjoinCommunities(!joinCommunities)}>
                                     Join Community
                                 </Button>
 
-                                <Button size="sm" outline block className="btn-round" color="neutral" onClick={toggleModal2}>
+                                <Button size="sm" outline block className="btn-round" color="default" onClick={toggleModal2}>
                                     Create Community
                                 </Button>
                                 <br />
@@ -748,7 +818,7 @@ function ForumHomepage() {
                                     <>
                                         <Link to={`/community/${c.id}`}>
                                             <div className={styles.communityBtn} >
-                                                <div style={{ color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>  {c.name}</div>
+                                                <div style={{ color: "#252525", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>  {c.name}</div>
 
                                                 {c?.creator?.id === user.id ? (
                                                     <UncontrolledDropdown >
@@ -772,7 +842,10 @@ function ForumHomepage() {
 
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    
+                                                                    toggleModalEditCom(c.id);
+                                                                    setModalEditCom(!modalEditCom);
+
+
                                                                 }}
                                                             >
                                                                 Edit
@@ -781,7 +854,8 @@ function ForumHomepage() {
 
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    deleteMyCommunity(c.id);
+                                                                    toggleDeleteModal(c.id);
+                                                                 
                                                                 }}                                                      >
                                                                 Delete
                                                             </DropdownItem>
@@ -871,6 +945,191 @@ function ForumHomepage() {
                                     </Button>
                                 )}
 
+                            </div>
+                        </div>
+                    </Modal>
+
+
+
+                </Col>
+                {/* update community Modal */}
+                <Col md="6">
+
+                    <Modal isOpen={modalEditCom} toggle={toggleModalEditCom}  >
+                        {(loadingCo) ? (
+                            <>
+                                <div className="modal-header">
+
+                                    <button
+                                        aria-label="Close"
+                                        className="close"
+                                        type="button"
+
+
+                                    >
+                                        <span aria-hidden={true}>×</span>
+                                    </button>
+                                    <h5
+                                        className="modal-title text-center"
+                                        id="exampleModalLabel"
+                                    >
+                                        Update Community
+                                    </h5>
+                                </div>
+                                <div className={styles.modalContent}>
+
+                                    <input type="text"
+                                        placeholder=" "
+                                        name="name"
+                                        value=""
+                                        className={styles.input}
+                                    />
+
+                                    <textarea
+                                        type="text"
+                                        placeholder=" "
+                                        name="post"
+                                        value=""
+                                        className={styles.textarea}
+                                    />
+                                </div>
+                                <div className="modal-footer">
+                                    <div >
+                                        <Button
+                                            className="btn-link"
+                                            color="default"
+                                            type="button"
+
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </div>
+
+                                    <div >
+                                        {communityDesc == '' || communityName == '' || communityDesc == null || communityName == null ? (
+                                            <Button className="btn-round" color="default" disabled >
+                                                Update
+                                            </Button>
+                                        ) : (
+                                            <Button className="btn-round" color="default"   >
+                                                Update
+                                            </Button>
+                                        )}
+
+                                    </div>
+                                </div>
+                            </>) : (
+                            <>
+                                <div className="modal-header">
+
+                                    <button
+                                        aria-label="Close"
+                                        className="close"
+                                        type="button"
+                                        onClick={() => { setModalEditCom(!modalEditCom); resetCommunitymodal(); }}
+                                    >
+                                        <span aria-hidden={true}>×</span>
+                                    </button>
+                                    <h5
+                                        className="modal-title text-center"
+                                        id="exampleModalLabel"
+                                    >
+                                        Update Community
+                                    </h5>
+                                </div>
+                                <div className={styles.modalContent}>
+
+                                    {alertMessage && <Alert color="danger" style={{ width: "100%" }}>
+                                        {alertMessage}
+                                    </Alert>}
+                                    <input type="text"
+                                        placeholder="Name"
+                                        name="name"
+                                        value={communityName}
+                                        className={styles.input}
+                                        onChange={(e) => setCommunityName(e.target.value)} />
+
+                                    <textarea
+                                        type="text"
+                                        placeholder="Description..."
+                                        name="post"
+                                        value={communityDesc}
+                                        className={styles.textarea} onChange={(e) => setCommunityDesc(e.target.value)}  >
+
+                                    </textarea>
+                                </div>
+                                <div className="modal-footer">
+                                    <div >
+                                        <Button
+                                            className="btn-link"
+                                            color="default"
+                                            type="button"
+                                            onClick={() => { setModalEditCom(!modalEditCom); }}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </div>
+
+                                    <div >
+                                        {communityDesc == '' || communityName == '' || communityDesc == null || communityName == null ? (
+                                            <Button className="btn-round" color="default" disabled >
+                                                Update
+                                            </Button>
+                                        ) : (
+                                            <Button className="btn-round" color="default" onClick={() => editCommunity(clickedFileId)} >
+                                                Update
+                                            </Button>
+                                        )}
+
+                                    </div>
+                                </div>
+                            </>)}
+                    </Modal>
+
+
+                </Col>
+
+                <Col md="6">
+
+                    {/*delete Modal */}
+                    <Modal isOpen={deletemodal} toggle={toggleDeleteModal}  >
+                        <div className="modal-header">
+                            <button
+                                aria-label="Close"
+                                className="close"
+                                type="button"
+                                onClick={ ()=>setDeletemodal(!deletemodal)}
+                            >
+                                <span aria-hidden={true}>×</span>
+                            </button>
+                            <h5
+                                className="modal-title text-center"
+                                id="exampleModalLabel"
+                            >
+                                Delete Community
+                            </h5>
+                        </div>
+                        <div className="modal-body">
+                            Are you sure you want to delete this community?
+                            Once you delete it all posts will be deleted.
+
+                        </div>
+                        <div className="modal-footer">
+                            <div >
+                                <Button
+                                    className="btn-link"
+                                    color="default"
+                                    type="button"
+                                    onClick={ ()=>setDeletemodal(!deletemodal)}
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+
+                            <div  >
+                                <Button className="btn-link" color="danger" onClick={deleteMyCommunity}>
+                                    Delete
+                                </Button>
                             </div>
                         </div>
                     </Modal>

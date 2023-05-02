@@ -10,7 +10,7 @@ type Post {
     user: User
     comments: [Comment]
     isLiked(  user: ID!): Boolean
-    isPostedByCurrentuser(  user: ID!): Boolean
+    
    
 }
 

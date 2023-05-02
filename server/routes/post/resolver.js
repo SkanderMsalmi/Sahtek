@@ -186,14 +186,14 @@ const resolvers = {
 
   },
 
-  Newpost:{
-    community: async (parent, args) => {
-      return await Community.findById(parent.community);
-    },
-    comments: async (parent, args) => {
-      return await Comment.find({ post: parent._id });
-    },
-  },
+  // Newpost:{
+  //   community: async (parent, args) => {
+  //     return await Community.findById(parent.community);
+  //   },
+  //   comments: async (parent, args) => {
+  //     return await Comment.find({ post: parent._id });
+  //   },
+  // },
   Post: {
 
     user: async (parent, args) => {
@@ -224,13 +224,7 @@ const resolvers = {
 
     },
 
-    isPostedByCurrentuser: async (post, { user }) => {
-
-      return post.user.toString() === user;
-
-
-
-    },
+    
 
 
 

@@ -6,12 +6,8 @@
     align-items: start;
     justify-content: center;
     padding-top: 120px;
-
-    background: linear-gradient(to bottom right,
-            rgba(252, 203, 144, 1),
-            rgba(213, 126, 235, 1));
-
-
+    background: rgb(236,236,236);
+    background: radial-gradient(circle, rgba(236,236,236,1) 0%, rgba(150,173,186,0.9024859943977591) 100%);
     //background: linear-gradient(to  bottom, #accbee 0%, #e7f0fd 100%);
     //background-image: linear-gradient(to right bottom, #cfe1b4, #acd8b2, #8aceb6, #69c2bd, #50b4c4);
 
@@ -27,8 +23,8 @@
     padding: 10px;
     border-radius: 1em;
     background-color: #eef8f9;
-    background: rgba(24, 24, 16, 0.2);
-    color: #ececec;
+    background: rgba(24, 24, 16, 0.07);
+    color: #252525;
     overflow-wrap: break-word;
     resize: none;
     font-size: 14px;
@@ -37,7 +33,7 @@
 }
 
 .postTextArea:hover {
-    background: rgba(24, 24, 16, 0.355);
+    background: rgba(24, 24, 16, 0.155);
 
 }
 .modalContent{
@@ -126,13 +122,13 @@
 
 
 
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(255,255,255);
     border-radius: 1em;
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.05);
     background-clip: padding-box;
     box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-    color: #ffffff;
+    color: #252525;
 
 }
 
@@ -201,13 +197,13 @@
     height: 400px;
   
     margin-bottom: 5px;
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(255,255,255);
     border-radius: 1em;
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.05);
     background-clip: padding-box;
     box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-    color: #ffffff;
+    color: #252525;
 
   
 
@@ -235,14 +231,14 @@
     border: none !important;
    height: 38px;
    padding-left: 10px;
-    color: #ffffff;
+    color: #252525;
     width: 100%;    
  
    
 
 }
 .communityBtn:hover{
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(255,255,255);
 
 }
 
@@ -256,18 +252,18 @@
     width: 100%;
     height: 322px;    
     margin-bottom: 5px;
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(255,255,255);
     border-radius: 1em;
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.05);
     background-clip: padding-box;
-    background-image: url("../../assets/img/inte.png");
+    background-image: url("../../assets/img/interact.png");
     background-size: 250px;
     background-repeat: no-repeat;
 
     background-position: center;
     box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-    color: #ffffff;
+    color: #252525;
 
 
 
@@ -280,13 +276,13 @@
     height: fit-content;
     
     margin-bottom: 5px;
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(255,255,255);
     border-radius: 1em;
     backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.05);
     background-clip: padding-box;
     box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
-    color: #ffffff;
+    color: #252525;
 
 
 
@@ -342,7 +338,7 @@
 
     width: 30px;
     height: 30px;
-    color: #ffffff;
+    color: #252525;
 
     cursor: pointer;
 
@@ -367,7 +363,7 @@
 
     padding: 10px 15px 0px 0px;
     & p {
-        color: #ffffff;
+        color: #252525;
        
     }
    
@@ -394,14 +390,14 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    color: #ffffff;
+    color: #252525;
 
     padding: 10px 10px 10px 10px;
 }
 
 .invisibleBtn:hover {
 
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(24, 24, 16, 0.07);
     border-radius: 1em;
     cursor: pointer;
 
@@ -410,20 +406,20 @@
     background: transparent;
     border: none !important;
     
-    color: #ffffff;
+    color: #252525;
     border-radius: 50%;
 
     padding: 5px;
     & .icon{
         width: 25px;
         height: 25px;
-        color: #ffffff;
+        color: #252525;
 
     }
 
     & .smallicon{
        
-        color: #ffffff;
+        color: #252525;
 
     }
 
@@ -431,7 +427,7 @@
 }
 .iconBtn:hover {
 
-    background: rgba(24, 24, 16, 0.2);
+    background: rgba(24, 24, 16, 0.07);
     border-radius: 1em;
     cursor: pointer;
 

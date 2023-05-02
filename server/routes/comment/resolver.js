@@ -31,10 +31,7 @@ const resolvers = {
                 post: post,
                 user: user
             })
-            await Post.findByIdAndUpdate(
-                post, { $inc: { commentsCount: 1 } }, { new: true }
-
-            );
+            
 
             const res = await createdComment.save();
 
@@ -46,21 +43,14 @@ const resolvers = {
 
         deleteComment: async (parent, args, context, info) => {
             const { id } = args
-            const { post } = args
 
-            
-            const postt = await Post.findById(post)
-            if(postt.commentsCount > 0){
-                 await Post.findByIdAndUpdate(post,{ $inc: { commentsCount: -1 } }, { new: true });               
-                 await Comment.findByIdAndDelete(id);
-                 return "post count dec";
-           }else{
-            await Comment.findByIdAndDelete(id);
-            return "Comment deleted";
-           }
-          
-          
+            if (await Comment.findByIdAndDelete(id))
+
+                return "Comment deleted";
         },
+
+
+
 
 
         updateComment: async (parent, args, context, info) => {

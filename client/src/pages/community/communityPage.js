@@ -26,7 +26,6 @@ import {
     Col
 } from "reactstrap";
 
-import { COMMUNITY, LEAVE_COMMUNITY } from "../../apis/community";
 import { useParams } from "react-router-dom";
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -45,6 +44,7 @@ import {
     REMOVE_LIKE_POST_MUTATION
 } from "../../apis/forum";
 import { CREATE_POST_MUTATION } from "../../apis/forum";
+import { COMMUNITY, LEAVE_COMMUNITY } from "../../apis/community";
 
 import { JOIN_COMMUNITY } from "../../apis/community";
 import { DELETE_POST_MUTATION } from "../../apis/forum";
@@ -62,7 +62,7 @@ function CommunityPage() {
     const [joined, setSetjoined] = useState("Joined");
     const [modal, setModal] = React.useState(false);
 
-    const { loading, error, data, refetch } = useQuery(COMMUNITY, {
+    const { loading, data, refetch } = useQuery(COMMUNITY, {
         variables: { id: communityID.communityId, user: user.id },
     });
     const [joinCommunity] = useMutation(
@@ -83,6 +83,13 @@ function CommunityPage() {
     const [deletePost] = useMutation(
         DELETE_POST_MUTATION
     );
+
+    useEffect(() => {
+        if (data) {
+            refetch();
+        }
+    }, [data]);
+
 
     //** Modal */ 
     const toggleModal = () => {
@@ -212,8 +219,7 @@ function CommunityPage() {
     };
 
     const fieldColor = data?.community?.color;
-    const alpha = 0.2;
-    const alpha2 = 0.2;
+    
     const myContainerstyle = {
         minHeight: "100vh",
 
@@ -335,7 +341,7 @@ function CommunityPage() {
                                         </div>
 
                                         <div >
-                                            {postText == '' || title == '' || postText == null || title == null ? (
+                                            {postText === '' || title === '' || postText == null || title == null ? (
                                                 <Button className="btn-round" color="info" disabled >
                                                     Post
                                                 </Button>
@@ -350,7 +356,7 @@ function CommunityPage() {
                                 </Modal>
                             </Col>
 
-                            {data?.community.posts.map((p) => {
+                            {data?.community?.posts?.map((p) => {
                                 return (
                                     <>
 
@@ -383,7 +389,7 @@ function CommunityPage() {
 
 
 
-                                                    {p.isPostedByCurrentuser ? (
+                                                    {p?.user?.id === user.id ? (
                                                         <UncontrolledDropdown >
 
                                                             <DropdownToggle className={styles.iconBtn}

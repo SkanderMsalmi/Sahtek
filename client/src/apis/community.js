@@ -54,6 +54,18 @@ export const JOIN_COMMUNITY = gql
     }
   }
   `;
+  export const UPDATE_COMMUNITY = gql
+    `  mutation UpdateCommunity($id: ID!, $description: String, $name: String) {
+      updateCommunity(id: $id, description: $description, name: $name) {
+        description
+        name
+        id
+      }
+    }
+  `;
+
+
+ 
 
   export const POSTS_BY_COMMUNITY = gql
   `    query FindPostByCommunity($id: ID!, $user: ID!) {
@@ -81,7 +93,7 @@ export const JOIN_COMMUNITY = gql
       }
      
       isLiked(user: $user)
-      isPostedByCurrentuser(user: $user)
+      
     }
   }
 `;
@@ -90,6 +102,7 @@ export const COMMUNITY = gql
   community(id: $id) {
     name
     color
+    description
     members {
       id
     }
@@ -110,7 +123,7 @@ export const COMMUNITY = gql
         id
       }
       isLiked(user: $user)
-      isPostedByCurrentuser(user: $user)
+     
     }
   }
 }
