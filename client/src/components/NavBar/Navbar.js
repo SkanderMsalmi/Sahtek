@@ -83,7 +83,7 @@ function Navigation() {
                 src={logoSahtek}
                 alt="Sahtek"
                 width="120px"
-                style={{ border: "1px solid gray" }}
+                style={{ border: "1px solid gray", mixBlendMode: "color-burn" }}
               />
             </Link>
           </NavbarBrand>

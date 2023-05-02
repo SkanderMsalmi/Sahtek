@@ -37,6 +37,14 @@
   padding: 0 !important;
 }
 
+.card .card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
 .price {
   font-size: 18px;
   font-weight: 700;

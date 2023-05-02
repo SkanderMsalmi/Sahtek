@@ -8,13 +8,11 @@ import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProducts, selectWishlist } from "../../../store/selectors";
 import { selectCountAll } from '../../../store/shop/cartSlice';
-import {NavLink} from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
-import {Link} from "react-router-dom"
-
+import { NavLink } from 'react-router-dom';
+import { Link } from "react-router-dom"
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import {
-  ADD_TO_WISHLIST,
-  REMOVE_FROM_WISHLIST,
   addToWishlist,
   emptyWishlist,
   removeFromWishlist,
@@ -23,7 +21,9 @@ import {
 import Wishlist from "../../../components/Shop/WishList";
 import Slideshow from "../../../components/Shop/SlideShow";
 import { increment } from "../../../store/shop/cartSlice";
-
+import { Spinner } from "reactstrap";
+import AmazonProd from "../../../components/Shop/AmazonProd";
+import styles from "./HomeShop.Module.scss";
 const GET_PRODUCTS = gql`
   query GetAllProducts {
     getAllProducts {
@@ -42,6 +42,10 @@ const GET_CATEGORIES = gql`
     getCategories
   }
 `;
+const GET_AMAZON_PRODUCTS = gql`
+query Query {
+  getAmazonProducts
+}`
 const HomeShop = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cart, setCart] = useState([]);
@@ -58,6 +62,7 @@ const HomeShop = () => {
     setShowWishlist(!showWishlist);
   };
   const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const { loading: loadingAmazon, error: errorAmazon, data: dataAmazon } = useQuery(GET_AMAZON_PRODUCTS);
   const [categories, setCategories] = useState([]);
   const {
     loading: loadingCategories,
@@ -73,7 +78,11 @@ const HomeShop = () => {
       setCategories(dataCategories.getCategories);
     }
   }, [data, dispatch, dataCategories, categories]);
-
+  useEffect(() => {
+    if (dataAmazon) {
+      console.log(dataAmazon.getAmazonProducts);
+    }
+  }, [dataAmazon]);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -89,7 +98,7 @@ const HomeShop = () => {
       (maxPrice === "" || product.price < parseInt(maxPrice))
   );
   function addToCart(product) {
-    dispatch (increment(product));
+    dispatch(increment(product));
   };
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -117,8 +126,8 @@ const HomeShop = () => {
       );
     }
   };
-  
-  
+
+
   const handleChoosePriceeChange = (event) => {
     setMaxPrice(event.target.value);
   };
@@ -157,7 +166,7 @@ const HomeShop = () => {
           >
             Wishlist
           </button>
-          <Link  className="btn btn-outline-info"
+          <Link className="btn btn-outline-info"
             style={{ textAlign: "right" }} as={NavLink} to="/cart" >Panier ({CartNumber})</Link>
 
         </div>
@@ -198,6 +207,72 @@ const HomeShop = () => {
             />
           </div>
         )}
+        <div className="border-top mb-5" style={{ width: "100vw" }}>
+          <h4>See also:</h4>
+        </div>
+        {loadingAmazon && <Spinner />}
+
+        <Carousel
+          additionalTransfrom={0}
+          arrows
+          autoPlaySpeed={3000}
+          centerMode={false}
+          className=""
+          containerClass="container"
+          dotListClass=""
+          draggable
+          focusOnSelect={false}
+          infinite={false}
+          itemClass=""
+          keyBoardControl
+          minimumTouchDrag={80}
+          pauseOnHover
+          renderArrowsWhenDisabled={false}
+          renderButtonGroupOutside={false}
+          renderDotsOutside={false}
+          responsive={{
+            desktop: {
+              breakpoint: {
+                max: 3000,
+                min: 1024
+              },
+              items: 3,
+              partialVisibilityGutter: 40
+            },
+            mobile: {
+              breakpoint: {
+                max: 464,
+                min: 0
+              },
+              items: 1,
+              partialVisibilityGutter: 30
+            },
+            tablet: {
+              breakpoint: {
+                max: 1024,
+                min: 464
+              },
+              items: 2,
+              partialVisibilityGutter: 30
+            }
+          }}
+          rewind={false}
+          rewindWithAnimation={false}
+          rtl={false}
+          shouldResetAutoplay
+          showDots={false}
+          sliderClass=""
+          slidesToSlide={3}
+          swipeable
+        >
+          {JSON.parse(dataAmazon?.getAmazonProducts).map((product, index) => (
+
+            <a href={product.productUrl} target="_blank" > <AmazonProd className={styles.amz} product={product} /></a>
+          ))}
+        </Carousel>
+
+
+
       </div>
     </>
   );
