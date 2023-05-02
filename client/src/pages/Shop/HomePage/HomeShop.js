@@ -7,11 +7,11 @@ import SideBarMenu from "../../../components/Shop/Common/SideBarMenu";
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProducts, selectWishlist } from "../../../store/selectors";
-import { selectCountAll } from '../../../store/shop/cartSlice';
-import { NavLink } from 'react-router-dom';
-import { Link } from "react-router-dom"
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+import { selectCountAll } from "../../../store/shop/cartSlice";
+import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import {
   addToWishlist,
   emptyWishlist,
@@ -43,12 +43,12 @@ const GET_CATEGORIES = gql`
   }
 `;
 const GET_AMAZON_PRODUCTS = gql`
-query Query {
-  getAmazonProducts
-}`
+  query Query {
+    getAmazonProducts
+  }
+`;
 const HomeShop = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [cart, setCart] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [maxPrice, setMaxPrice] = useState(500);
@@ -62,7 +62,11 @@ const HomeShop = () => {
     setShowWishlist(!showWishlist);
   };
   const { loading, error, data } = useQuery(GET_PRODUCTS);
-  const { loading: loadingAmazon, error: errorAmazon, data: dataAmazon } = useQuery(GET_AMAZON_PRODUCTS);
+  const {
+    loading: loadingAmazon,
+    error: errorAmazon,
+    data: dataAmazon,
+  } = useQuery(GET_AMAZON_PRODUCTS);
   const [categories, setCategories] = useState([]);
   const {
     loading: loadingCategories,
@@ -99,7 +103,7 @@ const HomeShop = () => {
   );
   function addToCart(product) {
     dispatch(increment(product));
-  };
+  }
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -127,7 +131,6 @@ const HomeShop = () => {
     }
   };
 
-
   const handleChoosePriceeChange = (event) => {
     setMaxPrice(event.target.value);
   };
@@ -135,6 +138,9 @@ const HomeShop = () => {
   const handleSearchQueryChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  if (errorAmazon) {
+    console.log(errorAmazon.message);
+  }
   return (
     <>
       <Slideshow />
@@ -166,9 +172,14 @@ const HomeShop = () => {
           >
             Wishlist
           </button>
-          <Link className="btn btn-outline-info"
-            style={{ textAlign: "right" }} as={NavLink} to="/cart" >Panier ({CartNumber})</Link>
-
+          <Link
+            className="btn btn-outline-info"
+            style={{ textAlign: "right" }}
+            as={NavLink}
+            to="/cart"
+          >
+            Panier ({CartNumber})
+          </Link>
         </div>
       </div>
 
@@ -212,7 +223,7 @@ const HomeShop = () => {
         </div>
         {loadingAmazon && <Spinner />}
 
-        <Carousel
+        {/* <Carousel
           additionalTransfrom={0}
           arrows
           autoPlaySpeed={3000}
@@ -234,27 +245,27 @@ const HomeShop = () => {
             desktop: {
               breakpoint: {
                 max: 3000,
-                min: 1024
+                min: 1024,
               },
               items: 3,
-              partialVisibilityGutter: 40
+              partialVisibilityGutter: 40,
             },
             mobile: {
               breakpoint: {
                 max: 464,
-                min: 0
+                min: 0,
               },
               items: 1,
-              partialVisibilityGutter: 30
+              partialVisibilityGutter: 30,
             },
             tablet: {
               breakpoint: {
                 max: 1024,
-                min: 464
+                min: 464,
               },
               items: 2,
-              partialVisibilityGutter: 30
-            }
+              partialVisibilityGutter: 30,
+            },
           }}
           rewind={false}
           rewindWithAnimation={false}
@@ -264,15 +275,14 @@ const HomeShop = () => {
           sliderClass=""
           slidesToSlide={3}
           swipeable
-        >
-          {JSON.parse(dataAmazon?.getAmazonProducts).map((product, index) => (
-
-            <a href={product.productUrl} target="_blank" > <AmazonProd className={styles.amz} product={product} /></a>
-          ))}
-        </Carousel>
-
-
-
+        > */}
+        {/* {JSON.parse(dataAmazon?.getAmazonProducts).map((product, index) => (
+            <a href={product.productUrl} target="_blank">
+              {" "}
+              <AmazonProd className={styles.amz} product={product} />
+            </a>
+          ))} */}
+        {/* </Carousel> */}
       </div>
     </>
   );

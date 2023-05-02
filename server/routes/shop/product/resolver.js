@@ -1,12 +1,8 @@
-
 const Product = require("../../../database/models/product");
 const { readFile, readProduct } = require("../../../utils/uploadFile");
-const csvToJson = require('csvtojson');
+const csvToJson = require("csvtojson");
 
 const csvFilePath = `${__dirname}/../../../amazonProds.csv`;
-
-
-
 
 // const jsonString = JSON.stringify(json, null, 2)
 
@@ -27,7 +23,7 @@ const resolvers = {
 
       const jsonString = JSON.stringify(json, null, 2);
       return jsonString;
-    }
+    },
   },
 
   Mutation: {
