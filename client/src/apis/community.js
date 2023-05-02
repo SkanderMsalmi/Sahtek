@@ -5,6 +5,7 @@ export const GET_COMMUNITIES = gql
       getAllCommunities {
         id
         name
+        color
         createdAt
         description
         members {
@@ -20,6 +21,9 @@ export const GET_COMMUNITIES = gql
     findCommunityByUser(id: $id) {
       name
       id
+      creator {
+        id
+      }
     }
   }
 `;
@@ -37,9 +41,9 @@ export const CREATE_COMMUNITY = gql
     }
   `;
 export const DELETE_COMMUNITY = gql
-    `   mutation DeleteCommunity($deleteCommunityId: ID!) {
-    deleteCommunity(id: $deleteCommunityId)
-  }
+    ` mutation DeleteCommunity($id: ID!) {
+      deleteCommunity(id: $id) 
+    }
   `;
 export const JOIN_COMMUNITY = gql
     `   mutation JoinCommunity($id: ID!, $userId: ID!) {
@@ -50,6 +54,18 @@ export const JOIN_COMMUNITY = gql
     }
   }
   `;
+  export const UPDATE_COMMUNITY = gql
+    `  mutation UpdateCommunity($id: ID!, $description: String, $name: String) {
+      updateCommunity(id: $id, description: $description, name: $name) {
+        description
+        name
+        id
+      }
+    }
+  `;
+
+
+ 
 
   export const POSTS_BY_COMMUNITY = gql
   `    query FindPostByCommunity($id: ID!, $user: ID!) {
@@ -59,7 +75,9 @@ export const JOIN_COMMUNITY = gql
       time
       title
       community {
+        id
         name
+        color
       }
       
       user {
@@ -75,7 +93,7 @@ export const JOIN_COMMUNITY = gql
       }
      
       isLiked(user: $user)
-      isPostedByCurrentuser(user: $user)
+      
     }
   }
 `;
@@ -83,7 +101,8 @@ export const COMMUNITY = gql
 `  query Community($id: ID!, $user: ID!) {
   community(id: $id) {
     name
-  
+    color
+    description
     members {
       id
     }
@@ -104,7 +123,7 @@ export const COMMUNITY = gql
         id
       }
       isLiked(user: $user)
-      isPostedByCurrentuser(user: $user)
+     
     }
   }
 }

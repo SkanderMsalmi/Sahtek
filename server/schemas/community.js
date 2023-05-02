@@ -8,7 +8,7 @@ type Community {
   members: [User]
   creator: User
   posts: [Post]
- 
+  color: String
    
 }
  
@@ -16,12 +16,13 @@ type Community {
 extend type Query {
     community(id: ID!): Community
     getAllCommunities: [Community]
+    findCommunityByUser(id: ID!): [Community]
   
 }
 extend type Mutation {
   createCommunity(name: String!, description: String!, creator: ID!): Community
-  updateCommunity(id: ID!,  description: String): Community
-    deleteCommunity(id: ID!): Community
+  updateCommunity(id: ID!,name: String,  description: String): Community
+    deleteCommunity(id: ID!): String
     joinCommunity(id: ID!, userId: ID!): Community
     leaveCommunity(id: ID!, userId: ID!): Community
    

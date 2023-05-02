@@ -42,13 +42,14 @@ function PatientFiles() {
     const [note, setNote] = useState('');
     const [title, setTitle] = useState('');
     const [edit, setEdit] = useState(false);
-     const [clickedFileId, setClickedFileId] = useState('');
+    const [clickedFileId, setClickedFileId] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
 
     //let { id } = useParams();
     const [modal, setModal] = React.useState(false);
 
     const { data, loading, error, refetch } = useQuery(GET_PATIENT_FILES, {
-        variables: { id: patientid.patientid }
+        variables: { id: patientid.patientid, therapistId: therapist.id }
     });
     const { data: datau, loading: loadingu, erroru } = useQuery(GET_USER, {
         variables: { id: patientid.patientid }
@@ -70,20 +71,20 @@ function PatientFiles() {
         setClickedFileId(id);
         setModal(!modal);
     };
-     function editfile(id){
+    function editfile(id) {
         if (id)
-        setClickedFileId(id);
+            setClickedFileId(id);
         setEdit(true);
-        refetch1().then(()=>{
-        setNote(data1.getPatientFile.remarks);
-        setTitle(data1.getPatientFile.title);
+        refetch1().then(() => {
+            setNote(data1.getPatientFile.remarks);
+            setTitle(data1.getPatientFile.title);
         }
         )
-        console.log(`File ${clickedFileId}  `);
+        //console.log(`File ${clickedFileId}  `);
 
-     }
-    
- 
+    }
+
+
 
     function deleteFile() {
 
@@ -92,8 +93,10 @@ function PatientFiles() {
                 id: clickedFileId,
             },
         }).then(() => {
-            console.log(`File ${clickedFileId} deleted successfully`);
+           // console.log(`File ${clickedFileId} deleted successfully`);
             setClickedFileId('');
+            setTitle('');
+            setNote('');
             setModal(!modal);
             refetch();
             refetch1();
@@ -104,13 +107,20 @@ function PatientFiles() {
     };
     useEffect(() => {
         if (data1)
-        editfile();
+            editfile();
 
     }, [data1]);
-  
 
 
-   
+    useEffect(() => {
+        if (note!== null || note !== '')
+            setAlertMessage('')
+
+    }, [note]);
+
+
+
+
 
     const submit = () => {
         try {
@@ -122,11 +132,18 @@ function PatientFiles() {
                             remarks: note,
                             title: title
                         },
-                    });
-                    setClickedFileId('');
-                    setEdit(false);
-                    setNote('');
-                    setTitle('');
+                    })
+                        .then(() => {
+                            setClickedFileId('');
+                            setEdit(false);
+                            setNote('');
+                            setTitle('');
+
+
+                        })
+                        .catch(errore => setAlertMessage("Note field required!")
+                        );
+
 
 
                 } else {
@@ -139,10 +156,16 @@ function PatientFiles() {
                             title: title,
 
                         },
-                    });
+                    }).then(() => {
+                        setNote('');
+                        setTitle('');
 
-                    setNote('');
-                    setTitle('');
+
+                    })
+                        .catch(errorr => setAlertMessage("Note field required!")
+                        );
+
+
 
                 }
 
@@ -168,12 +191,12 @@ function PatientFiles() {
         <>
 
             <div className="section profile-content">
-                
 
 
-                <Row className="d-flex justify-content-center  " style={{marginTop: "75px"}}>
 
-                    <Col lg="10" md="6">
+                <Row className="d-flex justify-content-center  " style={{ marginTop: "90px" }}>
+
+                    <Col lg="12" md="6">
 
                         <h3>Patient Files</h3>
 
@@ -183,17 +206,17 @@ function PatientFiles() {
 
                 <Row className="d-flex justify-content-center ">
 
-                    <Col lg="10" md="6">
+                    <Col lg="12" >
                         <hr />
                         <Row>
-                            <Col lg="3" md="12">
-                                {data.getFilesByPatient.map((p) => {
+                            <Col lg="3" md="3" className={style.filesSide}>
+                                {data?.getFilesByPatient?.map((p) => {
                                     return (
                                         <>
 
-                                            <div className={styles.card}  key={p.id}>
+                                            <div className={styles.card} key={p.id} onClick={() => editfile(p.id)} style={{ cursor: "pointer" }}>
                                                 <div className={styles.cardContent}>
-                                                    <Col lg="9" md="8">
+                                                    <Col lg="8" md="8">
                                                         <div className={styles.cardHeader}>
 
                                                             <h6>{p.title}</h6>
@@ -202,17 +225,17 @@ function PatientFiles() {
 
                                                         <div className={styles.cardBody}>
 
-                                                            <p>{p.createdAt}</p>
+                                                            <small>{p.createdAt}</small>
 
                                                         </div>
                                                     </Col>
 
-                                                    <Col lg="3" md="4" xs="4">
+                                                    <Col lg="4" md="4" xs="4">
                                                         <Row>
                                                             <FiEdit3 className={style.icon} onClick={() => editfile(p.id)} />
 
 
-                                                            <RiDeleteBin6Line className={style.icon}  onClick={() => toggleModal(p.id)} />
+                                                            <RiDeleteBin6Line className={style.icon} onClick={() => toggleModal(p.id)} />
 
                                                         </Row>
 
@@ -241,7 +264,7 @@ function PatientFiles() {
                                                             </div>
                                                             <div className="modal-body">
                                                                 Are you sure you want to delete this file?
-                                                                
+
                                                             </div>
                                                             <div className="modal-footer">
                                                                 <div >
@@ -275,9 +298,9 @@ function PatientFiles() {
                                 })}
                             </Col>
 
-                            <Col lg="5" md="12" >
+                            <Col lg="5" md="6" >
 
-                            { (loading1)? <p>Loading...</p>:
+                                {(loading1) ? null : null}
 
 
 
@@ -291,7 +314,11 @@ function PatientFiles() {
 
                                             />
                                         </CardTitle>
+
                                         <CardText>
+                                        {alertMessage && <p style={{ color: "red", marginLeft: "2px", fontSize: "13px" }}>
+                                                {alertMessage}
+                                            </p>}
                                             <textarea
                                                 type="text"
                                                 className={style.textarea}
@@ -300,11 +327,13 @@ function PatientFiles() {
                                                 name="note"
 
                                             />
+                                           
+
                                         </CardText>
                                         <div className="text-right">
                                             {edit ? (
                                                 <>
-                                                    <CardLink className={style.cardLink} onClick={() => { setEdit(false); setNote(''); setTitle('') }}>Cancel</CardLink>
+                                                    <CardLink className={style.cardLink} onClick={() => { setEdit(false); setNote(''); setTitle('') ; setAlertMessage('')}}>Cancel</CardLink>
                                                     <CardLink className={style.cardLink} onClick={submit}>Update</CardLink>
 
                                                 </>
@@ -320,28 +349,28 @@ function PatientFiles() {
                                     </CardBody>
                                 </Card>
 
-                                            }
+
 
 
 
                             </Col>
 
-                            <Col lg="4" md="12">
+                            <Col lg="4" md="6">
                                 <div className={style.graySection}>
                                     <Container>
 
 
                                         <Card className="card-profile card-plain">
                                             <div className="card-avatar">
-                                                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                                               
                                                     <img
                                                         alt="..."
                                                         src={datau.user.profileImage}
                                                     />
-                                                </a>
+                                               
                                             </div>
                                             <CardBody>
-                                                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                                                <a onClick={(e) => e.preventDefault()}>
                                                     <div className="author">
                                                         <CardTitle tag="h4">{datau?.user?.name}</CardTitle>
                                                     </div>
@@ -356,7 +385,7 @@ function PatientFiles() {
                                                             <h6>Date of birth</h6>
                                                         </Col>
                                                         <Col md="7" className="text-left">
-                                                            <label>{new Date(datau?.user?.dateOfBirth * 1).getDate()}/{new Date(datau?.user?.dateOfBirth * 1).getMonth()}/{new Date(datau?.user?.dateOfBirth * 1).getFullYear() }</label>
+                                                            <label>{new Date(datau?.user?.dateOfBirth * 1).getDate()}/{new Date(datau?.user?.dateOfBirth * 1).getMonth()}/{new Date(datau?.user?.dateOfBirth * 1).getFullYear()}</label>
 
 
                                                         </Col>
@@ -376,7 +405,9 @@ function PatientFiles() {
                                                             <h6>Phone</h6>
                                                         </Col>
                                                         <Col md="7" className="text-left">
-                                                            <label>{datau?.user?.patient?.phoneNumber}</label>
+                                                            <label>{datau?.user?.patient?.phoneNumber ? (
+                                                                <p>--</p>
+                                                            ) : (<p>--</p>)}</label>
 
 
                                                         </Col>

@@ -20,4 +20,5 @@ module.exports = [
   mailVerification,
   ratingResolvers,
   chatbotResolver,
+  communityResolvers,
 ];

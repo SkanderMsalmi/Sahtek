@@ -59,7 +59,17 @@ function Navigation() {
 
   React.useEffect(() => {
     const updateNavbarColor = () => {
-      setNavbarColor("");
+      if (
+        document.documentElement.scrollTop > 49 ||
+        document.body.scrollTop > 49
+      ) {
+        setNavbarColor("");
+      } else if (
+        document.documentElement.scrollTop < 50 ||
+        document.body.scrollTop < 50
+      ) {
+        setNavbarColor("navbar-transparent");
+      }
     };
 
     window.addEventListener("scroll", updateNavbarColor);
@@ -136,8 +146,8 @@ function Navigation() {
                   <>
                     <NavItem>
                       <Button
-                        className="btn-round"
-                        color="info"
+                        className="btn-round mr-1"
+                        color="danger"
                         tag={Link}
                         to="/chat"
                       >
@@ -147,7 +157,7 @@ function Navigation() {
                     <NavItem>
                       <Button
                         className="btn-round"
-                        color="info"
+                        color="primary"
                         tag={Link}
                         to="/shop"
                       >
@@ -156,7 +166,7 @@ function Navigation() {
                     </NavItem>
                     <NavItem>
                       <Button
-                        className="btn-round"
+                        className="btn-round mr-1"
                         color="info"
                         tag={Link}
                         to="/forum"
@@ -166,8 +176,8 @@ function Navigation() {
                     </NavItem>
                     <NavItem>
                       <Button
-                        className="btn-round"
-                        color="secondary"
+                        className="btn-round mr-1"
+                        color="info"
                         tag={Link}
                         to="/espace-patient"
                       >

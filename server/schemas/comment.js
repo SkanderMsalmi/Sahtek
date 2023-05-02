@@ -20,7 +20,7 @@ extend type Query {
 extend type Mutation {
     createComment(CommentInput: CommentInput!, post: ID!, user: ID!): Comment
     updateComment(id: ID!, CommentInput: CommentInput): Comment
-    deleteComment(id: ID!, post: ID!): String
+    deleteComment(id: ID!): String
     
 }    
 `

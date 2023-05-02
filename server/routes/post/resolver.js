@@ -1,9 +1,47 @@
+const natural = require('natural');
 const Post = require("../../database/models/Post");
 const Comment = require("../../database/models/Comment");
-
 const Community = require("../../database/models/Community");
 const { User } = require("../../database/models/User");
 const { MongoClient, ObjectId } = require('mongodb');
+
+const { spawn } = require('child_process');
+
+
+// function getMostSimilarQuestions(newQuestion, existingQuestions) {
+//   return new Promise((resolve, reject) => {
+//     const pythonProcess = spawn('python', ['utils/similar_questions.py', newQuestion, ...existingQuestions]);
+//     let result = '';
+
+//     pythonProcess.stdout.on('data', function (data) {
+//       result = data.toString();
+//     });
+
+//     pythonProcess.stderr.on('data', (data) => {
+//       reject(data.toString());
+//       console.log(`stderr: ${data}`);
+//     });
+
+//     pythonProcess.on('close', (code) => {
+//       console.log(`Python process ended with code: ${code}`);
+//       console.log(`Python script output: ${result}`);
+
+//       if (code !== 0) {
+//         reject(`Python process exited with code ${code}`);
+//       } else {
+//         try {
+//           const similarQuestions = result.trim().split('\n');
+//           resolve(similarQuestions);
+//         } catch (err) {
+//           reject(err);
+//         }
+//       }
+//     });
+//   });
+// }
+
+
+
 
 const resolvers = {
   Query: {
@@ -21,38 +59,51 @@ const resolvers = {
       return await Post.find({ community: id });
     },
 
+    async similarQuestions(_, { newQuestion }) {
+      function calculateQuestionSimilarity(question1, question2) {
+        const maxLength = Math.max(question1.length, question2.length);
+        // remove common English articles from both questions
+        const pattern = /\b(the|an?|a)\b/gi;
+        question1 = question1.replace(pattern, '').trim();
+        question2 = question2.replace(pattern, '').trim();
 
+        // Levenshtein distance function from the "natural" library
+        // This function calculates the minimum number
+        // of edits (insertions, deletions, or substitutions)
+        // needed to transform one string into another.
+        const levenshtein = natural.LevenshteinDistance;
+        const distance = levenshtein(question1.toLowerCase(), question2.toLowerCase());
+        const similarity = 1 - (distance / maxLength);
+        return similarity;
+      }
 
+      const existingQuestions = await Post.find();
 
+      const similarQuestions = existingQuestions.map((e) => {
+          const similarity = calculateQuestionSimilarity(newQuestion, e.title);
+          return {
+            id: e.id,
+            community: e.community   ,
+            comments: e.comments,
+            title: e.title,
+            similarity: similarity
+          };
+        })
+        .filter((question) => question.similarity >= 0.6);
 
+      similarQuestions.sort((a, b) => b.similarity - a.similarity); ///// sort by similarity in descending order
 
-    async community(_, { id }) {
-      return await Community.findById(id);
+      return similarQuestions;
     },
-
-    async getAllCommunities() {
-      return await Community.find().sort({ $natural: -1 })
-    },
-    async findCommunityByUser(_, { id }) {
-      return await Community.find({ members: ObjectId(id) });
-    },
-
 
     async findPostByUserCommunities(_, { id }) {
-       
+
       const list = await Community.find({ members: ObjectId(id) }).distinct(
         "_id"
       );
-    
+
       return await Post.find({ community: { $in: list } }).sort({ $natural: -1 })
     },
-
-   
-
-    
-
-   
-
 
 
 
@@ -60,14 +111,13 @@ const resolvers = {
 
   Mutation: {
     async createPost(_, { postInput: { description, user, title, community } }) {
-      const existedTitle = Post.findOne({title });
+      const existedTitle = Post.findOne({ title });
       const createdPost = new Post({
         description: description,
         user: user,
         time: new Date(),
         like: [],
-        likesCount: 0,
-        commentsCount: 0,
+
         title: title,
         community: community,
       });
@@ -99,9 +149,9 @@ const resolvers = {
       const post = await Post.findById(id);
       if (post) {
         const u = await post.like.includes(user)
-        if (!u) {         
+        if (!u) {
 
-          return await Post.findByIdAndUpdate(id, { $push: { like: user }}, { new: true })
+          return await Post.findByIdAndUpdate(id, { $push: { like: user } }, { new: true })
 
         }
       }
@@ -119,7 +169,7 @@ const resolvers = {
       if (post) {
         const u = await post.like.includes(user)
         if (u) {
-        
+
 
           return await Post.findByIdAndUpdate(id, { $pull: { like: user } }, { new: true })
 
@@ -134,104 +184,16 @@ const resolvers = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    async createCommunity(_, { name, description, creator }) {
-      const createdCommunity = new Community({
-        name: name,
-        description: description,
-        createdAt: new Date(),
-        members: [],
-        creator: creator,
-
-
-      });
-      const res = await createdCommunity.save();
-
-      return res;
-    },
-
-    deleteCommunity: async (parent, args, context, info) => {
-      const { id } = args;
-      await Community.findByIdAndDelete(id)
-      return "Community deleted";
-    },
-
-    updateCommunity: async (parent, args, context, info) => {
-      const { id } = args;
-      const { description } = args
-
-      const community = await Community.findByIdAndUpdate(
-        id,
-        { description },
-        { new: true }
-      );
-      return community;
-    },
-
-    joinCommunity: async (parent, args, context, info) => {
-      const { id } = args;
-      const { userId } = args;
-      const community = await Community.findById(id);
-      if (community) {
-        if (!community.members.includes(userId)) {
-          community.members.push(userId);
-          return await community.save();
-
-        } else
-          throw new Error('You are already a member of this community');
-
-      }
-      if (!community) {
-        throw new Error("Community not found");
-
-      }
-    },
-
-
-   leaveCommunity: async (parent, args, context, info) => {
-      const { id } = args;
-      const { userId } = args;
-      const community = await Community.findById(id);
-     
-      if (community) {
-        if (community.members.includes(userId)) {
-          community.members.pull(userId);
-          return await community.save();
-
-        } else
-          throw new Error('You are not a member of this community');
-
-      }
-      if (!community) {
-        throw new Error("Community not found");
-
-      }
-    },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   },
+
+  // Newpost:{
+  //   community: async (parent, args) => {
+  //     return await Community.findById(parent.community);
+  //   },
+  //   comments: async (parent, args) => {
+  //     return await Comment.find({ post: parent._id });
+  //   },
+  // },
   Post: {
 
     user: async (parent, args) => {
@@ -244,17 +206,17 @@ const resolvers = {
       let users = [];
       if (parent.like) {
         users = await User.find({ _id: { $in: parent.like } });
-      } 
+      }
       return users;
     },
     comments: async (parent, args) => {
       return await Comment.find({ post: parent._id });
     },
-   
-    
-     
-    
-    
+
+
+
+
+
     isLiked: async (post, { user }) => {
 
       // Check if the current user's ID is in the list of users who have liked the post
@@ -262,26 +224,13 @@ const resolvers = {
 
     },
 
-    isPostedByCurrentuser: async (post, { user }) => {
-
-      return post.user.toString() === user;
-
-
-
-    },
+    
 
 
 
   },
 
-  Community: {
-    members: async (parent, args) => {
-      return await User.find({ _id: { $in: parent.members } });
-    },
-    posts: async (parent, args) => {
-      return await Post.find({ community: parent._id });
-    }
-  },
+
 };
 
 module.exports = resolvers;

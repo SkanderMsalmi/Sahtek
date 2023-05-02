@@ -26,7 +26,6 @@ import {
     Col
 } from "reactstrap";
 
-import { COMMUNITY, LEAVE_COMMUNITY } from "../../apis/community";
 import { useParams } from "react-router-dom";
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -45,6 +44,7 @@ import {
     REMOVE_LIKE_POST_MUTATION
 } from "../../apis/forum";
 import { CREATE_POST_MUTATION } from "../../apis/forum";
+import { COMMUNITY, LEAVE_COMMUNITY } from "../../apis/community";
 
 import { JOIN_COMMUNITY } from "../../apis/community";
 import { DELETE_POST_MUTATION } from "../../apis/forum";
@@ -52,22 +52,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, Modal, UncontrolledDropdown
 import Moment from 'react-moment';
 
 function CommunityPage() {
-    //**page */
-    let pageHeader = React.createRef();
 
-    React.useEffect(() => {
-        if (window.innerWidth < 991) {
-            const updateScroll = () => {
-                let windowScrollTop = window.pageYOffset / 3;
-                pageHeader.current.style.transform =
-                    "translate3d(0," + windowScrollTop + "px,0)";
-            };
-            window.addEventListener("scroll", updateScroll);
-            return function cleanup() {
-                window.removeEventListener("scroll", updateScroll);
-            };
-        }
-    });
 
 
     const user = useSelector(selectUser);
@@ -77,27 +62,34 @@ function CommunityPage() {
     const [joined, setSetjoined] = useState("Joined");
     const [modal, setModal] = React.useState(false);
 
-    const { loading, error, data, refetch } = useQuery(COMMUNITY, {
+    const { loading, data, refetch } = useQuery(COMMUNITY, {
         variables: { id: communityID.communityId, user: user.id },
     });
-    const [joinCommunity, { data: dataJ, loading: loadingJ, error: errorJ }] = useMutation(
+    const [joinCommunity] = useMutation(
         JOIN_COMMUNITY
     );
-    const [leaveCommunity, { data: datale, loading: loadingle, error: errorle }] = useMutation(
+    const [leaveCommunity] = useMutation(
         LEAVE_COMMUNITY
     );
-    const [createPost, { data: dataP, loading: loadingP, error: errorP }] = useMutation(
+    const [createPost] = useMutation(
         CREATE_POST_MUTATION
     );
-    const [removeLikePost, { data: dataR, loading: loadingR, error: errorR }] = useMutation(
+    const [removeLikePost] = useMutation(
         REMOVE_LIKE_POST_MUTATION
     );
-    const [LikePost, { data: dataL, loading: loadingL, error: errorL }] = useMutation(
+    const [LikePost] = useMutation(
         LIKE_POST_MUTATION
     );
-    const [deletePost, { data: dataD, loading: loadingD, error: errorD }] = useMutation(
+    const [deletePost] = useMutation(
         DELETE_POST_MUTATION
     );
+
+    useEffect(() => {
+        if (data) {
+            refetch();
+        }
+    }, [data]);
+
 
     //** Modal */ 
     const toggleModal = () => {
@@ -226,39 +218,50 @@ function CommunityPage() {
 
     };
 
+    const fieldColor = data?.community?.color;
+    
+    const myContainerstyle = {
+        minHeight: "100vh",
+
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "start",
+        background: `linear-gradient(to bottom ,  ${fieldColor} , rgba(240, 240, 240)50%)`
+        //background: `linear-gradient(to bottom, ${fieldColor} , rgba(${fieldColor ? parseInt(fieldColor.substring(1, 3), 16) : '255'}, ${fieldColor ? parseInt(fieldColor.substring(3, 5), 16) : '255'}, ${fieldColor ? parseInt(fieldColor.substring(5, 7), 16) : '255'}, ${alpha})40% )`,
+
+    };
+    const mystyle = {
+        height: "200px",
+        padding: "10px",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "end",
+        marginBottom: "10px",
+
+        background: `${fieldColor} `,
+    };
+
 
     return (
         <>
 
 
 
-            <div
-                style={{
-                    backgroundImage:
-                        "url(" + require("../../assets/img/fabio-mangione.jpg") + ")"
-                }}
-                className="page-header page-header-xs"
-                data-parallax={true}
-                ref={pageHeader}
-            >
-                <div className="filter" />
-            </div>
+            <div style={myContainerstyle} >
 
-
-
-            <div className={styles.containerFluid} >
-
-                <div className={styles.darkSection}>
+                <div style={mystyle}>
                     <Col lg="6" md="12">
                         <div className={styles.communityTitle}>
-                            <div className={styles.row}>   
-                                  <p >{data?.community.name}</p>
+                            <div className={styles.row}>
+                                <p >{data?.community.name}</p>
                                 {(data?.community.members.filter((m) => m.id === user.id).length > 0) ?
                                     <Button size="sm" className="btn-round" outline color="neutral" onClick={leave} onMouseLeave={() => setSetjoined("Joined")} onMouseOver={() => setSetjoined("Leave")}> {joined}</Button>
-                                    : <Button size="sm" className="btn-round" outline color="info" onClick={join}> Join</Button>}
+                                    : <Button size="sm" className="btn-round" outline color="neutral" onClick={join}> Join</Button>}
 
                             </div>
-                       
+
 
                             <small>{data?.community?.members?.length} Members</small>
                         </div>
@@ -267,91 +270,93 @@ function CommunityPage() {
                 </div>
 
 
-                <Col lg="6" md="12">
+                {loading ? (<p>Loading...</p>) : (
+                    <>
 
 
-                    <div className={styles.add_post_container}  >
-                        <div className={styles.row}>
-                            <div className={styles.userImg}><img src={user?.profileImage} alt="" /></div>
-
-                            <button className={styles.postTextArea} onClick={toggleModal}>What do you want to ask or share?</button>
-
-                        </div>
-                    </div>
+                        <Col lg="6" md="12">
 
 
+                            <div className={styles.add_post_container}  >
+                                <div className={styles.row}>
+                                    <div className={styles.userImg}><img src={user?.profileImage} alt="" /></div>
 
-                    <Col md="6">
-
-                        {/* Modal */}
-                        <Modal isOpen={modal} toggle={toggleModal}  >
-                            <div className="modal-header">
-                                <button
-                                    aria-label="Close"
-                                    className="close"
-                                    type="button"
-                                    onClick={toggleModal}
-                                >
-                                    <span aria-hidden={true}>×</span>
-                                </button>
-                                <h5
-                                    className="modal-title text-center"
-                                    id="exampleModalLabel"
-                                >
-                                    Create Post
-                                </h5>
-                            </div>
-                            <div className='d-flex flex-column align-items-center' >
-
-
-
-                                <textarea type="text"
-                                    placeholder="Title"
-                                    name="title"
-                                    value={title}
-                                    className={styles.input}
-                                    onChange={(e) => setTitle(e.target.value)} />
-
-                                <textarea
-                                    type="text"
-                                    placeholder="What do you want to ask or share?"
-                                    name="post"
-                                    value={postText}
-                                    className={styles.textarea} onChange={(e) => setPostText(e.target.value)}  >
-
-                                </textarea>
-                            </div>
-                            <div className="modal-footer">
-                                <div >
-                                    <Button
-                                        className="btn-link"
-                                        color="default"
-                                        type="button"
-                                        onClick={toggleModal}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </div>
-
-                                <div >
-                                    {postText == '' || title == '' || postText == null || title == null ? (
-                                        <Button className="btn-round" color="info" disabled >
-                                            Post
-                                        </Button>
-                                    ) : (
-                                        <Button className="btn-round" color="info" onClick={addPost} >
-                                            Post
-                                        </Button>
-                                    )}
+                                    <button className={styles.postTextArea} onClick={toggleModal}>What do you want to ask or share?</button>
 
                                 </div>
                             </div>
-                        </Modal>
-                    </Col>
 
-                    {loading ? (<p>Loading...</p>) : (
-                        <>
-                            {data?.community.posts.map((p) => {
+
+
+                            <Col md="6">
+
+                                {/* Modal */}
+                                <Modal isOpen={modal} toggle={toggleModal}  >
+                                    <div className="modal-header">
+                                        <button
+                                            aria-label="Close"
+                                            className="close"
+                                            type="button"
+                                            onClick={toggleModal}
+                                        >
+                                            <span aria-hidden={true}>×</span>
+                                        </button>
+                                        <h5
+                                            className="modal-title text-center"
+                                            id="exampleModalLabel"
+                                        >
+                                            Create Post
+                                        </h5>
+                                    </div>
+                                    <div className='d-flex flex-column align-items-center' >
+
+
+
+                                        <textarea type="text"
+                                            placeholder="Title"
+                                            name="title"
+                                            value={title}
+                                            className={styles.input}
+                                            onChange={(e) => setTitle(e.target.value)} />
+
+                                        <textarea
+                                            type="text"
+                                            placeholder="What do you want to ask or share?"
+                                            name="post"
+                                            value={postText}
+                                            className={styles.textarea} onChange={(e) => setPostText(e.target.value)}  >
+
+                                        </textarea>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <div >
+                                            <Button
+                                                className="btn-link"
+                                                color="default"
+                                                type="button"
+                                                onClick={toggleModal}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </div>
+
+                                        <div >
+                                            {postText === '' || title === '' || postText == null || title == null ? (
+                                                <Button className="btn-round" color="info" disabled >
+                                                    Post
+                                                </Button>
+                                            ) : (
+                                                <Button className="btn-round" color="info" onClick={addPost} >
+                                                    Post
+                                                </Button>
+                                            )}
+
+                                        </div>
+                                    </div>
+                                </Modal>
+                            </Col>
+
+                            {data?.community?.posts?.map((p) => {
                                 return (
                                     <>
 
@@ -384,7 +389,7 @@ function CommunityPage() {
 
 
 
-                                                    {p.isPostedByCurrentuser ? (
+                                                    {p?.user?.id === user.id ? (
                                                         <UncontrolledDropdown >
 
                                                             <DropdownToggle className={styles.iconBtn}
@@ -434,16 +439,17 @@ function CommunityPage() {
                                 )
 
                             })}
-                        </>
 
 
-                    )}
-                </Col>
 
-            </div>
 
-        </>
-    );
+                        </Col>
+                    </>)}
+
+                    </div>
+
+            </>
+            );
 }
 
-export default CommunityPage;
+            export default CommunityPage;

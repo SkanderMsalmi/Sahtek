@@ -1,4 +1,4 @@
- const PatientFile = require("../../database/models/patientFile");
+const PatientFile = require("../../database/models/patientFile");
 const { User } = require("../../database/models/User");
 
 const resolvers = {
@@ -9,13 +9,13 @@ const resolvers = {
         getPatientFile: async (_, args) => {
             return await PatientFile.findById(args.id);
         },
-        
-        getFilesByPatient: async (_, { id }) => {
-            return await PatientFile.find({ patient: id });
+
+        getFilesByPatient: async (_, { id, therapistId }) => {
+            return await PatientFile.find({ patient: id, therapist: therapistId }).sort({ $natural: -1 });
         },
     },
     Mutation: {
-         
+
         createPatientFile: async (_, { title, remarks, patient, therapist }) => {
             const createFile = new PatientFile({
                 title: title,
@@ -25,25 +25,37 @@ const resolvers = {
                 createdAt: new Date().toDateString(),
 
             });
+            if(remarks === null) {
+
+                throw new Error("You didn't add notes!");
+
+            }else
             return await createFile.save();
         },
         updatePatientFile: async (_, args) => {
             const { id, remarks, title } = args;
-             const file = await PatientFile.findByIdAndUpdate(
-                id,
-                { remarks, title },
-                { new: true }
-            );
-            return file;
+            if (remarks !== "") {
+                const file = await PatientFile.findByIdAndUpdate(
+                    id,
+                    { remarks, title },
+                    { new: true }
+                );
+                return file;
+            }
+            else {
+
+                throw new Error("You didn't add notes!");
+
+            }
         },
 
         deletePatientFile: async (_, args) => {
             const { id } = args;
             const result = await PatientFile.findByIdAndDelete(id);
-            if(result){
+            if (result) {
                 return true
-            }else {return false}
-            
+            } else { return false }
+
         }
     },
     PatientFile: {

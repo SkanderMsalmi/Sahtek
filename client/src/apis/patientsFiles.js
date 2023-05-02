@@ -3,8 +3,8 @@ import { gql } from "@apollo/client";
 
 
 export const GET_PATIENT_FILES = gql` 
-query GetFilesByPatient($id: ID!) {
-  getFilesByPatient(id: $id) {
+query GetFilesByPatient($id: ID!, $therapistId: ID!) {
+  getFilesByPatient(id: $id, therapistId: $therapistId) {
     id
     patient {
       email
@@ -13,10 +13,15 @@ query GetFilesByPatient($id: ID!) {
     }
     remarks
     title
+    therapist {
+      id
+    }
     createdAt
   }
-} 
+}
     `;
+
+    
 
 
     export const GET_FILE = gql` 

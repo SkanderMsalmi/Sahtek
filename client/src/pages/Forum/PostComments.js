@@ -8,16 +8,17 @@ import {
 } from "../../apis/forum";
 
 import { CREATE_COMMENT_MUTATION } from "../../apis/forum";
-import { GET_COMMENTS_BY_POST } from "../../apis/forum";
+import { GET_COMMENTS_BY_POST, DELETE_COMMENT_MUTATION } from "../../apis/forum";
 import { GET_POST } from "../../apis/forum";
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_POSTS } from "../../apis/forum";
-import { Col } from 'reactstrap';
+import { Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown } from 'reactstrap';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../store/users/users.selectors';
 import { TbArrowBigUp, TbArrowBigUpFilled } from 'react-icons/tb';
 import Moment from 'react-moment';
+import { BiDotsHorizontalRounded, BiDotsVerticalRounded } from 'react-icons/bi';
 
 
 function PostComments() {
@@ -38,6 +39,9 @@ function PostComments() {
   });
   const [CreateComment, { data: dataC, loading: loadingC, error: errorC }] = useMutation(
     CREATE_COMMENT_MUTATION
+  );
+  const [deleteComment] = useMutation(
+    DELETE_COMMENT_MUTATION
   );
 
   const { dataP, loadingP, errorP, refetch } = useQuery(GET_POSTS)
@@ -83,6 +87,26 @@ function PostComments() {
       refetch();
     })
       .catch(errorL => console.error(errorL));
+
+
+  };
+
+  //** delete post*/
+  function deleteMyComment(commentID) {
+
+    deleteComment({
+      variables: {
+
+        id: commentID,
+
+
+      },
+    }).then(() => {
+      refetch2();
+      refetch();
+    })
+      .catch(error => console.log(error));
+
 
 
   };
@@ -142,11 +166,12 @@ function PostComments() {
 
     <div className={styles.containerFluid}>
       {loading2 ? (<p>Loading...</p>) : (
-        <div className={styles.container}>
+        <Col lg="6" md="12">
+          <div className={styles.container}>
 
 
-          <div className={styles.post_container}>
-            <div>
+            <div className={styles.post_container}>
+
 
               <div className={styles.darkSection}>
                 <label>{data?.getPost?.user?.name}'s Post</label>
@@ -195,74 +220,115 @@ function PostComments() {
               </div>
 
 
+
+
+
+
+
+
             </div>
+
+
+            <div className={styles.add_comment}>
+              <div className={styles.row}>
+                <div className={styles.userImg} style={{ marginLeft: "20px", marginRight: "7px" }}><img src={user?.profileImage} alt="" /></div>
+                <textarea
+                  type="text"
+                  placeholder="Add a comment"
+                  name="comment"
+                  className={styles.textarea} ref={textRef} onChange={(e) => { setComment(e.target.value); setValue(e.target.value) }}
+                  value={comment}
+
+                />
+                <button onClick={addComment} className={styles.add_btn} >Add comment</button>
+
+              </div>
+            </div>
+
+
+            {data2.getCommentsByPostId.map((p) => {
+              return (
+                <>
+
+                  <div className={styles.comment_card}>
+                    <Row>     <Col lg="1" md="1" sm="1">
+                      <div className={styles.cardSide2}>
+                        <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
+                      </div>
+                    </Col>
+                      <Col lg="11" md="11" sm="11">
+
+                        <div className='d-flex flex-column '>
+                          <div className={styles.cardContent} >
+
+                            <small className={styles.username}> {p.user?.name}
+                              {p.user.id === user.id ? (
+                                <UncontrolledDropdown >
+
+                                  <DropdownToggle className={styles.iconBtn}
+                                    aria-expanded={false}
+                                    aria-haspopup={true}
+
+                                    color="default"
+                                    data-toggle="dropdown"
+
+                                    nav
+                                    onClick={(e) => e.preventDefault()}
+                                    role="button"
+                                  >
+
+                                    <BiDotsHorizontalRounded className={styles.icon}  />
+                                  </DropdownToggle>
+                                  <DropdownMenu className="dropdown-danger" right>
+
+                                    <DropdownItem
+
+                                      onClick={() => deleteMyComment(p.id)}
+                                    >
+                                      Delete
+                                    </DropdownItem>
+
+                                  </DropdownMenu>
+                                </UncontrolledDropdown>) : (null)}
+                            </small>
+                            <p   >{p.description}</p>
+                          </div>
+                          <small ><Moment fromNow>{p?.time}</Moment></small>
+
+                        </div>
+
+                      </Col>
+                    </Row>
+
+
+
+
+
+                  </div>
+
+
+
+
+
+                </>)
+            })}
+
+
+
+
 
 
 
 
 
           </div>
-
-
-          <div className={styles.add_comment}>
-            <div className={styles.row}>
-              <textarea
-                type="text"
-                placeholder="Add a comment"
-                name="comment"
-                className={styles.textarea} ref={textRef} onChange={(e) => { setComment(e.target.value); setValue(e.target.value) }}
-                value={comment}
-
-              />
-              <button onClick={addComment} className={styles.add_btn} >Add comment</button>
-
-            </div>
-          </div>
-
-
-          {data2.getCommentsByPostId.map((p) => {
-            return (
-              <>
-
-                <div className={styles.comment_card}>
-
-                  <div className={styles.cardSide2}>
-                    <div className={styles.userImg}><img src={p.user?.profileImage} alt="user" /></div>
-                  </div>
-
-
-                  <div className='d-flex flex-column '>
-                    <div className={styles.cardContent}>
-                      <small className={styles.username}> {p.user?.name}</small>
-                      <p>{p.description}</p>
-                    </div>
-                    <small ><Moment fromNow>{p?.time}</Moment></small>
-
-                  </div>
-
-
-                </div>
-
-
-
-
-              </>)
-          })}
-
-
-
-
-
-
-
-
-
-        </div>
+        </Col>
       )}
 
 
 
     </div>
+
   )
 
 }

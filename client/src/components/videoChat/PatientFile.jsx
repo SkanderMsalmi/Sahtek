@@ -90,7 +90,7 @@ function PatientFile({ show, handleClick }) {
     };
 
     const { data, loading, error, refetch } = useQuery(GET_PATIENT_FILES, {
-        variables: { id: remoteId }
+        variables: { id: remoteId , therapistId:therapist.id}
     });
     if (loading) return <p>Loading...</p>;
 
@@ -184,7 +184,7 @@ function PatientFile({ show, handleClick }) {
                         ) : toggled == "history" ?
                             (
 
-                                data.getFilesByPatient.map((p) => {
+                                data?.getFilesByPatient?.map((p) => {
                                     return (
                                         <>
                                             {/* <div>

@@ -10,11 +10,17 @@ type Post {
     user: User
     comments: [Comment]
     isLiked(  user: ID!): Boolean
-    isPostedByCurrentuser(  user: ID!): Boolean
+    
    
 }
 
-
+type Newpost {
+    id: ID!
+    community: Community     
+    comments: [Comment]
+    title: String!
+    similarity: Float!
+  }
 input PostInput {
         description: String
         user: ID
@@ -28,11 +34,14 @@ extend type Query {
     findPostByUser(id: ID!): [Post]
     findPostByUserCommunities(id: ID!): [Post]
     findPostByCommunity(id: ID!): [Post]
+  
+    similarQuestions(newQuestion: String): [Newpost]
+
     
 
 
  
-    findCommunityByUser(id: ID!): [Community]
+  
     
 
   
