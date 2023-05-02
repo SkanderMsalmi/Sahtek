@@ -16,8 +16,9 @@ const { readFile } = require("../../utils/uploadFile");
 const nodemailer = require("nodemailer");
 const { Router } = require("express");
 const moment = require("moment");
+const BASE_URL = process.env.BASE_URL;
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL_REACT = "http://localhost:3000";
 
 const resolvers = {
   Mutation: {
@@ -122,20 +123,20 @@ const resolvers = {
     ) => {
       let profileImage = "";
       if (gender === "Other") {
-        profileImage = "http://localhost:5000/other.jpg";
+        profileImage = `${BASE_URL}/other.jpg`;
       } else {
         if (role === "Patient") {
           if (gender === "Male") {
-            profileImage = "http://localhost:5000/patientM.png";
+            profileImage = `${BASE_URL}/patientM.png`;
           } else if (gender === "Female") {
-            profileImage = "http://localhost:5000/patientF.png";
+            profileImage = `${BASE_URL}/patientF.png`;
           }
         } else if (role === "Therapist") {
           if (gender === "Male") {
-            profileImage = "http://localhost:5000/therapistM.png";
+            profileImage = `${BASE_URL}/therapistM.png`;
           }
           if (gender === "Female") {
-            profileImage = "http://localhost:5000/therapistF.png";
+            profileImage = `${BASE_URL}/therapistF.png`;
           }
         }
       }
@@ -198,10 +199,10 @@ const resolvers = {
             userId: user.id,
             token: crypto.randomBytes(32).toString("hex"),
           }).save();
-          const url = `${BASE_URL}/${user.id}/verify/${token2.token}`;
+          const url = `${BASE_URL_REACT}/${user.id}/verify/${token2.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
         } else if (token) {
-          const url = `${BASE_URL}/${user.id}/verify/${token.token}`;
+          const url = `${BASE_URL_REACT}/${user.id}/verify/${token.token}`;
           await sendEmail(user.email, "Email Verification", String(url));
         }
       }
@@ -276,12 +277,12 @@ const resolvers = {
       const existingAppointment = await Appointment.findOne({
         date: date,
         therapist: d,
-        patient:p
+        patient: p,
         // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
       const patientaleardyhaveone = await Appointment.findOne({
         date: date,
-        patient:p
+        patient: p,
         // date: { $lte: new Date(date).getTime() + 60 * 60 * 1000 },
       });
       console.log(existingAppointment);
@@ -304,7 +305,7 @@ const resolvers = {
 
     AcceptAppointment: async (_, { idAppointment }) => {
       const appointment = await Appointment.findById(idAppointment);
-      
+
       const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -388,7 +389,7 @@ const resolvers = {
     async getAppointment(_, { ID }) {
       const a = await Appointment.findById(ID);
       if (a === null) {
-        throw new Error('Appointment not found');
+        throw new Error("Appointment not found");
       }
       return a;
     },
@@ -433,9 +434,10 @@ const resolvers = {
     },
 
     getPatientsByTherapist: async (_, { id }) => {
-      const list = await Appointment.find({ therapist: id, status: "Confirmed" }).distinct(
-        "patient"
-      );
+      const list = await Appointment.find({
+        therapist: id,
+        status: "Confirmed",
+      }).distinct("patient");
       return await User.find({ _id: { $in: list } });
     },
   },

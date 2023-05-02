@@ -1,7 +1,7 @@
 const { parse, join } = require("path");
 const { createWriteStream } = require("fs");
 const fs = require("fs");
-
+const BASE_URL = process.env.BASE_URL;
 module.exports.readFile = async (file) => {
   const {
     file: { createReadStream, filename },
@@ -12,7 +12,7 @@ module.exports.readFile = async (file) => {
   let url = join(__dirname, `../upload/${name}-${Date.now()}${ext}`);
   const imageStream = await createWriteStream(url);
   await stream.pipe(imageStream);
-  url = "http://localhost:5000/" + url.split("upload")[1].slice(1);
+  url = `${BASE_URL}/` + url.split("upload")[1].slice(1);
   return url;
 };
 module.exports.readProduct = async (file) => {
@@ -25,6 +25,6 @@ module.exports.readProduct = async (file) => {
   let url = join(__dirname, `../upload/${name}-${Date.now()}${ext}`);
   const imageStream = await createWriteStream(url);
   await stream.pipe(imageStream);
-  url = "http://localhost:5000/" + url.split("upload")[1].slice(1);
+  url = `${BASE_URL}/` + url.split("upload")[1].slice(1);
   return url;
 };
