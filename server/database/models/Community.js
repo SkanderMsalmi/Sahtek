@@ -20,6 +20,7 @@ const community = new mongoose.Schema({
         required: true
 
     },
+    color: String,
 
 
 })

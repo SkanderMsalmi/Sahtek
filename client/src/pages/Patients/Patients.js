@@ -1,11 +1,11 @@
 import { selectUser } from "../../store/users/users.selectors";
 import { useSelector } from "react-redux";
 import { useQuery } from "@apollo/client";
-import React from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 
 import {
-    Button,
+   
 
     FormGroup,
     Input,
@@ -21,25 +21,30 @@ import { GET_PATIENTS } from "../../apis/users";
 
 function Patients() {
     const user = useSelector(selectUser);
+    const [searchQuery, setSearchQuery] = useState("");
+
     let { id } = useParams();
-    const navigate = useNavigate();
+
     const { data, loading, error } = useQuery(GET_PATIENTS, {
         variables: { id: id ? id : user.id }
     });
+
+       const searchedPatient = data?.getPatientsByTherapist?.filter(
+        (c) =>
+            c?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     if (loading) return <p>Loading...</p>;
 
 
     return (
         <>
-            <div className="section   text-center">
 
-            </div>
             <div className="section profile-content">
                 <Container >
 
                     <br />
-                    <Row className="d-flex justify-content-center align-items-center ">
+                    <Row className="d-flex justify-content-center align-items-center " style={{ marginTop: "21px" }}>
 
                         <Col lg="7" md="6">
 
@@ -47,8 +52,9 @@ function Patients() {
 
                         </Col>
                         <Col lg="3" md="6">
-                        <FormGroup>
-                                <Input placeholder="Search" type="text" />
+                            <FormGroup>
+                                <Input placeholder="Search" type="text" 
+                                 onChange={(e) => setSearchQuery(e.target.value)}/>
                             </FormGroup>
                         </Col>
                     </Row>
@@ -61,11 +67,11 @@ function Patients() {
 
                             <hr />
                             <ul className="list-unstyled follows">
-                                {data.getPatientsByTherapist.map((p) => {
+                                {searchedPatient.map((p) => {
                                     return (
                                         <>
-                                            <li>
-                                                <Row  className="d-flex justify-content-center align-items-center ">
+                                            <li key={p.id}>
+                                                <Row className="d-flex justify-content-center align-items-center ">
                                                     <Col className="avatar">
                                                         <img
                                                             alt="..."
@@ -74,15 +80,17 @@ function Patients() {
                                                             src={p.profileImage}
                                                         />
                                                     </Col>
-                                                    <Col className="ml-auto mr-auto" lg="8" md="4" xs="4">
+                                                    <Col className="ml-auto mr-auto" lg="4" md="4" xs="4">
                                                         <h6  >
-                                                            {p.name} <br />
-                                                            <small>{p.email}</small>
-                                                        </h6>
+                                                            {p.name} </h6>
+
+
                                                     </Col>
-                                                   
+                                                    <Col className="ml-auto mr-auto" lg="4" md="4" xs="4">
+                                                        <p>{p.email}</p></Col>
+
                                                     <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
-                                                    <Link to={`/patients/${p.id}/files`}>Files</Link>
+                                                        <Link to={`/espace-therapist/${p.id}/files`}>Files</Link>
                                                     </Col>
                                                 </Row>
                                             </li>
