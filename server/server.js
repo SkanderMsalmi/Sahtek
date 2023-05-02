@@ -6,7 +6,7 @@ const { ApolloServer } = require("apollo-server-express");
 var cors = require("cors");
 const socketio = require("socket.io");
 const { spawn } = require("child_process");
-
+const path = require("path");
 const runAmazonProducts = async () => {
   return new Promise((resolve, reject) => {
     const childPython = spawn("python", ["utils/datamining.py"]);
@@ -31,7 +31,6 @@ var corsOptionsDelegate = function (req, callback) {
 require("./database");
 
 app.use(cors(corsOptionsDelegate));
-
 setInterval(async () => {
   await runAmazonProducts();
 }, 1000 * 60 * 60 * 24);
@@ -46,8 +45,13 @@ const startServer = async () => {
       return { req, res };
     },
   });
+  app.use(express.static(path.join(__dirname, "client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/client/build/index.html"));
+  });
 
   await apolloServer.start();
+
   apolloServer.applyMiddleware({ app });
   const http = app.listen(5000, () =>
     console.log("🚀 Server ready at http://localhost:5000")
