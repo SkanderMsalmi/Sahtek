@@ -16,6 +16,7 @@ const { readFile } = require("../../utils/uploadFile");
 const nodemailer = require("nodemailer");
 const { Router } = require("express");
 const moment = require("moment");
+const { log } = require("console");
 const BASE_URL = process.env.BASE_URL;
 
 const BASE_URL_REACT = "http://localhost:3000";
@@ -369,9 +370,12 @@ const resolvers = {
     },
     async getTherapistsByPatient(_, { ID }) {
       let listTherapist = [];
-      const therapistsId = await Appointment.find({ patient: ID });
+      const therapistsId = await Appointment.find({
+        patient: ID,
+        status: "Confirmed",
+      }).distinct("therapist");
       for (let i = 0; i < therapistsId.length; i++) {
-        listTherapist.push(await User.findById(therapistsId[i].therapist));
+        listTherapist.push(await User.findById(therapistsId[i]));
       }
       return listTherapist;
     },
