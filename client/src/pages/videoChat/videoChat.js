@@ -38,6 +38,7 @@ const VideoChat = ({ children }) => {
 
         tracks.forEach(track => track.stop());
         navigate('/')
+        navigate(0)
     }
     const handleClick = val => {
         setShow(val)
