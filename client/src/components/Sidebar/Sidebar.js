@@ -64,16 +64,6 @@ function Sidebar() {
               </NavIcon>
               <NavText>My Therapist</NavText>
             </NavItem>
-            <NavItem
-              eventKey="Appoitments"
-              onClick={() => handleNavigate("/espace-patient/settings")}
-            >
-              <NavIcon>
-                {" "}
-                <i className="fa-solid fa-gear"></i>
-              </NavIcon>
-              <NavText>Settings</NavText>
-            </NavItem>
           </>
         ) : (
           <>
@@ -108,16 +98,6 @@ function Sidebar() {
                 <i className="fa-solid fa-user-doctor"></i>
               </NavIcon>
               <NavText>Patients</NavText>
-            </NavItem>
-            <NavItem
-              eventKey="Settings"
-              onClick={() => handleNavigate("/espace-therapist/settings")}
-            >
-              <NavIcon>
-                {" "}
-                <i className="fa-solid fa-gear"></i>
-              </NavIcon>
-              <NavText>Settings</NavText>
             </NavItem>
           </>
         )}

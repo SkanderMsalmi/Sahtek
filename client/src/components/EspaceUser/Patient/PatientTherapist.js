@@ -2,7 +2,7 @@ import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
 import TherapistCard from "./TherapistCard";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/users/users.selectors";
 import loader from "../../../assets/img/loading.gif";
 const THERAPISTSBYPATIENTS = gql`

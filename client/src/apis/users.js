@@ -38,10 +38,9 @@ export const LOGIN_MUTATION = gql`
           id
           description
         }
-        patient{
+        patient {
           id
         }
-        
       }
     }
   }
@@ -52,15 +51,15 @@ export const RESEND_MAIL_VERIFICATION_MUTATION = gql`
   }
 `;
 
-
-export const GET_PATIENTS = gql` 
-query GetPatientsByTherapist($id: ID!) {
-  getPatientsByTherapist(id: $id) {
-    id
-    email
-    name
-    profileImage
-    dateOfBirth
+export const GET_PATIENTS = gql`
+  query GetPatientsByTherapist($id: ID!) {
+    getPatientsByTherapist(id: $id) {
+      id
+      email
+      name
+      profileImage
+      dateOfBirth
+      gender
+    }
   }
-} 
 `;

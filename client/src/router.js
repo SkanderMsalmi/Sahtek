@@ -8,9 +8,6 @@ import PatientAppointments from "./components/EspaceUser/Patient/PatientAppointm
 import PatientTherapist from "./components/EspaceUser/Patient/PatientTherapist";
 import TherapistDashboard from "./components/EspaceUser/Therapist/TherapistDashboard";
 import TherapistAppointments from "./components/EspaceUser/Therapist/TherapistAppointments";
-import TherapistSettings from "./components/EspaceUser/Therapist/TherapistSettings";
-import TherapistPatients from "./components/EspaceUser/Therapist/TherapistPatients";
-import PatientSettings from "./components/EspaceUser/Patient/PatientSettings";
 import HomeShop from "./pages/Shop/HomePage/HomeShop";
 import CategoryShop from "./pages/Shop/CategoryPage/CategoryShop";
 import PatientFile from "./components/videoChat/PatientFile";
@@ -237,10 +234,6 @@ export const router = createBrowserRouter([
             path: "therapist",
             element: <PatientTherapist />,
           },
-          {
-            path: "settings",
-            element: <PatientSettings />,
-          },
         ],
       },
       {
@@ -255,10 +248,7 @@ export const router = createBrowserRouter([
             path: "calendar",
             element: <TherapistAppointments />,
           },
-          {
-            path: "settings",
-            element: <TherapistSettings />,
-          },
+
           {
             path: "patients",
             element: <Patients />,
