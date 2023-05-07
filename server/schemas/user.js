@@ -185,6 +185,7 @@ module.exports = gql`
   extend type Query {
     user(ID: ID!): User
     therapist(ID: ID!): TherapistPayload
+    getAllUsers: [User]
     users: [User]
     checkEmailExists(email: String!): Boolean!
     current(token: String!): User
@@ -201,6 +202,7 @@ module.exports = gql`
     verifyEmail(id: ID, otp: String): String
     update(userInput: UserUpdateInput, image: Upload): User
     updateTherapist(therapistInput: TherapistInput): User
+    deleteUser(id: ID!): String
     resetPassword(email: String!): Boolean
     resetPasswordlink(
       userid: String!

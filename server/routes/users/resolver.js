@@ -357,9 +357,17 @@ const resolvers = {
         return "user not found";
       }
     },
+    deleteUser: async (parent, args, context, info) => {
+      const { id } = args;
+      await User.findByIdAndDelete(id);
+      return "User deleted";
+    },
   },
 
   Query: {
+    async getAllUsers() {
+      return await User.find();
+    },
     async users() {
       return await User.find({
         role: "Therapist",

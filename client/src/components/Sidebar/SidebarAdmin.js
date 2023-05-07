@@ -49,7 +49,7 @@ import {
   Table,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 var ps;
@@ -92,12 +92,12 @@ const Sidebar = (props) => {
   if (logo && logo.innerLink) {
     navbarBrandProps = {
       to: logo.innerLink,
-      tag: Link
+      tag: Link,
     };
   } else if (logo && logo.outterLink) {
     navbarBrandProps = {
       href: logo.outterLink,
-      target: "_blank"
+      target: "_blank",
     };
   }
 
@@ -139,9 +139,14 @@ const Sidebar = (props) => {
               style={{ color: "black" }}
             >
               <DropdownItem style={{ color: "black" }}>Action</DropdownItem>
-              <DropdownItem style={{ color: "black" }}>Another action</DropdownItem>
+              <DropdownItem style={{ color: "black" }}>
+                Another action
+              </DropdownItem>
               <DropdownItem style={{ color: "black" }} divider />
-              <DropdownItem style={{ color: "black" }}> Something else here</DropdownItem>
+              <DropdownItem style={{ color: "black" }}>
+                {" "}
+                Something else here
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
           <UncontrolledDropdown nav>
@@ -152,11 +157,14 @@ const Sidebar = (props) => {
                     alt="..."
                     src={require("../../assets/img/logoSahtek.png")}
                   />
-
                 </span>
               </Media>
             </DropdownToggle>
-            <DropdownMenu className="dropdown-menu-arrow" right style={{ zIndex: 9999 }}>
+            <DropdownMenu
+              className="dropdown-menu-arrow"
+              right
+              style={{ zIndex: 9999 }}
+            >
               <DropdownItem className="noti-title" header tag="div">
                 <h6 className="text-overflow m-0">Welcome!</h6>
               </DropdownItem>
@@ -201,7 +209,9 @@ const Sidebar = (props) => {
                     </a>
                   )}
                 </Col>
-              ) : "aaaaaaaaaaa"}
+              ) : (
+                "aaaaaaaaaaa"
+              )}
               <Col className="collapse-close" xs="6">
                 <button
                   className="navbar-toggler"
@@ -249,16 +259,20 @@ const Sidebar = (props) => {
           {/* Heading */}
           <h6 className="navbar-heading text-muted">Pages</h6>
           {/* Navigation */}
-          <Nav className="mb-md-3" navbar  >
+          <Nav className="mb-md-3" navbar>
             <NavItem>
               <NavLink href="/espace-admin/products" style={{ color: "black" }}>
                 <i className="ni ni-spaceship" />
                 Products
               </NavLink>
             </NavItem>
-
+            <NavItem>
+              <NavLink href="/espace-admin/users" style={{ color: "black" }}>
+                <i className="ni ni-spaceship" />
+                Users
+              </NavLink>
+            </NavItem>
           </Nav>
-
         </Collapse>
       </Container>
     </Navbar>
@@ -266,7 +280,7 @@ const Sidebar = (props) => {
 };
 
 Sidebar.defaultProps = {
-  routes: [{}]
+  routes: [{}],
 };
 
 Sidebar.propTypes = {
@@ -282,8 +296,8 @@ Sidebar.propTypes = {
     // the image src of the logo
     imgSrc: PropTypes.string.isRequired,
     // the alt for the img
-    imgAlt: PropTypes.string.isRequired
-  })
+    imgAlt: PropTypes.string.isRequired,
+  }),
 };
 
 export default Sidebar;

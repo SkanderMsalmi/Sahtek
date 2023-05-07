@@ -40,6 +40,10 @@ const AdminProducts = React.lazy(() =>
   import("./components/AdminProducts/AdminProducts")
 );
 
+const AdminUsers = React.lazy(() =>
+  import("./components/AdminUsers/AdminUsers")
+);
+
 const Appointment = React.lazy(() =>
   import("./pages/AppoinmentForTherapist/appforTherapist")
 );
@@ -287,6 +291,10 @@ export const router = createBrowserRouter([
           {
             path: "products",
             element: <AdminProducts />,
+          },
+          {
+            path: "users",
+            element: <AdminUsers />,
           },
         ],
       },
