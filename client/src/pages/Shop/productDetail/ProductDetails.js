@@ -1,8 +1,17 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Col, Row, Button, Input } from "reactstrap";
+import { selectWishlist } from "../../../store/selectors";
+import {
+  addToWishlist,
+  emptyWishlist,
+  removeFromWishlist,
+  setProducts,
+} from "../../../store/shop/shop.actions";
+import loader from "../../../assets/img/loading.gif";
 
 const GET_PRODUCT_BY_ID = gql`
   query Query($id: ID!) {
@@ -21,11 +30,13 @@ export const ProductDetails = () => {
   const { id } = useParams();
   const { data, loading, error } = useQuery(GET_PRODUCT_BY_ID, {
     variables: {
-      id: "643c6a90175b4701bb6814b4",
+      id,
     },
   });
+  const wishlist = useSelector(selectWishlist);
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState("");
+
   useEffect(() => {
     if (data) {
       setProduct(data?.getProduct);
@@ -41,8 +52,31 @@ export const ProductDetails = () => {
   function handleDecreaseQuantity() {
     setQuantity(quantity - 1);
   }
+  const dispatch = useDispatch();
+  const isWishlist = (productId) => {
+    return wishlist.some((product) => product.id === productId);
+  };
+  const onToggleWishlist = (productId) => {
+    if (isWishlist(productId)) {
+      dispatch(removeFromWishlist(productId));
+    } else {
+      dispatch(addToWishlist(productId));
+    }
+  };
+  const toggleLike = (event) => {
+    event.stopPropagation();
+    console.log(product.id);
+    onToggleWishlist(product.id);
+  };
   function handleAddToCartClick() {
     // TODO: Implement adding to cart functionality
+  }
+  if (loading) {
+    return (
+      <div className=" section d-flex justify-content-center align-items-center">
+        <img src={loader} alt="Loading..." />
+      </div>
+    );
   }
   return (
     <div>
@@ -94,11 +128,7 @@ export const ProductDetails = () => {
           >
             Add to cart
           </Button>
-          <Button
-            color="primary"
-            onClick={handleAddToCartClick}
-            className="m-2"
-          >
+          <Button color="primary" onClick={toggleLike} className="m-2">
             Add to wishlist
           </Button>
         </Col>

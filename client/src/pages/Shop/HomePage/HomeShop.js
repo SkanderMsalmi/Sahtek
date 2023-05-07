@@ -24,6 +24,8 @@ import { increment } from "../../../store/shop/cartSlice";
 import { Spinner } from "reactstrap";
 import AmazonProd from "../../../components/Shop/AmazonProd";
 import styles from "./HomeShop.Module.scss";
+import loader from "../../../assets/img/loading.gif";
+
 const GET_PRODUCTS = gql`
   query GetAllProducts {
     getAllProducts {
@@ -88,7 +90,11 @@ const HomeShop = () => {
     }
   }, [dataAmazon]);
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className=" section d-flex justify-content-center align-items-center">
+        <img src={loader} alt="Loading..." />
+      </div>
+    );
   }
 
   if (error) {

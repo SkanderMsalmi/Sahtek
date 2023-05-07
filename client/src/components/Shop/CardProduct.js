@@ -10,33 +10,39 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import {
- 
-  increment,
- 
-} from '../../store/shop/cartSlice';
+import { increment } from "../../store/shop/cartSlice";
 import "./CardProduct.scss";
 import { FaShoppingCart } from "react-icons/fa";
-function CardProduct({ product, isWishlist, onToggleWishlist,addToCart }) {
+import { Link, useNavigate } from "react-router-dom";
+function CardProduct({ product, isWishlist, onToggleWishlist, addToCart }) {
+  const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const dispatch = useDispatch();
 
   const toggleLike = (event) => {
     event.stopPropagation();
-    console.log(product.id);
     onToggleWishlist(product.id);
   };
-  const handleAddToCart = () => {
-    addToCart(product)
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart(product);
+    setIsAddedToCart(true);
   };
- 
+  const handleCardClick = () => {
+    navigate("product/" + product.id);
+  };
   const likeClass = isWishlist ? "fas" : "far";
-
   return (
-    <Card className="card-product">
+    <Card className="card-product" onClick={handleCardClick}>
       <div className="card-product-image-wrapper">
-        <CardImg top width="100%" style={{ height: "15rem" }} src={product.image} alt={product.name} />
+        <CardImg
+          top
+          width="100%"
+          style={{ height: "15rem" }}
+          src={product.image}
+          alt={product.name}
+        />
         <div className="like-icon" onClick={toggleLike}>
           <i
             className={`${likeClass} fa-heart`}
