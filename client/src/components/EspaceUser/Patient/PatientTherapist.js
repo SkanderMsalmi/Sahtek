@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/users/users.selectors";
 import loader from "../../../assets/img/loading.gif";
+import { useState } from "react";
 const THERAPISTSBYPATIENTS = gql`
   query GetTherapistsByPatient($id: ID!) {
     getTherapistsByPatient(ID: $id) {
@@ -13,26 +14,18 @@ const THERAPISTSBYPATIENTS = gql`
       id
       therapist {
         description
+        specialties
       }
     }
   }
 `;
 
-function TherapistSearch() {
-  return (
-    <div className="d-flex justify-content-between align-items-center mb-5">
-      <InputGroup style={{ width: "400px" }}>
-        <Input placeholder="Search for a therapist" />
-        <InputGroupAddon addonType="append">
-          <Button color="primary">Search</Button>
-        </InputGroupAddon>
-      </InputGroup>
-      <Button color="secondary">All Therapists</Button>
-    </div>
-  );
-}
 const PatientTherapist = () => {
   const user = useSelector(selectUser);
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearchQueryChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   const {
     loading: therapistLoading,
@@ -43,7 +36,15 @@ const PatientTherapist = () => {
       id: user.id,
     },
   });
-  console.log(therapistData);
+
+  const filteredTherapist = therapistData?.getTherapistsByPatient?.filter(
+    (therapist) =>
+      therapist?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      therapist.therapist.specialties.some((specialty) =>
+        specialty.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+  );
+
   if (therapistLoading) {
     return (
       <div className=" section d-flex justify-content-center align-items-center">
@@ -57,7 +58,19 @@ const PatientTherapist = () => {
   }
   return (
     <div className="section">
-      <TherapistSearch />
+      <div className="d-flex justify-content-between align-items-center mb-5">
+        <InputGroup style={{ width: "400px" }}>
+          <Input
+            placeholder="Search for a therapist"
+            value={searchQuery}
+            onChange={handleSearchQueryChange}
+          />
+          <InputGroupAddon addonType="append">
+            <Button color="primary">Search</Button>
+          </InputGroupAddon>
+        </InputGroup>
+        <Button color="secondary">All Therapists</Button>
+      </div>
       <div
         style={{
           display: "flex",
@@ -66,8 +79,8 @@ const PatientTherapist = () => {
           rowGap: "4rem",
         }}
       >
-        {therapistData &&
-          therapistData?.getTherapistsByPatient?.map((t, index) => (
+        {filteredTherapist &&
+          filteredTherapist.map((t, index) => (
             <TherapistCard
               key={index}
               name={t.name}
@@ -76,7 +89,7 @@ const PatientTherapist = () => {
               id={t.id}
             />
           ))}
-        {therapistData?.getTherapistsByPatient?.length === 0 && (
+        {filteredTherapist.length === 0 && (
           <div className=" section d-flex justify-content-center align-items-center w-100">
             <h2>No Therapist Yet ...</h2>
           </div>

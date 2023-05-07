@@ -12,6 +12,7 @@ import HomeShop from "./pages/Shop/HomePage/HomeShop";
 import CategoryShop from "./pages/Shop/CategoryPage/CategoryShop";
 import PatientFile from "./components/videoChat/PatientFile";
 import Chatbot from "./components/ChatWidget/ChatWidget";
+import { ProductDetails } from "./pages/Shop/productDetail/ProductDetails";
 
 // import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 // import { rootLoader } from './loaders/rootLoader';
@@ -206,6 +207,10 @@ export const router = createBrowserRouter([
           {
             path: "category/:categoryid",
             element: <CategoryShop />,
+          },
+          {
+            path: "product/:id",
+            element: <ProductDetails />,
           },
         ],
       },

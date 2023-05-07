@@ -102,11 +102,17 @@ const RatingCard = () => {
     therapistData?.user?.profileImage
   );
   useEffect(() => {
+    if (ratingData?.checkRate) {
+      setIsRated(true);
+    }
+  }, [ratingData]);
+  useEffect(() => {
     if (!therapistLoading && !therapistError && therapistData) {
       setName(therapistData?.user?.name);
       setProfileImage(therapistData?.user?.profileImage);
       setSpecialities(therapistData?.user?.therapist?.specialties);
     }
+
     if (therapistData?.user?.role === "Patient") {
       navigate("/profile");
     }

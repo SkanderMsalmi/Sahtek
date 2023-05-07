@@ -13,10 +13,8 @@ function TherapistCard(props) {
   const navigate = useNavigate();
   const { name, image, description, id } = props;
   return (
-    <div
-      style={{ width: "18rem" }}
-    >
-      <Card >
+    <div style={{ width: "20rem" }}>
+      <Card>
         <CardImg
           top
           src={image}
