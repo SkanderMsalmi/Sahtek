@@ -18,7 +18,7 @@ function Homepage() {
   return (
     <div className="main">
       <div className="main">
-        <div className="section text-center">
+        <div className="section text-center" id="services">
           <Container>
             <Row>
               <Col className="ml-auto mr-auto" md="8">
@@ -121,7 +121,7 @@ function Homepage() {
             </Row>
           </Container>
         </div>
-        <div className="section section-dark text-center">
+        <div className="section section-dark text-center" id="aboutus">
           <Container>
             <h2 className="title">Let's talk about us</h2>
             <Row>
@@ -283,7 +283,7 @@ function Homepage() {
             </Row>
           </Container>
         </div>
-        <div className="section landing-section">
+        <div className="section landing-section" id="contactus">
           <Container>
             <Row>
               <Col className="ml-auto mr-auto" md="8">

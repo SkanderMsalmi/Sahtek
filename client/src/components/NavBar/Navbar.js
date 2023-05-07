@@ -123,19 +123,13 @@ function Navigation() {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} to="/">
-                    Services
-                  </NavLink>
+                  <NavLink href="#services">Services</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} to="/">
-                    Contact us
-                  </NavLink>
+                  <NavLink href="#contactus">Contact us</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} to="/">
-                    About us
-                  </NavLink>
+                  <NavLink href="#aboutus">About us</NavLink>
                 </NavItem>
               </>
             )}
@@ -145,57 +139,32 @@ function Navigation() {
                 {user.role === "Patient" ? (
                   <>
                     <NavItem>
-                      <Button
-                        className="btn-round mr-1"
-                        color="danger"
-                        tag={Link}
-                        to="/chat"
-                      >
+                      <NavLink tag={Link} to="/chat">
                         Doc Bot
-                      </Button>
+                      </NavLink>
                     </NavItem>
                     <NavItem>
-                      <Button
-                        className="btn-round"
-                        color="primary"
-                        tag={Link}
-                        to="/shop"
-                      >
+                      <NavLink tag={Link} to="/shop">
                         Shop
-                      </Button>
+                      </NavLink>
                     </NavItem>
                     <NavItem>
-                      <Button
-                        className="btn-round mr-1"
-                        color="info"
-                        tag={Link}
-                        to="/forum"
-                      >
+                      <NavLink tag={Link} to="/forum">
                         Forum
-                      </Button>
+                      </NavLink>
                     </NavItem>
                     <NavItem>
-                      <Button
-                        className="btn-round mr-1"
-                        color="info"
-                        tag={Link}
-                        to="/espace-patient"
-                      >
+                      <NavLink tag={Link} to="/espace-patient">
                         Espace Patient
-                      </Button>
+                      </NavLink>
                     </NavItem>
                   </>
                 ) : (
                   <>
                     <NavItem>
-                      <Button
-                        className="btn-round"
-                        color="info"
-                        tag={Link}
-                        to="/forum"
-                      >
+                      <Link color="info" to="/forum">
                         Forum
-                      </Button>
+                      </Link>
                     </NavItem>
                     <NavItem>
                       <Button
