@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 const httpLink = createHttpLink({
-  uri: "https://sah-tek-serv.onrender.com/graphql",
+  uri: "https://sah-tek-serv.onrender.com",
 });
 
 const authLink = setContext((_, { headers }) => {
