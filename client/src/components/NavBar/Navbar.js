@@ -162,19 +162,14 @@ function Navigation() {
                 ) : (
                   <>
                     <NavItem>
-                      <Link color="info" to="/forum">
+                      <NavLink tag={Link} to="/forum">
                         Forum
-                      </Link>
+                      </NavLink>
                     </NavItem>
                     <NavItem>
-                      <Button
-                        className="btn-round"
-                        color="secondary"
-                        tag={Link}
-                        to="/espace-therapist"
-                      >
+                      <NavLink tag={Link} to="/espace-therapist">
                         Espace Therapist
-                      </Button>
+                      </NavLink>
                     </NavItem>
                   </>
                 )}

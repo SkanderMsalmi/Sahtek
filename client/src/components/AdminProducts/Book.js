@@ -11,8 +11,8 @@ const UPDATE_PRODUCT = gql`
   }
 `;
 const DELETE_PRODUCT = gql`
-  mutation DeleteUser($deleteUserId: ID!) {
-    deleteUser(id: $deleteUserId)
+  mutation DeleteProduct($deleteProductId: ID!) {
+    deleteProduct(id: $deleteProductId)
   }
 `;
 function Book(props) {
