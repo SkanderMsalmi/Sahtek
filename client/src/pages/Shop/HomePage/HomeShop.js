@@ -229,7 +229,7 @@ const HomeShop = () => {
         </div>
         {loadingAmazon && <Spinner />}
 
-        {/* <Carousel
+        <Carousel
           additionalTransfrom={0}
           arrows
           autoPlaySpeed={3000}
@@ -281,14 +281,14 @@ const HomeShop = () => {
           sliderClass=""
           slidesToSlide={3}
           swipeable
-        > */}
-        {/* {JSON.parse(dataAmazon?.getAmazonProducts).map((product, index) => (
+        >
+          {JSON.parse(dataAmazon?.getAmazonProducts).map((product, index) => (
             <a href={product.productUrl} target="_blank">
               {" "}
               <AmazonProd className={styles.amz} product={product} />
             </a>
-          ))} */}
-        {/* </Carousel> */}
+          ))}
+        </Carousel>
       </div>
     </>
   );
