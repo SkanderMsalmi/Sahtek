@@ -79,7 +79,7 @@ function Navigation() {
     };
   });
   return (
-    <Navbar className={classnames("fixed-top", navbarColor)} expand="lg">
+    <Navbar className={classnames("fixed-top")} expand="lg">
       <Container>
         <div className="navbar-translate">
           <NavbarBrand
@@ -89,12 +89,7 @@ function Navigation() {
             style={{ padding: "0" }}
           >
             <Link to={"/"}>
-              <img
-                src={logoSahtek}
-                alt="Sahtek"
-                width="120px"
-                style={{ border: "1px solid gray", mixBlendMode: "color-burn" }}
-              />
+              <img src={logoSahtek} alt="Sahtek" width="50px" />
             </Link>
           </NavbarBrand>
           <button
