@@ -6,7 +6,7 @@ const Shop = () => {
       {/* <AsideBarShop /> */}
       <div
         className="main-content"
-        style={{ minHeight: "100vh", paddingTop: "2rem" }}
+        style={{ minHeight: "100vh", paddingTop: "2rem" , marginTop: "70px"}}
       >
         <Outlet />
       </div>
