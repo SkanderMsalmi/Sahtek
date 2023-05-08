@@ -25,7 +25,7 @@ const client = new ApolloClient({
   link: httpLink.concat(
     authLink.concat(
       createUploadLink({
-        uri: "https://sah-tek-serv.onrender.com/graphql",
+        uri: "https://sah-tek-serv.onrender.com",
       })
     )
   ),
