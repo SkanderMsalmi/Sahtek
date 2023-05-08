@@ -34,6 +34,9 @@ function PatientFile({ show, handleClick }) {
     const [title, setTitle] = useState('');
 
     const [alert, setAlert] = useState(false);
+    const [alertDanger, setAlertDanger] = useState(false);
+
+
     const [newBtn, setNewBtn] = useState(true);
     const [historyBtn, setHistoryBtn] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -50,7 +53,8 @@ function PatientFile({ show, handleClick }) {
 
     const historyClick = () => {
         if (historyBtn === false) {
-            setToggled("history"); setNewBtn(!newBtn); setHistoryBtn(!historyBtn)
+            setToggled("history"); setNewBtn(!newBtn); setHistoryBtn(!historyBtn);
+
 
         }
 
@@ -59,12 +63,16 @@ function PatientFile({ show, handleClick }) {
     const editFile = (id) => {
         setClickedFileId(id);
         setEdit(true);
+        refetch();
     };
 
 
 
     const submit = () => {
         try {
+            if (note ==='') {
+                setAlertDanger(true);
+            } else {
             async function addfile() {
                 await createPatientFile({
                     variables: {
@@ -77,20 +85,27 @@ function PatientFile({ show, handleClick }) {
                     },
                 });
 
-                setNote('');
-                setAlert(true)
+               
+                    setNote('');
+                    setTitle('');
+                    setAlert(true);
+                    refetch();
+                }
+
+                addfile();
 
             }
-            addfile();
+        
 
 
         } catch (error) {
             console.log(error);
+          
         }
     };
 
     const { data, loading, error, refetch } = useQuery(GET_PATIENT_FILES, {
-        variables: { id: remoteId , therapistId:therapist.id}
+        variables: { id: remoteId, therapistId: therapist.id }
     });
     if (loading) return <p>Loading...</p>;
 
@@ -105,7 +120,7 @@ function PatientFile({ show, handleClick }) {
 
                     <div className={styles.patient_file_container}>
 
-                        <div className="d-flex justify-content-between  align-items-center">
+                        <div className="d-flex justify-content-between  align-items-center  ">
 
                             <div className={styles.row}>
                                 {newBtn ?
@@ -144,7 +159,7 @@ function PatientFile({ show, handleClick }) {
                             <FileEditor clickedFileId={clickedFileId} setEdit={setEdit} refetch={refetch} toggled={toggled} />
                         ) : toggled == "new" ? (
                             <div>
-                                <input placeholder="Title"
+                                <input placeholder="Title" style={{ background: " #e7e9eb", paddingLeft: "10px" }}
                                     value={title} onChange={(t) => setTitle(t.target.value)}
                                     className={styles.input}
                                 />
@@ -155,7 +170,7 @@ function PatientFile({ show, handleClick }) {
                                     <textarea
                                         type="text"
                                         value={note} onChange={(e) => setNote(e.target.value)}
-                                        placeholder=""
+                                        placeholder="Add notes..."
                                         name="note"
 
                                         className={styles.textarea} />
@@ -176,6 +191,20 @@ function PatientFile({ show, handleClick }) {
                                             <i className="nc-icon nc-simple-remove" />
                                         </button>
                                         <span>Added successfully!</span>
+                                    </Container>
+                                </Alert>
+                                <Alert color="danger" isOpen={alertDanger}>
+                                    <Container>
+                                        <button
+                                            type="button"
+                                            className="close"
+                                            data-dismiss="alert"
+                                            aria-label="Close"
+                                            onClick={() => setAlertDanger(false)}
+                                        >
+                                            <i className="nc-icon nc-simple-remove" />
+                                        </button>
+                                        <span>Note field is empty!</span>
                                     </Container>
                                 </Alert>
 
@@ -209,7 +238,7 @@ function PatientFile({ show, handleClick }) {
                                                 </div>
 
                                             </div> */}
-                                            <div className={styles.card}  key={p.id}>
+                                            <div className={styles.card} key={p.id}>
                                                 <div className={styles.cardContent}>
                                                     <Col lg="9" md="8">
                                                         <div className={styles.cardHeader}>
@@ -229,14 +258,14 @@ function PatientFile({ show, handleClick }) {
                                                         <Row>
                                                             <FiEdit3 className={style.icon} key={p.id} onClick={() => editFile(p.id)} />
 
- 
+
 
                                                         </Row>
 
 
 
                                                     </Col>
-                                                     
+
 
 
                                                 </div>
