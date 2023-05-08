@@ -31,7 +31,8 @@ function Patients() {
 
        const searchedPatient = data?.getPatientsByTherapist?.filter(
         (c) =>
-            c?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+            c?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            c?.email?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (loading) return <p>Loading...</p>;
