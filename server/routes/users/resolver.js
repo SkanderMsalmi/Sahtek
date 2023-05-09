@@ -124,7 +124,7 @@ const resolvers = {
     ) => {
       let profileImage = "";
       if (gender === "Other") {
-        profileImage = `${BASE_URL}/other.jpg`;
+        profileImage = `${BASE_URL}/other.png`;
       } else {
         if (role === "Patient") {
           if (gender === "Male") {

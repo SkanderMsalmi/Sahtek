@@ -112,11 +112,11 @@ function Navigation() {
           <Nav navbar>
             {!user && (
               <>
-                <NavItem>
+                {/* <NavItem>
                   <NavLink tag={Link} to="/">
                     Home
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
                 
               </>
             )}
@@ -174,7 +174,7 @@ function Navigation() {
                   <Button
                     className="btn-round"
                     outline
-                    color="primary"
+                    color="info"
                     onClick={handleLogout}
                   >
                     Log Out

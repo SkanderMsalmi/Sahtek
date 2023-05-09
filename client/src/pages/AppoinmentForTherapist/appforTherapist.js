@@ -26,6 +26,7 @@ import {
   MDBBtn
 } from 'mdb-react-ui-kit';
 import { useSelector } from "react-redux";
+import Loading from "../../components/loading";
 const GET_PATIENT_NAME_QUERY = gql`
   query {
     users{
@@ -88,8 +89,8 @@ const Appointments = () => {
     variables: { therapist: therapist.id },
   },);
 
-  if (loadinguser) return <p>Loading...</p>;
-  if (loading) return <p>Loading...</p>;
+  if (loadinguser) return <Loading/>;
+  if (loading) return <Loading/>;
 
   if (erroruser) return datauser
   if (error) return data

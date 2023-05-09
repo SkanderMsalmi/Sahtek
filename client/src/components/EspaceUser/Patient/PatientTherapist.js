@@ -1,4 +1,4 @@
-import { Button, Input, InputGroup, InputGroupAddon } from "reactstrap";
+import { Button, Container, Input, InputGroup, InputGroupAddon, Row } from "reactstrap";
 import TherapistCard from "./TherapistCard";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
@@ -57,8 +57,8 @@ const PatientTherapist = () => {
   return (
    
     
-    
-    <div className="section">
+    <Container >
+     
       <div className="d-flex justify-content-between align-items-center mb-5">
         <InputGroup style={{ width: "400px" }}>
           <Input
@@ -72,15 +72,16 @@ const PatientTherapist = () => {
         </InputGroup>
         <Button color="secondary">All Therapists</Button>
       </div>
-      <div
+      {/* <div
         style={{
           display: "flex",
           flexWrap: "wrap",
           columnGap: "5rem",
           rowGap: "4rem",
         }}
-      >
-        {filteredTherapist &&
+      > */}
+      <Row>
+      {filteredTherapist &&
           filteredTherapist.map((t, index) => (
             <TherapistCard
               key={index}
@@ -95,8 +96,11 @@ const PatientTherapist = () => {
             <h2>No Therapist Yet ...</h2>
           </div>
         )}
-      </div>
-    </div>
+      </Row>
+       
+      {/* </div> */}
+  
+    </Container >
   );
 };
 

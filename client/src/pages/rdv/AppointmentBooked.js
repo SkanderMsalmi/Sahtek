@@ -25,16 +25,16 @@ function AppointmentBooked() {
   // if (error) return <p>Error </p>;
   return (
     <div
-    className="section section-image  "
+  
     style={{ height: "100vh", paddingTop: "250px" }}
   >
-    <div className="section">
+   
       <Container className="text-center bg-light ">
         <Row>
           <Col className="ml-auto mr-auto text-center" md="8">
-            <h5 style={{color:'green'}}>You successfully created your booking!</h5>
+            <h3 style={{color:'green'}}>You successfully created your booking!</h3>
             <p className="note mt-5">
-            as soon as your appointment is confirmed you will receive a confirmation email
+            As soon as your appointment is confirmed you will receive a confirmation email
               <br />
              <a href="*">back to home page</a>
             </p>
@@ -43,7 +43,7 @@ function AppointmentBooked() {
           <Row></Row>
         </Row>
       </Container>
-    </div>
+    
   </div>
 //     <div
 //       className="section section-image  "

@@ -32,6 +32,7 @@ import {
     GET_COMMUNITIES_BY_USER,
     UPDATE_COMMUNITY
 } from "../../apis/community";
+import Loading from '../../components/loading';
 
 
 function ForumHomepage() {
@@ -495,7 +496,7 @@ function ForumHomepage() {
                                 <select className="form-control" aria-label=".form-select-sm example"
                                     value={community} onChange={handleChange}>
                                     <option value=""   >Choose Community</option>
-                                    {loadingC ? (<p>Loading...</p>) :
+                                    {loadingC ? (<Loading/>) :
                                         (dataC.findCommunityByUser.map((c) => {
                                             return (
                                                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -559,7 +560,7 @@ function ForumHomepage() {
                             <div >
                                 <Button
                                     className="btn-link"
-                                    color="default"
+                                    color="primary"
                                     type="button"
                                     onClick={() => { toggleModal(); resetPostmodal(); }}
                                 >
@@ -570,11 +571,11 @@ function ForumHomepage() {
                             <div >
                                 {postText == '' || title == '' || postText == null || title == null ||
                                     community == null || dataQ?.similarQuestions?.filter((m) => m.similarity > 0.8).length > 0 ? (
-                                    <Button className="btn-round" color="default" disabled >
+                                    <Button className="btn-round" color="primary" disabled >
                                         Post
                                     </Button>
                                 ) : (
-                                    <Button className="btn-round" color="default" onClick={addPost} >
+                                    <Button className="btn-round" color="primary" onClick={addPost} >
                                         Post
                                     </Button>
                                 )}
@@ -586,7 +587,7 @@ function ForumHomepage() {
 
 
 
-                {loading ? (<p>Loading...</p>) : dataC?.findCommunityByUser.length !== 0 && joinCommunities == false ?
+                {loading ? (<Loading/>) : dataC?.findCommunityByUser.length !== 0 && joinCommunities == false ?
                     (
                         <>
                             {data?.findPostByUserCommunities.map((p) => {
@@ -797,11 +798,11 @@ function ForumHomepage() {
 
                         <div className="d-flex flex-column align-items-start justify-contents-center">
                             <div className={styles.cardHeader2}>
-                                <Button size="sm" block className="btn-round" color="default" onClick={() => setjoinCommunities(!joinCommunities)}>
+                                <Button size="sm" block className="btn-round" color="info" onClick={() => setjoinCommunities(!joinCommunities)}>
                                     Join Community
                                 </Button>
 
-                                <Button size="sm" outline block className="btn-round" color="default" onClick={toggleModal2}>
+                                <Button size="sm" outline block className="btn-round" color="primary" onClick={toggleModal2}>
                                     Create Community
                                 </Button>
                                 <br />
@@ -926,7 +927,7 @@ function ForumHomepage() {
                             <div >
                                 <Button
                                     className="btn-link"
-                                    color="default"
+                                    color="primary"
                                     type="button"
                                     onClick={() => { toggleModal2(); resetCommunitymodal(); }}
                                 >
@@ -936,11 +937,11 @@ function ForumHomepage() {
 
                             <div >
                                 {communityDesc == '' || communityName == '' || communityDesc == null || communityName == null ? (
-                                    <Button className="btn-round" color="default" disabled >
+                                    <Button className="btn-round" color="primary" disabled >
                                         Create
                                     </Button>
                                 ) : (
-                                    <Button className="btn-round" color="default" onClick={addCommunity} >
+                                    <Button className="btn-round" color="primary" onClick={addCommunity} >
                                         Create
                                     </Button>
                                 )}

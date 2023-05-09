@@ -185,7 +185,7 @@ const HomeShop = () => {
             as={NavLink}
             to="/cart"
           >
-            Panier ({CartNumber})
+            Cart ({CartNumber})
           </Link>
         </div>
       </div>

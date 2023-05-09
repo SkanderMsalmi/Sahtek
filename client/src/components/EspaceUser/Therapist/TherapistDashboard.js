@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { GET_PATIENTS } from "../../../apis/users";
 import { GET_APPOINTMENTS_BYTHERAPIST } from "../../../pages/AppoinmentForTherapist/appforTherapist";
 import loader from "../../../assets/img/loading.gif";
+import Loading from "../../loading";
 
 const TherapistDashboard = () => {
   const user = useSelector(selectUser);
@@ -40,18 +41,10 @@ const TherapistDashboard = () => {
     return <h1>Error</h1>;
   }
   if (loadingapp) {
-    return (
-      <div className=" section d-flex justify-content-center align-items-center">
-        <img src={loader} alt="Loading..." />
-      </div>
-    );
+    return <Loading/>
   }
   if (loading) {
-    return (
-      <div className=" section d-flex justify-content-center align-items-center">
-        <img src={loader} alt="Loading..." />
-      </div>
-    );
+    return <Loading/>
   }
   return (
     <div
