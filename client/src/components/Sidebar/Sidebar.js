@@ -19,7 +19,12 @@ function Sidebar() {
   console.log(user);
   const [expanded, setExpanded] = useState(false);
   return (
-    <SideNav
+    <SideNav   onMouseOver={(expanded) => {
+      setExpanded(expanded);
+    }}
+    onMouseOut={(expanded) => {
+      setExpanded(!expanded);
+    }}
       onSelect={(selected) => {
         console.log(selected);
       }}
@@ -42,7 +47,7 @@ function Sidebar() {
                 <i className="fa-solid fa-gauge"></i>
               </NavIcon>
 
-              <NavText>get your appontment</NavText>
+              <NavText>Get your appointment</NavText>
             </NavItem>
             <NavItem
               eventKey="Appoitments"

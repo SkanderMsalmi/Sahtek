@@ -67,9 +67,6 @@ function Consultation() {
             </Link>
             <p className="card-text">
               {moment(appointment.date * 1).format("MM/DD/YYYY HH:mm")}
-              {/* {new Date(appointment.date * 1).getDate()}/{new Date(appointment.date * 1).getMonth() + 1}/{new Date(appointment.date * 1).getFullYear()} {new Date(appointment.date * 1).getHours() === 0 ? 11 : new Date(appointment.date * 1).getHours() - 1}:00 */}
-              {/* {new Date(appointment.date * 1).getDate()}/{new Date(appointment.date * 1).getMonth()}/{new Date(appointment.date * 1).getFullYear()}   {new Date(appointment.date * 1).getHours()}:00 HH
-                            <br />{new Date(appointment.date * 1).toLocaleString()} */}
             </p>
             {appointment.status !== "Confirmed" ? (
               <p>Waiting for confirmation</p>

@@ -4,8 +4,8 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/users/users.selectors";
-import loader from "../../../assets/img/loading.gif";
 import { useState } from "react";
+import Loading from "../../loading";
 const THERAPISTSBYPATIENTS = gql`
   query GetTherapistsByPatient($id: ID!) {
     getTherapistsByPatient(ID: $id) {
@@ -47,9 +47,7 @@ const PatientTherapist = () => {
 
   if (therapistLoading) {
     return (
-      <div className=" section d-flex justify-content-center align-items-center">
-        <img src={loader} alt="Loading..." />
-      </div>
+      <Loading/>
     );
   }
 
@@ -57,6 +55,9 @@ const PatientTherapist = () => {
     return <div>Error: {therapistError.message}</div>;
   }
   return (
+   
+    
+    
     <div className="section">
       <div className="d-flex justify-content-between align-items-center mb-5">
         <InputGroup style={{ width: "400px" }}>

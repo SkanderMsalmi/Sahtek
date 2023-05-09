@@ -117,15 +117,7 @@ function Navigation() {
                     Home
                   </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink href="#services">Services</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#contactus">Contact us</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#aboutus">About us</NavLink>
-                </NavItem>
+                
               </>
             )}
 
@@ -134,22 +126,22 @@ function Navigation() {
                 {user.role === "Patient" ? (
                   <>
                     <NavItem>
-                      <NavLink tag={Link} to="/chat">
+                      <NavLink tag={Link} to="/chat"  style={{color: "#03045e"}}>
                         Doc Bot
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink tag={Link} to="/shop">
+                      <NavLink tag={Link} to="/shop"  style={{color: "#03045e"}}>
                         Shop
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink tag={Link} to="/forum">
+                      <NavLink tag={Link} to="/forum"  style={{color: "#03045e"}}>
                         Forum
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink tag={Link} to="/espace-patient">
+                      <NavLink tag={Link} to="/espace-patient"  style={{color: "#03045e"}}>
                         Espace Patient
                       </NavLink>
                     </NavItem>
@@ -157,12 +149,12 @@ function Navigation() {
                 ) : (
                   <>
                     <NavItem>
-                      <NavLink tag={Link} to="/forum">
+                      <NavLink tag={Link} to="/forum"  style={{color: "#03045e"}}>
                         Forum
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink tag={Link} to="/espace-therapist">
+                      <NavLink tag={Link} to="/espace-therapist"  style={{color: "#03045e"}}>
                         Espace Therapist
                       </NavLink>
                     </NavItem>
@@ -181,10 +173,11 @@ function Navigation() {
                 <NavItem>
                   <Button
                     className="btn-round"
-                    color="danger"
+                    outline
+                    color="primary"
                     onClick={handleLogout}
                   >
-                    Deconnexion
+                    Log Out
                   </Button>
                 </NavItem>
               </>
@@ -203,7 +196,8 @@ function Navigation() {
                 <NavItem>
                   <Button
                     className="btn-round"
-                    color="danger"
+                    outline
+                    color="info"
                     tag={Link}
                     to="/register"
                   >

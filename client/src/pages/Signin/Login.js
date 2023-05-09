@@ -99,32 +99,7 @@ function Login2() {
           <Col className="mx-auto" lg="4" md="6">
             <Card className="card-register">
               <h3 className="title mx-auto">Welcome Back</h3>
-              <div className="social-line text-center">
-                <Button
-                  className="btn-neutral btn-just-icon mt-0"
-                  color="facebook"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <i className="fa fa-facebook-square" />
-                </Button>
-                <Button
-                  className="btn-neutral btn-just-icon mt-0 ml-1"
-                  color="google"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <i className="fa fa-google-plus" />
-                </Button>
-                <Button
-                  className="btn-neutral btn-just-icon mt-0 ml-1"
-                  color="twitter"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <i className="fa fa-twitter" />
-                </Button>
-              </div>
+             
               <Form className="register-form" onSubmit={submit}>
                 <label>Email</label>
                 <InputGroup
@@ -198,7 +173,7 @@ function Login2() {
                 <Button
                   block
                   className="btn-round"
-                  color="danger"
+                  color="info"
                   type="submit"
                   onClick={(e) => handleSubmit(e)}
                 >
@@ -208,7 +183,7 @@ function Login2() {
               <div className="forgot">
                 <Button
                   className="btn-link"
-                  color="danger"
+                  color="primary"
                   href="/forgetpassword"
                   onClick={(e) => {
                     e.preventDefault();
