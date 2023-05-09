@@ -16,6 +16,7 @@ import {
 } from 'react-bootstrap-card';
 import { Button, CardBody, Col, Row } from "reactstrap";
 import { Navigate } from "react-router-dom";
+import Loading from "../../components/loading";
 
 const USERS_QUERY = gql`
   query {
@@ -36,7 +37,7 @@ function ChooseTherapist() {
   const navigate = useNavigate();
 
   const { loading, error, data } = useQuery(USERS_QUERY);
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loading/>
   if (error) return <p>Error </p>;
   const handleButtonClick = (id) => {
     try {

@@ -7,6 +7,7 @@ import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import styles from "./Consultations.module.scss"
 import moment from "moment";
+import Loading from '../../components/loading';
 
 const GET_CONSULTATIONS_QUERY = gql`
 query GetAppointmentsByPatient($id: ID!) {
@@ -29,7 +30,7 @@ function Consultation() {
     const { loading, error, data } = useQuery(GET_CONSULTATIONS_QUERY, {
         variables: { id: user.id },
     });
-    if (loading) return <center> <Spinner /> <br /></center>;
+    if (loading) return( <Loading/>);
     if (error) return <p>Error :(</p>;
     if (data.getAppointmentsByPatient?.length === 0) return <h1 style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>No appointments this week :(</h1>;    return (
         <div className="d-flex justify-content-around" style={{ flexWrap: "wrap", columnGap: "5rem", rowGap: "4rem" }}>

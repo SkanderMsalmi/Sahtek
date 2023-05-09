@@ -21,7 +21,7 @@ import {
     LIKE_POST_MUTATION,
     GET_SIMILAR_QUESTIONS
 } from "../../apis/forum";
-import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
+import { Alert, Button, CardTitle, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Modal, PopoverBody, PopoverHeader, Row, UncontrolledDropdown, UncontrolledPopover } from 'reactstrap';
 import Moment from 'react-moment';
 import {
     COMMUNITY,
@@ -40,7 +40,7 @@ function ForumHomepage() {
 
     const user = useSelector(selectUser);
     const [alertMessage, setAlertMessage] = useState('');
-     
+
     const [deletemodal, setDeletemodal] = React.useState(false);
 
     const [modal, setModal] = React.useState(false);
@@ -118,6 +118,7 @@ function ForumHomepage() {
         CREATE_POST_MUTATION
     );
     const [searchQuery, setSearchQuery] = useState("");
+    const [postsearchQuery, setPostSearchQuery] = useState("");
 
 
     useEffect(() => {
@@ -144,7 +145,7 @@ function ForumHomepage() {
 
     }, [title]);
 
- 
+
 
     ///***  choose community */
     const handleChange = (event) => {
@@ -176,6 +177,11 @@ function ForumHomepage() {
 
 
     };
+    const searchedPosts = data?.findPostByUserCommunities?.filter(
+        (c) =>
+            c?.description?.toLowerCase().includes(postsearchQuery.toLowerCase()) ||
+            c?.title?.toLowerCase().includes(postsearchQuery.toLowerCase())
+    );
     useEffect(() => {
         if (dataCo)
             toggleModalEditCom();
@@ -419,8 +425,8 @@ function ForumHomepage() {
 
 
 
-    if (loadingC) return <p>loading...</p>
-    if (loadingCom) return <p>loading...</p>
+    if (loadingC || loadingCom) return <Loading />
+
 
 
 
@@ -454,8 +460,19 @@ function ForumHomepage() {
 
         <div className={styles.containerFluid} >
 
+ 
+<Row className="d-flex justify-content-center align-items-center " style={{ marginTop: "21px" }}>
 
+<Col lg="6" md="6">
+    <FormGroup>
+        <Input placeholder="Search" type="text"
+            onChange={(a) => setPostSearchQuery(a.target.value)} />
+    </FormGroup>
+</Col>
+</Row> 
+          
             <Col lg="6" md="6">
+
 
                 <div className={styles.add_post_container}  >
                     <div className={styles.row}>
@@ -496,7 +513,7 @@ function ForumHomepage() {
                                 <select className="form-control" aria-label=".form-select-sm example"
                                     value={community} onChange={handleChange}>
                                     <option value=""   >Choose Community</option>
-                                    {loadingC ? (<Loading/>) :
+                                    {loadingC ? (<Loading />) :
                                         (dataC.findCommunityByUser.map((c) => {
                                             return (
                                                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -587,10 +604,10 @@ function ForumHomepage() {
 
 
 
-                {loading ? (<Loading/>) : dataC?.findCommunityByUser.length !== 0 && joinCommunities == false ?
+                {loading ? (<Loading />) : searchedPosts.length !== 0 && joinCommunities == false ?
                     (
                         <>
-                            {data?.findPostByUserCommunities.map((p) => {
+                            {searchedPosts.map((p) => {
                                 return (
                                     <>
 
@@ -856,7 +873,7 @@ function ForumHomepage() {
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
                                                                     toggleDeleteModal(c.id);
-                                                                 
+
                                                                 }}                                                      >
                                                                 Delete
                                                             </DropdownItem>
@@ -1099,7 +1116,7 @@ function ForumHomepage() {
                                 aria-label="Close"
                                 className="close"
                                 type="button"
-                                onClick={ ()=>setDeletemodal(!deletemodal)}
+                                onClick={() => setDeletemodal(!deletemodal)}
                             >
                                 <span aria-hidden={true}>×</span>
                             </button>
@@ -1121,7 +1138,7 @@ function ForumHomepage() {
                                     className="btn-link"
                                     color="default"
                                     type="button"
-                                    onClick={ ()=>setDeletemodal(!deletemodal)}
+                                    onClick={() => setDeletemodal(!deletemodal)}
                                 >
                                     Cancel
                                 </Button>

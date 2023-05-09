@@ -7,41 +7,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 
 const { spawn } = require('child_process');
 
-
-// function getMostSimilarQuestions(newQuestion, existingQuestions) {
-//   return new Promise((resolve, reject) => {
-//     const pythonProcess = spawn('python', ['utils/similar_questions.py', newQuestion, ...existingQuestions]);
-//     let result = '';
-
-//     pythonProcess.stdout.on('data', function (data) {
-//       result = data.toString();
-//     });
-
-//     pythonProcess.stderr.on('data', (data) => {
-//       reject(data.toString());
-//       console.log(`stderr: ${data}`);
-//     });
-
-//     pythonProcess.on('close', (code) => {
-//       console.log(`Python process ended with code: ${code}`);
-//       console.log(`Python script output: ${result}`);
-
-//       if (code !== 0) {
-//         reject(`Python process exited with code ${code}`);
-//       } else {
-//         try {
-//           const similarQuestions = result.trim().split('\n');
-//           resolve(similarQuestions);
-//         } catch (err) {
-//           reject(err);
-//         }
-//       }
-//     });
-//   });
-// }
-
-
-
+ 
 
 const resolvers = {
   Query: {
@@ -117,7 +83,7 @@ const resolvers = {
         user: user,
         time: new Date(),
         like: [],
-
+     
         title: title,
         community: community,
       });
@@ -186,14 +152,15 @@ const resolvers = {
 
   },
 
-  // Newpost:{
-  //   community: async (parent, args) => {
-  //     return await Community.findById(parent.community);
-  //   },
-  //   comments: async (parent, args) => {
-  //     return await Comment.find({ post: parent._id });
-  //   },
-  // },
+  Newpost:{
+    community: async (parent, args) => {
+      return await Community.findById(parent.community);
+    },
+    comments: async (parent, args) => {
+      return await Comment.find({ post:parent.id});
+    },
+  },
+  
   Post: {
 
     user: async (parent, args) => {
@@ -210,7 +177,7 @@ const resolvers = {
       return users;
     },
     comments: async (parent, args) => {
-      return await Comment.find({ post: parent._id });
+      return await Comment.find({ post: parent.post });
     },
 
 
