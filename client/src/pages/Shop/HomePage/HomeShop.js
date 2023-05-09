@@ -13,6 +13,16 @@ import { Link } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import {
+  Button,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  
+  Row,
+} from "reactstrap";
+import {
   addToWishlist,
   emptyWishlist,
   removeFromWishlist,
@@ -49,7 +59,21 @@ const GET_AMAZON_PRODUCTS = gql`
     getAmazonProducts
   }
 `;
+export const GET_SIMILAR_PRODUCTS=gql`
+query compareImages($image1_path: String){
+  compareImages(image1_path:$image1_path){
+      id
+      category
+      description
+      name
+      price
+      stock
+      image}
+}`
 const HomeShop = () => {
+  const [affichage, setAffichage] = useState(true);
+  const [imageUrl, setImageUrl] = useState("");
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,6 +87,9 @@ const HomeShop = () => {
   const handleWishlistClick = () => {
     setShowWishlist(!showWishlist);
   };
+  const { loading:loo, error:err, data:dataSprod } = useQuery(GET_SIMILAR_PRODUCTS,{
+    variables: { image1_path:imageUrl},
+  },);
   const { loading, error, data } = useQuery(GET_PRODUCTS);
   const {
     loading: loadingAmazon,
@@ -75,7 +102,10 @@ const HomeShop = () => {
     error: errorCategories,
     data: dataCategories,
   } = useQuery(GET_CATEGORIES);
-
+  function handleButtonClick() {
+    setAffichage(!affichage)
+    console.log(dataSprod.compareImages) 
+ }
   useEffect(() => {
     if (data) {
       dispatch(setProducts(data.getAllProducts));
@@ -97,8 +127,8 @@ const HomeShop = () => {
     );
   }
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
+  if (error,err) {
+    return <p>Error: </p>;
   }
   const filteredProducts = products.filter(
     (product) =>
@@ -126,6 +156,9 @@ const HomeShop = () => {
   const clearWishlist = () => {
     dispatch(emptyWishlist());
   };
+  const handleInputChange = (event) => {
+    setImageUrl(event.target.value);
+  };
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
     if (checked) {
@@ -150,9 +183,20 @@ const HomeShop = () => {
   return (
     <>
       <Slideshow />
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-end" >
+      <Col className="m-2">
+          <Input
+          value={imageUrl} onChange={handleInputChange} placeholder="enter the url here"
+            type="text"
+          />
+        </Col>
+        <Col className="m-2">
+          <Button onClick={() =>
+        handleButtonClick()}> Search By Image </Button>
+        </Col>
         <div className="m-2">
           {" "}
+          
           <button
             onClick={toggleSidebar}
             className="btn btn-outline-danger"
@@ -200,6 +244,18 @@ const HomeShop = () => {
           maxPrice={maxPrice}
         />
       )}
+       {/* <Row>
+        <Col>
+          <Input
+          value={imageUrl} onChange={handleInputChange} placeholder="enter the url here"
+            type="text"
+          />
+        </Col>
+        <Col>
+          <Button onClick={() =>
+        handleButtonClick()}> Search By Image </Button>
+        </Col></Row> */}
+        {affichage ?(
       <div className="row mt-4">
         {showWishlist && <Wishlist />}
 
@@ -290,6 +346,24 @@ const HomeShop = () => {
           ))}
         </Carousel>
       </div>
+      ):loo ?(      
+        <p>loading</p>):(
+         <div>
+         {dataSprod?.compareImages?.map((item)=>
+               <div class="card" style={{width:" 18rem"}}>
+               <img class="card-img-top" src={item.image} alt="Card image cap"></img>
+               <div class="card-body">
+                 <h5 class="card-title">{item.name}</h5>
+                 <p class="card-text">{item.description} </p>
+                 <a href="#" class="btn btn-primary">add To Card</a>
+               </div>
+             </div>)}</div>
+        )
+          
+         }
+             
+              
+            
     </>
   );
 };

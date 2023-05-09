@@ -9,6 +9,8 @@ const mailVerification = require("./users/mailVerification");
 const ratingResolvers = require("./rating/resolver");
 const communityResolvers = require("./community/resolver");
 const chatbotResolver = require("./chatbot/resolver");
+const searchResolvers=require("./shop/cart/search")
+
 module.exports = [
   consultationResolvers,
   feedbackResolvers,
@@ -21,4 +23,5 @@ module.exports = [
   ratingResolvers,
   chatbotResolver,
   communityResolvers,
+  searchResolvers
 ];

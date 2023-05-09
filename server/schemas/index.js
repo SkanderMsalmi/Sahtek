@@ -10,6 +10,8 @@ const verificationToken = require("./verificationToken");
 const ratingT = require("./rating");
 const communityT = require("./community");
 const chatbotT = require("./chatbot");
+const search=require("./search")
+
 const rootType = gql`
   scalar Upload
   type Query {
@@ -33,4 +35,5 @@ module.exports = [
   ratingT,
   communityT,
   chatbotT,
+  search
 ];
