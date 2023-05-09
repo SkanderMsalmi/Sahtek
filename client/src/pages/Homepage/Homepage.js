@@ -125,7 +125,7 @@ function Homepage() {
           <Container>
             <h2 className="title">Let's talk about us</h2>
             <Row>
-              <Col md="4">
+              <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
                     <a href="#pablo" onClick={(e) => e.preventDefault()}>
@@ -138,14 +138,14 @@ function Homepage() {
                   <CardBody>
                     <a href="#pablo" onClick={(e) => e.preventDefault()}>
                       <div className="author">
-                        <CardTitle tag="h4">Henry Ford</CardTitle>
-                        <h6 className="card-category">Product Manager</h6>
+                        <CardTitle tag="h4">Msalmi Skander</CardTitle>
+                        <h6 className="card-category">Team Leader</h6>
                       </div>
                     </a>
                     <p className="card-description text-center">
-                      Teamwork is so important that it is virtually impossible
-                      for you to reach the heights of your capabilities or make
-                      the money that you want without becoming very good at it.
+                      Experienced team leader in MERN stack development and
+                      Agile Scrum methodologies, dedicated to delivering
+                      high-quality software solutions.
                     </p>
                   </CardBody>
                   <CardFooter className="text-center">
@@ -176,7 +176,7 @@ function Homepage() {
                   </CardFooter>
                 </Card>
               </Col>
-              <Col md="4">
+              <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
                     <a href="#pablo" onClick={(e) => e.preventDefault()}>
@@ -189,15 +189,14 @@ function Homepage() {
                   <CardBody>
                     <a href="#pablo" onClick={(e) => e.preventDefault()}>
                       <div className="author">
-                        <CardTitle tag="h4">Sophie West</CardTitle>
-                        <h6 className="card-category">Designer</h6>
+                        <CardTitle tag="h4">Hajri Oumayma</CardTitle>
+                        <h6 className="card-category">Developer</h6>
                       </div>
                     </a>
                     <p className="card-description text-center">
-                      A group becomes a team when each member is sure enough of
-                      himself and his contribution to praise the skill of the
-                      others. No one can whistle a symphony. It takes an
-                      orchestra to play it.
+                      A talented and dedicated React developer, committed to
+                      leveraging technology to solve complex problems and create
+                      innovative solutions.
                     </p>
                   </CardBody>
                   <CardFooter className="text-center">
@@ -228,28 +227,78 @@ function Homepage() {
                   </CardFooter>
                 </Card>
               </Col>
-              <Col md="4">
+              <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
                     <a href="#pablo" onClick={(e) => e.preventDefault()}>
                       <img
                         alt="..."
-                        src={require("../../assets/img/faces/erik-lucatero-2.jpg")}
+                        src={require("../../assets/img/faces/clem-onojeghuo-2.jpg")}
                       />
                     </a>
                   </div>
                   <CardBody>
                     <a href="#pablo" onClick={(e) => e.preventDefault()}>
                       <div className="author">
-                        <CardTitle tag="h4">Robert Orben</CardTitle>
+                        <CardTitle tag="h4">Chibani Adam</CardTitle>
                         <h6 className="card-category">Developer</h6>
                       </div>
                     </a>
                     <p className="card-description text-center">
-                      The strength of the team is each individual member. The
-                      strength of each member is the team. If you can laugh
-                      together, you can work together, silence isn’t golden,
-                      it’s deadly.
+                      Skilled software developer with expertise in various
+                      programming languages, dedicated to developing efficient
+                      and effective solutions that meet client needs.
+                    </p>
+                  </CardBody>
+                  <CardFooter className="text-center">
+                    <Button
+                      className="btn-just-icon btn-neutral"
+                      color="link"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="fa fa-twitter" />
+                    </Button>
+                    <Button
+                      className="btn-just-icon btn-neutral ml-1"
+                      color="link"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="fa fa-google-plus" />
+                    </Button>
+                    <Button
+                      className="btn-just-icon btn-neutral ml-1"
+                      color="link"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <i className="fa fa-linkedin" />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </Col>
+              <Col md="3">
+                <Card className="card-profile card-plain">
+                  <div className="card-avatar">
+                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <img
+                        alt="..."
+                        src={require("../../assets/img/faces/joe-gardner-2.jpg")}
+                      />
+                    </a>
+                  </div>
+                  <CardBody>
+                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <div className="author">
+                        <CardTitle tag="h4">Tounsi Sarra</CardTitle>
+                        <h6 className="card-category">Designer</h6>
+                      </div>
+                    </a>
+                    <p className="card-description text-center">
+                      Creative designer with a keen eye for detail, specializing
+                      in delivering aesthetically pleasing and user-friendly
+                      designs that elevate user experiences.
                     </p>
                   </CardBody>
                   <CardFooter className="text-center">
