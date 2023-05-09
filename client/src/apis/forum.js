@@ -127,14 +127,14 @@ export const GET_SIMILAR_QUESTIONS = gql
   ` 
   query SimilarQuestions($newQuestion: String) {
     similarQuestions(newQuestion: $newQuestion) {
-      title
-      similarity
-      comments {
-        description
-      }
       community {
         name
       }
+      comments {
+        description
+         
+      }
+      title
       id
     }
   }

@@ -16,6 +16,7 @@ import {
 
 } from "reactstrap";
 import { GET_PATIENTS } from "../../apis/users";
+import Loading from "../../components/loading";
 
 // import PatientList from "../../components/Patients/PatientList";
 
@@ -35,7 +36,7 @@ function Patients() {
             c?.email?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loading/>;
 
 
     return (
@@ -47,12 +48,12 @@ function Patients() {
                     <br />
                     <Row className="d-flex justify-content-center align-items-center " style={{ marginTop: "21px" }}>
 
-                        <Col lg="7" md="6">
+                        <Col lg="8" md="6">
 
                             <h3>All Patients</h3>
 
                         </Col>
-                        <Col lg="3" md="6">
+                        <Col lg="4" md="6">
                             <FormGroup>
                                 <Input placeholder="Search" type="text" 
                                  onChange={(e) => setSearchQuery(e.target.value)}/>
@@ -63,7 +64,7 @@ function Patients() {
 
 
                     <Row className="d-flex justify-content-center  ">
-                        <Col lg="10" md="6">
+                        <Col lg="12" md="3">
 
 
                             <hr />
@@ -71,27 +72,27 @@ function Patients() {
                                 {searchedPatient.map((p) => {
                                     return (
                                         <>
-                                            <li key={p.id}>
-                                                <Row className="d-flex justify-content-center align-items-center ">
-                                                    <Col className="avatar">
+                                            <li key={p.id}  >
+                                                <Row className="d-flex justify-content-center align-items-center">
+                                                    <Col className="avatar" >
                                                         <img
                                                             alt="..."
                                                             className="img-circle img-no-padding img-responsive"
-                                                            style={{ width: "70px", height: "70px" }}
+                                                            style={{ width: "60px", height: "60px" }}
                                                             src={p.profileImage}
                                                         />
                                                     </Col>
-                                                    <Col className="ml-auto mr-auto" lg="4" md="4" xs="4">
+                                                    <Col className="ml-auto mr-auto" lg="4" md="3" xs="4">
                                                         <h6  >
                                                             {p.name} </h6>
 
 
                                                     </Col>
-                                                    <Col className="ml-auto mr-auto" lg="4" md="4" xs="4">
+                                                    <Col className="ml-auto mr-auto" lg="4" md="3" xs="4">
                                                         <p>{p.email}</p></Col>
 
-                                                    <Col className="ml-auto mr-auto" lg="2" md="4" xs="4">
-                                                        <Link to={`/espace-therapist/${p.id}/files`}>Files</Link>
+                                                    <Col className="ml-auto mr-auto" lg="2" md="3" xs="4">
+                                                        <Link to={`/espace-therapist/${p.id}/files`} >Files</Link>
                                                     </Col>
                                                 </Row>
                                             </li>

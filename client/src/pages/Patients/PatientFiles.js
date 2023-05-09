@@ -35,6 +35,7 @@ import {
 } from "../../apis/patientsFiles";
 
 import { UPDATE_PATIENT_FILE_MUTATION } from "../../apis/patientsFiles";
+import Loading from "../../components/loading";
 
 function PatientFiles() {
     const therapist = useSelector(selectUser);
@@ -184,7 +185,7 @@ function PatientFiles() {
     };
 
 
-    if (loading || loadingu) return <p>Loading...</p>;
+    if (loading || loadingu) return <Loading/>;
 
 
     return (

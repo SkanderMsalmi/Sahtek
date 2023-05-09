@@ -7,6 +7,7 @@ import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import styles from "./Consultations.module.scss";
 import moment from "moment";
+import Loading from "../../components/loading";
 
 const GET_CONSULTATIONS_QUERY = gql`
   query GetAppointmentsByPatient($id: ID!) {

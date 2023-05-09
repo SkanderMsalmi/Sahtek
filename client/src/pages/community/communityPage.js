@@ -50,6 +50,7 @@ import { JOIN_COMMUNITY } from "../../apis/community";
 import { DELETE_POST_MUTATION } from "../../apis/forum";
 import { DropdownItem, DropdownMenu, DropdownToggle, Modal, UncontrolledDropdown } from 'reactstrap';
 import Moment from 'react-moment';
+import Loading from "../../components/loading";
 
 function CommunityPage() {
 
@@ -270,7 +271,7 @@ function CommunityPage() {
                 </div>
 
 
-                {loading ? (<p>Loading...</p>) : (
+                {loading ? (<Loading/>) : (
                     <>
 
 

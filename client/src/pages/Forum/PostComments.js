@@ -19,6 +19,7 @@ import { selectUser } from '../../store/users/users.selectors';
 import { TbArrowBigUp, TbArrowBigUpFilled } from 'react-icons/tb';
 import Moment from 'react-moment';
 import { BiDotsHorizontalRounded, BiDotsVerticalRounded } from 'react-icons/bi';
+import Loading from '../../components/loading';
 
 
 function PostComments() {
@@ -165,7 +166,7 @@ function PostComments() {
 
 
     <div className={styles.containerFluid}>
-      {loading2 ? (<p>Loading...</p>) : (
+      {loading2 ? (<Loading/>) : (
         <Col lg="6" md="12">
           <div className={styles.container}>
 

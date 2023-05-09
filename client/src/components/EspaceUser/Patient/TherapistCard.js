@@ -7,23 +7,25 @@ import {
   CardBody,
   CardTitle,
   Button,
+  Col,
 } from "reactstrap";
 
 function TherapistCard(props) {
   const navigate = useNavigate();
   const { name, image, description, id } = props;
   return (
-    <div style={{ width: "20rem" }}>
-      <Card>
+    <Col lg="4">
+   
+      <Card style={{ width: "100%" }}>
         <CardImg
           top
           src={image}
           alt={`${name} profile`}
-          style={{ height: "300px", width: "100%", objectFit: "cover" }}
+          style={{ height: "200px", width: "100%", objectFit: "cover" }}
         />
         <CardBody>
-          <CardTitle style={{ fontSize: "2rem" }}>Dr. {name}</CardTitle>
-          <CardText>Description : {description}</CardText>
+          <CardTitle style={{ fontSize: "1.5rem" }}>Dr. {name}</CardTitle>
+          <CardText>{description}</CardText>
           <div className="d-flex justify-content-between">
             <Button
               className="mr-2"
@@ -41,7 +43,8 @@ function TherapistCard(props) {
           </div>
         </CardBody>
       </Card>
-    </div>
+ </Col>
+ 
   );
 }
 
