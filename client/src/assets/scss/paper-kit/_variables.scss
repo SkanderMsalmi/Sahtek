@@ -38,7 +38,9 @@ $default-color:              #66615B !default;
 $default-bg:                 #66615B !default;
 $default-states-color:       #403D39 !default;
 
-$primary-color:              #51cbce !default;
+// $primary-color:              #51cbce !default;
+$primary-color:              #03045e !default;
+
 $primary-states-color:       darken($primary-color, 10%) !default;
 
 $success-color:              #6bd098 !default;

@@ -43,6 +43,8 @@ function App() {
       <ApolloProvider client={client}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={Persistor}>
+          <ScrollToTop />
+
             <Suspense>
               <Header />
               <Container
@@ -61,6 +63,8 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={Persistor}>
+        <ScrollToTop />
+
           <div className={style.appContainer}>
             <Navigation />
             {location.pathname == "/" ? <AnimatedHeader /> : ""}

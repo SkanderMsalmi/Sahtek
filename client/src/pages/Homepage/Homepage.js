@@ -33,14 +33,8 @@ function Homepage() {
                   committed to helping you prioritize it.
                 </h5>
                 <br />
-                <Button
-                  className="btn-round"
-                  color="info"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  See Details
-                </Button>
+                 
+                <hr />
               </Col>
             </Row>
             <br />
@@ -58,9 +52,7 @@ function Homepage() {
                       and mental health experts through our easy-to-use online
                       consultation platform.
                     </p>
-                    <Button className="btn-link" color="info" href="#pablo">
-                      See more
-                    </Button>
+                    
                   </div>
                 </div>
               </Col>
@@ -76,9 +68,7 @@ function Homepage() {
                       experiences and share your own story in our safe and
                       supportive community forum.
                     </p>
-                    <Button className="btn-link" color="info" href="#pablo">
-                      See more
-                    </Button>
+                   
                   </div>
                 </div>
               </Col>
@@ -94,9 +84,7 @@ function Homepage() {
                       products, including books, journals, and self-care tools
                       to help you prioritize your wellbeing.
                     </p>
-                    <Button className="btn-link" color="info" href="#pablo">
-                      See more
-                    </Button>
+                   
                   </div>
                 </div>
               </Col>
@@ -112,9 +100,9 @@ function Homepage() {
                       provide personalized mental health recommendations and
                       support based on your unique needs and concerns.
                     </p>
-                    <Button className="btn-link" color="info" href="#pablo">
+                    {/* <Button className="btn-link" color="info" href="#pablo">
                       See more
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </Col>
@@ -283,7 +271,7 @@ function Homepage() {
             </Row>
           </Container>
         </div>
-        <div className="section landing-section" id="contactus">
+        {/* <div className="section landing-section" id="contactus">
           <Container>
             <Row>
               <Col className="ml-auto mr-auto" md="8">
@@ -330,7 +318,7 @@ function Homepage() {
               </Col>
             </Row>
           </Container>
-        </div>
+        </div> */}
       </div>
     </div>
   );

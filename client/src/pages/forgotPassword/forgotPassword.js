@@ -160,7 +160,7 @@ function Forgetpassword() {
                   block
                   disabled={isSubmitted}
                   className="btn-round"
-                  color="danger"
+                  color="primary"
                   type="submit"
                 >
                   Send Email

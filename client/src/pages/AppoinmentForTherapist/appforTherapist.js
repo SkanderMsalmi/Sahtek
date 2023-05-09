@@ -180,7 +180,7 @@ const Appointments = () => {
       <br />
       <Row className="d-flex justify-content-center align-items-center " style={{ marginTop: "21px" }}>
 
-        <Col lg="10" md="6">
+        <Col lg="12" md="6">
 
           <h3>Appointments</h3>
           <hr />
@@ -189,10 +189,10 @@ const Appointments = () => {
 
       </Row>
       <Row className="d-flex justify-content-center align-items-center " >
-        <Col lg="10" md="6">
+        <Col lg="12" md="6">
           <Row>  {data.getAppointmentsByTherapist.map((item) => (
           <>
-            <Col lg="4" md="6">
+            <Col lg="3" md="6">
               <Card style={{ width: '100%' }}>
 
                 <CardHeader>
@@ -231,9 +231,9 @@ const Appointments = () => {
                   <div className="text-right">
                     {item.status === 'Confirmed' ? (
                       <Button outline block tag={Link} to={`/videoCall/${item.id}`}
-                        color="success">Go to call</Button>
+                        color="primary">Go to call</Button>
                     ) : (
-                      <Button block color="warning"
+                      <Button block color="info"
 
                         onClick={() => handleButtonClick(item.id)}>Confirm</Button>
                     )}

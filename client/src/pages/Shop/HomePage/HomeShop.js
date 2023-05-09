@@ -165,21 +165,22 @@ const HomeShop = () => {
         <div className="m-2">
           {" "}
           <button
+         
             onClick={clearWishlist}
-            className="btn btn-outline-info"
+            className="btn btn-outline-primary mr-1"
             style={{ textAlign: "right" }}
           >
             Clear Wishlist <AiOutlineClear />
           </button>
           <button
             onClick={handleWishlistClick}
-            className="btn btn-outline-info"
+            className="btn btn-outline-primary  mr-1"
             style={{ textAlign: "right" }}
           >
             Wishlist
           </button>
           <Link
-            className="btn btn-outline-info"
+            className="btn btn-outline-primary"
             style={{ textAlign: "right" }}
             as={NavLink}
             to="/cart"

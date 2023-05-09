@@ -260,7 +260,7 @@ function ProfileCreation() {
                     )}
                     <label>
                       Started working on{" "}
-                      <small className="text-secondary"> (Start By Year )</small>
+                      <small > (Start By Year )</small>
                     </label>
                     <div>
                       <FormGroup className="d-flex align-items-center mb-0">
@@ -310,7 +310,7 @@ function ProfileCreation() {
                     )}
                     <div className="text-center d-flex align-items-baseline justify-content-between mb-1">
 
-                      <label>Languages</label> <Button className="btn-round" color="danger" onClick={() => setLanguages([...languages, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                      <label>Languages</label> <Button className="btn-round" color="primary" onClick={() => setLanguages([...languages, ""])}><i className="nc-icon nc-simple-add"></i></Button>
                     </div>
                     {languages.map((language, index) => {
                       const fieldName = `languages[${index}]`;
@@ -392,7 +392,7 @@ function ProfileCreation() {
                     )}
                     <div className="text-center d-flex align-items-baseline justify-content-between mb-1">
 
-                      <label>Licenses</label> <Button className="btn-round" color="danger" onClick={() => setLicenses([...licenses, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                      <label>Licenses</label> <Button className="btn-round" color="primary" onClick={() => setLicenses([...licenses, ""])}><i className="nc-icon nc-simple-add"></i></Button>
                     </div>
                     {licenses.map((license, index) => {
                       const fieldName = `licenses[${index}]`;
@@ -442,7 +442,7 @@ function ProfileCreation() {
 
                     <div className="text-center d-flex align-items-baseline justify-content-between mb-1">
 
-                      <label>Educations</label> <Button className="btn-round" color="danger" onClick={() => setEducations([...educations, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                      <label>Educations</label> <Button className="btn-round" color="primary" onClick={() => setEducations([...educations, ""])}><i className="nc-icon nc-simple-add"></i></Button>
                     </div>
                     {educations.map((education, index) => {
                       const fieldName = `educations[${index}]`;
@@ -480,7 +480,7 @@ function ProfileCreation() {
                 </Row>
                 <div className="text-center d-flex align-items-baseline justify-content-center mb-1" style={{ gap: "1rem" }}>
                   <label style={{}}>Specialties</label>
-                  <Button className="btn-round" color="danger" onClick={() => setSpecialties([...specialties, ""])}><i className="nc-icon nc-simple-add"></i></Button>
+                  <Button className="btn-round" color="primary" onClick={() => setSpecialties([...specialties, ""])}><i className="nc-icon nc-simple-add"></i></Button>
                 </div>
 
                 {specialties.map((specialtie, index) => {
@@ -518,11 +518,11 @@ function ProfileCreation() {
                 <Button
                   block
                   className="btn-round"
-                  color="danger"
+                  color="primary"
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  Register
+                  Submit
                 </Button>
               </form>
 

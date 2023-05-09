@@ -208,7 +208,7 @@ function Register() {
       className="section section-image section-login"
       style={{
         backgroundImage:
-          "url(" + require("../../assets/img/login-image.jpg") + ")",
+          "url(" + require("../../assets/img/toa-heftiba-_UIVmIBB3JU-unsplash.jpg") + ")",
       }}
     >
       <Container>
@@ -276,7 +276,7 @@ function Register() {
                     )}
                     <label>
                       Birthday{" "}
-                      <span className="text-secondary"> (Start By Year )</span>
+                      <small > (Start By Year)</small>
                     </label>
                     <div>
                       <FormGroup className="d-flex align-items-center">
@@ -488,7 +488,7 @@ function Register() {
                 <Button
                   block
                   className="btn-round"
-                  color="danger"
+                  color="info"
                   type="submit"
                   disabled={isSubmitting}
                 >
@@ -496,7 +496,7 @@ function Register() {
                 </Button>
               </form>
               <div className="forgot">
-                <Button className="btn-link" color="danger">
+                <Button className="btn-link" color="primary">
                   Already have an <Link to="/login">account</Link> ?
                 </Button>
               </div>

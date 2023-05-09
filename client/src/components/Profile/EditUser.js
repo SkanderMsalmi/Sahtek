@@ -18,6 +18,7 @@ function EditUser(props) {
     try {
 
       if (props.user.pdp) {
+        console.log("img:", props.user.pdp);
         await updateUser({
           variables: {
             userInput: {

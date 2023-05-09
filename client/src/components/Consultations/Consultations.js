@@ -31,8 +31,7 @@ function Consultation() {
     });
     if (loading) return <center> <Spinner /> <br /></center>;
     if (error) return <p>Error :(</p>;
-    if (data.getAppointmentsByPatient?.length === 0) return <p>No appointments this week :(</p>;
-    return (
+    if (data.getAppointmentsByPatient?.length === 0) return <h1 style={{ height: "fit-content", alignSelf: "center", marginLeft: "auto", marginRight: "auto" }}>No appointments this week :(</h1>;    return (
         <div className="d-flex justify-content-around" style={{ flexWrap: "wrap", columnGap: "5rem", rowGap: "4rem" }}>
 
             {data?.getAppointmentsByPatient?.map((appointment) => (
@@ -42,9 +41,7 @@ function Consultation() {
                         <Link to={`/profile/${appointment.therapist.id}`}><h5 className="card-title">{appointment.therapist.name}</h5></Link>
                         <p className="card-text">
                             {moment(appointment.date * 1).format("MM/DD/YYYY HH:mm")}
-                            {/* {new Date(appointment.date * 1).getDate()}/{new Date(appointment.date * 1).getMonth() + 1}/{new Date(appointment.date * 1).getFullYear()} {new Date(appointment.date * 1).getHours() === 0 ? 11 : new Date(appointment.date * 1).getHours() - 1}:00 */}
-                            {/* {new Date(appointment.date * 1).getDate()}/{new Date(appointment.date * 1).getMonth()}/{new Date(appointment.date * 1).getFullYear()}   {new Date(appointment.date * 1).getHours()}:00 HH
-                            <br />{new Date(appointment.date * 1).toLocaleString()} */}
+                     
                         </p>
                         {appointment.status !== "Confirmed" ? <p>Waiting for confirmation</p> : <br />}
                         <Button disabled={appointment.status !== "Confirmed"} tag={Link} to={`/videoCall/${appointment.id}`} className="btn btn-primary" style={{ borderRadius: "2em" }}>Go to call</Button>
