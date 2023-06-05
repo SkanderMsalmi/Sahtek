@@ -1,0 +1,72 @@
+.contactInfo {
+    text-align: left;
+    font-family: 'Poppins', sans-serif;
+
+    h5 {
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: #455a64;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+
+        svg {
+            fill: #1A76D1;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        span {
+            color: #29ada2;
+        }
+    }
+}
+
+.address {
+    background-color: #FFFFFF;
+    color: #66615b;
+    font-size: 14px;
+    transition: background-color 0.3s ease 0s;
+    background-color: #51ccce27 !important;
+
+    padding-right: 0 !important;
+    padding: 7px 12px;
+    height: 40px;
+    box-shadow: none;
+    border: 1px solid transparent !important;
+    border-right: none !important;
+    margin-left: -1px;
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    margin-bottom: 0;
+    display: block;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    min-width: 25%;
+    border: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background-color: #51ccce27 !important;
+}
+
+.gear:hover {
+    color: #2ca8ff;
+    cursor: pointer;
+}
+
+.borderless {
+    border: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background-color: #51ccce27 !important;
+}
+
+.btnTrans {
+    background-color: #51ccce21 !important;
+    border: transparent !important;
+}

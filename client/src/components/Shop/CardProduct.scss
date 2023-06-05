@@ -1,0 +1,54 @@
+.card-product {
+  border: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.card-product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-product-image-wrapper {
+  position: relative;
+}
+
+.card-product-image-wrapper .like-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px;
+  transition: transform 0.2s ease-in-out;
+  z-index: 1;
+}
+
+.card-product-image-wrapper .like-icon:hover {
+  transform: scale(1.1);
+}
+
+.card .card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.card .card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #007bff;
+  margin-top: 8px;
+  text-align: center;
+}
